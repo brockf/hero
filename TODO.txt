@@ -1,0 +1,20 @@
+- For each admincp controller
+	- Get rid of branded_view.
+	
+- Roadmap:
+	- Reinstall
+	- Get rid of TriggerTrips for standard CodeIgniter hooks
+	- Add "locale" setting
+	- Create settings manager (accordion style by group)
+	- Create emails manager
+	- Create user custom fields manager and backend system, with an add user screen in the control panel
+	- Create admin panel authentication system
+	- Move "Initialize" arguments to their own methods (e.g., $this->dataset->DataSource('order_model','GetCharges'));
+	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())
+	- Write documentation for model's Get function requirements (filters, etc.)
+	- Update Dataset to have sorting
+	
+- Order Form:
+	- settings: require_user_account
+	- When a user makes an order, their customer record is forever tied to their user account
+		- It's updated with each purchase (stores their billing address, etc.)

@@ -1,0 +1,26 @@
+Electric Publisher is a web publishing and e-commerce platform.
+Copyright (C) 2010 Electric Function, Inc.  ALL RIGHTS RESERVED.
+
+By using this software, you agree to the following terms and conditions
+of licensing:
+
+INDEMNITY
+You agree to indemnify and hold harmless the authors of the Software and
+any contributors for any direct, indirect, incidental, or consequential
+third-party claims, actions or suits, as well as any related expenses,
+liabilities, damages, settlements or fees arising from your use or misuse
+of the Software, or a violation of any terms of this license.
+
+DISCLAIMER OF WARRANTY
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESSED OR
+IMPLIED, INCLUDING, BUT NOT LIMITED TO, WARRANTIES OF QUALITY, PERFORMANCE,
+NON-INFRINGEMENT, MERCHANTABILITY, OR FITNESS FOR A PARTICULAR PURPOSE.
+
+LIMITATIONS OF LIABILITY
+YOU ASSUME ALL RISK ASSOCIATED WITH THE INSTALLATION AND USE OF THE SOFTWARE.
+IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS OF THE SOFTWARE BE LIABLE
+FOR CLAIMS, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF, OR IN CONNECTION
+WITH THE SOFTWARE. LICENSE HOLDERS ARE SOLELY RESPONSIBLE FOR DETERMINING THE
+APPROPRIATENESS OF USE AND ASSUME ALL RISKS ASSOCIATED WITH ITS USE, INCLUDING
+BUT NOT LIMITED TO THE RISKS OF PROGRAM ERRORS, DAMAGE TO EQUIPMENT, LOSS OF
+DATA OR SOFTWARE PROGRAMS, OR UNAVAILABILITY OR INTERRUPTION OF OPERATIONS.
