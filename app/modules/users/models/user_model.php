@@ -22,7 +22,7 @@ class User_model extends CI_Model
 		$this->CI =& get_instance();
 	}
 	
-	function NewUser($email, $password, $username, $first_name, $last_name, $referrer, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE) {
+	function new_user($email, $password, $username, $first_name, $last_name, $referrer, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE) {
 		if (empty($groups)) {
 			$this->CI->load->model('usergroup_model');
 			

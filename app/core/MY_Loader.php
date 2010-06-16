@@ -72,6 +72,8 @@ class MY_Loader extends CI_Loader
 	public function helper($helper) {
 		if (is_array($helper))
 			return $this->helpers($helper);
+			
+		self::define_module($helper);
 
 		if (isset($this->_ci_helpers[$helper]))
 			return;
@@ -106,6 +108,8 @@ class MY_Loader extends CI_Loader
 			}
 			return;
 		}
+		
+		self::define_module($library);
 
 		$class = strtolower(end(explode('/', $library)));
 
@@ -114,8 +118,6 @@ class MY_Loader extends CI_Loader
 
 		($_alias = $object_name) OR $_alias = $class;
 		list($path, $_library) = Modules::find($library, $this->_module, 'libraries/');
-		
-		echo $path;
 
 		/* load library config file as params */
 		if ($params == NULL) {
@@ -141,7 +143,9 @@ class MY_Loader extends CI_Loader
 	public function model($model, $object_name = NULL, $connect = FALSE) {
 		if (is_array($model))
 			return $this->models($model);
-
+		
+		self::define_module($model);
+		
 		($_alias = $object_name) OR $_alias = end(explode('/', $model));
 
 		if (in_array($_alias, $this->_ci_models, TRUE))
@@ -173,6 +177,8 @@ class MY_Loader extends CI_Loader
 
 	/** Load a module plugin **/
 	public function plugin($plugin)	{
+		self::define_module($plugin);
+		
 		if (is_array($plugin))
 			return $this->plugins($plugin);
 
@@ -195,6 +201,8 @@ class MY_Loader extends CI_Loader
 
 	/** Load a module view **/
 	public function view($view, $vars = array(), $return = FALSE) {
+		self::define_module($view);
+		
 		list($path, $view) = Modules::find($view, $this->_module, 'views/');
 		$this->_ci_view_path = $path;
 		return parent::_ci_load(array('_ci_view' => $view, '_ci_vars' => parent::_ci_object_to_array($vars), '_ci_return' => $return));
@@ -207,7 +215,7 @@ class MY_Loader extends CI_Loader
 		}
 	}
 
-	/** Autload items **/
+	/** Autoload items **/
 	public function _ci_autoloader() {
 
 		parent::_ci_autoloader();
@@ -263,6 +271,34 @@ class MY_Loader extends CI_Loader
 			if (isset($autoload['model'])){
 				foreach ($autoload['model'] as $model => $alias){
 					(is_numeric($model)) ? $this->model($alias) : $this->model($model, $alias);
+				}
+			}
+		}
+	}
+	
+	/*
+	* Define Module
+	*
+	* Loads the main module definition file from /modules/[module]/[module].php
+	*
+	* @param string $path The path to the file being loaded, e.g., "settings/settings_model.php"
+	*
+	*/
+	function define_module ($path) {
+		if (strpos($path, '/') !== FALSE) {
+			// this may be a module
+			list($module,$path) = explode('/',$path);
+			
+			$module = strtolower($module);
+			
+			if (is_dir(APPPATH . 'modules/' . $module)) {
+				// this is a module
+				if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
+					include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
+					
+					$CI =& get_instance();
+					
+					$CI->module_definitions->$module = new $module;
 				}
 			}
 		}

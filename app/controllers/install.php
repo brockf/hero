@@ -225,7 +225,7 @@ class Install extends Controller {
 		
 			if (!isset($error_password)) {
 				// form submission
-				$user_id = $this->user_model->NewUser(
+				$user_id = $this->user_model->new_user(
 													 $this->input->post('email'),
 													 $this->input->post('password'),
 													 $this->input->post('username'),

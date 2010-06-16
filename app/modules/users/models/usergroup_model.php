@@ -18,7 +18,7 @@ class Usergroup_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	function NewGroup ($name) {
+	function new_group ($name) {
 		$insert_fields = array(
 								'usergroup_name' => $name
 							);
@@ -28,13 +28,13 @@ class Usergroup_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	function MakeDefault ($group_id) {
+	function make_default ($group_id) {
 		$this->db->update('usergroups',array('default' => $group_id), array('id' => $group_id));
 		
 		return TRUE;	
 	}
 	
-	function GetDefault () {
+	function get_default () {
 		$this->db->select('usergroup_id');
 		$this->db->where('usergroup_default','1');
 		

@@ -43,7 +43,8 @@ if (file_exists(APPPATH . 'config/database.php')) {
 	$autoload['libraries'] = array('database',
 								   'session',
 								   'auto_updater',
-								   'email'
+								   'email',
+								   'module'
 								);
 }
 else {
@@ -128,8 +129,11 @@ $autoload['language'] = array();
 
 if (file_exists(APPPATH . 'config/database.php')) {
 	$autoload['model'] = array(
+							   'modules/module_model',
 							   'users/user_model',
-							   'settings/settings_model');
+							   'settings/settings_model',
+							   'billing/gateway_model'
+							  );
 }
 else {
 	$autoload['model'] = array();

@@ -3,7 +3,19 @@
 	
 - Roadmap:
 	- Reinstall
-	- Get rid of TriggerTrips for standard CodeIgniter hooks
+	- Create /modules/module/update.php files which are version controlled and retain settings, database, folder permissions, etc. for each module
+		- Only "settings" & "modules" will remain in the core /updates/install.php file, so that the module install files can be run properly
+		  during phase 2 of the installation wizard
+	- Update MY_Loader.php to verify the status of the module upon each load.
+	- Get rid of notifications in TriggerTrips
+	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
+	- Update TriggerTrips to use subscription_plans, not "plans"
+	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
+	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
+	- Create a customer record when a user is created in NewUser
+		- When creating user custom fields, they can specify if the field should be used as the "Address",
+		"City", etc. of the user, to auto-populate this billing address!
+		- First name, last name, and email are auto-populated
 	- Add "locale" setting
 	- Create settings manager (accordion style by group)
 	- Create emails manager
