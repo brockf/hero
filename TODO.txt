@@ -30,3 +30,9 @@
 	- settings: require_user_account
 	- When a user makes an order, their customer record is forever tied to their user account
 		- It's updated with each purchase (stores their billing address, etc.)
+		
+- When copying code from OpenGateway:
+	- Copy database
+	- Delete all references to client_id
+	- Make all "in-model" model loads call billing/model (not just model).
+		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"

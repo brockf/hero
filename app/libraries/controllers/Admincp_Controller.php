@@ -5,9 +5,20 @@ class Admincp_Controller extends MY_Controller {
 
 	function __construct () {
 		parent::__construct();
+		
+		define("_CONTROLPANEL","TRUE");
 	
 		// store dynamically-generated navigation
-		$this->navigation = array();
+		$this->load->library('navigation');
+		
+		$this->navigation->parent_link('dashboard','Dashboard');
+		$this->navigation->parent_link('publish','Publish');
+		$this->navigation->parent_link('storefront','Storefront');
+		$this->navigation->parent_link('members','Members');
+		$this->navigation->parent_link('reports','Reports');
+		$this->navigation->parent_link('configuration','Configuration');
+		
+		$this->navigation->child_link('dashboard',1,'Dashboard',site_url('admincp'));
 		
 		// admin-specific loading
 		$this->load->model('admincp/notices');
@@ -19,16 +30,9 @@ class Admincp_Controller extends MY_Controller {
 		$directory = APPPATH . 'modules/';
 		$modules = directory_map($directory);
 		
-		// load control panel files for each eligible module
+		// load each module definition file, for admincp navigation
 		foreach ($modules as $module => $module_folder) {
-			$module_names = $this->module_names($module);
-			
-			if ($module != "." and $module != ".." and isset($module_folder['controllers']) and in_array($module_names['filename'],$module_folder['controllers'])) {
-				require($directory . $module . '/libraries/' . $module_names['filename']);
-				
-				// load Module::initialize to generate navigation and other things
-				call_user_func(array($module_names['class_name'],'initialize'),$this);
-			}
+			MY_Loader::define_module($module . '/');
 		}
 	}
 	

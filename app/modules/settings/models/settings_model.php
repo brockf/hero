@@ -17,10 +17,10 @@ class Settings_model extends CI_Model
 	{
 		parent::CI_Model();
 		
-		$this->SetSettings();
+		$this->set_settings();
 	}
 	
-	function SetSettings () {
+	function set_settings () {
 		$result = $this->db->get('settings');
 		
 		foreach ($result->result_array() as $setting) {
@@ -30,13 +30,13 @@ class Settings_model extends CI_Model
 		return TRUE;
 	}
 	
-	function UpdateSetting ($name, $value) {
+	function update_setting ($name, $value) {
 		$this->db->update('settings',array('setting_value' => $value), array('setting_name' => $name));
 		
 		return TRUE;
 	}
 	
-	function NewSetting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_time = FALSE, $setting_type = 'text') {
+	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_time = FALSE, $setting_type = 'text') {
 		$insert_fields = array(
 							 	'setting_group' => $setting_group,
 							 	'setting_name' => $setting_name,

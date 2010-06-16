@@ -20,7 +20,7 @@ function install_redirect () {
 		$CI =& get_instance();
 		
 		if ($CI->router->fetch_class() != 'install') {
-			show_error('Your Electric Publisher server has not been installed.  Visit yourdomain.com/install to install the server.');
+			show_error($CI->config->item('app_name') . ' has not been installed.  Visit yourdomain.com/install to install the server.<br /><br />Need help with the installation?  Check out the <a href="' . $CI->config->item('app_support') . '">support website</a>.');
 			die();
 		}
 	}

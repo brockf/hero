@@ -16,9 +16,13 @@ class Module_model extends CI_Model {
 	}
 	
 	function get_module ($name) {
-		$this->db->where('name',$name);
+		$this->db->where('module_name',$name);
 		
 		$result = $this->db->get('modules');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
 		
 		$module = $result->row_array();
 		
@@ -42,7 +46,7 @@ class Module_model extends CI_Model {
 	}
 	
 	function update_version ($name, $version) {
-		$this->db->update('modules',array('version' => $version), array('name' => $name));
+		$this->db->update('modules',array('module_version' => $version), array('module_name' => $name));
 		
 		return TRUE;
 	}

@@ -30,7 +30,12 @@ class Module {
 				$version = 0;
 			}
 		
-			$this->run_updates();
+			$this->run_updates($version);
+			
+			// do we need to preload for the admin panel
+			if (defined("_CONTROLPANEL")) {
+				$this->do_admin_preload();
+			}
 		}
 	}
 	
@@ -60,6 +65,18 @@ class Module {
 			$new_version = $this->update($version);
 			
 			$this->CI->module_model->update_version($this->active_module, $new_version);
+		}
+	}
+	
+	/*
+	* Get Admin Navigation
+	*
+	* Checks if there's an admin_navigation() method to be called and, if so, calls it
+	*/
+	function do_admin_preload () {
+	
+		if (method_exists($this, 'admin_preload')) {
+			$this->admin_preload();
 		}
 	}
 }

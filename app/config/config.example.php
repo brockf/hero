@@ -52,7 +52,7 @@ $config['encryption_key'] = "10101010101010101010101010";
 |
 */
 $config['app_name'] = 'Caribou CMS';
-$config['app_name'] = 'http://www.cariboucms.com/';
+$config['app_link'] = 'http://www.cariboucms.com/';
 $config['app_support'] = 'http://www.cariboucms.com/support';
 
 /*

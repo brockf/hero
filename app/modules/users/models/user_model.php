@@ -24,9 +24,9 @@ class User_model extends CI_Model
 	
 	function new_user($email, $password, $username, $first_name, $last_name, $referrer, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE) {
 		if (empty($groups)) {
-			$this->CI->load->model('usergroup_model');
+			$this->CI->load->model('users/usergroup_model');
 			
-			$group = $this->CI->usergroup_model->GetDefault();
+			$group = $this->CI->usergroup_model->get_default();
 			
 			$groups = array($group);
 		}

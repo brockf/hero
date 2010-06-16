@@ -6,12 +6,23 @@ $(document).ready(function() {
 	});
 	
 	// menu
-	$('#topnav li.parent').hover(function () {
-		$(this).children('ul.children').each(function () {
-			$(this).stop(false,true).slideDown(100);
-		});
-	}, function () {
-		$(this).children('ul.children').stop(false,true).slideUp(100);
+	
+	// click functions
+	$('div#navigation ul a.parent').click(function() {
+		// clear the slate
+		$('div#navigation ul.children').hide();
+		$('div#nav_children').animate({height: '8px'}, 100);
+		
+		if ($(this).parent().children('ul.children').length != 0) {
+			$('div#nav_children').animate({height: '40px'}, 100);
+			$(this).parent().children('ul.children').slideDown(100);
+		}
+	});
+	
+	// show active menu on load
+	$('div#navigation ul a.active').each(function () {
+		$('div#nav_children').animate({height: '40px'}, 100);
+		$(this).parent().children('ul.children').slideDown(100);
 	});
 	
 	// table row colours

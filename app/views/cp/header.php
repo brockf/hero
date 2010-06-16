@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title></title>
+	<title><?=setting('site_name');?></title>
 	<link href="<?=branded_include('css/universal.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<link href="<?=branded_include('css/datepicker.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>
@@ -14,10 +14,22 @@
 <body>
 	<div id="notices"><?=get_notices();?></div>
 	<div id="header">
-		<div id="logo">&nbsp;</div>
-		<ul id="topnav">
-			
-		</ul>
+		<div id="app_bar">
+			<span class="app_name"><?=setting('site_name');?></span> | Control Panel
+			<div id="logged_in">
+				Logged in as <span class="username">brockf</span>
+			</div>
+			<a id="get_support" href="<?=setting('app_support');?>">Get Support</a>
+		</div>
+		<div id="navigation">
+			<ul>
+				<?=$this->navigation->display();?>
+			</ul>
+			<div style="clear: both"></div>
+		</div>
+		<div id="nav_children">
+		
+		</div>
 		<div id="account">
 			
 		</div>
