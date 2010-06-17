@@ -630,9 +630,10 @@ div.setting_group {
 	margin-bottom: 15px;
 }
 
-div.setting_group h2 {
-	background-color: #f9f9e6;
-	color: #222;
+div.setting_group a.cat {
+	display: block;
+	color: #fff;
+	background-color: #222;
 	font-size: 14pt;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -641,6 +642,11 @@ div.setting_group h2 {
 	background-image: url(../images/bricks.png);
 	background-repeat: no-repeat;
 	background-position: 12px 7px;
+	text-decoration: none;
+}
+
+div.setting_group a.cat:hover {
+	background-color: #333;
 }
 
 table.settings {

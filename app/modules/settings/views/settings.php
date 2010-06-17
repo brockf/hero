@@ -5,7 +5,7 @@
 
 <? foreach ($groups as $group_id => $group) { ?>
 	<div class="setting_group">
-		<h2><a href="#"><?=$group['name'];?></a></h2>
+		<a class="cat" href="#"><?=$group['name'];?></a>
 		<table class="settings" cellpadding="0" cellspacing="0">
 			<? $count = 1;
 			   foreach ($settings[$group_id] as $setting) { ?>

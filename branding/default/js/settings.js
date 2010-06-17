@@ -1,7 +1,9 @@
 $(document).ready(function () {
-	$('div.setting_group h2 a').click(function () {
+	$('div.setting_group a.cat').click(function () {
 		$('table.settings').hide();
-		$(this).parent().parent().children('table.settings').slideDown();
+		$(this).parent().children('table.settings').slideDown();
+		
+		return false;
 	});
 
 	$('a.text').click(function () {

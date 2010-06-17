@@ -112,6 +112,41 @@ $(document).ready(function() {
 			}
 		);
 	}
+	
+	$('#dataset_form').submit(function () {
+		var serialized_filters = $('#dataset_form tr.filters input.text, tr.filters select').serialize();
+		
+		$.post($('#base_url').html()+'dataset/prep_filters', { filters: serialized_filters },
+		  function(data){
+		    window.location.href = $('#base_url').html()+$('#class').html()+'/'+$('#method').html()+'/'+data+'/'+$('#page').html();
+		  });
+		return false;
+	});
+	
+	$('#dataset_export_button').click(function () {
+		var serialized_filters = $('#dataset_form tr.filters input.text, tr.filters select').serialize();
+		
+		$.post($('#base_url').html()+'dataset/prep_filters', { filters: serialized_filters },
+		  function(data){
+		    window.location.href = $('#base_url').html()+$('#class').html()+'/'+$('#method').html()+'/'+data+'/'+$('#page').html()+'/export';
+		  });
+		return false;
+	});
+	
+	$('input.action_button').click(function () {
+		var serialized_items = $('#dataset_form input.action_items').serialize();
+		
+		if (serialized_items != '') {	
+			var link = $(this).attr('rel');
+			var return_link = $('#current_url').html();
+			
+			$.post($('#base_url').html()+'dataset/prep_actions', { items: serialized_items, return_url: return_link },
+			  function(data){
+			    window.location.href = link+'/'+data;
+			  });
+		}
+		return false;
+	});
 });
 
 /* notices functions */
