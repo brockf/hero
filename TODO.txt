@@ -2,14 +2,7 @@
 	- Get rid of branded_view.
 	
 - Roadmap:
-	- Reinstall
-	- Create /modules/module/update.php files which are version controlled and retain settings, database, folder permissions, etc. for each module
-		- Only "settings" & "modules" will remain in the core /updates/install.php file, so that the module install files can be run properly
-		  during phase 2 of the installation wizard
-	- Update MY_Loader.php to verify the status of the module upon each load.
-	- Get rid of notifications in TriggerTrips
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
-	- Update TriggerTrips to use subscription_plans, not "plans"
 	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
 	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
 	- Create a customer record when a user is created in NewUser
@@ -17,7 +10,6 @@
 		"City", etc. of the user, to auto-populate this billing address!
 		- First name, last name, and email are auto-populated
 	- Add "locale" setting
-	- Create settings manager (accordion style by group)
 	- Create emails manager
 	- Create user custom fields manager and backend system, with an add user screen in the control panel
 	- Create admin panel authentication system
@@ -36,3 +28,13 @@
 	- Delete all references to client_id
 	- Make all "in-model" model loads call billing/model (not just model).
 		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"
+	- Add "validate" class to forms
+	- Get rid of lang calls
+		
+- Admin Navigation:
+	- Dashboard
+	- Publish
+	- Members
+	- Storefront
+	- Reports
+	- Configuration

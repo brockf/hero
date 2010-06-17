@@ -86,12 +86,11 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 		$variables['customer_email'] = $customer['email'];
 		$variables['customer_phone'] = $customer['phone'];
 	}
-	
-	// which events should go in the client log?
-	$loggable = array(1,2,3,4,9,10);
-	
+		
 	$site_email = $CI->config->item('site_email');
 	$secret_key = $CI->config->item('secret_key'); // for notification security
+	
+	/* Legacy Code - May dig up sometime
 	
 	// notification_url needs triggering too, if it exists
     if (isset($plan) and is_array($plan)) {
@@ -119,7 +118,7 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
     			
     		$CI->notifications->QueueNotification($plan['notification_url'],$array);
     	}
-    }
+    } */
 	
     // check to see if this triggers any emails for the client
 	$emails = $CI->email_model->GetEmailsByTrigger($trigger_type_id, $plan_id);
@@ -141,10 +140,10 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 		
 		// who is this going to?
 		$to_address = false;
-		if ($email['to_address'] == 'customer' and isset($customer['email']) and !empty($customer['email']) and $CI->field_validation->ValidateEmailAddress($customer['email'])) {
+		if ($email['to_address'] == 'user' and isset($customer['email']) and !empty($customer['email']) and $CI->field_validation->ValidateEmailAddress($customer['email'])) {
 			$to_address = $customer['email'];
 		}
-		elseif ($email['to_address'] == 'client') {
+		elseif ($email['to_address'] == 'site_email') {
 			$to_address = $site_email;
 		}
 		elseif ($CI->field_validation->ValidateEmailAddress($email['to_address'])) {
@@ -154,8 +153,8 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 		if ($to_address) {	
 			$subject = $email['email_subject'];
 			$body = $email['email_body'];
-			$from_name = $email['from_name'];
-			$from_email = $email['from_email'];
+			$from_name = setting('email_name');
+			$from_email = setting('site_email');
 			
 			// replace all possible variables
 			while (list($name,$value) = each($variables)) {

@@ -25,6 +25,6 @@ class Emails extends Module {
 	{
 		$CI =& get_instance();
 		
-		$CI->navigation->child_link('configuration',20,'Email Triggers',site_url('admincp/emails'));
+		$CI->navigation->child_link('configuration',20,'Emails',site_url('admincp/emails'));
 	}
 }

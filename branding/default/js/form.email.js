@@ -27,7 +27,7 @@ $(document).ready(function () {
 	// pull available variables on trigger toggle
 	$('#trigger').change(function() {
 		if ($(this).val() != '') {
-			$.get($('#base_url').html()+'settings/show_variables/'+$(this).val(),
+			$.get($('#base_url').html()+'emails/show_variables/'+$(this).val(),
 			  function(data){
 			    $('#email_variables').html(data);
 			  });
@@ -36,7 +36,7 @@ $(document).ready(function () {
 	
 	// handle preset trigger
 	if ($('#trigger').val() != '') {
-		$.get($('#base_url').html()+'settings/show_variables/'+$('#trigger').val(),
+		$.get($('#base_url').html()+'emails/show_variables/'+$('#trigger').val(),
 		  function(data){
 		    $('#email_variables').html(data);
 		  });

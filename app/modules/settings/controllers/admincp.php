@@ -10,8 +10,42 @@ class Admincp extends Admincp_Controller {
 
 	function index ()
 	{
-		$this->load->model('billing/customer_model');
+		$groups = $this->settings_model->get_setting_groups(array('sort' => 'setting_group_name'));
 		
-		$this->load->view('settings.php');
+		foreach ($groups as $group) {
+			$settings[$group['id']] = $this->settings_model->get_settings(array('group_id' => $group['id']));
+		}
+		reset($groups);
+		
+		$data = array(
+					'settings' => $settings,
+					'groups' => $groups
+			);
+		
+		$this->load->view('settings.php', $data);
+	}
+	
+	function save ()
+	{
+		$value = $this->input->post('value');
+		
+		$value = urldecode($value);
+		
+		$this->settings_model->update_setting($this->input->post('name'),$value);
+		
+		echo $value;
+	}
+	
+	function save_toggle ()
+	{
+		$current = $this->settings_model->get_setting($this->input->post('name'));
+		
+		$new_value = ($current['value'] == '1') ? '0' : '1';
+		
+		$this->settings_model->update_setting($this->input->post('name'),$new_value);
+		
+		$setting = $this->settings_model->get_setting($this->input->post('name'));
+		
+		echo $setting['toggle_value'];
 	}
 }

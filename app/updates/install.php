@@ -358,7 +358,8 @@ INSERT INTO `settings` (`setting_id`, `setting_group`, `setting_name`, `setting_
 (1, 1, 'site_name', 'Your Website', 'The name of your website.', NOW(), 'text', ''),
 (2, 1, 'site_email', 'email@example.com', 'The reply-to email address for all outgoing system emails.', NOW(), 'text', ''),
 (3, 1, 'email_name', 'Your Website', 'The reply-to name for all outgoing system emails.', NOW(), 'text', ''),
-(4, 2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', '');
+(4, 2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', ''),
+(5, 1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:2:"Off";i:1;s:3:"On";}');
 
 -- --------------------------------------------------------
 

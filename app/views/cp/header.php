@@ -9,6 +9,7 @@
 	<script type="text/javascript" src="<?=branded_include('js/date.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/datePicker.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
+	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
 	<? if (isset($head_files)) { ?><?=$head_files;?><? } ?>
 </head>
 <body>
@@ -30,15 +31,9 @@
 		<div id="nav_children">
 		
 		</div>
-		<div id="account">
-			
-		</div>
 		<div style="clear: both"></div>
 	</div>
 	<div id="wrapper">
-		<div id="sidebar">
-			
-		</div>
 		<div id="content">
 			<div id="box-top-right"></div>
 			<div id="box-bottom-left"></div>
