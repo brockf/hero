@@ -164,6 +164,10 @@ class Admin_form {
 	}
 	
 	function custom_fields ($custom_fields = array(), $values = array(), $no_defaults = FALSE) {
+		if (is_array($custom_fields) or empty($custom_fields)) {
+			return FALSE;
+		}
+	
 		foreach ($custom_fields as $field) {
 			if ($field['type'] == 'text') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
