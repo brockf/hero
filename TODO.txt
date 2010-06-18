@@ -3,6 +3,7 @@
 	- Comment Custom_fields module
 	- Comment User_model
 	- Investigate why unique_username and unique_email do not get triggered
+	- Ordering of custom fields
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
 	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
 	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
