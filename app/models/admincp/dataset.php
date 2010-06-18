@@ -322,7 +322,7 @@ class Dataset extends CI_Model {
 					elseif ($column['type'] == 'select') {
 						$output .= '<select name="' . $column['filter_name'] . '"><option value=""></option>';
 						
-						while (list($value,$name) = each($column['options'])) {
+						foreach ($column['options'] as $value => $name) {
 							$selected = (isset($this->filter_values[$column['filter_name']]) and $this->filter_values[$column['filter_name']] == $value) ? ' selected="selected"' : '';
 							$output .= '<option value="' . $value . '"' . $selected . '>' . $name . '</option>';
 						}

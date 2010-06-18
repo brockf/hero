@@ -1,11 +1,168 @@
 <?php
 
 class Custom_fields_model extends CI_Model {
+	var $cache;
+	var $upload_directory;
+
 	function __construct() {
 		parent::CI_Model();
+		
+		$this->upload_directory = BASEPATH . 'writeable/custom_uploads/';
 	}
 	
-	function new_custom_field ($group, $name, $type, $options = array(), $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
+	/*
+	* Get Rules
+	* 
+	* Generates a CodeIgniter form_validation array for custom fields based on the group ID
+	*
+	* @param int $field_group_id
+	* @return array $rules CodeIgniter rules */
+	function get_validation_rules ($field_group_id) {
+		$fields = $this->get_custom_fields(array('group' => $field_group_id));
+		
+		$this->load->helper('valid_domain');
+		
+		$return = array();
+		
+		foreach ($fields as $field) {
+			$rules = array();
+			
+			if ($field['type'] != 'file' and isset($field['validators'])) {
+				foreach ($field['validators'] as $validator) {
+					if ($validator == 'whitespace') {
+						$rules[] = $validator['trim'];
+					}
+					elseif ($validator == 'alphanumeric') {
+						$rules[] = $validator['alpha_numeric'];
+					}
+					elseif ($validator == 'numeric') {
+						$rules[] = $validator['numeric'];
+					}
+					elseif ($validator == 'domain') {
+						$rules[] = $validator['valid_domain'];
+					}
+				}
+				
+				if (!empty($rules)) {
+					$return[] = array(
+									'field' => $field['name'],
+									'label' => $field['friendly_name'],
+									'rules' => $rules
+								);
+				}
+			}
+		}
+		
+		return $return;
+	}
+	
+	/*
+	* Validate Files
+	* 
+	* Secondary validation of any form that may have files in it,
+	* as they can't be handled by CodeIgniter
+	*
+	* @param int $field_group_id
+	* @return boolean TRUE upon success
+	*/
+	function validate_files ($field_group_id) {
+		$fields = $this->get_custom_fields(array('group' => $field_group_id));
+		
+		$this->load->helper('file_extension');
+		
+		foreach ($fields as $field) {
+			if ($field['type'] == 'file') {
+				if (!empty($field['validators']) and is_array($field['validators'])) {
+					if (is_uploaded_file($_FILES[$field['name']]['tmp_name']) and !in_array(file_extension($_FILES[$field['name']]['name']),$field['validators'])) {
+						return FALSE;
+					}
+				}
+			}
+		}
+		
+		return TRUE;
+	}
+	
+	/*
+	* Post to Array
+	*
+	* Convert all custom field data for a field group from POST into an array
+	*
+	* @param int $field_group_id
+	*
+	* @return array Field data
+	*/
+	function post_to_array($field_group_id) {
+		$fields = $this->get_custom_fields(array('group' => $field_group_id));
+		
+		$array = array();
+		foreach ($fields as $field) {
+			if ($field['type'] == 'multiselect') {
+				$array[$field['name']] = serialize($this->input->post($field['name']));
+			}
+			elseif ($field['type'] == 'file') {
+				// do the upload
+				if (is_uploaded_file($_FILES[$field['name']]['tmp_name'])) {
+					if (!is_dir($this->upload_directory)) {
+						mkdir($this->upload_directory);
+						chmod($this->upload_directory,'0755');
+					}
+					
+					if (!is_writable($this->upload_directory)) {
+						die(show_error('Custom field upload directory is not writeable.  Create /writeable/custom_fields and CHMOD 0755 or 0777 to fix.'));
+					}
+					
+					$filename = time() . get_ext($_FILES[$field['name']]['name']);
+				
+					move_uploaded_file($_FILES[$field['name']]['tmp_name'],$this->upload_directory . $filename);
+					
+					$array[$field['name']] = str_replace(BASEPATH,'',$this->upload_directory . $filename);
+				}
+			}
+			else {
+				$array[$field['name']] = $this->input->post($field['name']);
+			}
+		}
+		
+		return $array;
+	}
+	
+	function get_custom_fields ($filters = array()) {
+		if (isset($this->cache[base64_encode(serialize($filters))])) {
+			return $this->cache[base64_encode(serialize($filters))];
+		}
+	
+		if (isset($filters['group'])) {
+			$this->db->where('custom_field_group',$filters['group']);
+		}
+		
+		$this->db->order_by('custom_field_order','ASC');
+		
+		$result = $this->db->get('custom_fields');
+		
+		$fields = array();
+		foreach ($result->result_array() as $field) {
+			$fields[] = array(
+							'friendly_name' => $field['custom_field_friendly_name'],
+							'name' => $field['custom_field_name'],
+							'type' => $field['custom_field_type'],
+							'options' => (!empty($field['custom_field_options'])) ? unserialize($field['custom_field_options']) : array(),
+							'help' => $field['custom_field_help_text'],
+							'order' => $field['custom_field_order'],
+							'width' => $field['custom_field_width'],
+							'default' => $field['custom_field_default'],
+							'required' => ($field['custom_field_required'] == 1) ? TRUE : FALSE,
+							'validators' => (!empty($field['custom_field_validators'])) ? unserialize($field['custom_field_validators']) : array()
+						);
+		}
+		
+		// cache for later
+		$this->cache[base64_encode(serialize($filters))] = $fields;
+		
+		return $fields;
+	}
+	
+	function new_custom_field ($group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
 		$options = $this->format_options($options);
 		
 		// calculate system name
@@ -31,6 +188,8 @@ class Custom_fields_model extends CI_Model {
 							'custom_field_friendly_name' => $name,
 							'custom_field_order' => $order,
 							'custom_field_type' => $type,
+							'custom_field_default' => $default,
+							'custom_field_width' => $width,
 							'custom_field_options' => serialize($options),
 							'custom_field_required' => ($required == FALSE) ? '0' : '1',
 							'custom_field_validators' => serialize($validators),
@@ -70,7 +229,7 @@ class Custom_fields_model extends CI_Model {
 		return $db_type;
 	}
 	
-	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
+	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
 		$options = $this->format_options($options);
 		
 		// we may need the old system name
@@ -102,6 +261,8 @@ class Custom_fields_model extends CI_Model {
 							'custom_field_order' => $order,
 							'custom_field_type' => $type,
 							'custom_field_options' => serialize($options),
+							'custom_field_default' => $default,
+							'custom_field_width' => $width,
 							'custom_field_required' => ($required == FALSE) ? '0' : '1',
 							'custom_field_validators' => serialize($validators),
 							'custom_field_help_text' => $help
@@ -125,7 +286,6 @@ class Custom_fields_model extends CI_Model {
 		if ($db_table != FALSE) {
 			$this->load->dbforge();
 			
-			$db_type = $this->get_type($type);
 			$system_name = $this->get_system_name($id);
 			
 			$this->dbforge->drop_column($db_table, $system_name);

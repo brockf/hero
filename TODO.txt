@@ -1,7 +1,8 @@
-- For each admincp controller
-	- Get rid of branded_view.
-	
 - Roadmap:
+	- Comment Admin_form library
+	- Comment Custom_fields module
+	- Comment User_model
+	- Investigate why unique_username and unique_email do not get triggered
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
 	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
 	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
@@ -9,7 +10,6 @@
 		- When creating user custom fields, they can specify if the field should be used as the "Address",
 		"City", etc. of the user, to auto-populate this billing address!
 		- First name, last name, and email are auto-populated
-	- Create user custom fields manager and backend system, with an add user screen in the control panel
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Create admin panel authentication system
 	- Move "Initialize" arguments to their own methods (e.g., $this->dataset->DataSource('order_model','GetCharges'));
@@ -29,11 +29,3 @@
 		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"
 	- Add "validate" class to forms
 	- Get rid of lang calls
-		
-- Admin Navigation:
-	- Dashboard
-	- Publish
-	- Members
-	- Storefront
-	- Reports
-	- Configuration

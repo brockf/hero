@@ -44,4 +44,25 @@ class Usergroup_model extends CI_Model
 		
 		return $group['usergroup_id'];
 	}
+	
+	function get_usergroups ($filters = array()) {
+		$this->db->order_by('usergroup_name');
+	
+		$result = $this->db->get('usergroups');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$usergroups = array();
+		foreach ($result->result_array() as $group) {
+			$usergroups[] = array(
+								'id' => $group['usergroup_id'],
+								'name' => $group['usergroup_name'],
+								'default' => ($group['usergroup_default'] == '1') ? TRUE : FALSE
+							);
+		}
+		
+		return $usergroups;
+	}
 }

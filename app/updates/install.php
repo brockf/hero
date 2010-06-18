@@ -277,6 +277,8 @@ CREATE TABLE `custom_fields` (
   `custom_field_order` int(11) NOT NULL,
   `custom_field_type` varchar(50) NOT NULL,
   `custom_field_options` text,
+  `custom_field_width` varchar(25),
+  `custom_field_default` varchar(200),
   `custom_field_required` tinyint(1) NOT NULL,
   `custom_field_validators` text,
   `custom_field_help_text` text,
