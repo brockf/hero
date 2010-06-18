@@ -27,11 +27,16 @@ class Admincp extends Admincp_Controller {
 	
 	function save ()
 	{
-		$value = $this->input->post('value');
+		$current = $this->settings_model->get_setting($this->input->post('name'));
 		
+		$value = $this->input->post('value');
 		$value = urldecode($value);
 		
 		$this->settings_model->update_setting($this->input->post('name'),$value);
+		
+		if ($current['type'] == 'textarea') {
+			$value = nl2br($value);
+		}
 		
 		echo $value;
 	}

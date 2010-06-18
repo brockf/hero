@@ -60,8 +60,9 @@ class Module {
 	* Checks if there's an update() method to be called and, if so, calls it
 	*/
 	function run_updates($version) {
-	
 		if (method_exists($this, 'update')) {
+			$this->CI->load->model('settings/settings_model');
+		
 			$new_version = $this->update($version);
 			
 			$this->CI->module_model->update_version($this->active_module, $new_version);

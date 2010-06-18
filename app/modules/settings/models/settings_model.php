@@ -36,14 +36,15 @@ class Settings_model extends CI_Model
 		return TRUE;
 	}
 	
-	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_time = FALSE, $setting_type = 'text') {
+	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_type = 'text', $setting_options = '', $setting_time = FALSE) {
 		$insert_fields = array(
 							 	'setting_group' => $setting_group,
 							 	'setting_name' => $setting_name,
 							 	'setting_value' => $setting_value,
 							 	'setting_help' => $setting_help,
 							 	'setting_update_date' => ($setting_time == FALSE) ? date('Y-m-d H:i:s') : $setting_time,
-							 	'setting_type' => $setting_type
+							 	'setting_type' => $setting_type,
+							 	'setting_options' => $setting_options
 							);				                                
 		$this->db->insert('settings',$insert_fields);
 		

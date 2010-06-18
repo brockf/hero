@@ -1,13 +1,10 @@
 - Roadmap:
-	- Investigate why unique_username and unique_email do not get triggered
+	- Add TriggerTrip for new_user
 	- Ordering of custom fields
+	- Add default address fields, mapped to billing, to Member Data
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
 	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
 	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
-	- Create a customer record when a user is created in NewUser
-		- When creating user custom fields, they can specify if the field should be used as the "Address",
-		"City", etc. of the user, to auto-populate this billing address!
-		- First name, last name, and email are auto-populated
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Create admin panel authentication system
 	- Move "Initialize" arguments to their own methods (e.g., $this->dataset->DataSource('order_model','GetCharges'));

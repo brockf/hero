@@ -17,7 +17,6 @@ class Admincp extends Admincp_Controller {
 	    $usergroups = $this->usergroup_model->get_usergroups();
 	    
 	    $options = array();
-	    $options[''] = '';
 	    foreach ($usergroups as $group) {
 	    	$options[$group['id']] = $group['name'];
 	    }
@@ -74,11 +73,10 @@ class Admincp extends Admincp_Controller {
 						
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('user_model','get_users');
-		$this->dataset->base_url(site_url('admincp/users'));
-		$this->dataset->rows_per_page(50);
+		$this->dataset->base_url(site_url('admincp/users/index'));
 		
 		// total rows
-		$total_rows = $this->db->get('users')->num_rows(); 
+		$total_rows = $this->db->where('user_deleted','0')->get('users')->num_rows(); 
 		$this->dataset->total_rows($total_rows);
 		
 		// initialize the dataset
@@ -168,6 +166,7 @@ class Admincp extends Admincp_Controller {
 		$form->checkbox('Administrator','is_admin','1',FALSE);
 		$form->fieldset('Profile Information');
 		$form->names('Name', '', '', FALSE, TRUE);
+		
 		$form->custom_fields($this->user_model->get_custom_fields());
 	
 		$data = array(

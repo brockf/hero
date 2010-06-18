@@ -16,8 +16,8 @@
 		<li>
 			<?=form_dropdown('billing_equiv',array(
 									'' => 'No, this is not an address field.',
-									'address' => 'Address Line 1',
-									'address2' => 'Address Line 2',
+									'address_1' => 'Address Line 1',
+									'address_2' => 'Address Line 2',
 									'city' => 'City',
 									'state' => 'State/Province',
 									'country' => 'Country',

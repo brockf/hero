@@ -378,7 +378,7 @@ CREATE TABLE `settings` (
   `setting_id` int(11) NOT NULL auto_increment,
   `setting_group` int(11) default NULL,
   `setting_name` varchar(250) default NULL,
-  `setting_value` varchar(250) default NULL,
+  `setting_value` text default NULL,
   `setting_help` varchar(250) default NULL,
   `setting_update_date` datetime default NULL,
   `setting_type` varchar(250) default NULL,
@@ -417,7 +417,8 @@ CREATE TABLE `settings_groups` (
 -- 
 
 INSERT INTO `settings_groups` (`setting_group_id`, `setting_group_name`, `setting_group_help`) VALUES (1, 'Core', 'Core system settings.'),
-(2, 'E-commerce', 'Configurations related to subscriptions, products, and checkout.');
+(2, 'E-commerce', 'Configurations related to subscriptions, products, and checkout.'),
+(3, 'Members', 'Related to registration and site members.');
 
 -- --------------------------------------------------------
 

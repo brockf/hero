@@ -2,13 +2,10 @@ $(document).ready(function () {
 	$('div.setting_group a.cat').click(function () {
 		$('table.settings').hide();
 		
-		if ($(this).hasClass('open')) {
-			$(this).removeClass('open');
-		}
-		else {
-			$(this).addClass('open');
-			$(this).parent().children('table.settings').slideDown();
-		}
+		$('div.setting_group a.cat').removeClass('open');
+
+		$(this).addClass('open');
+		$(this).parent().children('table.settings').slideDown();
 		
 		return false;
 	});
@@ -55,6 +52,52 @@ $(document).ready(function () {
 		}
 	});
 	
+	$('a.textarea').click(function () {
+		if ($(this).hasClass('edit')) {
+			var post_url = $('#current_url').html() + '/save';
+			
+			// get value td object
+			var value_td = $(this).parent().parent().children('td.value');
+		
+			// setting name
+			var setting_name = $(this).parent().parent().children('td.name').html();
+			
+			var current_value = $('textarea#' + setting_name).val().trim();
+			
+			value_td.html('<form class="validate form mark_empty" rel="new setting" action="' + post_url + '"><input type="hidden" name="name" value="' + setting_name + '" /><textarea class="text required" style="width:100%" name="value">' + current_value + '</textarea></form>');
+			
+			$(this).removeClass('edit');
+			$(this).addClass('save');
+			$(this).html('save');
+			
+			return false;
+		}
+		else if ($(this).hasClass('save')) {
+			// get form object
+			var form = $(this).parent().parent().find('form');
+			
+			// get value td object
+			var value_td = $(this).parent().parent().children('td.value');
+			
+			var post_url = form.attr('action');
+			
+			// setting name
+			var setting_name = $(this).parent().parent().children('td.name').html();
+			
+			$.post(post_url, form.serialize(), function (data) {
+				value_td.html(constrain(data, 250) + '<textarea style="display:none" class="value" name="' + setting_name + '">' + data + '</textarea>');
+				
+				notice_ok('Setting saved successfully.');
+			});
+			
+			$(this).removeClass('save');
+			$(this).addClass('edit');
+			$(this).html('edit');
+			
+			return false;
+		}
+	});
+	
 	$('a.toggle').click(function () {
 		var post_url = $('#current_url').html() + '/save_toggle';
 		
@@ -70,4 +113,14 @@ $(document).ready(function () {
 		
 		return false;
 	});
+	
+	function constrain(str,n){ 
+	  if(str.length > n){  
+	    var s = str.substr(0, n);
+	    var words = s.split(' '); 
+	    words[words.length-1] = '';
+	    str = words.join(' ') + '&hellip;'
+	  }
+	return str;
+	}
 });

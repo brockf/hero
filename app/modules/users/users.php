@@ -11,7 +11,7 @@
 */
 
 class Users extends Module {
-	var $version = '1.01';
+	var $version = '1.02';
 	var $name = 'users';
 
 	function __construct () {
@@ -32,6 +32,11 @@ class Users extends Module {
 	}
 
 	function update ($db_version) {
+		if ($db_version < 1.02) {
+			$this->CI->settings_model->new_setting(3, 'require_tos', '0', 'Require registering users to agree to your site\'s Terms of Service?', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+			$this->CI->settings_model->new_setting(3, 'terms_of_service', 'Enter your terms of service here.', 'If "require_tos" is On, users will be forced to accept these Terms prior to registering.', 'textarea');
+		}
+	
 		if ($db_version < 1.01) {
 			$this->CI->db->query('CREATE TABLE `user_fields` (
 								  `user_field_id` int(11) NOT NULL auto_increment,
@@ -61,6 +66,7 @@ class Users extends Module {
 								
 			$this->CI->db->query('CREATE TABLE `users` (
 								  `user_id` int(11) NOT NULL auto_increment,
+								  `customer_id` int(11) default \'0\',
 								  `user_is_admin` tinyint(4) NOT NULL,
 								  `user_groups` varchar(255) NOT NULL,
 								  `user_first_name` varchar(255) NOT NULL,

@@ -605,7 +605,7 @@ class CI_Form_validation {
 				}
 			}
 			else
-			{				
+			{	
 				if ( ! method_exists($this, $rule))
 				{
 					// If our own wrapper function doesn't exist we see if a native PHP function does. 
@@ -613,7 +613,7 @@ class CI_Form_validation {
 					if (function_exists($rule))
 					{
 						$result = $rule($postdata);
-											
+						
 						if ($_in_array == TRUE)
 						{
 							$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
@@ -623,25 +623,24 @@ class CI_Form_validation {
 							$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
 						}
 					}
-										
-					continue;
 				}
-
-				$result = $this->$rule($postdata, $param);
-
-				if ($_in_array == TRUE)
-				{
-					$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
-				}
-				else
-				{
-					$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
+				else {
+					$result = $this->$rule($postdata, $param);
+		
+					if ($_in_array == TRUE)
+					{
+						$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
+					}
+					else
+					{
+						$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
+					}
 				}
 			}
-							
+			
 			// Did the rule test negatively?  If so, grab the error.
 			if ($result === FALSE)
-			{			
+			{		
 				if ( ! isset($this->_error_messages[$rule]))
 				{
 					if (FALSE === ($line = $this->CI->lang->line($rule)))

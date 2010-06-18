@@ -86,6 +86,7 @@ class Dataset extends CI_Model {
     	// get data
     	$CI->load->model($this->data_model,'data_model');
     	$data_function = $this->data_function;
+    	
     	$this->data = $CI->data_model->$data_function($params);
     	
     	// rid the limits/offset so we can calculate total rows

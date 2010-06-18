@@ -34,7 +34,7 @@ class User_model extends CI_Model
 		
 		$this->form_validation->set_rules('first_name','First Name','trim|required');
 		$this->form_validation->set_rules('last_name','Last Name','trim|required');
-		$this->form_validation->set_rules('email','Email','trim|valid_email');
+		$this->form_validation->set_rules('email','Email','trim|unique_email|valid_email');
 		$this->form_validation->set_rules('username','Username','trim|unique_username');
 		
 		if ($editing == FALSE) {
@@ -89,6 +89,12 @@ class User_model extends CI_Model
 	* @return boolean TRUE upon being OK, FALSE if not
 	*/
 	function unique_username ($username) {
+		// protected usernames
+		$protected = array('admin','administrator','root','','1','2','3','4','5','6','7','8','9');
+		if (in_array($username, $protected)) {
+			return FALSE;
+		}
+	
 		$this->db->select('user_id');
 		$this->db->where('user_username',$username);
 		$this->db->where('user_deleted','0');
@@ -148,8 +154,33 @@ class User_model extends CI_Model
 		}
 												
 		$this->db->insert('users',$insert_fields);
+		$user_id = $this->db->insert_id();
 		
-		return $this->db->insert_id();
+		// create customer record
+		$this->load->model('billing/customer_model');
+		
+		$customer = array();
+		$customer['email'] = $email;
+		$customer['internal_id'] = $user_id;
+		$customer['first_name'] = $first_name;
+		$customer['last_name'] = $last_name;
+		
+		// do any custom fields map to billing fields?
+		$user_custom_fields = $this->get_custom_fields();
+		
+		if (is_array($user_custom_fields)) {
+			foreach ($user_custom_fields as $field) {
+				if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
+					$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+				}
+			}
+		}
+		
+		$customer_id = $this->customer_model->NewCustomer($customer);
+		
+		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
+				
+		return $user_id;
 	}
 	
 	/*
@@ -279,7 +310,15 @@ class User_model extends CI_Model
 		
 		$this->db->where('user_deleted','0');
 		
-		$this->db->order_by('username');
+		// standard ordering and limiting
+		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'user_username';
+		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
+		$this->db->order_by($order_by, $order_dir);
+		
+		if (isset($filters['limit'])) {
+			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+			$this->db->limit($filters['limit'], $offset);
+		}
 		
 		$result = $this->db->get('users');
 		

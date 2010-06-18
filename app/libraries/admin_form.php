@@ -276,7 +276,7 @@ class Admin_form {
 	* @param boolean $no_defaults Do not use default values for empty fields (i.e., when editing an existing record)
 	*/
 	function custom_fields ($custom_fields = array(), $values = array(), $no_defaults = FALSE) {
-		if (is_array($custom_fields) or empty($custom_fields)) {
+		if (!is_array($custom_fields) or empty($custom_fields)) {
 			return FALSE;
 		}
 	
