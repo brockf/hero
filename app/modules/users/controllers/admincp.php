@@ -293,8 +293,6 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data () {
-		$this->navigation->parent_active('configuration');
-		
 		$this->navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
 		
 		$this->load->model('admincp/dataset','dataset');
@@ -343,8 +341,6 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data_add () {
-		$this->navigation->parent_active('configuration');
-		
 		$data = array(
 						'field' => array(),
 						'form_title' => 'New Member Data Field',
@@ -430,8 +426,6 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data_edit ($id) {
-		$this->navigation->parent_active('configuration');
-		
 		$field = $this->user_model->get_custom_field($id);
 		
 		$data = array(
