@@ -6,6 +6,8 @@ class Admincp extends Admincp_Controller {
 		parent::__construct();
 		
 		$this->navigation->parent_active('configuration');
+		
+		$this->navigation->module_link('New Email',site_url('admincp/emails/new_email'));
 	}
 	
 	/**
@@ -14,7 +16,7 @@ class Admincp extends Admincp_Controller {
 	* Lists active emails for managing
 	*/
 	function index()
-	{	
+	{
 		$this->load->model('admincp/dataset','dataset');
 		
 		$columns = array(
@@ -79,11 +81,22 @@ class Admincp extends Admincp_Controller {
 						'name' => '',
 						'width' => '6%'
 				);
+				
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('email_model','GetEmails');
+		$this->dataset->base_url(site_url('admincp/emails'));
+		$this->dataset->rows_per_page(1000);
 		
-		$this->dataset->Initialize('email_model','GetEmails',$columns, site_url('admincp/emails'));
+		// total rows
+		$this->db->where('active', 1);
+		$total_rows = $this->db->get('emails')->num_rows(); 
+		$this->dataset->total_rows($total_rows);
+		
+		// initialize the dataset
+		$this->dataset->initialize();
 
 		// add actions
-		$this->dataset->Action('Delete','settings/delete_emails');
+		$this->dataset->action('Delete','admincp/emails/delete_emails');
 		
 		$this->load->view('emails.php', array('plans' => $options));
 	}

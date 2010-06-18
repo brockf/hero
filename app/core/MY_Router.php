@@ -181,11 +181,11 @@ class Modules
 	* Generates fatal error if file not found.
 	**/
 	public static function find($file, $module, $base, $lang = '') {
-
 		$segments = explode('/', $file);
 
 		$file = array_pop($segments);
-		if ($base == 'libraries/') $file = ucfirst($file);
+		//if ($base == 'libraries/') $file = ucfirst($file);
+		
 		$file_ext = strpos($file, '.') ? $file : $file.EXT;
 
 		$lang && $lang .= '/';
@@ -199,6 +199,7 @@ class Modules
 		foreach (Modules::$locations as $location => $offset) {
 			foreach($modules as $module => $subpath) {
 				$fullpath = $location.$module.'/'.$base.$lang.$subpath;
+				
 				if (is_file($fullpath.$file_ext)) return array($fullpath, $file);
 			}
 		}

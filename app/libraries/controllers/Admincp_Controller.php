@@ -25,6 +25,7 @@ class Admincp_Controller extends MY_Controller {
 		$this->load->helper('admincp/get_notices');
 		$this->load->helper('admincp/dataset_link');
 		$this->load->helper('directory');
+		$this->load->helper('form');
 	
 		// load all modules with control panel to build navigation, etc.
 		$directory = APPPATH . 'modules/';

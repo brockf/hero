@@ -9,7 +9,6 @@
 * Use TableHead and TableClose to output the surrounding HTML.
 * Requires jQuery and appropriate CSS.
 *
-* @version 1.0
 * @author Electric Function, Inc.
 * @package Electric Publisher
 
@@ -24,6 +23,8 @@ class Dataset extends CI_Model {
 	var $data;
 	var $actions;
 	var $params;
+	var $data_model;
+	var $data_function;
 
     function Dataset() {
         parent::CI_Model();
@@ -34,20 +35,129 @@ class Dataset extends CI_Model {
     /**
     * Initialize Dataset
     *
-    * Initializes the dataset with data configuration, column specs
-    *
-    * @param string $data_model The model to load which contains the GetData method
-    * @param string $data_function The method in the model to call, should return an associative array
-    * @param array $columns Array with each column as an array of settings within it.  Requires "name", "width".  Optional: "sort_column", "type", "filter_name", "field_start_date" and "field_end_date" (for date type), and "options" (for select type).
-    * @param string $base_url The URL to use for pagination base.  Optional.
+    * Initializes the dataset with previously set data configuration, column specs
     *
     * @return bool True upon successful initialization
     */
-    function Initialize ($data_model, $data_function, $columns, $base_url) {
+    function initialize () {
     	$CI =& get_instance();
     	
     	$CI->load->library('asciihex');
     	
+    	$has_filters = ($CI->uri->segment(5) != '' or (strlen($CI->uri->segment(4)) > 10)) ? '1' : '0';
+    	
+    	// get filter values
+		$this->filter_values = ($has_filters) ? unserialize(base64_decode($CI->asciihex->HexToAscii($CI->uri->segment(4)))) : false;
+    	
+    	// get data
+    	$params = array();
+    	
+    	// limit to the rows_per_page configuration
+    	$params['limit'] = $this->rows_per_page;
+    	
+    	// calculate offset
+    	$this->offset = ($has_filters) ? $CI->uri->segment(5) : $CI->uri->segment(4);
+    	$this->offset = (empty($this->offset)) ? '0' : $this->offset;
+    	
+    	$params['offset'] = $this->offset;
+    	
+    	if ($this->filters == true) {
+    		foreach ($this->columns as $column) {
+    			if ($column['filters'] == true) {
+    				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->filter_values[$column['filter_name']])) {
+    					$filter_params[$column['filter_name']] = $this->filter_values[$column['filter_name']];
+    				}
+    				elseif ($column['type'] == 'date' and (isset($this->filter_values[$column['filter_name'] . '_start']) or isset($this->filter_values[$column['filter_name'] . '_end']))) {
+    					$filter_params[$column['field_start_date']] = (empty($this->filter_values[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->filter_values[$column['filter_name'] . '_start'];
+    					$filter_params[$column['field_end_date']] = (empty($this->filter_values[$column['filter_name'] . '_end'])) ? '2020-12-31' : $this->filter_values[$column['filter_name'] . '_end'];
+    				}
+    			}
+    		}
+    		reset($this->columns);
+    	}
+    	
+    	$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
+    	
+    	// do an XML export?
+    	if ($CI->uri->segment(6) == 'export') {
+    		// build data > CSV exporter
+    	}
+    
+    	// get data
+    	$CI->load->model($this->data_model,'data_model');
+    	$data_function = $this->data_function;
+    	$this->data = $CI->data_model->$data_function($params);
+    	
+    	// rid the limits/offset so we can calculate total rows
+    	if (empty($this->total_rows)) {
+    		// they didn't pass the total_rows via total_rows()
+	    	unset($params);
+	    	$params = array();
+	    	
+			$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
+	    	$total_rows = count($CI->data_model->$data_function($params));
+	    	
+	    	// save total rows
+    		$this->total_rows = $total_rows;
+    	}
+    	
+    	// store in a public variable
+		$this->params = $params;
+		
+    	// set $url_filters if they exist
+    	$url_filters = (!empty($this->filter_values)) ? '/' . $CI->asciihex->AsciiToHex(base64_encode(serialize($this->filter_values))) . '/' : '';
+		
+		// build pagination
+		$config['base_url'] = $this->base_url;
+		$config['total_rows'] = $this->total_rows;
+		$config['per_page'] = $this->rows_per_page;
+		$config['uri_segment'] = ($has_filters) ? 5 : 4;
+		$config['num_links'] = '10';
+		
+		$CI->load->library('pagination');
+		$CI->pagination->initialize($config);
+		
+		return TRUE; 
+    }
+    
+    /*
+    * Set Rows Per Page
+    *
+    * How many rows to show per page?
+    *
+    * @param int $rows_per_page
+    *
+    * @return boolean TRUE;
+    */
+    function rows_per_page ($rows_per_page) {
+    	$this->rows_per_page = $rows_per_page;
+    }
+    
+    /*
+    * Sets the base URL
+    *
+    * This URL is used to post all dataset actions to
+    *
+    * @param string $base_url The URL
+    *
+    * @return boolean TRUE
+    */
+    function base_url ($base_url) {
+    	$this->base_url = $base_url;
+    	
+    	return TRUE;
+    }
+    
+    /*
+    * Define visible Dataset columns
+    *
+    * Defines the columns with width, sort, filtering, name
+    *
+    * @param array $columns The columns
+    *
+    * @return boolean TRUE
+    */
+    function columns ($columns = array()) {
     	// prep columns
     	// possible types: "id", "date", "select", "text"
 	    foreach ($columns as $column) {
@@ -78,107 +188,38 @@ class Dataset extends CI_Model {
     	}
     	reset($this->columns);
     	
-    	$has_filters = ($CI->uri->segment(5) != '' or (strlen($CI->uri->segment(4)) > 10)) ? '1' : '0';
-    	
-    	// get filter values
-		$this->filter_values = ($has_filters) ? unserialize(base64_decode($CI->asciihex->HexToAscii($CI->uri->segment(4)))) : false;
-    	
-    	// get data
-    	$params = array();
-    	
-    	$params['limit'] = $this->rows_per_page;
-    	$this->offset = ($has_filters) ? $CI->uri->segment(5) : $CI->uri->segment(4);
-    	$this->offset = (empty($this->offset)) ? '0' : $this->offset;
-    	
-    	$params['offset'] = $this->offset;
-    	
-    	if ($this->filters == true) {
-    		foreach ($this->columns as $column) {
-    			if ($column['filters'] == true) {
-    				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->filter_values[$column['filter_name']])) {
-    					$filter_params[$column['filter_name']] = $this->filter_values[$column['filter_name']];
-    				}
-    				elseif ($column['type'] == 'date' and (isset($this->filter_values[$column['filter_name'] . '_start']) or isset($this->filter_values[$column['filter_name'] . '_end']))) {
-    					$filter_params[$column['field_start_date']] = (empty($this->filter_values[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->filter_values[$column['filter_name'] . '_start'];
-    					$filter_params[$column['field_end_date']] = (empty($this->filter_values[$column['filter_name'] . '_end'])) ? '2020-12-31' : $this->filter_values[$column['filter_name'] . '_end'];
-    				}
-    			}
-    		}
-    		reset($this->columns);
-    	}
-    	
-    	$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
-    	
-    	// do an XML export?
-    	if ($CI->uri->segment(6) == 'export') {
-    		$xml_params = '';
-			while (list($name,$value) = each($params)) {
-				// commented out - do we want to keep offset/limit?
-				//if ($name != 'limit' and $name !='offset') {
-					$xml_params .= "<$name>$value</$name>";
-				//}
-			}
-			reset($params);
-    	
-			$postfields = '<?xml version="1.0" encoding="UTF-8"?>
-<request>
-	<authentication>
-		<api_id>' . $CI->user->Get('api_id') . '</api_id>
-		<secret_key>' . $CI->user->Get('secret_key') . '</secret_key>
-	</authentication>
-	<type>' . $data_function . '</type>
-' . $xml_params . '
-</request>';
-			
-			$ch = curl_init();
-			curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, 0); 
-			curl_setopt($ch, CURLOPT_URL,base_url() . 'api');
-			curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-			curl_setopt($ch, CURLOPT_TIMEOUT, 10);
-			curl_setopt($ch, CURLOPT_POSTFIELDS, $postfields);
-			
-			$result = curl_exec($ch);
-			curl_close($ch);
-			
-			header("Content-type: text/xml");
-			header("Content-length: " . strlen($result));
-			header('Content-Disposition: attachment;filename="export.xml"');
-			echo $result;
-			die();
-    	}
+    	return TRUE;
+    }
     
-    	$CI->load->model($data_model,'data_model');
+    /*
+    * Set Datasource
+    *
+    * Sets the model and method to retrieve the data from
+    *
+    * @param string $data_model The model
+    * @param string $data_function The method
+    *
+    * @return boolean TRUE
+    */
+    function datasource ($data_model, $data_function) {
+    	$this->data_model = $data_model;
+    	$this->data_function = $data_function;
     	
-    	$this->data = $CI->data_model->$data_function($params);
-    	
-    	unset($params);
-    	$params = array();
-    	
-		$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
-		
-		// store in a public variable
-		$this->params = $params;
-    	
-    	$total_rows = count($CI->data_model->$data_function($params));
-    	
+    	return TRUE;
+    }
+    
+    /*
+    * Total Rows
+    *
+    * Set total rows so we don't have to try and fish it from the method with a double call
+    *
+    * @param int $total_rows
+    * @return boolean TRUE;
+    */
+    function total_rows ($total_rows) {
     	$this->total_rows = $total_rows;
     	
-    	// set $url_filters if they exist
-    	$url_filters = (!empty($this->filter_values)) ? '/' . $CI->asciihex->AsciiToHex(base64_encode(serialize($this->filter_values))) . '/' : '';
-
-		// calculate base_url
-		$this->base_url = $base_url;
-		
-		$config['base_url'] = $this->base_url;
-		$config['total_rows'] = $total_rows;
-		$config['per_page'] = $this->rows_per_page;
-		$config['uri_segment'] = ($has_filters) ? 5 : 4;
-		$config['num_links'] = '10';
-		
-		$CI->load->library('pagination');
-		$CI->pagination->initialize($config);
-		
-		return true; 
+    	return TRUE;
     }
     
     /**
@@ -191,7 +232,7 @@ class Dataset extends CI_Model {
     * @param string $link The link (e.g. /customers/delete) to pass the variable to (e.g. /customers/delete/39f32432849340923849234)
     * @return bool True upon success
     */
-    function Action ($name, $link) {
+    function action ($name, $link) {
     	$this->actions[] = array(
     							'name' => $name,
     							'link' => $link
@@ -207,7 +248,7 @@ class Dataset extends CI_Model {
     *
     * @return string HTML output
     */
-    function TableHead () {
+    function table_head () {
     	$CI =& get_instance();
     	
     	$output = '';
@@ -226,10 +267,12 @@ class Dataset extends CI_Model {
     			$actions .= '<input type="button" class="action_button" rel="' . site_url($action['link']) . '" name="action_' . $i . '" value="' . $action['name'] . '" />&nbsp;';
     			$i++;
     		}
+    		
+    		$output .= '<div class="dataset_actions">' . $actions . '</div>';
     	}
     	
     	if ($this->filters == true) {
-    		$output .= '<div class="dataset_actions">' . $actions . '</div><div class="apply_filters"><input type="submit" name="" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" value="Export" /></div>';
+    		$output .= '<div class="apply_filters"><input type="submit" name="" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" value="Export" /></div>';
     	}
     	
     	$output .= '</div>
@@ -307,7 +350,7 @@ class Dataset extends CI_Model {
     *
     * @return string HTML output
     */
-    function TableClose () {
+    function table_close () {
     	$CI =& get_instance();
     	
     	$output = '</table>';

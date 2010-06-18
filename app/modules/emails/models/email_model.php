@@ -297,7 +297,7 @@ class Email_model extends CI_Model
 			$offset = 0;
 		}
 		
-		if(isset($params['limit'])) {
+		if (isset($params['limit'])) {
 			$this->db->limit($params['limit'], $offset);
 		}
 		

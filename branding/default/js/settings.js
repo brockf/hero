@@ -1,7 +1,14 @@
 $(document).ready(function () {
 	$('div.setting_group a.cat').click(function () {
 		$('table.settings').hide();
-		$(this).parent().children('table.settings').slideDown();
+		
+		if ($(this).hasClass('open')) {
+			$(this).removeClass('open');
+		}
+		else {
+			$(this).addClass('open');
+			$(this).parent().children('table.settings').slideDown();
+		}
 		
 		return false;
 	});
@@ -16,7 +23,7 @@ $(document).ready(function () {
 			// setting name
 			var setting_name = $(this).parent().parent().children('td.name').html();
 			
-			var current_value = value_td.html();
+			var current_value = value_td.html().trim();
 			value_td.html('<form class="validate form mark_empty" rel="new setting" action="' + post_url + '"><input type="hidden" name="name" value="' + setting_name + '" /><input class="text required" style="width:100%" name="value" value="' + current_value + '" /></form>');
 			
 			$(this).removeClass('edit');

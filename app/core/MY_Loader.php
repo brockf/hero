@@ -110,6 +110,9 @@ class MY_Loader extends CI_Loader
 		}
 		
 		self::define_module($library);
+		
+		// strip php if it's the extension
+		$library = str_replace('.php','',$library);
 
 		$class = strtolower(end(explode('/', $library)));
 

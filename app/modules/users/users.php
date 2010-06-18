@@ -11,7 +11,7 @@
 */
 
 class Users extends Module {
-	var $version = '1.0';
+	var $version = '1.01';
 	var $name = 'users';
 
 	function __construct () {
@@ -20,9 +20,30 @@ class Users extends Module {
 		
 		parent::__construct();
 	}
+	
+	function admin_preload ()
+	{
+		$CI =& get_instance();
+		
+		$CI->navigation->child_link('members',10,'Member Search',site_url('admincp/users'));
+		$CI->navigation->child_link('members',20,'Add Member',site_url('admincp/users/add'));
+		$CI->navigation->child_link('members',30,'Member Groups',site_url('admincp/users/groups'));
+		$CI->navigation->child_link('configuration',25,'Member Data',site_url('admincp/users/data'));
+	}
 
 	function update ($db_version) {
-		if ($db_version < '1.0') {
+		if ($db_version < 1.01) {
+			$this->CI->db->query('CREATE TABLE `user_fields` (
+								  `user_field_id` int(11) NOT NULL auto_increment,
+								  `custom_field_id` int(11) NOT NULL,
+								  `subscription_plans` varchar(150) NOT NULL,
+								  `products` varchar(150) NOT NULL,
+								  `user_field_billing_equiv` varchar(250) NOT NULL,
+								  PRIMARY KEY  (`user_field_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+	
+		if ($db_version < 1.0) {
 			// initial install
 			$this->CI->db->query('CREATE TABLE `usergroups` (
 								  `usergroup_id` int(11) NOT NULL auto_increment,

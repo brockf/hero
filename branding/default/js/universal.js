@@ -11,7 +11,10 @@ $(document).ready(function() {
 	$('div#navigation ul a.parent').click(function() {
 		// clear the slate
 		$('div#navigation ul.children').hide();
-		$('div#nav_children').animate({height: '8px'}, 100);
+		
+		if ($(this).parent().children('ul.children').length == 0) {
+			$('div#nav_children').animate({height: '8px'}, 100);
+		}	
 		
 		if ($(this).parent().children('ul.children').length != 0) {
 			$('div#nav_children').animate({height: '40px'}, 100);

@@ -9,9 +9,8 @@
 		- When creating user custom fields, they can specify if the field should be used as the "Address",
 		"City", etc. of the user, to auto-populate this billing address!
 		- First name, last name, and email are auto-populated
-	- Add "locale" setting
-	- Create emails manager
 	- Create user custom fields manager and backend system, with an add user screen in the control panel
+	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Create admin panel authentication system
 	- Move "Initialize" arguments to their own methods (e.g., $this->dataset->DataSource('order_model','GetCharges'));
 	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())

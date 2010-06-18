@@ -39,3 +39,4 @@
 			<div id="box-bottom-left"></div>
 			<div id="box-bottom-right"></div>
 			<div id="box-content">
+			<?=$this->navigation->get_module_links();?>

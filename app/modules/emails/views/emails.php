@@ -1,6 +1,6 @@
 <?=$this->load->view(branded_view('cp/header'));?>
 <h1>Manage Emails</h1>
-<?=$this->dataset->TableHead();?>
+<?=$this->dataset->table_head();?>
 <?
 if (!empty($this->dataset->data)) {
 	foreach ($this->dataset->data as $row) {
@@ -24,5 +24,5 @@ else {
 <?
 }	
 ?>
-<?=$this->dataset->TableClose();?>
+<?=$this->dataset->table_close();?>
 <?=$this->load->view(branded_view('cp/footer'));?>

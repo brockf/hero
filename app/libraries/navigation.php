@@ -5,6 +5,7 @@ class Navigation {
 	var $items; // stores details for each item
 	var $item_count; // stores the increasing unique ID for each item
 	var $active_parent; // which parent nav item is active?
+	var $module_links;
 	
 	function __construct () {
 		$this->item_count = 0;
@@ -28,6 +29,29 @@ class Navigation {
 										'name' => $name,
 										'link' => $link
 									);
+	}
+	
+	function module_link ($name, $link) {
+		$this->module_links[] = array(
+									'name' => $name,
+									'link' => $link
+								);
+	}
+	
+	function get_module_links () {
+		if (empty($this->module_links)) {
+			return '';
+		}
+	
+		$return = '<ul class="module_links">';
+		
+		foreach ($this->module_links as $link) {
+			$return .= '<li><a href="' . $link['link'] . '">' . $link['name'] . '</a></li>';
+		}
+		
+		$return .= '</ul>';
+		
+		return $return;
 	}
 	
 	function parent_active ($system_name) {
@@ -64,7 +88,9 @@ class Navigation {
 			if (!empty($this->navigation[$parent_id]) and count($this->navigation[$parent_id]) > 1) {
 				// yes
 				
-				$return .= '<ul class="children" style="display:none">';
+				$display = ($this->active_parent == $this->items[$parent_id]['system_name']) ? '' : ' style="display:none"';
+								
+				$return .= '<ul class="children"' . $display . '>';
 				foreach ($this->navigation[$parent_id] as $child_weight => $child_id) {
 					$return .= '<li><a rel="' . $child_weight . '" href="' . $this->items[$child_id]['link'] . '">' . $this->items[$child_id]['name'] . '</a></li>';
 				}

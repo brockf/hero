@@ -266,6 +266,40 @@ INSERT INTO `countries` (`country_id`, `iso2`, `iso3`, `name`) VALUES (4, 'AF', 
 -- --------------------------------------------------------
 
 -- 
+-- Table structure for table `custom_fields`
+-- 
+
+CREATE TABLE `custom_fields` (
+  `custom_field_id` int(11) NOT NULL auto_increment,
+  `custom_field_group` int(11) NOT NULL,
+  `custom_field_name` varchar(50) NOT NULL,
+  `custom_field_friendly_name` varchar(255) NOT NULL,
+  `custom_field_order` int(11) NOT NULL,
+  `custom_field_type` varchar(50) NOT NULL,
+  `custom_field_options` text,
+  `custom_field_required` tinyint(1) NOT NULL,
+  `custom_field_validators` text,
+  `custom_field_help_text` text,
+  PRIMARY KEY  (`custom_field_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
+
+-- --------------------------------------------------------
+
+-- 
+-- Table structure for table `custom_field_groups`
+-- 
+
+CREATE TABLE `custom_field_groups` (
+  `custom_field_group_id` int(11) NOT NULL auto_increment,
+  `custom_field_group_name` int(11) NOT NULL,
+   PRIMARY KEY  (`custom_field_group_id`)
+) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
+
+INSERT INTO `custom_field_groups` (`custom_field_group_id`, `custom_field_group_name`) VALUES ('1', 'Members');
+
+-- --------------------------------------------------------
+
+-- 
 -- Table structure for table `email_triggers`
 -- 
 
@@ -348,7 +382,7 @@ CREATE TABLE `settings` (
   `setting_type` varchar(250) default NULL,
   `setting_options` text,
   PRIMARY KEY  (`setting_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 AUTO_INCREMENT=5 ;
+) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
 -- 
 -- Dumping data for table `settings`
@@ -359,7 +393,9 @@ INSERT INTO `settings` (`setting_id`, `setting_group`, `setting_name`, `setting_
 (2, 1, 'site_email', 'email@example.com', 'The reply-to email address for all outgoing system emails.', NOW(), 'text', ''),
 (3, 1, 'email_name', 'Your Website', 'The reply-to name for all outgoing system emails.', NOW(), 'text', ''),
 (4, 2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', ''),
-(5, 1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:2:"Off";i:1;s:3:"On";}');
+(5, 1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:2:"Off";i:1;s:3:"On";}'),
+(6, 2, 'default_gateway', '0', 'This payment gateway, referenced by ID, will be the default gateway for site purchases.', NOW(), 'text', ''),
+(7, 1, 'locale', 'US', 'Some payment gateways and other integrations require this 2-character ISO-standard country code to determine your locale.', NOW(), 'text', '');
 
 -- --------------------------------------------------------
 
@@ -379,7 +415,7 @@ CREATE TABLE `settings_groups` (
 -- 
 
 INSERT INTO `settings_groups` (`setting_group_id`, `setting_group_name`, `setting_group_help`) VALUES (1, 'Core', 'Core system settings.'),
-(2, 'E-commerce', 'Ecommece-related configurations.');
+(2, 'E-commerce', 'Configurations related to subscriptions, products, and checkout.');
 
 -- --------------------------------------------------------
 

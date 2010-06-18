@@ -18,13 +18,7 @@
 					<? } elseif ($setting['type'] == 'toggle') { ?>
 						<a class="toggle" href="#">toggle</a></td>
 					<? } ?>
-					<td class="value">
-					<? if ($setting['type'] == 'text') { ?>
-						<?=$setting['value'];?>
-					<? } elseif ($setting['type'] == 'toggle') { ?>
-						<?=$setting['toggle_value'];?>
-					<? } ?>	
-					</td>
+					<td class="value"><? if ($setting['type'] == 'text') { ?><?=$setting['value'];?><? } elseif ($setting['type'] == 'toggle') { ?><?=$setting['toggle_value'];?><? } ?></td>
 				</tr>
 			
 			<? $count++; } ?>

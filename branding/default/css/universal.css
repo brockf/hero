@@ -179,6 +179,34 @@ a:hover {
 	height: 8px;
 }
 
+ul.module_links {
+	margin: 0;
+	padding: 0;
+	position: absolute;
+	top: 16px;
+	right: 50px;
+	list-style-type: none;
+}
+
+ul.module_links li {
+	display: inline;
+}
+
+ul.module_links a {
+	display: block;
+	float: right;
+	border: 1px solid #000;
+	background-color: #333;
+	padding: 5px 15px;
+	text-decoration: none;
+	font-size: 12pt;
+	font-weight: bold;
+}
+
+ul.module_links a:hover {
+	color: #fff;
+}
+
 #wrapper {
 	position: relative;
 	height: 100%;
@@ -207,9 +235,9 @@ a:hover {
 
 #content {
 	text-align: left;
-	width: 98%;
 	position: relative;
 	top: -10px;
+	margin-right: 20px;
 	background-image: url(../images/box-right.gif);
 	background-repeat: repeat-y;
 	background-position: top right;
