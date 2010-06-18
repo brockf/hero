@@ -1,22 +1,34 @@
 <?php
 
+/*
+* Custom Fields Model
+*
+* Supports many areas of the app by providing a universal format for custom fields,
+* their validation, and management.
+*
+* @package Electric Publisher
+* @author Electric Function, Inc.
+*/
 class Custom_fields_model extends CI_Model {
 	var $cache;
 	var $upload_directory;
-
+	
 	function __construct() {
 		parent::CI_Model();
 		
+		// specify the upload directory, will be created if it doesn't exist
 		$this->upload_directory = BASEPATH . 'writeable/custom_uploads/';
 	}
 	
 	/*
 	* Get Rules
 	* 
-	* Generates a CodeIgniter form_validation array for custom fields based on the group ID
+	* Generates a CodeIgniter form_validation array for custom fields based on the field group ID
 	*
 	* @param int $field_group_id
-	* @return array $rules CodeIgniter rules */
+	*
+	* @return array $rules CodeIgniter rules
+	*/
 	function get_validation_rules ($field_group_id) {
 		$fields = $this->get_custom_fields(array('group' => $field_group_id));
 		
@@ -63,6 +75,7 @@ class Custom_fields_model extends CI_Model {
 	* as they can't be handled by CodeIgniter
 	*
 	* @param int $field_group_id
+	*
 	* @return boolean TRUE upon success
 	*/
 	function validate_files ($field_group_id) {
@@ -127,6 +140,15 @@ class Custom_fields_model extends CI_Model {
 		return $array;
 	}
 	
+	/*
+	* Get Custom Fields
+	*
+	* Retrieves custom fields ordered by custom_field_order, with caching
+	* 
+	* @param $filters['group'] The custom field group
+	*
+	* @return array $fields The custom fields
+	*/
 	function get_custom_fields ($filters = array()) {
 		if (isset($this->cache[base64_encode(serialize($filters))])) {
 			return $this->cache[base64_encode(serialize($filters))];
@@ -162,6 +184,24 @@ class Custom_fields_model extends CI_Model {
 		return $fields;
 	}
 	
+	/*
+	* New Custom Field
+	*
+	* Create new custom field record and modify the database
+	*
+	* @param int $group The field group id
+	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
+	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
+	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
+	* @param string $default Default selected value
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $help A string of help text
+	* @param boolean $required TRUE to require the field for submission
+	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
+	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	*
+	* @return int $custom_field_id
+	*/
 	function new_custom_field ($group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
 		$options = $this->format_options($options);
 		
@@ -212,6 +252,13 @@ class Custom_fields_model extends CI_Model {
 		return $insert_id;
 	}
 	
+	/*
+	* Get appropriate database field type
+	*
+	* @param string $type
+	*
+	* @return string database field type
+	*/
 	function get_type ($type) {
 		switch($type) {
 			case 'textarea':
@@ -229,6 +276,25 @@ class Custom_fields_model extends CI_Model {
 		return $db_type;
 	}
 	
+	/*
+	* Update Custom Field
+	*
+	* Updates custom field records as well as modifies the appropriate database
+	*
+	* @param int $custom_field_id The custom field ID to edit
+	* @param int $group The field group id
+	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
+	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
+	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
+	* @param string $default Default selected value
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $help A string of help text
+	* @param boolean $required TRUE to require the field for submission
+	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
+	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	*
+	* @return boolean TRUE
+	*/
 	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
 		$options = $this->format_options($options);
 		
@@ -282,6 +348,16 @@ class Custom_fields_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/*
+	* Delete Custom Field
+	*
+	* Delete custom field record and modify database
+	*
+	* @param int $id The ID of the field
+	* @param string|boolean The database table to reflect the changes, else FALSE
+	*
+	* @return boolean TRUE
+	*/
 	function delete_custom_field ($id, $db_table = FALSE) {
 		if ($db_table != FALSE) {
 			$this->load->dbforge();
@@ -296,6 +372,15 @@ class Custom_fields_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/*
+	* Get System Name
+	*
+	* Gets the system name for a field, by ID
+	* 
+	* @param int $id The custom field ID
+	*
+	* @return string The custom field system/table name
+	*/
 	function get_system_name ($id) {
 		$this->db->select('custom_field_name');
 		$this->db->where('custom_field_id',$id);
@@ -311,6 +396,13 @@ class Custom_fields_model extends CI_Model {
 		}
 	}
 	
+	/*
+	* Format the options array
+	*
+	* @param string|array $options Either a newline-separated field of values, or an array of pre-formatted values
+	* 
+	* @return array Array of options with a series of array(name=>value) arrays holding each option
+	*/
 	function format_options ($options) {
 		// format $options into a series of name/value child arrays
 		if (is_array($options)) {

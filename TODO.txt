@@ -1,7 +1,4 @@
 - Roadmap:
-	- Comment Admin_form library
-	- Comment Custom_fields module
-	- Comment User_model
 	- Investigate why unique_username and unique_email do not get triggered
 	- Ordering of custom fields
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)

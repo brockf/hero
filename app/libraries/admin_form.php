@@ -1,17 +1,42 @@
 <?php
 
+/*
+* Admin Form Library
+*
+* This class will generate a proper administration panel form
+* through a series of element methods like "text" and "select".
+* It also can parse a standard custom_fields array from the
+* custom_fields_model.
+*
+* @author Electric Function, Inc.
+* @package Electric Publisher
+*/
 class Admin_form {
 	var $fields;
 	var $fieldset;
 	var $fieldsets;
 	
 	function __construct () {
+		// field data
 		$this->fields = array();
+		// fieldset legends
 		$this->fieldsets = array();
-		
+		// current fieldset ID
 		$this->fieldset = 0;
 	}
 	
+	/*
+	* Add Text Field
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $value Current value of the field
+	* @param string $help A piece of help text
+	* @param boolean $required Is the field required for submission?
+	* @param boolean $mark_empty Should the field have an "empty" default value?
+	* @param boolean $full Should the field take up the entire pane?
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	*/
 	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -30,6 +55,16 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add Password Field
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $help A piece of help text
+	* @param boolean $required Is the field required for submission?
+	* @param boolean $full Should the field take up the entire pane?
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	*/
 	function password ($label, $name, $help = FALSE, $required = FALSE, $full = FALSE, $width = '250px') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -46,6 +81,18 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add Names Fields
+	*
+	* Adds a horizontal First Name / Last Name field with names "first_name" and "last_name"
+	*
+	* @param string $label The human friendly form label
+	* @param string $first_value Value of first name
+	* @param string $last_value Value of last name
+	* @param string $help A piece of help text
+	* @param boolean $required Is the field required for submission?
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	*/
 	function names ($label, $first_value, $last_value, $help = FALSE, $required = FALSE, $width = '250px') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -63,7 +110,17 @@ class Admin_form {
 	}
 	
 	/*
-	* WYSIWYG can be either FALSE, mini, or full
+	* Add Textarea Field
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $value Current value of the field
+	* @param string $help A piece of help text
+	* @param boolean $required Is the field required for submission?
+	* @param boolean|string FALSE for no WYSIWYG, 'mini' for a lite WYSIWYG editor, and 'full' for a full-featured WYSIWYG editor
+	* @param boolean $full Should the field take up the entire pane?
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $height The complete style:height element definition
 	*/
 	function textarea ($label, $name, $value, $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px') {
 		if ($this->fieldset == 0) {
@@ -83,6 +140,17 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add Select Dropdown
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param array $options The select options in the form of array(value1 => display1, value2 => display2)
+	* @param string|array $selected The selected value(s).  A string for selects, an array for multiselects
+	* @param boolean $required Is the field required for submission?
+	* @param string $help A piece of help text
+	* @param boolean $full Should the field take up the entire pane?
+	*/
 	function dropdown ($label, $name, $options, $selected, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE) {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -109,6 +177,17 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add Radio Buttons
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param array $options The select options in the form of array(value1 => display1, value2 => display2)
+	* @param string $selected The selected value
+	* @param boolean $required Is the field required for submission?
+	* @param string $help A piece of help text
+	* @param boolean $full Should the field take up the entire pane?
+	*/
 	function radio ($label, $name, $options, $selected, $required = FALSE, $help = FALSE, $full = FALSE) {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -126,6 +205,16 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add Checkbox
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $value The value of the field, when checked
+	* @param boolean $checked TRUE to check the box
+	* @param string $help A piece of help text
+	* @param boolean $full Should the field take up the entire pane?
+	*/
 	function checkbox ($label, $name, $value, $checked = FALSE, $help = FALSE, $full = FALSE) {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -142,6 +231,13 @@ class Admin_form {
 							);
 	}
 	
+	/*
+	* Add File Upload
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	*/
 	function file ($label, $name, $width = '250px') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
@@ -155,6 +251,13 @@ class Admin_form {
 										);
 	}
 	
+	/*
+	* Add New Fieldset
+	*
+	* Adds a fieldset to the form, breaking up the form
+	*
+	* @param string $legend The fieldset legend
+	*/
 	function fieldset($legend = '') {
 		$this->fieldset++;
 		
@@ -163,6 +266,15 @@ class Admin_form {
 												);
 	}
 	
+	/*
+	* Import Custom Fields
+	*
+	* Imports a standard array of custom fields from the custom_fields_model into the form
+	*
+	* @param array $custom_fields The standard custom_fields array generated from get_custom_fields() or equivalent method
+	* @param array $values The array of current values, if there are any (e.g, when editing)
+	* @param boolean $no_defaults Do not use default values for empty fields (i.e., when editing an existing record)
+	*/
 	function custom_fields ($custom_fields = array(), $values = array(), $no_defaults = FALSE) {
 		if (is_array($custom_fields) or empty($custom_fields)) {
 			return FALSE;
@@ -261,6 +373,11 @@ class Admin_form {
 		}
 	}
 	
+	/*
+	* Display the form
+	*
+	* @return string Form HTML
+	*/
 	function display () {
 		$return = '';
 		

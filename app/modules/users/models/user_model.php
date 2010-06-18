@@ -13,15 +13,20 @@
 
 class User_model extends CI_Model
 {
-	var $CI;
-	
 	function __construct()
 	{
 		parent::CI_Model();
-		
-		$this->CI =& get_instance();
 	}
 	
+	/*
+	* Validation
+	*
+	* Validates POST data to be acceptable for creating a new user
+	*
+	* @param boolean $editing Set to TRUE if this is an edited user (i.e., password can be blank)
+	*
+	* @return array|boolean If errors, returns an array of individual errors, else returns TRUE
+	*/
 	function validation ($editing = FALSE) {
 		$this->load->library('form_validation');
 		$this->load->model('custom_fields_model');
@@ -42,7 +47,7 @@ class User_model extends CI_Model
 		
 		if ($this->form_validation->run() == FALSE) {
 			$errors = rtrim(validation_errors('','||'),'|');
-			$errors = str_replace('<p>','',explode('||',$errors));
+			$errors = explode('||',str_replace('<p>','',$errors));
 			return $errors;
 		}
 		
@@ -55,6 +60,13 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/*
+	* Is email address unique?
+	*
+	* @param string $email The email address being tested
+	*
+	* @return boolean TRUE upon being OK, FALSE if not
+	*/
 	function unique_email ($email) {
 		$this->db->select('user_id');
 		$this->db->where('user_email',$email);
@@ -69,6 +81,13 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/*
+	* Is username unique?
+	*
+	* @param string $username The username being tested
+	*
+	* @return boolean TRUE upon being OK, FALSE if not
+	*/
 	function unique_username ($username) {
 		$this->db->select('user_id');
 		$this->db->where('user_username',$username);
@@ -83,6 +102,23 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/*
+	* New User
+	*
+	* Create a new user, including custom fields
+	*
+	* @param string $email Email Address
+	* @param string $password Password to use
+	* @param string $username Username
+	* @param string $first_name First name
+	* @param string $last_name Last name
+	* @param array $groups Array of group ID's to be entered into
+	* @param int $affiliate Affiliate ID of referrer
+	* @param boolean $is_admin Check to make an administrator
+	* @param array $custom_fields An array of custom field data, matching in name
+	*
+	* @return int $user_id
+	*/
 	function new_user($email, $password, $username, $first_name, $last_name, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE, $custom_fields = array()) {
 		if (empty($groups)) {
 			$this->load->model('users/usergroup_model');
@@ -116,6 +152,23 @@ class User_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
+	/*
+	* Update User
+	*
+	* Updates a user, including custom fields
+	*
+	* @param int $user_id The current user ID #
+	* @param string $email Email Address
+	* @param string $password Password to use
+	* @param string $username Username
+	* @param string $first_name First name
+	* @param string $last_name Last name
+	* @param array $groups Array of group ID's to be entered into
+	* @param boolean $is_admin Check to make an administrator
+	* @param array $custom_fields An array of custom field data, matching in name
+	*
+	* @return int $user_id
+	*/
 	function update_user($user_id, $email, $password, $username, $first_name, $last_name, $groups = FALSE, $is_admin = FALSE, $custom_fields = array()) {
 		$update_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
@@ -139,21 +192,49 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
+	/*
+	* Delete User
+	*
+	* @param int $user_id The user ID #
+	*
+	* @param boolean TRUE
+	*/
 	function delete_user ($user_id) {
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
 		return TRUE;
 	}
 	
+	/*
+	* Suspend User
+	*
+	* @param int $user_id The user ID #
+	*
+	* @param boolean TRUE
+	*/
 	function suspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '1'),array('user_id' => $user_id));
 		return TRUE;
 	}
 	
+	/*
+	* Unsuspend User
+	*
+	* @param int $user_id The user ID #
+	*
+	* @param boolean TRUE
+	*/
 	function unsuspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '0'),array('user_id' => $user_id));
 		return TRUE;
 	}
 	
+	/*
+	* Get User
+	*
+	* @param int $user_id The user ID #
+	*
+	* @param array User fields
+	*/
 	function get_user ($user_id) {
 		$filters = array('id' => $user_id);
 		
@@ -167,6 +248,17 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/*
+	* Get Users
+	*
+	* @param int $filters['id'] The user ID to select
+	* @param int $filters['group'] The group ID to filter by
+	* @param int $filters['suspended'] Set to 1 to retrieve suspended users
+	* @param string $filters['email'] The email address to filter by
+	* @param string $filters['name'] Search by first and last name
+	*
+	* @return array Each user in an array of users
+	*/
 	function get_users ($filters) {
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
@@ -186,6 +278,8 @@ class User_model extends CI_Model
 		}
 		
 		$this->db->where('user_deleted','0');
+		
+		$this->db->order_by('username');
 		
 		$result = $this->db->get('users');
 		

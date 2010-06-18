@@ -9,6 +9,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function index () {
+		$this->navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
+	
 		$this->load->model('admincp/dataset','dataset');
 		
 		$this->load->model('usergroup_model');			
@@ -278,7 +280,7 @@ class Admincp extends Admincp_Controller {
 		$form->checkbox('Administrator','is_admin','1',$user['is_admin']);
 		$form->fieldset('Profile Information');
 		$form->names('Name', $user['first_name'], $user['last_name'], FALSE, TRUE);
-		$form->custom_fields($this->user_model->get_custom_fields(), $user);
+		$form->custom_fields($this->user_model->get_custom_fields(), $user, TRUE);
 	
 		$data = array(
 						'user' => array(),
