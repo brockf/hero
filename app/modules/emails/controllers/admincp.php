@@ -119,7 +119,7 @@ class Admincp extends Admincp_Controller {
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
 		
 		foreach ($emails as $email) {
-			$this->email_model->DeleteEmail($this->user->Get('client_id'),$email);
+			$this->email_model->DeleteEmail($email);
 		}
 		
 		$this->notices->SetNotice('Email deleted successfully.');
@@ -187,10 +187,14 @@ class Admincp extends Admincp_Controller {
 						'from_email' => '',
 						'plan' => $this->input->post('plan',true),
 						'is_html' => $this->input->post('is_html',true),
-						'to_address' => ($this->input->post('to_address') == 'email') ? $this->input->post('to_address_email') : 'customer',
-						'bcc_address' => ($this->input->post('bcc_address') == 'client' or $this->input->post('bcc_address') == '') ? $this->input->post('bcc_address',true) : $this->input->post('bcc_address_email')
+						'to_address' => ($this->input->post('to_address') == 'email') ? $this->input->post('to_address_email') : 'user',
+						'bcc_address' => ($this->input->post('bcc_address') == 'site_email' or $this->input->post('bcc_address') == '') ? $this->input->post('bcc_address',true) : $this->input->post('bcc_address_email')
 					);
-		
+					
+		if ($params['bcc_address'] == 'email@example.com') {
+			$params['bcc_address'] = '';
+		}
+				
 		$this->load->model('email_model');
 		
 		if ($action == 'new') {
@@ -256,9 +260,13 @@ class Admincp extends Admincp_Controller {
 		$variables = $this->email_model->GetEmailVariables($trigger_id);
 		
 		$return = '<p><b>Available Variables for this Trigger Type</b>.  Note: Not all values are available
-				   for each event.  For example, "[[CUSTOMER_ADDRESS_1]]" cannot be replaced if the customer
-				   does not have an address registered in the system.</p>
+				   for each individual email.  For example, "[[BILLING_ADDRESS_1]]" cannot be replaced if you have
+				   chosen to let users skip the billing address step of checkout.</p>
 				   <p><i>Usage Example: [[AMOUNT]] will be replaced by a value like "34.95" in the email.</i></p><ul>';
+				   
+		// default variable added later
+		$return .= '<li>[[SITE_NAME]]</li>';
+		
 		foreach ($variables as $variable) {
 			$return .= '<li>[[' . strtoupper($variable) . ']]</li>';
 		}

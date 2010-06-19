@@ -1,9 +1,9 @@
 <?php
 
-function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false, $customer_id = false)
+function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE, $customer_id = FALSE, $order_id = FALSE, $other_variables = array())
 {
 	$CI =& get_instance();
-	$CI->load->model('email_model');
+	$CI->load->model('emails/email_model');
 	
 	// get trigger ID
 	$trigger_type_id = $CI->email_model->GetTriggerId($trigger_type);
@@ -14,29 +14,31 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 	
 	// load all available data
     if ($subscription_id) {
-    	$CI->load->model('recurring_model');
+    	$CI->load->model('billing/recurring_model');
     	$subscription = $CI->recurring_model->GetRecurring($subscription_id);
     }
     
     if ($charge_id) {
-    	$CI->load->model('charge_model');
+    	$CI->load->model('billing/charge_model');
     	$charge = $CI->charge_model->GetCharge($charge_id);
     }
     
     if ($customer_id) {
-    	$CI->load->model('customer_model');
+    	$CI->load->model('billing/customer_model');
     	$customer = $CI->customer_model->GetCustomer($customer_id);
+    } 
+    
+    if ($order_id) {
+    	$CI->load->model('store/order_model');
+    	$order = $CI->order_model->get_order($order_id);
     }
     
-    // dynamically get customer information for charge-related trips to save on SQL queries
-    if (isset($subscription) and is_array($subscription['customer'])) {
-    	$customer = $subscription['customer'];
+    // get member info via customer
+    if (isset($customer['id'])) {
+    	$user = $CI->user_model->get_user($customer['internal_id']);
     }
-    elseif (isset($charge) and isset($charge['customer']) and is_array($charge['customer'])) {
-    	$customer = $charge['customer'];
-    }
-    
-    // dynamically get plan-related info for recurring-related stuff
+	
+	// dynamically get plan-related info for recurring-related stuff
     if ($subscription_id and isset($subscription['plan'])) {
     	if (is_array($subscription['plan'])) {
     		$plan = $subscription['plan'];
@@ -45,11 +47,25 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
     }
     
     if (!isset($plan_id)) {
-    	$plan_id = false;
+    	$plan_id = FALSE;
     }
     
     // build array of all possible variables, if they exist
-	$variables = array();
+	$variables = (!empty($other_variables)) ? $other_variables : array();
+	
+	/* other variables:
+	 - download link for downloadable products
+	 - product name for downloadable products
+	 - password for new registrations
+	 - validation_link
+	 - validation_code
+	 - new_password for forgotten passwords
+	 */
+	 
+	// default variables
+	$variables['account_link'] = site_url('account');
+	$variables['site_link'] = site_url('');
+	$variables['site_name'] = setting('site_name');
 	
 	if (isset($charge) and is_array($charge)) {
 		$variables['amount'] = $charge['amount'];
@@ -59,11 +75,12 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 	}
 	
 	if (isset($subscription) and is_array($subscription)) {
-		$variables['recurring_id'] = $subscription['id'];
-		$variables['start_date'] = $subscription['start_date'];
-		$variables['end_date'] = $subscription['end_date'];
-		$variables['expiry_date'] = $subscription['end_date'];
-		$variables['next_charge_date'] = $subscription['next_charge_date'];
+		$variables['subscription_id'] = $subscription['id'];
+		$variables['subscription_start_date'] = $subscription['start_date'];
+		$variables['subscription_end_date'] = $subscription['end_date'];
+		$variables['subscription_expiry_date'] = $subscription['end_date'];
+		$variables['subscription_next_charge_date'] = $subscription['next_charge_date'];
+		$variables['subscription_amount'] = $subscription['amount'];
 		
 		if (isset($plan) and is_array($plan)) {
 			$variables['plan_id'] = $plan['id'];
@@ -72,23 +89,39 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 	}
 	
 	if (isset($customer) and is_array($customer)) {
-		$variables['customer_id'] = $customer['id'];
-		$variables['customer_first_name'] = $customer['first_name'];
-		$variables['customer_last_name'] = $customer['last_name'];
-		$variables['customer_internal_id'] = $customer['internal_id'];
-		$variables['customer_company'] = $customer['company'];
-		$variables['customer_address_1'] = $customer['address_1'];
-		$variables['customer_address_2'] = $customer['address_2'];
-		$variables['customer_city'] = $customer['city'];
-		$variables['customer_state'] = $customer['state'];
-		$variables['customer_postal_code'] = $customer['postal_code'];
-		$variables['customer_country'] = $customer['country'];
-		$variables['customer_email'] = $customer['email'];
-		$variables['customer_phone'] = $customer['phone'];
+		$variables['billing_first_name'] = $customer['first_name'];
+		$variables['billing_last_name'] = $customer['last_name'];
+		$variables['billing_company'] = $customer['company'];
+		$variables['billing_address_1'] = $customer['address_1'];
+		$variables['billing_address_2'] = $customer['address_2'];
+		$variables['billing_city'] = $customer['city'];
+		$variables['billing_state'] = $customer['state'];
+		$variables['billing_postal_code'] = $customer['postal_code'];
+		$variables['billing_country'] = $customer['country'];
+	}
+	
+	if (!empty($order_id) and is_array($order) and is_array($order['shipping'])) {
+		// get shipping address
+		$variables['shipping_first_name'] = $order['shipping']['first_name'];
+		$variables['shipping_last_name'] = $order['shipping']['last_name'];
+		$variables['shipping_company'] = $order['shipping']['company'];
+		$variables['shipping_address_1'] = $order['shipping']['address_1'];
+		$variables['shipping_address_2'] = $order['shipping']['address_2'];
+		$variables['shipping_city'] = $order['shipping']['city'];
+		$variables['shipping_state'] = $order['shipping']['state'];
+		$variables['shipping_postal_code'] = $order['shipping']['postal_code'];
+		$variables['shipping_country'] = $order['shipping']['country'];
+	}
+	
+	if (isset($user) and is_array($user)) {
+		$variables['member_id'] = $user['id'];
+		$variables['member_first_name'] = $user['first_name'];
+		$variables['member_last_name'] = $user['last_name'];
+		$variables['member_email'] = $user['email'];
+		$variables['member_username'] = $user['username'];
 	}
 		
 	$site_email = $CI->config->item('site_email');
-	$secret_key = $CI->config->item('secret_key'); // for notification security
 	
 	/* Legacy Code - May dig up sometime
 	
@@ -118,12 +151,13 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
     			
     		$CI->notifications->QueueNotification($plan['notification_url'],$array);
     	}
-    } */
+    } 
+    */
 	
     // check to see if this triggers any emails for the client
 	$emails = $CI->email_model->GetEmailsByTrigger($trigger_type_id, $plan_id);
 	
-	if(!$emails) {
+	if (!$emails) {
 		return FALSE;
 	}	
 	
@@ -140,11 +174,14 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 		
 		// who is this going to?
 		$to_address = false;
-		if ($email['to_address'] == 'user' and isset($customer['email']) and !empty($customer['email']) and $CI->field_validation->ValidateEmailAddress($customer['email'])) {
-			$to_address = $customer['email'];
-		}
-		elseif ($email['to_address'] == 'site_email') {
-			$to_address = $site_email;
+		if ($email['to_address'] == 'user') {
+			// which user are we using?
+			if (isset($user['email']) and !empty($user['email']) and $CI->field_validation->ValidateEmailAddress($user['email'])) {
+				$to_address = $user['email'];
+			}
+			elseif (isset($customer['email']) and !empty($customer['email']) and $CI->field_validation->ValidateEmailAddress($customer['email'])) {
+				$to_address = $customer['email'];
+			}
 		}
 		elseif ($CI->field_validation->ValidateEmailAddress($email['to_address'])) {
 			$to_address = $email['to_address'];
@@ -153,6 +190,12 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 		if ($to_address) {	
 			$subject = $email['email_subject'];
 			$body = $email['email_body'];
+			
+			// do we have a signature
+			if (setting('email_signature') != '') {
+				$body .= "\n\n" . setting('email_signature');
+			}
+			
 			$from_name = setting('email_name');
 			$from_email = setting('site_email');
 			
@@ -174,7 +217,7 @@ function TriggerTrip($trigger_type, $charge_id = false, $subscription_id = false
 			// send a BCC?
 			$send_bcc = false;
 			if (!empty($email['bcc_address'])) {
-				if ($email['bcc_address'] == 'client') {
+				if ($email['bcc_address'] == 'site_email') {
 					$send_bcc = $site_email;
 				}
 				elseif ($CI->field_validation->ValidateEmailAddress($email['bcc_address'])) {

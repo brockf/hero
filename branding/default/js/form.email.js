@@ -31,6 +31,13 @@ $(document).ready(function () {
 			  function(data){
 			    $('#email_variables').html(data);
 			  });
+			  
+			if ($(this).val() < 9) {
+				$('.subscription_link').show();
+			}
+			else {
+				$('.subscription_link').hide();
+			}
 		}	  
 	});
 	
@@ -40,5 +47,12 @@ $(document).ready(function () {
 		  function(data){
 		    $('#email_variables').html(data);
 		  });
+		  
+		if ($('#trigger').val() < 9) {
+			$('.subscription_link').show();
+		}
+		else {
+			$('.subscription_link').hide();
+		}
 	}
 });

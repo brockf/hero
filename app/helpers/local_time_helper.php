@@ -1,30 +1,7 @@
 <?php
 
 function local_time ($time) {	
-	$CI =& get_instance();
-	
-	$timestamp = (!is_numeric($time)) ? strtotime($time) : $time;
-	$timestamp = $timestamp - date("Z");
-	
-	$timezone = $client->gmt_offset;
-	$daylight_saving = (date("I") == 1) ? TRUE : FALSE;
-	
-	// format
-	$format = (defined("_CONTROLPANEL")) ? "M j, Y" : "c";
-	if (defined("_CONTROLPANEL") and strstr($time, ' ')) {
-		$format = 'M j, Y h:i a';
-	}
-	
-	$check_empty = $timestamp + date("Z");
-	
-	if (empty($check_empty) and defined("_CONTROLPANEL")) {
-		return 'N/A';
-	}
-	elseif (empty($check_empty)) {
-		return '0';
-	}
-
-	return date($format,gmt_to_local($timestamp, $timezone, $daylight_saving));
+	return $time;
 }
 
 function server_time ($time, $format = "Y-m-d", $today_or_more = false) {

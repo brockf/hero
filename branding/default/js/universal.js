@@ -20,6 +20,8 @@ $(document).ready(function() {
 			$('div#nav_children').animate({height: '40px'}, 100);
 			$(this).parent().children('ul.children').slideDown(100);
 		}
+		
+		return false;
 	});
 	
 	// show active menu on load

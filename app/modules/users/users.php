@@ -11,7 +11,7 @@
 */
 
 class Users extends Module {
-	var $version = '1.02';
+	var $version = '1.03';
 	var $name = 'users';
 
 	function __construct () {
@@ -32,6 +32,10 @@ class Users extends Module {
 	}
 
 	function update ($db_version) {
+		if ($db_version < 1.03) {
+			$this->CI->settings_model->new_setting(3, 'validate_emails', '1', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+		}
+		
 		if ($db_version < 1.02) {
 			$this->CI->settings_model->new_setting(3, 'require_tos', '0', 'Require registering users to agree to your site\'s Terms of Service?', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
 			$this->CI->settings_model->new_setting(3, 'terms_of_service', 'Enter your terms of service here.', 'If "require_tos" is On, users will be forced to accept these Terms prior to registering.', 'textarea');

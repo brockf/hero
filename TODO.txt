@@ -1,10 +1,11 @@
 - Roadmap:
+	- Add validate_emails setting
+	- Add require_account for orders
 	- Add TriggerTrip for new_user
 	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
 	- Update TriggerTrips to pull member information, if available, as well as the billing address (not called "customer" anymore)
 	- Allow TriggerTrips to take additional parameters (e.g., "[PASSWORD]" when registering users).
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
-	- Create admin panel authentication system
 	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
@@ -21,3 +22,13 @@
 		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"
 	- Add "validate" class to forms
 	- Get rid of lang calls
+	
+	
+- Orders
+	- Link to members
+	- Link to a customer record for shipping data (return shipping as $order['shipping']['first_name'] etc. - $order['shipping'] = FALSE if no shipping)
+	- Link to a charge
+- Subscriptions
+	- Link to a subscription_plan
+		- Link to plan (extends plan)
+	- Links to members via customer_id

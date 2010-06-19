@@ -32,16 +32,16 @@ if (!isset($form)) {
 		<li>
 			<div class="help">This system action will trigger this email.</div>
 		</li>
-		<li>
+		<li class="subscription_link">
 			<label for="plan">Subscription Link</label>
 			<select id="plan" name="plan">
-				<option <? if ($form['plan'] == '0') { ?> selected="selected" <? } ?>  value="">All plans</option>
+				<option <? if ($form['plan'] == '0') { ?> selected="selected" <? } ?>  value="">All subscriptions</option>
 				<? foreach ($plans as $plan) { ?>
-				<option  <? if ($form['plan'] == $plan['id']) { ?> selected="selected" <? } ?> value="<?=$plan['id'];?>">Plan: <?=$plan['name'];?></option>
+				<option  <? if ($form['plan'] == $plan['id']) { ?> selected="selected" <? } ?> value="<?=$plan['id'];?>">Subscription: <?=$plan['name'];?></option>
 				<? } ?>
 			</select>
 		</li>
-		<li>
+		<li class="subscription_link">
 			<div class="help">(If applicable - Optional) Only send when the action relates to the subscription plan(s) above.</div>
 		</li>
 	</ul>
@@ -51,14 +51,14 @@ if (!isset($form)) {
 	<ul class="form">
 		<li>
 			<label for="to_address_email">Send to</label>
-			<input <? if ($form['to_address'] == 'customer') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="user" />&nbsp;User&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['to_address'] != 'customer') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="to_address_email" name="to_address_email" <? if ($form['to_address'] != 'customer' and $form['to_address'] != '') { ?> value="<?=$form['to_address'];?>" <? } ?> />
+			<input <? if ($form['to_address'] == 'user') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="user" />&nbsp;User&nbsp;&nbsp;&nbsp;
+			<input <? if ($form['to_address'] != 'user') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="to_address_email" name="to_address_email" <? if ($form['to_address'] != 'user' and $form['to_address'] != '') { ?> value="<?=$form['to_address'];?>" <? } ?> />
 		</li>
 		<li>
 			<label for="bcc_address_email">BCC</label>
 			<input <? if ($form['bcc_address'] == '') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="" />&nbsp;None&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['bcc_address'] == 'client') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="site_email" />&nbsp;<?=setting('site_email');?>&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['bcc_address'] != 'client' and $form['bcc_address'] != '') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="bcc_address_email" name="bcc_address_email" <? if ($form['bcc_address'] != 'client' and $form['bcc_address'] != '') { ?> value="<?=$form['bcc_address'];?>" <? } ?> />
+			<input <? if ($form['bcc_address'] == 'site_email') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="site_email" />&nbsp;<?=setting('site_email');?>&nbsp;&nbsp;&nbsp;
+			<input <? if ($form['bcc_address'] != 'site_email' and $form['bcc_address'] != '') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="bcc_address_email" name="bcc_address_email" <? if ($form['bcc_address'] != 'site_email' and $form['bcc_address'] != '') { ?> value="<?=$form['bcc_address'];?>" <? } ?> />
 		</li>
 	</ul>
 </fieldset>

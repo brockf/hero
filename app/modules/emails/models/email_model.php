@@ -102,7 +102,7 @@ class Email_model extends CI_Model
 			$insert_data['to_address'] = 'customer';
 		}
 		
-		if(isset($params['bcc_address'])) {
+		if (isset($params['bcc_address'])) {
 			$insert_data['bcc_address'] = $params['bcc_address'];
 		} else {
 			$insert_data['bcc_address'] = '';

@@ -278,7 +278,10 @@ class User_model extends CI_Model
 		$customer_id = $this->customer_model->NewCustomer($customer);
 		
 		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
-				
+		
+		// trip the email
+		TriggerTrip('new_member',FALSE,FALSE,$customer_id,FALSE,array('password' => $password));
+		
 		return $user_id;
 	}
 	
