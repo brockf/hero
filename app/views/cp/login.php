@@ -7,21 +7,22 @@
 	<link href="<?=branded_include('css/login.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
+	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
 </head>
 <body>
 	<div id="notices"><?=get_notices();?></div>
 	<div id="login_form">
-		<h1>Control Panel</h1>
-		<form method="post" action="<?=site_url('/admincp/login/go');?>">
-			<ul>
+		<h1><span class="app_name"><?=setting('site_name');?></span> | Control Panel</h1>
+		<form class="validate" method="post" action="<?=site_url('/admincp/login/go');?>">
+			<ul class="form">
 				<li>
 					<label for="username">Username</label>
-					<input id="username" name="username" type="text" />
+					<input id="username" name="username" type="text" class="text required" />
 					<div style="clear:both"></div>
 				</li>
 				<li>
 					<label for="password">Password</label>
-					<input id="password" name="password" type="password" />
+					<input id="password" name="password" type="password" class="text required" />
 					<div style="clear:both"></div>
 				</li>
 				<li class="submit">
@@ -29,6 +30,16 @@
 				</li>
 			</ul>
 		</form>
+		<div class="links">
+			<ul class="links">
+				<li><a href="<?=site_url();?>">Visit site</a></li>
+				<li><a href="<?=site_url('user/forgot_password');?>">Reset your password</a></li>
+				<li><a href="<?=setting('app_support');?>"><?=setting('app_name');?> Support</a></li>
+			</ul>
+		</div>
+	</div>
+	<div id="copyright">
+		Powered by <a href="<?=setting('app_link');?>"><?=setting('app_name');?></a>.  Copyright &copy; 2007-<?=date('Y');?>, <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.  All Rights Reserved.
 	</div>
 </body>
 </html>

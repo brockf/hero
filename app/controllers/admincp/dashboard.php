@@ -10,9 +10,9 @@
 
 */
 
-class Dashboard extends Controller {
+class Dashboard extends Admincp_Controller {
 	function __construct() {
-		parent::Controller();
+		parent::__construct();
 	}
 	
 	function index() {

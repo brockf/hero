@@ -26,7 +26,7 @@ class Users extends Module {
 		$CI =& get_instance();
 		
 		$CI->navigation->child_link('members',10,'Member Search',site_url('admincp/users'));
-		$CI->navigation->child_link('members',20,'Add Member',site_url('admincp/users/add'));
+		$CI->navigation->child_link('members',20,'Add Member/Administrator',site_url('admincp/users/add'));
 		$CI->navigation->child_link('members',30,'Member Groups',site_url('admincp/users/groups'));
 		$CI->navigation->child_link('members',40,'Member Data',site_url('admincp/users/data'));
 	}

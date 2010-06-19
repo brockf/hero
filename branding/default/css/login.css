@@ -1,69 +1,101 @@
 #login_form {
 	margin: 0 auto;
-	background-color: #222;
-	border-radius: 22px;
-	-moz-border-radius: 22px;
-	-webkit-border-radius: 22px;
-	width: 350px;
-	padding: 15px;
-	margin-top: 150px;
-	border: 8px solid #dedede;
+	width: 475px;
+	padding: 20px;
+	margin-top: 120px;
+	background-image: url(../images/login.gif);
+	height: 298px;
+	position: relative;
 }
 
 h1 {
-	font-size: 19pt;
+	font-size: 11pt;
 	color: #dedede;
 	text-align: center;
+	font-style: helvetica, arial;
+	position: absolute;
+	left: 35px;
+	top: 40px;
+	margin: 0;
+	padding: 0;
 }
 
-h2 {
-	font-size: 9pt;
-	color: #999;
-	text-transform: uppercase;
-	text-align: center;
+h1 span.app_name {
+	color: #fff;
 }
 
-#login_form ul {
+#login_form ul.form {
 	list-style-type: none;
+	display: block;
+	position: absolute;
+	top: 88px;
+	left: 35px;
+	margin: 0;
+	padding: 0;
+	padding-top: 20px;
+	padding-left: 15px;
 }
 
-#login_form ul li {
+#login_form ul.form li {
 	clear: both;
 	display: block;
-	margin-bottom: 10px;
+	margin-bottom: 15px;
 }
 
 label {
 	display: block;
 	float: left;
-	width: 75px;
-	color: #999;
+	width: 120px;
+	color: #8b8b8b;
 	text-align: right;
-	margin-right: 15px;
-	font-size: 10pt;
+	margin-right: 12px;
+	font-size: 18pt;
+	font-weight: 100;
+	padding-top: 4px;
 }
 
 #username, #password {
 	float: left;
 	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	border: 1px solid #999;
-	padding: 2px;
+	border: 1px solid #ccc;
+	padding: 4px;
 	font-family: arial;
-	font-size: 10pt;
+	font-size: 18pt;
+	width: 250px;
 }
 
 li.submit input {
 	position: relative;
-	left: 90px;
-	border-radius: 5px;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 5px;
-	background-color: #dedede;
-	border: 1px solid #fff;
-	color: #222;
-	font-weight: bold;
-	font-size: 10pt;
-	font-family: arial;
+	left: 130px;
+}
+
+div.links {
+	position: absolute;
+	bottom: 25px;
+	right: 40px;
+}
+
+ul.links {
+	list-style-type: none;
+}
+
+ul.links li {
+	display: inline;
+}
+
+ul.links a {
+	display: block;
+	text-align: right;
+	width: 200px;
+	font-size: 8pt;
+	margin-bottom: 5px;
+}
+
+div#copyright {
+	margin: 0 auto;
+	width: 485px;
+	padding: 0px 10px;
+	color: #999;
+	font-size: 8pt;
+	text-align: center;
 }

@@ -8,12 +8,18 @@ class Admincp_Controller extends MY_Controller {
 		
 		define("_CONTROLPANEL","TRUE");
 		
+		$this->load->model('admincp/notices');
+		$this->load->helper('admincp/get_notices');
+		
 		// are they logged in?
 		if ($this->user_model->logged_in() and !$this->user_model->is_admin()) {
-			die(show_error('You do not have control panel privileges.'));
+			$this->notices->SetError('You are logged in but do not have control panel privileges.');
+			redirect(site_url('admincp/login'));
+			die();
 		}
 		elseif (!$this->user_model->logged_in() and $this->router->fetch_class() != 'login') {
 			redirect(site_url('admincp/login'));
+			die();
 		}
 	
 		// store dynamically-generated navigation
@@ -29,8 +35,6 @@ class Admincp_Controller extends MY_Controller {
 		$this->navigation->child_link('dashboard',1,'Dashboard',site_url('admincp'));
 		
 		// admin-specific loading
-		$this->load->model('admincp/notices');
-		$this->load->helper('admincp/get_notices');
 		$this->load->helper('admincp/dataset_link');
 		$this->load->helper('directory');
 		$this->load->helper('form');

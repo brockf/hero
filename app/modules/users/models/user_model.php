@@ -39,6 +39,8 @@ class User_model extends CI_Model
 		else {
 			return FALSE;
 		}
+		
+		$this->db->update('users',array('user_last_login' => date('Y-m-d h:i:s')),array('user_id' => $user['id']));
     	
     	$this->session->set_userdata('user_id',$user['id']);
     	$this->session->set_userdata('login_time',now());

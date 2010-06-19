@@ -33,4 +33,12 @@ class Login extends Controller {
 			return FALSE;
 		}
 	}
+	
+	function logout () {
+		$this->user_model->logout();
+		
+		redirect('admincp');
+		
+		return TRUE;
+	}
 }

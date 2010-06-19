@@ -66,6 +66,10 @@ a:hover {
 	right: 165px;
 }
 
+#app_bar a:hover {
+	color: #fff;
+}
+
 #app_bar a#get_support {
 	position: absolute;
 	top: 5px;

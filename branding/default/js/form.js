@@ -17,8 +17,10 @@
 $(document).ready(function () {
 	MarkEmpty();
 	
-	// trigger WYSIWYG
-	$('.wysiwyg').wysiwyg();
+	// trigger WYSIWYG if it's loaded
+	if(typeof wysiwyg == 'function') {
+		$('.wysiwyg').wysiwyg();
+	}
 		
 	$('form.validate').submit(function() {
 		var errors_in_form = false;
