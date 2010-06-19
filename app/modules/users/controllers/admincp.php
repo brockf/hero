@@ -58,7 +58,10 @@ class Admincp extends Admincp_Controller {
 							),
 						array(
 							'name' => 'Status',
-							'width' => '10%'
+							'width' => '10%',
+							'type' => 'select',
+							'filter' => 'suspended',
+							'options' => array('0' => 'Active', '1' => 'Suspended')
 							),
 						array(
 							'name' => 'Last Login',
