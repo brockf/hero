@@ -2,7 +2,7 @@
 /**
 * Admincp Default Controller 
 *
-* Shows the admin homepage, logs in and out
+* Shows the admin homepage
 *
 * @version 1.0
 * @author Electric Function, Inc.

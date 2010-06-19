@@ -13,10 +13,82 @@
 
 class User_model extends CI_Model
 {
+	var $active_user;  // the logged-in use
+	
 	function __construct()
 	{
 		parent::CI_Model();
+		
+		// check for session
+        if ($this->session->userdata('user_id') != '') {
+        	$this->set_active($this->session->userdata('user_id'));
+        }
 	}
+	
+	function login ($username, $password) {
+		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
+		$this->db->where('user_password',md5($password));
+		$this->db->where('user_suspended','0');
+		$this->db->where('user_deleted','0');
+		$query = $this->db->get('users');
+		
+		if ($query->num_rows() > 0) {
+			$user = $query->row_array();
+			$user = $this->get_user($user['user_id']);
+		}
+		else {
+			return FALSE;
+		}
+    	
+    	$this->session->set_userdata('user_id',$user['id']);
+    	$this->session->set_userdata('login_time',now());
+		
+		$this->set_active($user['id']); 
+		
+		return TRUE;
+    }
+    
+    function logout () {
+    	$this->session->unset_userdata('user_id','login_time');
+    	
+    	return TRUE;
+    }
+    
+    function set_active ($user_id) {
+    	if (!$user = $this->get_user($user_id)) {
+    		return FALSE;
+    	}
+    	
+    	$this->active_user = $user;
+    	
+    	return TRUE;
+    }
+    
+    function is_admin () {
+    	if (empty($this->active_user) or $this->active_user['is_admin'] == FALSE) {
+    		return FALSE;
+    	}
+    	
+    	return TRUE;
+    }
+    
+    function logged_in () {
+    	if (empty($this->active_user)) {
+    		return FALSE;
+    	}
+    	else {
+    		return TRUE;
+    	}
+    }
+    
+    function get ($parameter = FALSE) {
+    	if ($parameter) {
+    		return $this->active_user[$parameter];
+    	}
+    	else {
+    		return $this->active_user;
+    	}
+    }
 	
 	/*
 	* Validation
@@ -34,8 +106,10 @@ class User_model extends CI_Model
 		
 		$this->form_validation->set_rules('first_name','First Name','trim|required');
 		$this->form_validation->set_rules('last_name','Last Name','trim|required');
-		$this->form_validation->set_rules('email','Email','trim|unique_email|valid_email');
-		$this->form_validation->set_rules('username','Username','trim|unique_username');
+		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
+		$this->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
+		$unique_username = ($editing == FALSE) ? 'unique_username|' : '';
+		$this->form_validation->set_rules('username','Username','trim|alphanumeric' . $unique_username);
 		
 		if ($editing == FALSE) {
 			$this->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
@@ -106,6 +180,31 @@ class User_model extends CI_Model
 		else {
 			return TRUE;
 		}
+	}
+	
+	/*
+	* Remove a Usergroup
+	*
+	* @param int $user_id
+	* @param int $group_id
+	*
+	* @return array New usergroup array
+	*/
+	
+	function remove_group ($user_id, $group_id) {
+		$user = $this->get_user($user_id);
+		
+		foreach ($user['usergroups'] as $key => $val) {
+			if ($val == $group_id) {
+				unset($user['usergroups'][$key]);
+			}
+		}
+		
+		$usergroups = '|' . implode('|',$user['usergroups']) . '|';
+		
+		$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
+		
+		return $usergroups;
 	}
 	
 	/*
@@ -327,8 +426,9 @@ class User_model extends CI_Model
 		}
 		
 		// get custom fields
-		$this->load->model('custom_fields_model');
-		$custom_fields = $this->custom_fields_model->get_custom_fields('1');
+		$CI =& get_instance();
+		$CI->load->model('custom_fields_model');
+		$custom_fields = $CI->custom_fields_model->get_custom_fields('1');
 		
 		$users = array();
 		foreach ($result->result_array() as $user) {

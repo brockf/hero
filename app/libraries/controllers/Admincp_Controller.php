@@ -7,6 +7,14 @@ class Admincp_Controller extends MY_Controller {
 		parent::__construct();
 		
 		define("_CONTROLPANEL","TRUE");
+		
+		// are they logged in?
+		if ($this->user_model->logged_in() and !$this->user_model->is_admin()) {
+			die(show_error('You do not have control panel privileges.'));
+		}
+		elseif (!$this->user_model->logged_in() and $this->router->fetch_class() != 'login') {
+			redirect(site_url('admincp/login'));
+		}
 	
 		// store dynamically-generated navigation
 		$this->load->library('navigation');

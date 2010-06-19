@@ -5,14 +5,14 @@
 	<title>Login</title>
 	<link href="<?=branded_include('css/universal.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<link href="<?=branded_include('css/login.css');?>" rel="stylesheet" type="text/css" media="screen" />
-	<script type="text/javascript" src="<?=branded_include('js/jquery-1.3.2.js');?>"></script>
+	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
 </head>
 <body>
 	<div id="notices"><?=get_notices();?></div>
 	<div id="login_form">
 		<h1>Control Panel</h1>
-		<form method="post" action="<?=site_url('dashboard/do_login');?>">
+		<form method="post" action="<?=site_url('/admincp/login/go');?>">
 			<ul>
 				<li>
 					<label for="username">Username</label>

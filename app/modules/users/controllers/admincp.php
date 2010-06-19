@@ -154,6 +154,7 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		$this->load->library('admin_form');
+		$this->load->model('custom_fields_model');
 		
 		$form = new Admin_form;
 		$form->fieldset('System Information');
@@ -167,7 +168,7 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Profile Information');
 		$form->names('Name', '', '', FALSE, TRUE);
 		
-		$form->custom_fields($this->user_model->get_custom_fields());
+		$form->custom_fields($this->custom_fields_model->get_custom_fields('1'));
 	
 		$data = array(
 						'user' => array(),
@@ -206,9 +207,6 @@ class Admincp extends Admincp_Controller {
 				return FALSE;
 			}	
 		}
-		
-		// build required
-		$required = ($this->input->post('required') == '1') ? TRUE : FALSE;
 		
 		if ($action == 'new') {
 			$custom_fields = $this->custom_fields_model->post_to_array('1');
@@ -293,8 +291,159 @@ class Admincp extends Admincp_Controller {
 		$this->load->view('user_form.php', $data);
 	}
 	
+	function groups () {
+		$this->navigation->module_link('Add New Member Group',site_url('admincp/users/group_add'));
+		
+		$this->load->model('admincp/dataset','dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'ID #',
+							'type' => 'id',
+							'width' => '5%'
+							),
+						array(
+							'name' => 'Name',
+							'width' => '70%'
+							),
+						array(
+							'name' => '',
+							'width' => '25%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('usergroup_model','get_usergroups');
+		$this->dataset->base_url(site_url('admincp/users/groups'));
+		$this->dataset->rows_per_page(1000);
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		// add actions
+		$this->dataset->action('Delete','admincp/users/group_delete');
+		
+		$this->load->view('groups.php');
+	}
+	
+	function group_add () {
+		$this->load->library('admin_form');
+		
+		$form = new Admin_form;
+		$form->fieldset('Group Information');
+		$form->text('Name', 'name', '', FALSE, TRUE, FALSE, TRUE);
+		
+		$data = array(
+						'form' => $form->display(),
+						'form_title' => 'Create Member Group',
+						'form_action' => site_url('admincp/users/post_group/new')
+					);
+	
+		$this->load->view('group_form.php', $data);
+	}
+	
+	function post_group ($action, $id = FALSE) {
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('name','Group Name','required|trim');
+		
+		if ($this->form_validation->run() == FALSE) {
+			$error = TRUE;
+			$this->notices->SetError('Group name is a required field.');
+		}
+		
+		if (isset($error)) {
+			if ($action == 'new') {
+				redirect('admincp/users/group_add');
+				return FALSE;
+			}
+			else {
+				redirect('admincp/users/group_edit/' . $id);
+				return FALSE;
+			}	
+		}
+		
+		$this->load->model('usergroup_model');
+		
+		if ($action == 'new') {
+			$group_id = $this->usergroup_model->new_group(
+													$this->input->post('name')
+												);
+			
+			$this->notices->SetNotice('Member group added successfully.');
+		}
+		else {
+			$this->usergroup_model->update_group(
+													$id,
+													$this->input->post('name')
+												);
+															
+			$this->notices->SetNotice('Member group edited successfully.');
+		}
+		
+		redirect('admincp/users/groups');
+		
+		return TRUE;
+	}
+	
+	function group_edit ($id) {
+		$this->load->library('admin_form');
+		
+		$this->load->model('usergroup_model');
+		$group = $this->usergroup_model->get_group($id);
+		
+		$form = new Admin_form;
+		$form->fieldset('Group Information');
+		$form->text('Name', 'name', $group['name'], FALSE, TRUE, FALSE, TRUE);
+		
+		$data = array(
+						'form' => $form->display(),
+						'form_title' => 'Edit Member Group',
+						'form_action' => site_url('admincp/users/post_group/edit/' . $id)
+					);
+	
+		$this->load->view('group_form.php', $data);
+	}
+	
+	function group_default ($id) {
+		$this->load->model('usergroup_model');
+		
+		$this->usergroup_model->make_default($id);
+		
+		redirect(site_url('admincp/users/groups'));
+	}
+	
+	/**
+	* Delete Custom Fields
+	*
+	* Delete gateways as passed from the dataset
+	*
+	* @param string Hex'd, base64_encoded, serialized array of user_field ID's
+	* @param string Return URL for Dataset
+	*
+	* @return bool Redirects to dataset
+	*/
+	function group_delete ($groups, $return_url) {
+		$this->load->library('asciihex');
+		
+		$groups = unserialize(base64_decode($this->asciihex->HexToAscii($groups)));
+		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
+		
+		$this->load->model('usergroup_model');
+		
+		foreach ($groups as $group) {
+			$this->usergroup_model->delete_group($group);
+		}
+		
+		$this->notices->SetNotice('Group(s) deleted successfully.');
+		
+		redirect($return_url);
+		
+		return TRUE;
+	}
+	
 	function data () {
 		$this->navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
+		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/1/' . urlencode(base64_encode(site_url('admincp/users/data')))));
 		
 		$this->load->model('admincp/dataset','dataset');
 		

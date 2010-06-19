@@ -36,8 +36,9 @@ class Admin_form {
 	* @param boolean $mark_empty Should the field have an "empty" default value?
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px') {
+	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -51,7 +52,8 @@ class Admin_form {
 								'help' => $help,
 								'required' => $required,
 								'mark_empty' => $mark_empty,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -64,8 +66,9 @@ class Admin_form {
 	* @param boolean $required Is the field required for submission?
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function password ($label, $name, $help = FALSE, $required = FALSE, $full = FALSE, $width = '250px') {
+	function password ($label, $name, $help = FALSE, $required = FALSE, $full = FALSE, $width = '250px', $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -77,7 +80,8 @@ class Admin_form {
 								'width' => $width,
 								'help' => $help,
 								'required' => $required,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -92,8 +96,9 @@ class Admin_form {
 	* @param string $help A piece of help text
 	* @param boolean $required Is the field required for submission?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function names ($label, $first_value, $last_value, $help = FALSE, $required = FALSE, $width = '250px') {
+	function names ($label, $first_value, $last_value, $help = FALSE, $required = FALSE, $width = '250px', $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -105,7 +110,8 @@ class Admin_form {
 								'last_value' => $last_value,
 								'width' => $width,
 								'help' => $help,
-								'required' => $required
+								'required' => $required,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -121,8 +127,9 @@ class Admin_form {
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
 	* @param string $height The complete style:height element definition
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function textarea ($label, $name, $value, $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px') {
+	function textarea ($label, $name, $value, $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px', $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -136,7 +143,8 @@ class Admin_form {
 								'help' => $help,
 								'required' => $required,
 								'wysiwyg' => $wysiwyg,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -150,8 +158,9 @@ class Admin_form {
 	* @param boolean $required Is the field required for submission?
 	* @param string $help A piece of help text
 	* @param boolean $full Should the field take up the entire pane?
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function dropdown ($label, $name, $options, $selected, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE) {
+	function dropdown ($label, $name, $options, $selected, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -173,7 +182,8 @@ class Admin_form {
 								'label' => $label,
 								'value' => $selected,
 								'help' => $help,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -187,8 +197,9 @@ class Admin_form {
 	* @param boolean $required Is the field required for submission?
 	* @param string $help A piece of help text
 	* @param boolean $full Should the field take up the entire pane?
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function radio ($label, $name, $options, $selected, $required = FALSE, $help = FALSE, $full = FALSE) {
+	function radio ($label, $name, $options, $selected, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -201,7 +212,8 @@ class Admin_form {
 								'label' => $label,
 								'value' => $selected,
 								'help' => $help,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -214,8 +226,9 @@ class Admin_form {
 	* @param boolean $checked TRUE to check the box
 	* @param string $help A piece of help text
 	* @param boolean $full Should the field take up the entire pane?
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function checkbox ($label, $name, $value, $checked = FALSE, $help = FALSE, $full = FALSE) {
+	function checkbox ($label, $name, $value, $checked = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -227,7 +240,8 @@ class Admin_form {
 								'value' => $value,
 								'checked' => $checked,
 								'help' => $help,
-								'full' => $full
+								'full' => $full,
+								'li_id' => $li_id
 							);
 	}
 	
@@ -237,8 +251,10 @@ class Admin_form {
 	* @param string $label The human friendly form label
 	* @param string $name Field name
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $full Should the field take up the entire pane?
+	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function file ($label, $name, $width = '250px') {
+	function file ($label, $name, $width = '250px', $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -247,7 +263,9 @@ class Admin_form {
 											'type' => 'file',
 											'label' => $label,
 											'name' => $name,
-											'width' => $width
+											'width' => $width,
+											'full' => $full,
+											'li_id' => $li_id
 										);
 	}
 	
@@ -258,11 +276,12 @@ class Admin_form {
 	*
 	* @param string $legend The fieldset legend
 	*/
-	function fieldset($legend = '') {
+	function fieldset($legend = '', $ul_classes = array()) {
 		$this->fieldset++;
 		
 		$this->fieldsets[$this->fieldset] = array(
-												'legend' => $legend
+												'legend' => $legend,
+												'ul_classes' => $ul_classes
 												);
 	}
 	
@@ -288,10 +307,10 @@ class Admin_form {
 					$value = $field['default'];
 				}
 				
-				$this->text($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width']);
+				$this->text($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
 			}
 			elseif ($field['type'] == 'password') {
-				$this->password($field['friendly_name'], $field['name'], $field['help'], $field['required'], FALSE, $field['width']);
+				$this->password($field['friendly_name'], $field['name'], $field['help'], $field['required'], FALSE, $field['width'], $field['id']);
 			}
 			elseif ($field['type'] == 'textarea') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';			
@@ -300,7 +319,7 @@ class Admin_form {
 					$value = $field['default'];
 				}
 					
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width']);
+				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
 			}
 			elseif ($field['type'] == 'wysiwyg') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
@@ -309,7 +328,7 @@ class Admin_form {
 					$value = $field['default'];
 				}
 				
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'mini', TRUE, $field['width']);
+				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'mini', TRUE, $field['width'], '150px', $field['id']);
 			}
 			elseif ($field['type'] == 'select') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
@@ -323,7 +342,7 @@ class Admin_form {
 					$options[$option['value']] = $option['name'];
 				}
 				
-				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, FALSE, $field['required'], $field['help']);
+				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, FALSE, $field['required'], $field['help'], FALSE, $field['id']);
 			}
 			elseif ($field['type'] == 'multiselect') {
 				$value = (isset($values[$field['name']]) and is_array($values[$field['name']])) ? $values[$field['name']] : array();
@@ -337,7 +356,7 @@ class Admin_form {
 					$options[$option['value']] = $option['name'];
 				}
 				
-				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, TRUE, $field['required'], $field['help']);
+				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, TRUE, $field['required'], $field['help'], FALSE, $field['id']);
 			}
 			elseif ($field['type'] == 'radio') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';
@@ -351,7 +370,7 @@ class Admin_form {
 					$options[$option['value']] = $option['name'];
 				}
 				
-				$this->radio($field['friendly_name'], $field['name'], $options, $value, $field['required'], $field['help']);
+				$this->radio($field['friendly_name'], $field['name'], $options, $value, $field['required'], $field['help'], FALSE, $field['id']);
 			}
 			elseif ($field['type'] == 'checkbox') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';
@@ -365,10 +384,10 @@ class Admin_form {
 					$options[$option['value']] = $option['name'];
 				}
 				
-				$this->checkbox($field['friendly_name'], $field['name'], 'yes', $field['required'], $field['help']);
+				$this->checkbox($field['friendly_name'], $field['name'], 'yes', $field['required'], $field['help'], FALSE, $field['id']);
 			}
 			elseif ($field['type'] == 'file') {
-				$this->file($field['friendly_name'], $field['name'], $field['width']);
+				$this->file($field['friendly_name'], $field['name'], $field['width'], FALSE, $field['id']);
 			}
 		}
 	}
@@ -388,10 +407,16 @@ class Admin_form {
 				$return .= '<legend>' . $this->fieldsets[$i]['legend'] . '</legend>';
 			}
 			
-			$return .= '<ul class="form">';
+			$classes = array();
+			$classes[] = 'form';
+			$classes = array_merge($classes,$this->fieldsets[$i]['ul_classes']);
+			
+			$return .= '<ul class="' . implode(' ',$classes) . '">';
 			
 			foreach ($this->fields[$i] as $field) {
-				$return .= '<li>';
+				$field['li_id'] = (isset($field['li_id'])) ? $field['li_id'] : $field['name'];
+			
+				$return .= '<li id="row_' . $field['li_id'] . '">';
 				
 				// label
 				$classes = array();

@@ -49,6 +49,8 @@ $route['callback:any'] = 'callback/process';
 // give admincp a default controller
 $route['admincp'] = 'admincp/dashboard';
 $route['admincp/dataset/([a-zA-Z_-]+)'] = 'admincp/dataset/$1';
+$route['admincp/login'] = 'admincp/login';
+$route['admincp/login/go'] = 'admincp/login/go';
 $route['admincp/([a-zA-Z_-]+)/(:any)'] = "$1/admincp/$2";
 $route['admincp/(login|logout)'] = "admincp/$1";
 $route['admincp/([a-zA-Z_-]+)'] = "$1/admincp/index";

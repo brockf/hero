@@ -201,6 +201,7 @@ ul.module_links a {
 	text-decoration: none;
 	font-size: 12pt;
 	font-weight: bold;
+	margin-left: 15px;
 }
 
 ul.module_links a:hover {

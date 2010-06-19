@@ -21,6 +21,28 @@ class Custom_fields_model extends CI_Model {
 	}
 	
 	/*
+	* Reset Order for a Field Group
+	*
+	* @param int $custom_field_group
+	*
+	*/
+	
+	function reset_order ($custom_field_group) {
+		$this->db->update('custom_fields',array('custom_field_order' => '0'), array('custom_field_group' => $custom_field_group));
+	}
+	
+	/*
+	* Update Order
+	*
+	* @param int $field_id
+	* @param int $new_order
+	*/
+	
+	function update_order ($field_id, $new_order) {
+		$this->db->update('custom_fields',array('custom_field_order' => $new_order), array('custom_field_id' => $field_id));
+	}
+	
+	/*
 	* Get Rules
 	* 
 	* Generates a CodeIgniter form_validation array for custom fields based on the field group ID
@@ -165,6 +187,7 @@ class Custom_fields_model extends CI_Model {
 		$fields = array();
 		foreach ($result->result_array() as $field) {
 			$fields[] = array(
+							'id' => $field['custom_field_id'],
 							'friendly_name' => $field['custom_field_friendly_name'],
 							'name' => $field['custom_field_name'],
 							'type' => $field['custom_field_type'],
