@@ -11,27 +11,27 @@
 */
 
 class Module_model extends CI_Model {
+	var $modules_cache;
+	
 	function __construct() {
 		parent::CI_model();
-	}
-	
-	function get_module ($name) {
-		$this->db->where('module_name',$name);
 		
 		$result = $this->db->get('modules');
 		
-		if ($result->num_rows() == 0) {
+		foreach ($result->result_array() as $module) {
+			$this->modules_cache[$module['module_name']] = array(
+																'name' => $module['module_name'],
+																'version' => $module['module_version']
+																);
+		}
+	}
+	
+	function get_module ($name) {
+		if (!isset($this->modules_cache[$name])) {
 			return FALSE;
 		}
 		
-		$module = $result->row_array();
-		
-		$module = array(
-						'name' => $module['module_name'],
-						'version' => $module['module_version']
-					);
-		
-		return $module;
+		return $this->modules_cache[$name];
 	}
 	
 	function new_module ($name, $version) {

@@ -8,7 +8,7 @@ if (!empty($this->dataset->data)) {
 		<tr>
 			<td><input type="checkbox" name="check_<?=$row['id'];?>" value="1" class="action_items" /></td>
 			<td><?=$row['id'];?></td>
-			<td><?=$row['username'];?></td>
+			<td><a href="<?=$row['admin_link'];?>"><?=$row['username'];?></a></td>
 			<td><?=$row['email'];?></td>
 			<td><?=$row['last_name'];?>, <?=$row['first_name'];?></td>
 			<td><? foreach ($row['usergroups'] as $group) { ?><?=$usergroups[$group];?><br /><? } ?></td>

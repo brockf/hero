@@ -91,6 +91,66 @@ class User_model extends CI_Model
     		return $this->active_user;
     	}
     }
+    
+    /*
+    * Get Active Subscriptions
+    *
+    * Gets active subscriptions for a user
+    *
+    * @param int $user_id The user id
+    *
+    * @param boolean|array Array of active subscriptions, else FALSE if none exist
+    */
+    
+    function get_active_subscriptions ($user_id) {
+    	$this->load->model('billing/recurring_model');
+    	
+    	$customer_id = $this->get_customer_id($user_id);
+    	
+    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id));
+    }
+    
+    /*
+    * Get Subscriptions
+    *
+    * Gets active and cancelled subscriptions for a user
+    *
+    * @param int $user_id The user id
+    *
+    * @param boolean|array Array of subscriptions, else FALSE if none exist
+    */
+    
+    function get_subscriptions ($user_id) {
+    	$this->load->model('billing/recurring_model');
+    	
+    	$customer_id = $this->get_customer_id($user_id);
+    	
+    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id), TRUE);
+    }
+    
+    /*
+    * Get Customer ID
+    * 
+    * Sometimes, we just need this, so let's not do a full blown query.
+    *
+    * @param int $user_id
+    *
+    * @return int $customer_id
+    */
+    function get_customer_id ($user_id) {
+    	$this->db->select('customer_id');
+    	$this->db->where('user_id',$user_id);
+    	$result = $this->db->get('users');
+    	
+    	if ($result->num_rows() == 0) {
+    		return FALSE;
+    	}
+    	else {
+    		$user = $result->row_array();
+    		
+    		return isset($user['customer_id']) ? $user['customer_id'] : FALSE;
+    	}
+    }
 	
 	/*
 	* Validation
@@ -456,7 +516,8 @@ class User_model extends CI_Model
 							'referrer' => $user['user_referrer'],
 							'signup_date' => $user['user_signup_date'],
 							'last_login' => ($user['user_last_login'] == '0000-00-00 00:00:00') ? FALSE : $user['user_last_login'],
-							'suspended' => $user['user_suspended']
+							'suspended' => ($user['user_suspended'] == 1) ? TRUE : FALSE,
+							'admin_link' => site_url('admincp/users/profile/' . $user['user_id'])
 							);
 							
 			foreach ($custom_fields as $field) {

@@ -1,6 +1,10 @@
 <?php
 
-function local_time ($time) {	
+function local_time ($time) {
+	if ($time == '0000-00-00 00:00:00') {
+		return 'n/a';
+	}	
+	
 	return $time;
 }
 

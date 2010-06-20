@@ -33,7 +33,7 @@ class Admincp extends Admincp_Controller {
 							'type' => 'text',
 							'filter' => 'username',
 							'sort_column' => 'user_username',
-							'width' => '10%'
+							'width' => '15%'
 							),
 						array(
 							'name' => 'Email',
@@ -54,7 +54,7 @@ class Admincp extends Admincp_Controller {
 							'type' => 'select',
 							'filter' => 'group',
 							'options' => $options,
-							'width' => '15%'
+							'width' => '10%'
 							),
 						array(
 							'name' => 'Status',
@@ -144,6 +144,50 @@ class Admincp extends Admincp_Controller {
 		redirect($return_url);
 		
 		return TRUE;
+	}
+	
+	function suspend_user ($user) {
+		$this->user_model->suspend_user($user);
+				
+		redirect('admincp/users/profile/' . $user);
+		
+		return TRUE;
+	}
+	
+	function unsuspend_user ($user) {
+		$this->user_model->unsuspend_user($user);
+				
+		redirect('admincp/users/profile/' . $user);
+		
+		return TRUE;
+	}
+	
+	function profile ($id) {	
+		$user = $this->user_model->get_user($id);
+		
+		if ($user['suspended'] != TRUE) {
+			$this->navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
+		}
+		else {
+			$this->navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
+		}
+		
+		$this->navigation->module_link('New Subscription',site_url('admincp/billing/new_charge/' . $id));
+		
+		if (!$user) {
+			die(show_error('User does not exist.'));
+		}
+		
+		$custom_fields = $this->user_model->get_custom_fields();
+		$subscriptions = $this->user_model->get_subscriptions($user['id']);
+		
+		$data = array(
+					'user' => $user,
+					'custom_fields' => $custom_fields,
+					'subscriptions' => $subscriptions
+			);
+		
+		$this->load->view('profile', $data);
 	}
 	
 	function add () {

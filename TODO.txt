@@ -1,6 +1,6 @@
 - Roadmap:
+	- Delete subscription plans
 	- Add require_account for orders
-	- Create "subscription_plans" model/table, extending "plans" (they'll share ID\'s)
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
@@ -21,6 +21,7 @@
 	
 	
 - Orders
+	- "customer_id" may lead to a member, if the user had an account
 	- Link to members
 	- Link to a customer record for shipping data (return shipping as $order['shipping']['first_name'] etc. - $order['shipping'] = FALSE if no shipping)
 	- Link to a charge

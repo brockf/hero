@@ -18,7 +18,7 @@ $(document).ready(function () {
 	MarkEmpty();
 	
 	// trigger WYSIWYG if it's loaded
-	if(typeof wysiwyg == 'function') {
+	if(typeof $.fn.wysiwyg == 'function') {
 		$('.wysiwyg').wysiwyg();
 	}
 		

@@ -16,6 +16,6 @@ class Dashboard extends Admincp_Controller {
 	}
 	
 	function index() {
-		echo 'test';
+		redirect('admincp/users');
 	}
 }

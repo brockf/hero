@@ -225,6 +225,24 @@ ul.module_links a:hover {
 	color: #333;
 }
 
+#content h2.cat {
+	display: block;
+	color: #fff;
+	background-color: #222;
+	font-size: 14pt;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px 8px 8px 38px;
+	background-repeat: no-repeat;
+	background-position: 12px 7px;
+	text-decoration: none;
+}
+
+#content h2.user {
+	background-image: url(../images/user.png);
+}
+
 #content h2.colour {
 	margin: 0;
 	padding: 0;
@@ -518,7 +536,7 @@ form.form ul.panel li {
 }
 
 form.form input.number {
-	width: 40px;
+	width: 55px;
 }
 
 form.form input.number.full {
@@ -729,4 +747,22 @@ table.settings td.edit a {
 
 table.settings td.edit a:hover {
 	background-color: #000;
+}
+
+ul.data {
+	list-style-type: none;
+}
+
+ul.data li {
+	margin-bottom: 5px;
+	clear: both;
+}
+
+ul.data span.tag {
+	font-weight: bold;
+	float: left;
+	display: block;
+	width: 120px;
+	text-align: right;
+	margin-right: 15px;
 }

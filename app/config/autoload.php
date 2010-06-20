@@ -44,7 +44,8 @@ if (file_exists(APPPATH . 'config/database.php')) {
 								   'session',
 								   'auto_updater',
 								   'email',
-								   'module'
+								   'module',
+								   'response' // for OpenGateway compatibility
 								);
 }
 else {
