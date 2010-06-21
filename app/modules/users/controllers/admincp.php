@@ -165,6 +165,11 @@ class Admincp extends Admincp_Controller {
 	function profile ($id) {	
 		$user = $this->user_model->get_user($id);
 		
+		if (!$user) {
+			die(show_error('User does not exist.'));
+		}
+		
+		// navigation
 		if ($user['suspended'] != TRUE) {
 			$this->navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
 		}
@@ -172,19 +177,33 @@ class Admincp extends Admincp_Controller {
 			$this->navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
 		}
 		
-		$this->navigation->module_link('New Subscription',site_url('admincp/billing/new_charge/' . $id));
+		$this->navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
 		
-		if (!$user) {
-			die(show_error('User does not exist.'));
-		}
-		
+		// prep data
 		$custom_fields = $this->user_model->get_custom_fields();
 		$subscriptions = $this->user_model->get_subscriptions($user['id']);
+		
+		// prep $show_usergroups
+		$this->load->model('usergroup_model');
+		$usergroups = $this->usergroup_model->get_usergroups();
+		
+		$usergroup_options = array();
+		foreach ($usergroups as $group) {
+			$usergroup_options[$group['id']] = $group['name'];
+		}
+		$usergroups = $usergroup_options;
+		
+		foreach ($user['usergroups'] as $key => $group) {
+			$user['usergroups'][$key] = $usergroups[$group];
+		}
+		
+		$user['show_usergroups'] = implode(', ',$user['usergroups']);
 		
 		$data = array(
 					'user' => $user,
 					'custom_fields' => $custom_fields,
-					'subscriptions' => $subscriptions
+					'subscriptions' => $subscriptions,
+					'usergroups' => $usergroups
 			);
 		
 		$this->load->view('profile', $data);
@@ -288,9 +307,11 @@ class Admincp extends Admincp_Controller {
 										);
 															
 			$this->notices->SetNotice('User edited successfully.');
+			
+			$user_id = $id;
 		}
 		
-		redirect('admincp/users');
+		redirect('admincp/users/profile/' . $user_id);
 		
 		return TRUE;
 	}

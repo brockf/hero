@@ -44,7 +44,7 @@ $route['default_controller'] = "frontpage";
 $route['scaffolding_trigger'] = "";
 
 // reroute all callback/X calls to the main callback controller
-$route['callback:any'] = 'callback/process';
+$route['callback:any'] = 'billing/callback/process';
 
 // give admincp a default controller
 $route['admincp'] = 'admincp/dashboard';

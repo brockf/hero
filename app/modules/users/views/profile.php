@@ -5,6 +5,7 @@
 	<li><span class="tag">Username</span> <?=$user['username'];?></li>
 	<li><span class="tag">Full Name</span> <?=$user['last_name'];?>, <?=$user['first_name'];?></li>
 	<li><span class="tag">Email</span> <?=$user['email'];?></li>
+	<li><span class="tag">Member Groups</span><?=$user['show_usergroups'];?></li>
 	<? if (is_array($custom_fields)) { foreach ($custom_fields as $field) { ?>
 		<li><span class="tag"><?=$field['friendly_name'];?></span> <?=$user[$field['name']];?></li>
 	<? } } ?>
@@ -35,9 +36,9 @@
 			<td><?=setting('currency_symbol');?><?=$subscription['amount'];?></td>
 			<td><?=$subscription['next_charge_date'];?></td>
 			<td><?=$subscription['start_date'];?></td>
-			<td><?=$subscription['end_date'];?></td>
+			<td><? if ($subscription['status'] == 'inactive') { ?><?=$subscription['cancel_date'];?><? } else { ?><?=$subscription['end_date'];?><? } ?></td>
 			<td><?=$subscription['status'];?></td>
-			<td>cancel | change plan | change price</td>
+			<td>cancel | change plan | change price | view all charges</td>
 		</tr>
 	<? } ?>
 <? } else { ?>

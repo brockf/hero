@@ -245,6 +245,32 @@ class User_model extends CI_Model
 	}
 	
 	/*
+	* Add a Usergroup
+	*
+	* @param int $user_id
+	* @param int $group_id
+	*
+	* @return array New usergroup array
+	*/
+	
+	function add_group ($user_id, $group_id) {
+		$user = $this->get_user($user_id);
+		
+		if (in_array($group_id, $user['usergroups'])) {
+			// already a member
+			return FALSE;
+		}
+		
+		$user['usergroups'][] = $group_id;
+		
+		$usergroups = '|' . implode('|',$user['usergroups']) . '|';
+		
+		$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
+		
+		return $usergroups;
+	}
+	
+	/*
 	* Remove a Usergroup
 	*
 	* @param int $user_id
@@ -454,7 +480,7 @@ class User_model extends CI_Model
 	*
 	* @return array Each user in an array of users
 	*/
-	function get_users ($filters) {
+	function get_users ($filters = array()) {
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
 		}

@@ -16,11 +16,19 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     if ($subscription_id) {
     	$CI->load->model('billing/recurring_model');
     	$subscription = $CI->recurring_model->GetRecurring($subscription_id);
+    	
+    	if (isset($subscription['customer']['id'])) {
+    		$customer_id = $subscription['customer']['id'];
+    	}
     }
     
     if ($charge_id) {
     	$CI->load->model('billing/charge_model');
     	$charge = $CI->charge_model->GetCharge($charge_id);
+    	
+    	if (isset($charge['customer']['id'])) {
+    		$customer_id = $charge['customer']['id'];
+    	}
     }
     
     if ($customer_id) {
@@ -48,6 +56,31 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     
     if (!isset($plan_id)) {
     	$plan_id = FALSE;
+    }
+    
+    // does this trigger have a usergroup move?
+    if ($trigger_type == 'new_subscription' and !empty($plan_id) and isset($user)) {
+    	$CI->load->model('subscription_plan_model');
+    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
+    	
+    	mail('brock@cariboucms.com','test',print_r($plan,TRUE));
+    	
+    	if (!empty($sub_plan['promotion'])) {
+    		$CI->user_model->add_group($user['id'], $sub_plan['promotion']);
+    	}
+    }
+    
+    if (($trigger_type == 'subscription_expire' or $trigger_type == 'subscription_cancel') and !empty($plan_id) and isset($user)) {
+    	$CI->load->model('subscription_plan_model');
+    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
+    	
+    	if (!empty($sub_plan['promotion'])) {
+    		$CI->user_model->remove_group($user['id'], $sub_plan['promotion']);
+    	}
+    	
+    	if (!empty($sub_plan['demotion'])) {
+    		$CI->user_model->add_group($user['id'], $sub_plan['promotion']);
+    	}
     }
     
     // build array of all possible variables, if they exist

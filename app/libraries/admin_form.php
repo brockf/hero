@@ -26,6 +26,33 @@ class Admin_form {
 	}
 	
 	/*
+	* Add Value Row
+	*
+	* Adds a row that is just a <label></label> Value row
+	*
+	* @param string $label What to put in the <label>
+	* @param string $value What to put as the value
+	*/
+	function value_row ($label, $value, $full = FALSE) {
+		if ($this->fieldset == 0) {
+			show_error('You must create a fieldset before adding fields.');
+		}
+		
+		$CI =& get_instance();
+		
+		$CI->load->helper('clean_string_helper');
+		$name = clean_string($label);
+	
+		$this->fields[$this->fieldset][] = array(
+											'type' => 'value_row',
+											'label' => $label,
+											'value' => $value,
+											'full' => $full,
+											'name' => $name
+											);
+	}
+	
+	/*
 	* Add Text Field
 	*
 	* @param string $label The human friendly form label
@@ -560,11 +587,14 @@ class Admin_form {
 					
 					$checked = ($field['checked'] == TRUE) ? ' checked="checked"' : '';
 				
-					$return .= '<input type="checkbox" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $value . '"' . $checked. ' />';
+					$return .= '<input type="checkbox" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $field['value'] . '"' . $checked. ' />';
 				}
 				// file
 				elseif ($field['type'] == 'file') {
 					$return .= '<input type="file" name="' . $field['name'] . '" />';
+				}
+				elseif ($field['type'] == 'value_row') {
+					$return .= $field['value'];
 				}
 				
 				$return .= '</li>';
