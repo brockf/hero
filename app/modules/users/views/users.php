@@ -1,5 +1,5 @@
 <?=$this->load->view(branded_view('cp/header'));?>
-<h1>Member Search</h1>
+<h1>Manage Members</h1>
 <?=$this->dataset->table_head();?>
 <?
 if (!empty($this->dataset->data)) {

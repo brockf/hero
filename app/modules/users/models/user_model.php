@@ -41,6 +41,8 @@ class User_model extends CI_Model
 		}
 		
 		// track login
+		$this->load->model('users/login_model');
+		$this->login_model->new_login($user['id']);
 		
 		$this->db->update('users',array('user_last_login' => date('Y-m-d h:i:s')),array('user_id' => $user['id']));
     	

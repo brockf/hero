@@ -170,6 +170,8 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// navigation
+		$this->navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
+		
 		if ($user['suspended'] != TRUE) {
 			$this->navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
 		}
@@ -395,6 +397,79 @@ class Admincp extends Admincp_Controller {
 					);
 	
 		$this->load->view('user_form.php', $data);
+	}
+	
+	function logins () {
+		$this->load->model('admincp/dataset');
+		
+		$this->load->model('usergroup_model');			
+	    $usergroups = $this->usergroup_model->get_usergroups();
+	    
+	    $options = array();
+	    foreach ($usergroups as $group) {
+	    	$options[$group['id']] = $group['name'];
+	    }
+	    $usergroups = $options;
+	    				
+		$columns = array(
+						array(
+							'name' => 'ID #',
+							'type' => 'id',
+							'width' => '5%'
+							),
+						array(
+							'name' => 'Member',
+							'type' => 'text',
+							'filter' => 'username',
+							'sort_column' => 'user_username',
+							'width' => '15%'
+							),
+						array(
+							'name' => 'Member Group(s)',
+							'type' => 'select',
+							'filter' => 'group',
+							'options' => $options,
+							'width' => '15%'
+							),
+						array(
+							'name' => 'Date',
+							'type' => 'date',
+							'sort_column' => 'user_login_date',
+							'width' => '20%',
+							'filter' => 'timestamp',
+							'field_start_date' => 'start_date',
+							'field_end_date' => 'end_date'
+							),
+						array(
+							'name' => 'IP Address',
+							'type' => 'text',
+							'filter' => 'ip',
+							'sort_column' => 'user_ip',
+							'width' => '15%'
+							),
+						array(
+							'name' => 'Browser',
+							'type' => 'text',
+							'filter' => 'browser',
+							'options' => $options,
+							'width' => '30%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('login_model','get_logins');
+		$this->dataset->base_url(site_url('admincp/users/logins'));
+		
+		// total rows
+		$total_rows = $this->db->get('user_logins')->num_rows(); 
+		$this->dataset->total_rows($total_rows);
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		$data = array('usergroups' => $usergroups);
+		
+		$this->load->view('logins.php', $data);
 	}
 	
 	function groups () {

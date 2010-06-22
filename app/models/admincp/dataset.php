@@ -48,8 +48,8 @@ class Dataset extends CI_Model {
     	
     	// get filter values
 		$this->filter_values = ($has_filters) ? unserialize(base64_decode($CI->asciihex->HexToAscii($CI->uri->segment(4)))) : false;
-    	
-    	// get data
+		
+		// get data
     	$params = array();
     	
     	// limit to the rows_per_page configuration
@@ -315,10 +315,10 @@ class Dataset extends CI_Model {
 					}
 					elseif ($column['type'] == 'date') {
 						$value = (isset($this->filter_values[$column['filter_name'] . '_start'])) ? $this->filter_values[$column['filter_name'] . '_start'] : '';
-						$output .= '<input type="text" class="date_start datepick" name="' . $column['filter_name'] . '_start" value="' . $value . '" />';
+						$output .= '<input type="text" class="text date_start datepick" name="' . $column['filter_name'] . '_start" value="' . $value . '" />';
 						
 						$value = (isset($this->filter_values[$column['filter_name'] . '_end'])) ? $this->filter_values[$column['filter_name'] . '_end'] : '';
-						$output .= '<input type="text" class="date_end datepick" name="' . $column['filter_name'] . '_end" value="' . $value . '" />';
+						$output .= '<input type="text" class="text date_end datepick" name="' . $column['filter_name'] . '_end" value="' . $value . '" />';
 					}
 					elseif ($column['type'] == 'select') {
 						$output .= '<select name="' . $column['filter_name'] . '"><option value=""></option>';
