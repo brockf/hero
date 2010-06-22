@@ -78,25 +78,37 @@ class Dataset extends CI_Model {
     	
     	$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
     	
-    	// do an XML export?
-    	if ($CI->uri->segment(6) == 'export') {
-    		// build data > CSV exporter
-    	}
-    
+    	// calculate parameters without limits
+    	$params_no_limits = array();
+	    $params_no_limits = (!empty($filter_params)) ? $filter_params : $params_no_limits;
+    	
     	// get data
     	$CI->load->model($this->data_model,'data_model');
     	$data_function = $this->data_function;
     	
-    	$this->data = $CI->data_model->$data_function($params);
+    	// do an XML export?
+    	if ($CI->uri->segment(6) == 'export') {
+    		// get data without limits
+    		$this->data = $CI->data_model->$data_function($params_no_limits);
+    		
+    		// convert to CSV
+			$this->load->library('array_to_csv');
+			$this->array_to_csv->input($this->data);
+			
+			header("Content-type: application/vnd.ms-excel");
+  			header("Content-disposition: attachment; filename=export-" . $this->data_function . '-' . date("Y-m-d") . ".csv");
+			echo $this->array_to_csv->output();
+			die();
+    	}
+    	else {
+    		// get with limits
+    		$this->data = $CI->data_model->$data_function($params);
+    	}
     	
-    	// rid the limits/offset so we can calculate total rows
+    	// calculate total rows if they weren't passed
     	if (empty($this->total_rows)) {
     		// they didn't pass the total_rows via total_rows()
-	    	unset($params);
-	    	$params = array();
-	    	
-			$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
-	    	$total_rows = count($CI->data_model->$data_function($params));
+	    	$total_rows = count($CI->data_model->$data_function($params_no_limits));
 	    	
 	    	// save total rows
     		$this->total_rows = $total_rows;
