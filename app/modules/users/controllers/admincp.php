@@ -209,6 +209,44 @@ class Admincp extends Admincp_Controller {
 		$this->load->view('profile', $data);
 	}
 	
+	function profile_actions ($subscription_id = FALSE, $action = FALSE) {
+		// take input from POST if it wasn't passed
+		if ($subscription_id == FALSE) {
+			$subscription_id = $this->input->post('subscription_id');
+		}
+		
+		if ($action == FALSE) {
+			$action = $this->input->post('action');
+		}
+		
+		// get subscription
+		$this->load->model('billing/recurring_model');
+		$subscription = $this->recurring_model->GetRecurring($subscription_id);
+		
+		if ($action == 'cancel') {
+			if ($this->recurring_model->CancelRecurring($subscription['id'])) {
+				$this->notices->SetNotice('Subscription cancelled successfully.');
+			}
+			else {
+				$this->notices->SetError('There was an error cancelling this subscription.');
+			}
+			redirect(site_url('admincp/users/profile/' . $subscription['customer']['internal_id']));
+		}
+		elseif ($action == 'change_plan') {
+			redirect(site_url('admincp/billing/change_plan/' . $subscription['id']));
+		}
+		elseif ($action == 'change_price') {
+			redirect(site_url('admincp/billing/change_price/' . $subscription['id']));
+		}
+		elseif ($action == 'view_all') {
+			$this->load->helper('admincp/dataset_link');
+			$url = dataset_link('admincp/billing/charges', array('recurring_id' => $subscription_id));
+			redirect($url);
+		}
+		
+		return TRUE;
+	}
+	
 	function add () {
 		$this->load->model('usergroup_model');
 		

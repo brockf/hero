@@ -1,5 +1,4 @@
 - Roadmap:
-	- Delete subscription plans
 	- Add require_account for orders
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())

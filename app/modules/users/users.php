@@ -11,7 +11,7 @@
 */
 
 class Users extends Module {
-	var $version = '1.03';
+	var $version = '1.04';
 	var $name = 'users';
 
 	function __construct () {
@@ -29,9 +29,21 @@ class Users extends Module {
 		$CI->navigation->child_link('members',20,'Add Member/Administrator',site_url('admincp/users/add'));
 		$CI->navigation->child_link('members',30,'Member Groups',site_url('admincp/users/groups'));
 		$CI->navigation->child_link('members',40,'Member Data',site_url('admincp/users/data'));
+		$CI->navigation->child_link('reports',20,'Member Logins',site_url('admincp/users/logins'));
 	}
 
 	function update ($db_version) {
+		if ($db_version < 1.04) {
+			$this->CI->db->query('CREATE TABLE `user_logins` (
+								  `user_login_id` int(11) NOT NULL auto_increment,
+								  `user_id` int(11) NOT NULL,
+								  `user_login_date` DATETIME NOT NULL,
+								  `user_login_ip` varchar(50) NOT NULL,
+								  `user_login_hostname` varchar(255) NOT NULL,
+								  PRIMARY KEY  (`user_login_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
+		}
+		
 		if ($db_version < 1.03) {
 			$this->CI->settings_model->new_setting(3, 'validate_emails', '1', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
 		}

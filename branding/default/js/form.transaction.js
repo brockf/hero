@@ -45,6 +45,7 @@ function TrialVsInitial () {
 
 function ShowHide () {
 	if ($('#amount').val() == 0 || $('#amount').val() == '0.00') {
+		$('#initial_charge').val('0');
 		$('#transaction_gateway').hide();
 		$('#transaction_cc').hide();
 		$('#transaction_customer').hide();

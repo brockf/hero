@@ -30,7 +30,7 @@
 		<tbody>
 <? if (is_array($subscriptions)) { ?>
 	<? foreach($subscriptions as $subscription) { ?>
-		<tr>
+		<tr class="<?=$subscription['status'];?>">
 			<td><?=$subscription['id'];?></td>
 			<td><?=$subscription['plan']['name'];?></td>
 			<td><?=setting('currency_symbol');?><?=$subscription['amount'];?></td>
@@ -38,7 +38,22 @@
 			<td><?=$subscription['start_date'];?></td>
 			<td><? if ($subscription['status'] == 'inactive') { ?><?=$subscription['cancel_date'];?><? } else { ?><?=$subscription['end_date'];?><? } ?></td>
 			<td><?=$subscription['status'];?></td>
-			<td>cancel | change plan | change price | view all charges</td>
+			<td>
+				<form method="post" action="<?=site_url('admincp/users/profile_actions/');?>" />
+				<input type="hidden" name="subscription_id" value="<?=$subscription['id'];?>" />
+				<select name="action">
+					<option value="0" selected="selected"></option>
+					<? if ($subscription['status'] == 'active') { ?>
+					<option value="cancel">cancel subscription</option>
+					<option value="change_price">change recurring amount</option>
+					<option value="change_plan">change plan</option>
+					<? } ?>
+					<option value="view_all">report: view all related charges</option>
+				</select>
+				&nbsp;
+				<input type="submit" name="go_action" value="Go" />
+				</form>
+			</td>
 		</tr>
 	<? } ?>
 <? } else { ?>

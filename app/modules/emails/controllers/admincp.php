@@ -151,7 +151,7 @@ class Admincp extends Admincp_Controller {
 					'triggers' => $triggers,
 					'plans' => $plans,
 					'form_title' => 'Create New Email',
-					'form_action' => 'admincp/emails/post_email/new'
+					'form_action' => site_url('admincp/emails/post_email/new')
 					);
 				
 		$this->load->view('email_form.php',$data);
@@ -239,7 +239,7 @@ class Admincp extends Admincp_Controller {
 					'plans' => $plans,
 					'form' => $email,
 					'form_title' => 'Edit Email',
-					'form_action' => 'admincp/emails/post_email/edit/' . $email['id']
+					'form_action' => site_url('admincp/emails/post_email/edit/' . $email['id'])
 					);
 				
 		$this->load->view('email_form.php',$data);

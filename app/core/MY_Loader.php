@@ -162,7 +162,7 @@ class MY_Loader extends CI_Loader
 			if ($connect === TRUE) $connect = '';
 			$this->database($connect, FALSE, TRUE);
 		}
-
+		
 		Modules::load_file($model, $path);
 		$model = ucfirst($model);
 		self::$APP->$_alias = new $model();

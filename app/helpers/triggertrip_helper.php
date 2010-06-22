@@ -60,10 +60,8 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     
     // does this trigger have a usergroup move?
     if ($trigger_type == 'new_subscription' and !empty($plan_id) and isset($user)) {
-    	$CI->load->model('subscription_plan_model');
+    	$CI->load->model('billing/subscription_plan_model');
     	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
-    	
-    	mail('brock@cariboucms.com','test',print_r($plan,TRUE));
     	
     	if (!empty($sub_plan['promotion'])) {
     		$CI->user_model->add_group($user['id'], $sub_plan['promotion']);
@@ -71,7 +69,7 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     }
     
     if (($trigger_type == 'subscription_expire' or $trigger_type == 'subscription_cancel') and !empty($plan_id) and isset($user)) {
-    	$CI->load->model('subscription_plan_model');
+    	$CI->load->model('billing/subscription_plan_model');
     	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
     	
     	if (!empty($sub_plan['promotion'])) {
