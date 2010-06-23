@@ -1,0 +1,679 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Gateway_model</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Gateway_model</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Gateway Model</p>
+<p class="description"><p>Contains all the methods used to create and manage client gateways, process credit card charges, and create recurring subscriptions.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Electric Function, Inc.</li>
+				<li><span class="field">version:</span> 1.0</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_modules---billing---models---gateway_model.php.html">/modules/billing/models/gateway_model.php</a> (line <span class="field">13</span>)
+		</p>
+		
+				
+		<pre>CI_Model
+   |
+   --Gateway_model</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																																																												
+												<div class="method-definition">
+											<span class="method-result">Gateway_model</span>
+										<a href="#Gateway_model" title="details" class="method-name">Gateway_model</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#Charge" title="details" class="method-name">Charge</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, <span class="var-type">float</span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$credit_card</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$customer</span> = <span class="var-default">array()</span>], [<span class="var-type">float</span>&nbsp;<span class="var-name">$customer_ip</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$return_url</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cancel_url</span> = <span class="var-default">FALSE</span>], <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['card_num']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_month']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_year']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$credit_card['name']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['cvv']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#ChargeRecurring" title="details" class="method-name">ChargeRecurring</a>
+											(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#DeleteGateway" title="details" class="method-name">DeleteGateway</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$completely</span> = <span class="var-default">FALSE</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#GetExternalApiId" title="details" class="method-name">GetExternalApiId</a>
+											([<span class="var-type">string</span>&nbsp;<span class="var-name">$gateway_name</span> = <span class="var-default">FALSE</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array|bool</span>
+										<a href="#GetExternalAPIs" title="details" class="method-name">GetExternalAPIs</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#GetGatewayDetails" title="details" class="method-name">GetGatewayDetails</a>
+											([<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$deleted_ok</span> = <span class="var-default">FALSE</span>])
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#GetGateways" title="details" class="method-name">GetGateways</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['deleted']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['offset']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['limit']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#MakeDefaultGateway" title="details" class="method-name">MakeDefaultGateway</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#NewGateway" title="details" class="method-name">NewGateway</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['gateway_type']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_mc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_visa']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_amex']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_discover']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_dc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['enabled']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['alias']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#Recur" title="details" class="method-name">Recur</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, [<span class="var-type">float</span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$credit_card</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$customer</span> = <span class="var-default">array()</span>], [<span class="var-type">float</span>&nbsp;<span class="var-name">$customer_ip</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$recur</span> = <span class="var-default">array()</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$return_url</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cancel_url</span> = <span class="var-default">FALSE</span>], <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['card_num']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_month']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_year']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$credit_card['name']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['cvv']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['plan_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['start_date']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['end_date']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['free_trial']</span>, <span class="var-type">float</span>&nbsp;<span class="var-name">$recur['amount']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['occurrences']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['notification_url']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">boolean</span>
+										<a href="#Refund" title="details" class="method-name">Refund</a>
+											(<span class="var-type">$charge_id</span>&nbsp;<span class="var-name">$charge_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#UpdateGateway" title="details" class="method-name">UpdateGateway</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['gateway_id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_mc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_visa']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_amex']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_discover']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_dc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['enabled']</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodGateway_model" id="Gateway_model"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor Gateway_model</span> (line <span class="line-number">15</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">Gateway_model</span>
+		<span class="method-name">
+			Gateway_model
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodCharge" id="Charge"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Charge</span> (line <span class="line-number">122</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Process a credit card charge</p>
+<p class="description"><p>Processes a credit card CHARGE transaction using the gateway_id to use the proper client gateway.  Returns an array response from the appropriate payment library</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array with response_code and response_text</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			Charge
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, <span class="var-type">float</span>&nbsp;<span class="var-name">$amount</span>, [<span class="var-type">array</span>&nbsp;<span class="var-name">$credit_card</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$customer</span> = <span class="var-default">array()</span>], [<span class="var-type">float</span>&nbsp;<span class="var-name">$customer_ip</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$return_url</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cancel_url</span> = <span class="var-default">FALSE</span>], <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['card_num']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_month']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_year']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$credit_card['name']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['cvv']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$gateway_id</span><span class="var-description">: The gateway ID to process this charge with</span>			</li>
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$amount</span><span class="var-description">: The amount to charge (e.g., &quot;50.00&quot;)</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$credit_card</span><span class="var-description">: The credit card information</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['card_num']</span><span class="var-description">: The credit card number</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['exp_month']</span><span class="var-description">: The credit card expiration month in 2 digit format (01 - 12)</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['exp_year']</span><span class="var-description">: The credit card expiration year (YYYY)</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$credit_card['name']</span><span class="var-description">: The credit card cardholder name.  Required only is customer ID is not supplied.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['cvv']</span><span class="var-description">: The Card Verification Value.  Optional</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The ID of the customer to link the charge to</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$customer</span><span class="var-description">: An array of customer data to create a new customer with, if no customer_id</span>			</li>
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$customer_ip</span><span class="var-description">: The optional IP address of the customer</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$return_url</span><span class="var-description">: The URL for external payment processors to return the user to after payment</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$cancel_url</span><span class="var-description">: The URL to send if the user cancels an external payment</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodChargeRecurring" id="ChargeRecurring"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">ChargeRecurring</span> (line <span class="line-number">656</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Process a credit card recurring charge</p>
+<p class="description"><p>Processes a credit card CHARGE transaction for a recurring subscription using the gateway_id to use the proper client gateway.  Returns an array response from the appropriate payment library</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array with response_code and response_text</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			ChargeRecurring
+		</span>
+					(<span class="var-type">array</span>&nbsp;<span class="var-name">$params</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$params</span><span class="var-description">: The subscription array, from GetSubscription, for the recurring charge</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodDeleteGateway" id="DeleteGateway"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">DeleteGateway</span> (line <span class="line-number">818</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Delete a gateway</p>
+<p class="description"><p>Marks a gateway as deleted and removes the authentication information from the gateway_params table.  Does not actually deleted the gateway, but sets deleted to 1 in the gateways table.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> TRUE on success</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			DeleteGateway
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$completely</span> = <span class="var-default">FALSE</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$gateway_id</span><span class="var-description">: The gateway_id to be set deleted.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$completely</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetExternalApiId" id="GetExternalApiId"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetExternalApiId</span> (line <span class="line-number">867</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the External API ID</p>
+<p class="description"><p>Gets the External API ID from the external_apis table based on the gateway type ('authnet', 'exact' etc.)</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> External API ID</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			GetExternalApiId
+		</span>
+					([<span class="var-type">string</span>&nbsp;<span class="var-name">$gateway_name</span> = <span class="var-default">FALSE</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$gateway_name</span><span class="var-description">: The name to match with External API ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetExternalAPIs" id="GetExternalAPIs"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetExternalAPIs</span> (line <span class="line-number">1008</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get available Gateway External API's</p>
+<p class="description"><p>Loads a list of all possible gateway types, as well as their required fields</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Returns an array containing all of the fields required for that gateway type or FALSE upon failure</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array|bool</span>
+		<span class="method-name">
+			GetExternalAPIs
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodGetGatewayDetails" id="GetGatewayDetails"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetGatewayDetails</span> (line <span class="line-number">951</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the gateway details.</p>
+<p class="description"><p>Returns an array containg all the details for the Client Gateway</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> All gateway details</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			GetGatewayDetails
+		</span>
+					([<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$deleted_ok</span> = <span class="var-default">FALSE</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$gateway_id</span><span class="var-description">: The gateway_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$deleted_ok</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetGateways" id="GetGateways"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetGateways</span> (line <span class="line-number">894</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get list of current gateways</p>
+<p class="description"><p>Returns details of all gateways for a client.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array containg all gateways meeting criteria</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			GetGateways
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['deleted']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['offset']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['limit']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['deleted']</span><span class="var-description">: Whether or not the gateway is deleted.  Possible values are 1 for deleted and 0 for active</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['id']</span><span class="var-description">: The email ID.  GetGateway could also be used. Optional.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['offset']</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['limit']</span><span class="var-description">: The number of records to return. Optional.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodMakeDefaultGateway" id="MakeDefaultGateway"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">MakeDefaultGateway</span> (line <span class="line-number">734</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Set a default gateway.</p>
+<p class="description"><p>Sets a provided gateway_id as the default gateway for that client.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> True on success, FALSE on failure</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			MakeDefaultGateway
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$gateway_id</span><span class="var-description">: The gateway_id to be set as default.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodNewGateway" id="NewGateway"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">NewGateway</span> (line <span class="line-number">38</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new gateway instance</p>
+<p class="description"><p>Creates a new gateway instance in the gateways table.  Inserts the different gateway paramaters into the  gateway_params table.  These are not declared in this documentation as they can be anything.  Returns the resulting gateway_id.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> New Gateway ID</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			NewGateway
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['gateway_type']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_mc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_visa']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_amex']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_discover']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_dc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['enabled']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['alias']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['gateway_type']</span><span class="var-description">: The type of gateway to be created (authnet, exact etc.)</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_mc']</span><span class="var-description">: Whether the gateway will accept Mastercard</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_visa']</span><span class="var-description">: Whether the gateway will accept Visa</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_amex']</span><span class="var-description">: Whether the gateway will accept American Express</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_discover']</span><span class="var-description">: Whether the gateway will accept Discover</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_dc']</span><span class="var-description">: Whether the gateway will accept Diner's Club</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['enabled']</span><span class="var-description">: Whether the gateway is enabled or disabled</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['alias']</span><span class="var-description">: The gateway's alias (optional)</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodRecur" id="Recur"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Recur</span> (line <span class="line-number">294</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new recurring subscription.</p>
+<p class="description"><p>Creates a new recurring subscription and processes a charge for today.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array with response_code and response_text</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			Recur
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$gateway_id</span>, [<span class="var-type">float</span>&nbsp;<span class="var-name">$amount</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$credit_card</span> = <span class="var-default">array()</span>], [<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$customer</span> = <span class="var-default">array()</span>], [<span class="var-type">float</span>&nbsp;<span class="var-name">$customer_ip</span> = <span class="var-default">FALSE</span>], [<span class="var-type">array</span>&nbsp;<span class="var-name">$recur</span> = <span class="var-default">array()</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$return_url</span> = <span class="var-default">FALSE</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$cancel_url</span> = <span class="var-default">FALSE</span>], <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['card_num']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_month']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['exp_year']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$credit_card['name']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$credit_card['cvv']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['plan_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['start_date']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['end_date']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['free_trial']</span>, <span class="var-type">float</span>&nbsp;<span class="var-name">$recur['amount']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$recur['occurrences']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$recur['notification_url']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$gateway_id</span><span class="var-description">: The gateway ID to process this charge with</span>			</li>
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$amount</span><span class="var-description">: The amount to charge (e.g., &quot;50.00&quot;)</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$credit_card</span><span class="var-description">: The credit card information</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['card_num']</span><span class="var-description">: The credit card number</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['exp_month']</span><span class="var-description">: The credit card expiration month in 2 digit format (01 - 12)</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['exp_year']</span><span class="var-description">: The credit card expiration year (YYYY)</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$credit_card['name']</span><span class="var-description">: The credit card cardholder name.  Required only is customer ID is not supplied.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$credit_card['cvv']</span><span class="var-description">: The Card Verification Value.  Optional</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The ID of the customer to link the charge to</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$customer</span><span class="var-description">: An array of customer data to create a new customer with, if no customer_id</span>			</li>
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$customer_ip</span><span class="var-description">: The optional IP address of the customer</span>			</li>
+					<li>
+				<span class="var-type">array</span>
+				<span class="var-name">$recur</span><span class="var-description">: The details for a recurring charge</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$recur['plan_id']</span><span class="var-description">: The ID of the plan to pull recurring details from (Optional)</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$recur['start_date']</span><span class="var-description">: The start date of the subscription</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$recur['end_date']</span><span class="var-description">: The end date of the subscription</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$recur['free_trial']</span><span class="var-description">: The number of days to give a free trial before.  Will combine with start_date if that is also set. (Optional)</span>			</li>
+					<li>
+				<span class="var-type">float</span>
+				<span class="var-name">$recur['amount']</span><span class="var-description">: The amount to charge every INTERVAL days.  If not there, the main $amount will be used.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$recur['occurrences']</span><span class="var-description">: The total number of occurrences (Optional, if end_date doesn't exist).</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$recur['notification_url']</span><span class="var-description">: The URL to send POST updates to for notices re: this subscription.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$return_url</span><span class="var-description">: The URL for external payment processors to return the user to after payment</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$cancel_url</span><span class="var-description">: The URL to send if the user cancels an external payment</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodRefund" id="Refund"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Refund</span> (line <span class="line-number">598</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Refund</p>
+<p class="description"><p>Refund a charge via the gateway</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> TRUE upon success</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">boolean</span>
+		<span class="method-name">
+			Refund
+		</span>
+					(<span class="var-type">$charge_id</span>&nbsp;<span class="var-name">$charge_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">$charge_id</span>
+				<span class="var-name">$charge_id</span><span class="var-description">: The Charge ID to refund</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodUpdateGateway" id="UpdateGateway"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">UpdateGateway</span> (line <span class="line-number">755</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Update the Gateway</p>
+<p class="description"><p>Updates the gateway_params with supplied details</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> TRUE on success, FALSE on fail.</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			UpdateGateway
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['gateway_id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_mc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_visa']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_amex']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_discover']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['accept_dc']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['enabled']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['gateway_id']</span><span class="var-description">: The gateway ID to update</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_mc']</span><span class="var-description">: Whether the gateway will accept Mastercard</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_visa']</span><span class="var-description">: Whether the gateway will accept Visa</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_amex']</span><span class="var-description">: Whether the gateway will accept American Express</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_discover']</span><span class="var-description">: Whether the gateway will accept Discover</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['accept_dc']</span><span class="var-description">: Whether the gateway will accept Diner's Club</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['enabled']</span><span class="var-description">: Whether the gateway is enabled or disabled</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Jun 2010 23:46:16 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

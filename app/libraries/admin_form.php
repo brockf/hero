@@ -587,11 +587,11 @@ class Admin_form {
 					
 					$checked = ($field['checked'] == TRUE) ? ' checked="checked"' : '';
 				
-					$return .= '<input type="checkbox" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $field['value'] . '"' . $checked. ' />';
+					$return .= '<input type="checkbox" id="' . $field['name'] . '" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $field['value'] . '"' . $checked. ' />';
 				}
 				// file
 				elseif ($field['type'] == 'file') {
-					$return .= '<input type="file" name="' . $field['name'] . '" />';
+					$return .= '<input type="file" id="' . $field['name'] . '" name="' . $field['name'] . '" />';
 				}
 				elseif ($field['type'] == 'value_row') {
 					$return .= $field['value'];

@@ -1,0 +1,181 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Order_authorization_model</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Order_authorization_model</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Order Authorization Model</p>
+<p class="description"><p>Contains all the methods used to save and retrieve order authorization details.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Electric Function, Inc.</li>
+				<li><span class="field">version:</span> 1.0</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_modules---billing---models---order_authorization_model.php.html">/modules/billing/models/order_authorization_model.php</a> (line <span class="field">12</span>)
+		</p>
+		
+				
+		<pre>CI_Model
+   |
+   --Order_authorization_model</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																												
+												<div class="method-definition">
+											<span class="method-result">Order_authorization_model</span>
+										<a href="#Order_authorization_model" title="details" class="method-name">Order_authorization_model</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#GetAuthorization" title="details" class="method-name">GetAuthorization</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$order_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">void</span>
+										<a href="#SaveAuthorization" title="details" class="method-name">SaveAuthorization</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$order_id</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$tran_id</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$authorization_code</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$security_key</span> = <span class="var-default">''</span>])
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodOrder_authorization_model" id="Order_authorization_model"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor Order_authorization_model</span> (line <span class="line-number">14</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">Order_authorization_model</span>
+		<span class="method-name">
+			Order_authorization_model
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodGetAuthorization" id="GetAuthorization"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetAuthorization</span> (line <span class="line-number">52</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get Authorization Details.</p>
+<p class="description"><p>Gets the authorization details for an order_id</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array containg authorization details</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			GetAuthorization
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$order_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$order_id</span><span class="var-description">: The order ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodSaveAuthorization" id="SaveAuthorization"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">SaveAuthorization</span> (line <span class="line-number">30</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Save order authorization details.</p>
+<p class="description"><p>Save the order authorization number returned from the payment gateway</p></p>
+	
+	<div class="method-signature">
+		<span class="method-result">void</span>
+		<span class="method-name">
+			SaveAuthorization
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$order_id</span>, [<span class="var-type">string</span>&nbsp;<span class="var-name">$tran_id</span> = <span class="var-default">''</span>], [<span class="var-type">string</span>&nbsp;<span class="var-name">$authorization_code</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$security_key</span> = <span class="var-default">''</span>])
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$order_id</span><span class="var-description">: The order ID</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$tran_id</span><span class="var-description">: Transaction ID. Optional</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$authorization_code</span><span class="var-description">: Authorization code. Optional</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$security_key</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Jun 2010 23:46:16 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

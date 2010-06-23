@@ -215,6 +215,7 @@ ul.module_links a {
 	padding: 6px 11px;
 	text-shadow: 0 1px 1px #000;
 	text-decoration: none;
+	margin-right: 12px;
 }
 
 ul.module_links a:hover {
@@ -407,7 +408,7 @@ table.dataset tbody td.refunded {
 }
 
 table.dataset tbody tr.selected td {
-	background-color: #f3fcca;
+	background-color: #f9fcca;
 }
 
 div.pagination {
@@ -800,4 +801,10 @@ ul.data span.tag {
 
 tr.inactive {
 	color: #888;
+}
+
+#row_price, #row_weight {
+	width: 230px;
+	float: left;
+	clear: none;
 }

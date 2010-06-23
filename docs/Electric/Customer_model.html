@@ -1,0 +1,574 @@
+<?xml version="1.0" encoding="iso-8859-1"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+  <html xmlns="http://www.w3.org/1999/xhtml">
+		<head>
+			<!-- template designed by Marco Von Ballmoos -->
+			<title>Docs For Class Customer_model</title>
+			<link rel="stylesheet" href="../media/stylesheet.css" />
+			<meta http-equiv='Content-Type' content='text/html; charset=iso-8859-1'/>
+		</head>
+		<body>
+			<div class="page-body">			
+<h2 class="class-name">Class Customer_model</h2>
+
+<a name="sec-description"></a>
+<div class="info-box">
+	<div class="info-box-title">Description</div>
+	<div class="nav-bar">
+					<span class="disabled">Description</span> |
+															<a href="#sec-method-summary">Methods</a> (<a href="#sec-methods">details</a>)
+						
+					</div>
+	<div class="info-box-body">
+        		<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Customer Model</p>
+<p class="description"><p>Contains all the methods used to create, update, and delete customers.</p></p>
+	<ul class="tags">
+				<li><span class="field">author:</span> Electric Function, Inc.</li>
+				<li><span class="field">version:</span> 1.0</li>
+			</ul>
+		<p class="notes">
+			Located in <a class="field" href="_modules---billing---models---customer_model.php.html">/modules/billing/models/customer_model.php</a> (line <span class="field">12</span>)
+		</p>
+		
+				
+		<pre>CI_Model
+   |
+   --Customer_model</pre>
+	
+			</div>
+</div>
+
+
+
+
+	<a name="sec-method-summary"></a>
+	<div class="info-box">
+		<div class="info-box-title">Method Summary</span></div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+												<span class="disabled">Methods</span> (<a href="#sec-methods">details</a>)
+		</div>
+		<div class="info-box-body">			
+			<div class="method-summary">
+																																																																												
+												<div class="method-definition">
+											<span class="method-result">Customer_model</span>
+										<a href="#Customer_model" title="details" class="method-name">Customer_model</a>
+										()
+									</div>
+																<div class="method-definition">
+											<span class="method-result">bool</span>
+										<a href="#DeleteCustomer" title="details" class="method-name">DeleteCustomer</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array|bool</span>
+										<a href="#GetCustomer" title="details" class="method-name">GetCustomer</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#GetCustomerDetails" title="details" class="method-name">GetCustomerDetails</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#GetCustomers" title="details" class="method-name">GetCustomers</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$any_status</span> = <span class="var-default">FALSE</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$params['internal_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['plan_id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['deleted']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$pararms['sort']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['sort_dir']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">array</span>
+										<a href="#GetPlansByCustomer" title="details" class="method-name">GetPlansByCustomer</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#NewCustomer" title="details" class="method-name">NewCustomer</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">int</span>
+										<a href="#SaveNewCustomer" title="details" class="method-name">SaveNewCustomer</a>
+											(<span class="var-type"></span>&nbsp;<span class="var-name">$first_name</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$last_name</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$company</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$internal_id</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$address_1</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$address_2</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$city</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$state</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$postal_code</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$country_id</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$phone</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$email</span> = <span class="var-default">''</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+									</div>
+																<div class="method-definition">
+											<span class="method-result">mixed</span>
+										<a href="#UpdateCustomer" title="details" class="method-name">UpdateCustomer</a>
+											(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['internal_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+									</div>
+								</div>
+		</div>
+	</div>		
+
+	
+	<a name="sec-methods"></a>
+	<div class="info-box">
+		<div class="info-box-title">Methods</div>
+		<div class="nav-bar">
+			<a href="#sec-description">Description</a> |
+																<a href="#sec-method-summary">Methods</a> (<span class="disabled">details</span>)
+						
+		</div>
+		<div class="info-box-body">
+			<A NAME='method_detail'></A>
+
+<a name="methodCustomer_model" id="Customer_model"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">Constructor Customer_model</span> (line <span class="line-number">14</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+	
+	<div class="method-signature">
+		<span class="method-result">Customer_model</span>
+		<span class="method-name">
+			Customer_model
+		</span>
+				()
+			</div>
+	
+		
+			
+	</div>
+<a name="methodDeleteCustomer" id="DeleteCustomer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">DeleteCustomer</span> (line <span class="line-number">295</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Delete a customer.</p>
+<p class="description"><p>Marks a customer as deleted.  Does not actually delete the customer from the database, but only marks it as deleted.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> TRUE upon success.</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">bool</span>
+		<span class="method-name">
+			DeleteCustomer
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The customer ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetCustomer" id="GetCustomer"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetCustomer</span> (line <span class="line-number">529</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get customer details.</p>
+<p class="description"><p>Searches the database for customers belonging to the client and with a specific customer_id.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Customer data or FALSE upon failure.</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array|bool</span>
+		<span class="method-name">
+			GetCustomer
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: Customer ID.</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetCustomerDetails" id="GetCustomerDetails"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetCustomerDetails</span> (line <span class="line-number">149</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get the customer details.</p>
+<p class="description"><p>Returns a array containg all the customers's details.  If the customer does not belong to the client, an error is returned.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array containing all the customer details.</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			GetCustomerDetails
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The customer ID</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetCustomers" id="GetCustomers"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetCustomers</span> (line <span class="line-number">336</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get a list of customer details.</p>
+<p class="description"><p>Searches the database for customers belonging to the client and returns an array with all the details.  All search parameters are optional.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array containing the search results</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			GetCustomers
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$any_status</span> = <span class="var-default">FALSE</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$params['internal_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['plan_id']</span>, <span class="var-type">int</span>&nbsp;<span class="var-name">$params['deleted']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$pararms['sort']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['sort_dir']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['internal_id']</span><span class="var-description">: Customer's internal ID. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['first_name']</span><span class="var-description">: Customer's first name. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['last_name']</span><span class="var-description">: Customer's last name. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['company']</span><span class="var-description">: Customer's company. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_1']</span><span class="var-description">: Customer's address line 1. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_2']</span><span class="var-description">: Customer's address line 2. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['city']</span><span class="var-description">: Customer's city. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['state']</span><span class="var-description">: Customer's state. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['postal_code']</span><span class="var-description">: Customer's postal code. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['country']</span><span class="var-description">: Customer's country. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['phone']</span><span class="var-description">: Customer's phone. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['email']</span><span class="var-description">: Customer's email. Optional.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['plan_id']</span><span class="var-description">: Filter by active plan. Optional.</span>			</li>
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$params['deleted']</span><span class="var-description">: Set to 1 for deleted customers.  Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$pararms['sort']</span><span class="var-description">: Used to change the order of results returned.  Possible values are date, first_name, and last_name. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['sort_dir']</span><span class="var-description">: Used only when a sort valus is padded.  Possible values are asc and desc</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$any_status</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodGetPlansByCustomer" id="GetPlansByCustomer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">GetPlansByCustomer</span> (line <span class="line-number">552</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Get plans by customer ID</p>
+<p class="description"><p>Gets all plans associated with the customer</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> All the plans, including status</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">array</span>
+		<span class="method-name">
+			GetPlansByCustomer
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The ID of the Customer</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodNewCustomer" id="NewCustomer"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">NewCustomer</span> (line <span class="line-number">39</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Create a new customer</p>
+<p class="description"><p>Creates a new customer.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> New Customer ID</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			NewCustomer
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['first_name']</span><span class="var-description">: Client's first name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['last_name']</span><span class="var-description">: Client's last name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['company']</span><span class="var-description">: Client's company. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_1']</span><span class="var-description">: Client's address line 1. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_2']</span><span class="var-description">: Client's address line 2. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['city']</span><span class="var-description">: Client's city. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['state']</span><span class="var-description">: Client's state. Optional.  If the country is US or Canada, the 2-letter abbreviation should be used.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['postal_code']</span><span class="var-description">: Client's postal code. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['country']</span><span class="var-description">: Client's country in ISO format. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['phone']</span><span class="var-description">: Client's phone. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['email']</span><span class="var-description">: Client's email. Optional.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodSaveNewCustomer" id="SaveNewCustomer"><!-- --></a>
+<div class="oddrow">
+	
+	<div class="method-header">
+		<span class="method-title">SaveNewCustomer</span> (line <span class="line-number">115</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Save the new customer</p>
+<p class="description"><p>Saves a new customer into the database and returns the resulting customer_id</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> New Customer ID</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">int</span>
+		<span class="method-name">
+			SaveNewCustomer
+		</span>
+					(<span class="var-type"></span>&nbsp;<span class="var-name">$first_name</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$last_name</span>, [<span class="var-type"></span>&nbsp;<span class="var-name">$company</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$internal_id</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$address_1</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$address_2</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$city</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$state</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$postal_code</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$country_id</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$phone</span> = <span class="var-default">''</span>], [<span class="var-type"></span>&nbsp;<span class="var-name">$email</span> = <span class="var-default">''</span>], <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['first_name']</span><span class="var-description">: Client's first name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['last_name']</span><span class="var-description">: Client's last name</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['company']</span><span class="var-description">: Client's company. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_1']</span><span class="var-description">: Client's address line 1. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_2']</span><span class="var-description">: Client's address line 2. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['city']</span><span class="var-description">: Client's city. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['state']</span><span class="var-description">: Client's state. Optional.  If the country is US or Canada, the 2-letter abbreviation should be used.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['postal_code']</span><span class="var-description">: Client's postal code. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['country']</span><span class="var-description">: Client's country in ISO format. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['phone']</span><span class="var-description">: Client's phone. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['email']</span><span class="var-description">: Client's email. Optional.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$first_name</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$last_name</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$company</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$internal_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$address_1</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$address_2</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$city</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$state</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$postal_code</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$country_id</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$phone</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$email</span>			</li>
+				</ul>
+		
+			
+	</div>
+<a name="methodUpdateCustomer" id="UpdateCustomer"><!-- --></a>
+<div class="evenrow">
+	
+	<div class="method-header">
+		<span class="method-title">UpdateCustomer</span> (line <span class="line-number">186</span>)
+	</div> 
+	
+	<!-- ========== Info from phpDoc block ========= -->
+<p class="short-description">Updates a customer's details.</p>
+<p class="description"><p>Updates a customer details. If the customer does not belong to the client, an error is returned.</p></p>
+	<ul class="tags">
+				<li><span class="field">return:</span> Array containing new customer_id</li>
+			</ul>
+	
+	<div class="method-signature">
+		<span class="method-result">mixed</span>
+		<span class="method-name">
+			UpdateCustomer
+		</span>
+					(<span class="var-type">int</span>&nbsp;<span class="var-name">$customer_id</span>, <span class="var-type"></span>&nbsp;<span class="var-name">$params</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['internal_id']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['first_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['last_name']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['company']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_1']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['address_2']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['city']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['state']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['postal_code']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['country']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['phone']</span>, <span class="var-type">string</span>&nbsp;<span class="var-name">$params['email']</span>)
+			</div>
+	
+			<ul class="parameters">
+					<li>
+				<span class="var-type">int</span>
+				<span class="var-name">$customer_id</span><span class="var-description">: The Customer to update.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['internal_id']</span><span class="var-description">: Customer's internal_id.  Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['first_name']</span><span class="var-description">: Customer's first name. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['last_name']</span><span class="var-description">: Customer's last name. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['company']</span><span class="var-description">: Customer's company. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_1']</span><span class="var-description">: Customer's address line 1. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['address_2']</span><span class="var-description">: Customer's address line 2. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['city']</span><span class="var-description">: Customer's city. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['state']</span><span class="var-description">: Customer's state. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['postal_code']</span><span class="var-description">: Customer's postal code. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['country']</span><span class="var-description">: Customer's country. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['phone']</span><span class="var-description">: Customer's phone. Optional.</span>			</li>
+					<li>
+				<span class="var-type">string</span>
+				<span class="var-name">$params['email']</span><span class="var-description">: Customer's email. Optional.</span>			</li>
+					<li>
+				<span class="var-type"></span>
+				<span class="var-name">$params</span>			</li>
+				</ul>
+		
+			
+	</div>
+						
+		</div>
+	</div>
+
+
+	<p class="notes" id="credit">
+		Documentation generated on Tue, 22 Jun 2010 23:46:15 -0400 by <a href="http://www.phpdoc.org" target="_blank">phpDocumentor 1.4.3</a>
+	</p>
+	</div></body>
+</html>

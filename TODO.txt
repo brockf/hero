@@ -1,8 +1,14 @@
 - Roadmap:
-	- Add require_account for orders
+	- Add image manager (AJAX manager/library)
+	- Product custom fields
+	- Product options (more custom fields)
+	- Make store accessible only to certain usergroup(s) (Store Configuration)
+	- Tax rules (options: Applies to subscriptions)
+	- Add setting: require_account for orders
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
+	- Minify ".js" files automatic with Electric Packager
 	
 - Order Form:
 	- settings: require_user_account

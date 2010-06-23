@@ -57,6 +57,28 @@ $config['app_support'] = 'http://www.cariboucms.com/support';
 
 /*
 |--------------------------------------------------------------------------
+| App Paths
+|--------------------------------------------------------------------------
+|
+*/
+$config['path_product_files'] = FCPATH . 'writeable/product_files/';
+
+/*
+|--------------------------------------------------------------------------
+| Miscellaneous
+|--------------------------------------------------------------------------
+|
+*/
+$config['upload_max'] = ini_get('upload_max_filesize');
+if (ini_get('post_max_size') != '' and (ini_get('post_max_size') < $config['upload_max'])) {
+	$config['upload_max'] = ini_get('post_max_size');
+}
+
+// not all servers allow 0777 folders/files, this may have to be 0755
+$config['write_mode'] = 0777;
+
+/*
+|--------------------------------------------------------------------------
 | Index File
 |--------------------------------------------------------------------------
 |

@@ -20,6 +20,47 @@ class Settings_model extends CI_Model
 		$this->set_settings();
 	}
 	
+	/*
+	* Make Writeable Folder
+	*
+	* This function creates a writeable folder and places a blank index.html file into it
+	* It throws errors upon failure
+	*
+	* @param string $path The filepath
+	* @param boolean $no_access Set to TRUE to write a .htaccess file which will deny all access to this folder directly
+	*/
+	function make_writeable_folder ($path = '', $no_access = FALSE) {
+		if (!is_dir($path)) {
+			if (mkdir($path, setting('write_mode'))) {
+				if (!chmod($path, setting('write_mode'))) {
+					die(show_error('Failed to CHMOD: ' . $path));
+				}
+				
+				$this->load->helper('file');
+				
+				if (!is_writable($path)) {
+					die(show_error('Folder appeared to get created but it\'s not writable: ' . $path));
+				}
+				
+				write_file($path . '/index.html','');
+				
+				if ($no_access == TRUE) {
+					write_file($path . '/.htaccess',"<Files *>\nDeny from all\n</Files>");
+				}
+			}
+			else {
+				die(show_error('Cannot create folder: ' . $path));
+			}
+		}
+		
+		if (!is_writable($path)) {
+			die(show_error('Despite our best efforts, this folder could not be created or written to: ' . $path));
+		}
+		else {
+			return TRUE;
+		}
+	}
+	
 	function set_settings () {
 		$result = $this->db->get('settings');
 		
