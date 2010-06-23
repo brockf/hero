@@ -272,7 +272,7 @@ begin processing transactions, you should <a href="<?=site_url('settings/new_gat
 </div>
 <? } ?>
 <div class="transaction submit">
-	<input type="submit" name="go_transation" value="Submit Transaction" />
+	<input type="submit" class="button" name="go_transation" value="Submit Transaction" />
 </div>
 </form>
 <?=$this->load->view(branded_view('cp/footer'));?>

@@ -26,7 +26,7 @@
 					<div style="clear:both"></div>
 				</li>
 				<li class="submit">
-					<input type="submit" name="login_button" value="Login" />
+					<input type="submit" class="button" name="login_button" class="button" value="Login" />
 				</li>
 			</ul>
 		</form>

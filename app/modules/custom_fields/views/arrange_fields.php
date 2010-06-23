@@ -6,7 +6,7 @@
 <?=$form;?>
 
 <div class="submit">
-	<input type="submit" name="go_save" value="Save Arrangement &amp; Return " />
+	<input type="submit" class="button" name="go_save" value="Save Arrangement &amp; Return " />
 </div>
 
 </form>

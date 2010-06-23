@@ -5,7 +5,7 @@
 <?=$form;?>
 
 <div class="submit">
-	<input type="submit" name="go_member" value="Save Member" />
+	<input type="submit" class="button" name="go_member" value="Save Member" />
 </div>
 </form>
 <?=$this->load->view(branded_view('cp/footer'));?>

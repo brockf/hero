@@ -277,7 +277,7 @@ class Dataset extends CI_Model {
     	if (!empty($this->actions)) {
     		$actions .= 'With selected: ';
     		while (list(,$action) = each($this->actions)) {
-    			$actions .= '<input type="button" class="action_button" rel="' . site_url($action['link']) . '" name="action_' . $i . '" value="' . $action['name'] . '" />&nbsp;';
+    			$actions .= '<input type="button" class="button action_button" rel="' . site_url($action['link']) . '" name="action_' . $i . '" value="' . $action['name'] . '" />&nbsp;';
     			$i++;
     		}
     		
@@ -285,7 +285,7 @@ class Dataset extends CI_Model {
     	}
     	
     	if ($this->filters == true) {
-    		$output .= '<div class="apply_filters"><input type="submit" name="" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" value="Export" /></div>';
+    		$output .= '<div class="apply_filters"><input type="submit" class="button" name="" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="" class="button" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" class="button" value="Export" /></div>';
     	}
     	
     	$output .= '</div>

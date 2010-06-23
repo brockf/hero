@@ -197,19 +197,28 @@ ul.module_links li {
 }
 
 ul.module_links a {
-	display: block;
 	float: right;
-	border: 1px solid #000;
-	background-color: #333;
-	padding: 5px 15px;
-	text-decoration: none;
+	display: block;
+	-moz-border-radius: 8px;
+	-webkit-border-radius: 5px;
+	background: url(../images/large_button.gif) repeat-x scroll left top #DDDDDD;
+	border-color: #000 #111 #111 #111;
+	border-left: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+	border-style: solid;
+	border-width: 1px;
+	color: #00b4c1;
+	cursor: pointer;
+	font-weight: normal;
 	font-size: 12pt;
-	font-weight: bold;
-	margin-left: 15px;
+	font-family: lucida grande, helvetica, arial;
+	padding: 6px 11px;
+	text-shadow: 0 1px 1px #000;
+	text-decoration: none;
 }
 
 ul.module_links a:hover {
-	color: #fff;
+	color: #dedede;
 }
 
 #wrapper {
@@ -405,7 +414,7 @@ div.pagination {
 	padding: 6px;
 	text-align: center;
 	position: relative;
-	height: 20px;
+	height: 25px;
 }
 
 div.pagination a {
@@ -545,6 +554,28 @@ form.form input.number.full {
 
 .highlight_empty {
 	color: #999;
+}
+
+/*submit button */
+input.button {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: url(../images/button.gif) repeat-x scroll left top #DDDDDD;
+	border-color: #CCCCCC #BBBBBB #AAAAAA;
+	border-left: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+	border-style: solid;
+	border-width: 1px;
+	color: #3A3A3A;
+	cursor: pointer;
+	font-weight: bold;
+	font-family: lucida grande, helvetica, arial;
+	padding: 4px 6px;
+	text-shadow: 0 1px 1px #FFFFFF;
+}
+
+input.button.hover {
+	color: #00858D;
 }
 
 /* specific form stylings */

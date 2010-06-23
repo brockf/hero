@@ -1,7 +1,6 @@
 - Roadmap:
 	- Add require_account for orders
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
-	- Update Dataset to "Export" with CSV ($this->dataset->ExportMethod())
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
 	

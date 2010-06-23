@@ -5,6 +5,11 @@ $(document).ready(function() {
 	  $('#notices div').animate({top:$(window).scrollTop()+5+"px" },{queue: false, duration: 0});
 	});
 	
+	// buttons
+	$('input.button').hover(function () {
+		$(this).toggleClass('hover');
+	});
+	
 	// menu
 	
 	// click functions

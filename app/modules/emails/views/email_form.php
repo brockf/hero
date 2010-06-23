@@ -85,7 +85,7 @@ if (!isset($form)) {
 	</ul>
 </fieldset>
 <div class="submit">
-	<input type="submit" name="go_email" value="<?=ucfirst($form_title);?>" />
+	<input type="submit" class="button" name="go_email" value="<?=ucfirst($form_title);?>" />
 </div>
 </form>
 <?=$this->load->view(branded_view('cp/footer'));?>

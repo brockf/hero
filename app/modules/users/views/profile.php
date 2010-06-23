@@ -51,7 +51,7 @@
 					<option value="view_all">report: view all related charges</option>
 				</select>
 				&nbsp;
-				<input type="submit" name="go_action" value="Go" />
+				<input type="submit" class="button" name="go_action" value="Go" />
 				</form>
 			</td>
 		</tr>

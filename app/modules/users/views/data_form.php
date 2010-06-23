@@ -27,7 +27,7 @@
 	</ul>
 </fieldset>
 <div class="submit">
-	<input type="submit" name="go_field" value="Save Field" />
+	<input type="submit" class="button" name="go_field" value="Save Field" />
 </div>
 </form>
 <?=$this->load->view(branded_view('cp/footer'));?>

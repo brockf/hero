@@ -65,7 +65,7 @@ and that this database exists.</p>
 			</li>
 		</ol>
 	</fieldset>
-	<div class="submit"><input type="submit" name="continue" id="continue" value="Save Configuration" /></div>
+	<div class="submit"><input type="submit" class="button" name="continue" id="continue" value="Save Configuration" /></div>
 </form>
 <? } ?>
 <?=$this->load->view(branded_view('install/footer'));?>
