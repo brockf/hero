@@ -8,11 +8,13 @@
 	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/date.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/datePicker.js');?>"></script>
-	<link type="text/css" rel="stylesheet" href="<?=branded_include('js/jwysiwyg/jquery.wysiwyg.css');?>" />
-	<script type="text/javascript" src="<?=branded_include('js/jwysiwyg/jquery.wysiwyg.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
 	<? if (isset($head_files)) { ?><?=$head_files;?><? } ?>
+	<? if (defined("INCLUDE_CKEDITOR")) { ?>
+		<script type="text/javascript" src="<?=branded_include('js/ckeditor/ckeditor.js');?>"></script> 
+		<script type="text/javascript" src="<?=branded_include('js/ckeditor/adapters/jquery.js');?>"></script>
+	<? } ?>
 </head>
 <body>
 	<div id="notices"><?=get_notices();?></div>

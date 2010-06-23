@@ -2,6 +2,17 @@ $(document).ready(function () {
 	// add numeric class
 	$('#weight, #price, #inventory').addClass('number');
 	
+	// add membership tier rows
+	$('#add_membership_tier').click(function () {
+		var newline = $(this).parent().prev().html();
+		
+		$(this).parent().before('<li>' + newline + '</li>');
+		
+		MarkEmpty();
+		
+		return false;
+	});
+	
 	InventoryOptions();
 	FileOptions();
 	MemberTiers();

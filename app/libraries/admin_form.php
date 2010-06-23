@@ -556,10 +556,14 @@ class Admin_form {
 					if ($field['full'] == TRUE) {
 						$classes[] = 'full';
 						$field['width'] = '100%';
+						
 					}
 					
-					if ($field['wysiwyg'] == 'mini') {
+					if ($field['wysiwyg'] != FALSE) {
 						$classes[] = 'wysiwyg';
+						$classes[] = $field['wysiwyg']; // either "full" or "mini"
+						
+						define('INCLUDE_CKEDITOR','TRUE');
 					}
 					
 					$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';

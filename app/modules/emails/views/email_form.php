@@ -14,7 +14,9 @@ if (!isset($form)) {
 			);
 
 } ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.email.js') . '"></script>'));?>
+<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.email.js') . '"></script>
+<script type="text/javascript" src="' . branded_include('js/ckeditor/ckeditor.js') . '"></script> 
+<script type="text/javascript" src="' . branded_include('js/ckeditor/adapters/jquery.js') . '"></script>'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_email" method="post" action="<?=site_url($form_action);?>">
 <fieldset>

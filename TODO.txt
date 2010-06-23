@@ -3,6 +3,7 @@
 	- Product custom fields
 	- Product options (more custom fields)
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
+	- Make dataset a library
 	- Tax rules (options: Applies to subscriptions)
 	- Add setting: require_account for orders
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`

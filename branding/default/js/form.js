@@ -17,9 +17,11 @@
 $(document).ready(function () {
 	MarkEmpty();
 	
-	// trigger WYSIWYG if it's loaded
-	if(typeof $.fn.wysiwyg == 'function') {
-		$('.wysiwyg').wysiwyg();
+	// replace textarea.ckeditor fields with the ckeditor if we have loaded
+	// the ckeditor file
+	if (typeof $.fn.ckeditor == 'function') {
+		$('.wysiwyg').filter('.full').ckeditor(function() { }, { toolbar: "Full" });
+		$('.wysiwyg').filter('.mini').ckeditor(function() { }, { toolbar: "Basic" });
 	}
 		
 	$('form.validate').submit(function() {
