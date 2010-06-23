@@ -1,0 +1,63 @@
+[============================< KCFinder 1.7 >================================]
+[                                                                            ]
+[                    Copyright 2010 KCFinder Project                         ]
+[                     http://kcfinder.sunhater.com                           ]
+[                  Pavel Tzonkov <pavelc@users.sf.net>                       ]
+[                                                                            ]
+[============================================================================]
+
+
+I. DESCRIPTION
+
+    KCFinder is an alternative to the CKFinder Web file manager. It can be
+    integrated into FCKeditor, CKEditor, and TinyMCE WYSIWYG web editors or
+    your custom web applications to upload and manage images, flash movies,
+    and other files that can be embedded in an editor's generated HTML
+    content. Only PHP server-side scripting is supported.
+
+
+II. FEATURES
+
+    1. Fully integrated Ajax engine.
+
+    2. Clipboard for copying and moving multiple files.
+
+    3. Easy to integrate and configure in web applications.
+
+    4. Resize bigger uploaded images. Configurable maximum image resolution.
+
+    5. Configurable thumbnail resolution.
+
+    6. Visual themes.
+
+    7. Multilanguage system.
+
+
+III. REQUIREMENTS
+
+    1. Web server (Apache 2 is tested only)
+
+    2. PHP 5.x.x. with GD extension. Safe mode should be disabled. To work
+       width client-side HTTP cache, the PHP must be configured as Apache
+       module
+
+    3. Fileinfo PHP extension if you want to check file's mime type before
+       moving to upload directory. PHP versions lesser than 5.3 needs to
+       install Fileinfo PECL extension: http://pecl.php.net/package/Fileinfo
+
+    4. Modern browser (not IE6!).
+
+
+IV. INSTALLATION
+
+    See http://kcfinder.sunhater.com/#installation
+
+
+V. USED 3RD PARTY SOFTWARE
+
+    1. jQuery JavaScript library v1.4.2 - http://www.jquery.com
+
+    2. jQuery Right-Click Plugin v1.01 - http://abeautifulsite.net/notebook/68
+
+    3. In realization of "oxygen" theme were used icons and color schemes of
+       default KDE4 theme - http://www.kde.org
