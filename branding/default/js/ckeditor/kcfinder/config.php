@@ -22,11 +22,11 @@ $_CONFIG = array(
 
     'theme' => "oxygen",
 
-    'uploadURL' => "upload",
+    'uploadURL' => "",
     'uploadDir' => "",
 
-    'dirPerms' => 0755,
-    'filePerms' => 0644,
+    'dirPerms' => 0777,
+    'filePerms' => 0755,
 
     'deniedExts' => "exe com msi bat php cgi pl",
 
@@ -51,7 +51,7 @@ $_CONFIG = array(
     'thumbWidth' => 100,
     'thumbHeight' => 100,
 
-    'thumbsDir' => ".thumbs",
+    'thumbsDir' => "thumbs",
 
     'jpegQuality' => 90,
 
@@ -70,5 +70,3 @@ $_CONFIG = array(
     //'_sessionDomain' => ".mysite.com",
     //'_sessionPath' => "/my/path",
 );
-
-?>

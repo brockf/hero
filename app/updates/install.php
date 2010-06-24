@@ -293,8 +293,8 @@ CREATE TABLE `custom_fields` (
 
 CREATE TABLE `custom_field_groups` (
   `custom_field_group_id` int(11) NOT NULL auto_increment,
-  `custom_field_group_name` int(11) NOT NULL,
-   PRIMARY KEY  subscription_id
+  `custom_field_group_name` varchar(150) NOT NULL,
+   PRIMARY KEY  custom_field_group_id
 ) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `custom_field_groups` (`custom_field_group_id`, `custom_field_group_name`) VALUES ('1', 'Members');

@@ -150,7 +150,7 @@ class Admin_form {
 	* @param string $value Current value of the field
 	* @param string $help A piece of help text
 	* @param boolean $required Is the field required for submission?
-	* @param boolean|string FALSE for no WYSIWYG, 'mini' for a lite WYSIWYG editor, and 'full' for a full-featured WYSIWYG editor
+	* @param boolean|string FALSE for no WYSIWYG, or the name of the toolbar class to load with ckEditor (e.g., "complete", "basic")
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
 	* @param string $height The complete style:height element definition
@@ -561,7 +561,7 @@ class Admin_form {
 					
 					if ($field['wysiwyg'] != FALSE) {
 						$classes[] = 'wysiwyg';
-						$classes[] = $field['wysiwyg']; // either "full" or "mini"
+						$classes[] = $field['wysiwyg']; // the toolbar set
 						
 						define('INCLUDE_CKEDITOR','TRUE');
 					}

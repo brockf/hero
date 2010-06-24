@@ -17,7 +17,7 @@ $(document).ready(function () {
 	
 	// make it HTML if they click the link
 	$('#make_html').click(function() {
-		$('#email_body').wysiwyg();
+		$('#email_body').ckeditor(function() { }, { toolbar : "Basic" });
 		$('#is_html').val('1');
 		
 		$(this).remove();

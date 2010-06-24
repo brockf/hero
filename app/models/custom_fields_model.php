@@ -17,7 +17,7 @@ class Custom_fields_model extends CI_Model {
 		parent::CI_Model();
 		
 		// specify the upload directory, will be created if it doesn't exist
-		$this->upload_directory = BASEPATH . 'writeable/custom_uploads/';
+		$this->upload_directory = setting('path_custom_field_uploads');
 	}
 	
 	/*
@@ -128,6 +128,10 @@ class Custom_fields_model extends CI_Model {
 	* @return array Field data
 	*/
 	function post_to_array($field_group_id) {
+		if (empty($field_group_id)) {
+			return array();
+		}
+	
 		$fields = $this->get_custom_fields(array('group' => $field_group_id));
 		
 		$array = array();
@@ -163,6 +167,24 @@ class Custom_fields_model extends CI_Model {
 	}
 	
 	/*
+	* Get Custom Field
+	*
+	* @param int $custom_field_id
+	*
+	* @return boolean|array $custom_field or FALSE
+	*/
+	function get_custom_field($custom_field_id) {
+		$return = $this->get_custom_fields(array('id' => $custom_field_id));
+		
+		if (empty($return)) {
+			return FALSE;
+		}
+		else {
+			return $return[0];
+		}
+	}
+	
+	/*
 	* Get Custom Fields
 	*
 	* Retrieves custom fields ordered by custom_field_order, with caching
@@ -178,6 +200,10 @@ class Custom_fields_model extends CI_Model {
 	
 		if (isset($filters['group'])) {
 			$this->db->where('custom_field_group',$filters['group']);
+		}
+		
+		if (isset($filters['id'])) {
+			$this->db->where('custom_field_id',$filters['id']);
 		}
 		
 		$this->db->order_by('custom_field_order','ASC');
@@ -239,7 +265,7 @@ class Custom_fields_model extends CI_Model {
 		
 		if ($result->num_rows() > 0) {
 			$last_field = $result->row_array();
-			$order = $last_field['custom_field_order'];
+			$order = $last_field['custom_field_order'] + 1;
 		}
 		else {
 			$order = '1';
@@ -417,6 +443,25 @@ class Custom_fields_model extends CI_Model {
 			
 			return $field['custom_field_name'];
 		}
+	}
+	
+	/*
+	* New Custom Field Group
+	*
+	* Creates a custom field group
+	*
+	* @param string $name
+	*
+	* @return int $custom_field_group_id
+	*/
+	function new_group ($name) {
+		$insert_fields = array(
+								'custom_field_group_name' => $name
+							);
+		
+		$this->db->insert('custom_field_groups',$insert_fields);
+		
+		return $this->db->insert_id();
 	}
 	
 	/*

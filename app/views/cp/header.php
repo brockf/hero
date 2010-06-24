@@ -3,6 +3,7 @@
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 	<title><?=setting('site_name');?></title>
+	<base href="<?=site_url();?>" />
 	<link href="<?=branded_include('css/universal.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<link href="<?=branded_include('css/datepicker.css');?>" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>

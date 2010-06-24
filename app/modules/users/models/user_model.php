@@ -339,9 +339,11 @@ class User_model extends CI_Model
 								'user_suspended' => '0',
 								'user_deleted' => '0'
 							);
-							
-		foreach ($custom_fields as $name => $value) {
-			$insert_fields[$name] = $value;
+		
+		if (is_array($custom_fields)) {					
+			foreach ($custom_fields as $name => $value) {
+				$insert_fields[$name] = $value;
+			}
 		}
 												
 		$this->db->insert('users',$insert_fields);

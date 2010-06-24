@@ -27,13 +27,13 @@ class browser extends uploader {
         $this->get = &$gpc->get;
         $this->post = &$gpc->post;
         $this->cookie = &$gpc->cookie;
-
+        
         if (isset($this->config['_sessionVar'])) {
             $this->config['_sessionVar']['browser'] = array();
             $this->session = &$this->config['_sessionVar']['browser'];
         } else
             $this->session = &$_SESSION;
-
+            
         if (isset($this->post['dir'])) {
             if (substr($this->post['dir'], 0, 1) == "/")
                 $this->post['dir'] = substr($this->post['dir'], 1);
@@ -54,10 +54,10 @@ class browser extends uploader {
             if (isset($this->types[$parts[0]]) && ($this->type != $parts[0]))
                 $this->type = $parts[0];
         }
-
+       
         $this->config['uploadDir'] = dirname($this->config['uploadDir']) . "/" . $this->type;
         $this->config['uploadURL'] = dirname($this->config['uploadURL']) . "/" . $this->type;
-
+        
         $thumbsDir = dirname($this->config['uploadDir']) . "/" . $this->config['thumbsDir'];
         if ((
                 !is_dir($thumbsDir) &&
@@ -127,12 +127,13 @@ class browser extends uploader {
     }
 
     protected function act_expand() {
-        if (!isset($this->post['dir'])) return "";
+    	if (!isset($this->post['dir'])) return "";
         list($type) = explode("/", $this->post['dir']);
         if ($type != $this->type) return "";
         $dir = ($this->post['dir'] == $type)
             ? "" : preg_replace('/^[^\/]+\/(.*)/s', "$1", $this->post['dir']);
         if (!$this->checkDir($dir)) return "";
+        
         return $this->drawDirs($dir);
     }
 
@@ -214,6 +215,7 @@ class browser extends uploader {
 
     protected function act_upload() {
         $baseDir = dirname($this->config['uploadDir']);
+        
         if (!isset($this->post['dir']) ||
             (false === ($dir = "$baseDir/{$this->post['dir']}")) ||
             !is_dir($dir) || !is_readable($dir) || !is_writable($dir)
@@ -670,6 +672,10 @@ class browser extends uploader {
     protected function drawDirs($dir) {
         ob_start();
         $dirs = $this->getDirs($dir);
+        
+        if (!is_array($dirs)) {
+        	return FALSE;
+        }
         foreach ($dirs as $c_dir) {
             $d_dir = (substr($c_dir, -1) == "/") ? substr($c_dir, 0, -1) : $c_dir;
             $s_dir = (strlen($dir) ? "$dir/" : "") . $d_dir;
@@ -683,7 +689,7 @@ class browser extends uploader {
     }
 
     protected function drawFiles($dir, array $files) {
-        ob_start();
+    	ob_start();
         $basePath = $this->config['uploadDir'] . "/$dir";
         $baseURL = $this->config['uploadURL'] . "/$dir";
 

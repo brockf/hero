@@ -137,6 +137,8 @@ class Admincp extends Admincp_Controller {
 	*/
 	function new_email ()
 	{
+		define('INCLUDE_CKEDITOR',TRUE);
+		
 		$this->load->model('email_model');
 		$this->load->model('billing/plan_model');
 		
@@ -221,6 +223,8 @@ class Admincp extends Admincp_Controller {
 	* @return string The email form view
 	*/
 	function edit_email($id) {
+		define('INCLUDE_CKEDITOR',TRUE);
+		
 		$this->load->model('email_model');
 		$this->load->model('billing/plan_model');
 		

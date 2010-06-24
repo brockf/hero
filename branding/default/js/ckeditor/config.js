@@ -9,27 +9,51 @@ CKEDITOR.editorConfig = function( config )
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
 	
-	config.toolbar_Full =
+	// enable the MediaEmbed plugin
+	config.extraPlugins = 'MediaEmbed';
+	
+	// get the base URL
+	config.base_url = $('#base_url').html();
+	
+	// integrate KCFinder
+	config.filebrowserBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=files';
+    config.filebrowserImageBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=images';
+    config.filebrowserFlashBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
+   
+    // remove upload tab
+    config.filebrowserUploadUrl = null;
+	
+	config.toolbar_Complete =
 	[
-	    ['Source','-','Save','NewPage','Preview','-','Templates'],
-	    ['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker', 'Scayt'],
+	    ['Source','-','ShowBlocks','-',],
+	    ['Cut','Copy','Paste','PasteText','PasteFromWord'],
 	    ['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-	    ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton', 'HiddenField'],
 	    '/',
-	    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
-	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote','CreateDiv'],
+	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
 	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
 	    ['Link','Unlink','Anchor'],
-	    ['Image','Flash','Table','HorizontalRule','Smiley','SpecialChar','PageBreak'],
+	    ['Image','MediaEmbed','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
 	    '/',
-	    ['Styles','Format','Font','FontSize'],
+	    ['Format','Font','FontSize'],
+	    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
 	    ['TextColor','BGColor'],
-	    ['Maximize', 'ShowBlocks','-','About']
+	    ['Maximize']
 	];
 	
 	config.toolbar_Basic =
 	[
-	    ['Bold', 'Italic', '-', 'NumberedList', 'BulletedList', '-', 'Link', 'Unlink','-','About']
+	    ['Source','-',],
+	    ['Cut','Copy','Paste','PasteText'],
+	    ['Undo','Redo','-','RemoveFormat'],
+	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
+	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],
+	    ['Image','MediaEmbed','Flash','Table','HorizontalRule','Smiley','SpecialChar'],
+	    '/',
+	    ['Format','Font','FontSize'],
+	    ['Bold','Italic','Underline','Strike','-','Subscript','Superscript'],
+	    ['TextColor','BGColor'],
+   	    ['Link','Unlink','Anchor'],
+	    ['Maximize']
 	];
 
 };

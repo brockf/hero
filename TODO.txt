@@ -1,6 +1,4 @@
 - Roadmap:
-	- Add image manager (AJAX manager/library)
-	- Product custom fields
 	- Product options (more custom fields)
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Make dataset a library
@@ -10,6 +8,7 @@
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
 	- Minify ".js" files automatic with Electric Packager
+	- Allow multi-page articles with "Insert PageBreak"
 	
 - Order Form:
 	- settings: require_user_account
@@ -34,3 +33,5 @@
 	- Link to a subscription_plan
 		- Link to plan (extends plan)
 	- Links to members via customer_id
+	
+- Requires: PHP5, mod_rewrite, cURL, fallow_url_fopen = On

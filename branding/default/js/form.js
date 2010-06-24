@@ -17,11 +17,13 @@
 $(document).ready(function () {
 	MarkEmpty();
 	
+	var base_url = $('#base_url').html();
+	
 	// replace textarea.ckeditor fields with the ckeditor if we have loaded
 	// the ckeditor file
 	if (typeof $.fn.ckeditor == 'function') {
-		$('.wysiwyg').filter('.full').ckeditor(function() { }, { toolbar: "Full" });
-		$('.wysiwyg').filter('.mini').ckeditor(function() { }, { toolbar: "Basic" });
+		$('.wysiwyg').filter('.complete').ckeditor(function() { }, { toolbar : "Complete" });
+		$('.wysiwyg').filter('.basic').ckeditor(function() { }, { toolbar : "Basic" });
 	}
 		
 	$('form.validate').submit(function() {

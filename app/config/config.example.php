@@ -63,6 +63,8 @@ $config['app_support'] = 'http://www.cariboucms.com/support';
 */
 $config['path_product_files'] = FCPATH . 'writeable/product_files/';
 $config['path_product_images'] = FCPATH . 'writeable/product_images/';
+$config['path_editor_uploads'] = FCPATH . 'writeable/editor_uploads/';
+$config['path_custom_field_uploads'] = FCPATH . 'writeable/custom_uploads';
 
 /*
 |--------------------------------------------------------------------------

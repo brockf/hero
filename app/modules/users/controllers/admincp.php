@@ -274,7 +274,7 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Profile Information');
 		$form->names('Name', '', '', FALSE, TRUE);
 		
-		$form->custom_fields($this->custom_fields_model->get_custom_fields('1'));
+		$form->custom_fields($this->custom_fields_model->get_custom_fields(array('group' => '1')));
 	
 		$data = array(
 						'user' => array(),

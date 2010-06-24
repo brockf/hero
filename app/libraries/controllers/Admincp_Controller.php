@@ -47,6 +47,13 @@ class Admincp_Controller extends MY_Controller {
 		foreach ($modules as $module => $module_folder) {
 			MY_Loader::define_module($module . '/');
 		}
+		
+		// define WYSIWYG session variables
+		session_start();
+		$_SESSION['KCFINDER'] = array();
+		$_SESSION['KCFINDER']['disabled'] = FALSE;
+		$_SESSION['KCFINDER']['uploadURL'] = str_replace(FCPATH,'','/writeable/editor_uploads');
+		$_SESSION['KCFINDER']['uploadDir'] = rtrim(setting('path_editor_uploads'),'/');
 	}
 	
 	function module_names ($directory) {

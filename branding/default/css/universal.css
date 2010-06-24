@@ -160,7 +160,7 @@ a:hover {
 	top: 59px;
 	display: block;
 	height: 40px;
-	z-index: 10000;
+	z-index: 1000;
 }
 
 #navigation ul.children li a {
@@ -215,7 +215,7 @@ ul.module_links a {
 	padding: 6px 11px;
 	text-shadow: 0 1px 1px #000;
 	text-decoration: none;
-	margin-right: 12px;
+	margin-left: 12px;
 }
 
 ul.module_links a:hover {
@@ -343,7 +343,7 @@ p.warning {
 	padding-left: 84px;
 	background-image: url(../images/warning64.png);
 	background-repeat: no-repeat;
-	background-position: middle left;
+	background-position: 0px 5px;
 	min-height: 64px;
 }
 
