@@ -2,12 +2,12 @@
 /**
 * Email Model 
 *
-* Contains all the methods used to create, update, and delete client Emails.
+* Contains all the methods used to create, update, and delete system emails.
 *
-* @version 1.0
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
-
+*
 */
 
 class Email_model extends CI_Model

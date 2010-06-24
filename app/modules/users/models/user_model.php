@@ -3,12 +3,12 @@
 /**
 * User Model 
 *
-* Contains all the methods used to create, update, and delete users.
+* Contains all the methods used to create, update, login, logout, and delete users.
 *
-* @version 1.0
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
-
+*
 */
 
 class User_model extends CI_Model
@@ -21,10 +21,21 @@ class User_model extends CI_Model
 		
 		// check for session
         if ($this->session->userdata('user_id') != '') {
+        	// load active user into cache for future ->Get() calls
         	$this->set_active($this->session->userdata('user_id'));
         }
 	}
 	
+	/*
+	* Login User
+	*
+	* Logs a user in, sets the $_SESSION, updates the user's last login, and tracks login
+	*
+	* @param string $username Either the username or email of the user
+	* @param string $password Their password
+	*
+	* @return boolean FALSE upon failure, TRUE upon success
+	*/
 	function login ($username, $password) {
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
 		$this->db->where('user_password',md5($password));
@@ -54,12 +65,26 @@ class User_model extends CI_Model
 		return TRUE;
     }
     
+    /*
+    * User Logout
+    *
+    * @return boolean TRUE upon success
+    */
     function logout () {
     	$this->session->unset_userdata('user_id','login_time');
     	
     	return TRUE;
     }
     
+    /*
+    * Set Active User
+    *
+    * Sets the active user by ID, loads user data into array
+    *
+    * @param int $user_id
+    *
+    * @return boolean TRUE upon success
+    */
     function set_active ($user_id) {
     	if (!$user = $this->get_user($user_id)) {
     		return FALSE;
@@ -70,6 +95,11 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
+    /*
+    * Is User an Admin?
+    *
+    * @return boolean TRUE if the current user is an administrator
+    */
     function is_admin () {
     	if (empty($this->active_user) or $this->active_user['is_admin'] == FALSE) {
     		return FALSE;
@@ -78,6 +108,11 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
+    /*
+    * Is user logged in?
+    *
+    * @return boolean TRUE if user is logged in
+    */
     function logged_in () {
     	if (empty($this->active_user)) {
     		return FALSE;
@@ -87,6 +122,13 @@ class User_model extends CI_Model
     	}
     }
     
+    /*
+    * Get user data
+    *
+    * @param string $parameter The name of the piece of user data (e.g., email)
+    *
+    * @return string User data
+    */
     function get ($parameter = FALSE) {
     	if ($parameter) {
     		return $this->active_user[$parameter];
@@ -483,6 +525,10 @@ class User_model extends CI_Model
 	* @param int $filters['suspended'] Set to 1 to retrieve suspended users
 	* @param string $filters['email'] The email address to filter by
 	* @param string $filters['name'] Search by first and last name
+	* @param string $filters['sort'] Field to sort by
+	* @param string $filters['sort_dir'] ASC or DESC
+	* @param int $filters['limit'] How many records to retrieve
+	* @param int $filters['offset'] Start records retrieval at this record
 	*
 	* @return array Each user in an array of users
 	*/
@@ -564,6 +610,24 @@ class User_model extends CI_Model
 		return $users;
 	}
 	
+	/*
+	* New User Custom Field
+	*
+	* Create new user custom field record and modifies the database
+	*
+	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
+	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
+	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
+	* @param string $default Default selected value
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $help A string of help text
+	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
+	* @param boolean $required TRUE to require the field for submission
+	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
+	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	*
+	* @return int $custom_field_id
+	*/
 	function new_custom_field ($name, $type, $options, $default, $width, $help, $billing_equiv = '', $required = FALSE, $validators = array()) {
 		$this->load->model('custom_fields_model');
 		
@@ -582,6 +646,25 @@ class User_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
+	/*
+	* Update User Custom Field
+	*
+	* Updates custom field records as well as modifies the appropriate database
+	*
+	* @param int $user_field_id The custom field ID to edit
+	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
+	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
+	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
+	* @param string $default Default selected value
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $help A string of help text
+	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
+	* @param boolean $required TRUE to require the field for submission
+	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
+	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	*
+	* @return boolean TRUE
+	*/
 	function update_custom_field ($user_field_id, $name, $type, $options, $default, $width, $help, $billing_equiv = '', $required = FALSE, $validators = array()) {	
 		$this->load->model('custom_fields_model');
 		
@@ -602,6 +685,16 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
+	/*
+	* Delete User Custom Field
+	*
+	* Delete custom field record and modify database
+	*
+	* @param int $id The ID of the field
+	* @param string|boolean The database table to reflect the changes, else FALSE
+	*
+	* @return boolean TRUE
+	*/
 	function delete_custom_field ($user_field_id) {
 		// get custom_field_id
 		$field = $this->get_custom_field($user_field_id);
@@ -614,6 +707,13 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
+	/*
+	* Get User Custom Field
+	*
+	* @param int $custom_field_id
+	*
+	* @return boolean|array $custom_field or FALSE
+	*/
 	function get_custom_field ($id) {
 		$return = $this->get_custom_fields(array('id' => $id));
 		
@@ -624,6 +724,15 @@ class User_model extends CI_Model
 		return $return[0];
 	}
 	
+	/*
+	* Get User Custom Fields
+	*
+	* Retrieves custom fields ordered by custom_field_order
+	* 
+	* @param $filters['id'] A custom field ID
+	*
+	* @return array $fields The custom fields
+	*/
 	function get_custom_fields ($filters = array()) {
 		$this->load->model('custom_fields_model');
 	

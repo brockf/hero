@@ -6,11 +6,21 @@
 * Supports many areas of the app by providing a universal format for custom fields,
 * their validation, and management.
 *
-* @package Electric Publisher
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Publisher
+*
 */
+
 class Custom_fields_model extends CI_Model {
+	/*
+	* @var array Holds previous get_custom_fields calls in memory
+	*/
 	var $cache;
+	
+	/*
+	* @var string The full path to upload custom file uploads to
+	*/
 	var $upload_directory;
 	
 	function __construct() {
@@ -142,20 +152,33 @@ class Custom_fields_model extends CI_Model {
 			elseif ($field['type'] == 'file') {
 				// do the upload
 				if (is_uploaded_file($_FILES[$field['name']]['tmp_name'])) {
-					if (!is_dir($this->upload_directory)) {
-						mkdir($this->upload_directory);
-						chmod($this->upload_directory,'0755');
+					$CI =& get_instance();
+					$CI->settings_model->make_writeable_folder($this->upload_directory,FALSE);
+					
+					$config = array();
+					$config['upload_path'] = $this->upload_directory;
+					$config['allowed_types'] = '*';
+					$config['encrypt_name'] = TRUE;
+					
+					// upload class may already be loaded
+					if (isset($this->upload)) {
+						$this->upload->initialize($config);
+					}
+					else {
+						$this->load->library('upload', $config);
 					}
 					
-					if (!is_writable($this->upload_directory)) {
-						die(show_error('Custom field upload directory is not writeable.  Create /writeable/custom_fields and CHMOD 0755 or 0777 to fix.'));
+					// do upload
+					if (!$this->upload->do_upload($field['name'])) {
+						die(show_error($this->upload->display_errors()));
 					}
 					
-					$filename = time() . get_ext($_FILES[$field['name']]['name']);
-				
-					move_uploaded_file($_FILES[$field['name']]['tmp_name'],$this->upload_directory . $filename);
+					$filename = $this->upload->file_name;
 					
-					$array[$field['name']] = str_replace(BASEPATH,'',$this->upload_directory . $filename);
+					// reset filename in case we use the uploader again
+					$this->upload->file_name = '';
+					
+					$array[$field['name']] = str_replace(FCPATH,'',$this->upload_directory . $filename);
 				}
 			}
 			else {
@@ -190,6 +213,7 @@ class Custom_fields_model extends CI_Model {
 	* Retrieves custom fields ordered by custom_field_order, with caching
 	* 
 	* @param $filters['group'] The custom field group
+	* @param $filters['id'] A custom field ID
 	*
 	* @return array $fields The custom fields
 	*/

@@ -6,6 +6,7 @@
 * Declares the module, update code, etc.
 *
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
 *
 */
@@ -21,6 +22,11 @@ class Users extends Module {
 		parent::__construct();
 	}
 	
+	/*
+	* Pre-admin function
+	*
+	* Initiate navigation in control panel
+	*/
 	function admin_preload ()
 	{
 		$CI =& get_instance();
@@ -31,7 +37,14 @@ class Users extends Module {
 		$CI->navigation->child_link('members',40,'Member Groups',site_url('admincp/users/groups'));
 		$CI->navigation->child_link('members',50,'Member Data',site_url('admincp/users/data'));
 	}
-
+	
+	/*
+	* Module update
+	*
+	* @param int $db_version The current DB version
+	*
+	* @return int The current software version, to update the database
+	*/
 	function update ($db_version) {
 		if ($db_version < 1.04) {
 			$this->CI->db->query('CREATE TABLE `user_logins` (

@@ -6,6 +6,7 @@
 * Declares the module, update code, etc.
 *
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
 *
 */
@@ -21,6 +22,11 @@ class Settings extends Module {
 		parent::__construct();
 	}
 
+	/*
+	* Pre-admin function
+	*
+	* Initiate navigation in control panel
+	*/
 	function admin_preload ()
 	{
 		$CI =& get_instance();

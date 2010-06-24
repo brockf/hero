@@ -5,10 +5,10 @@
 *
 * Contains all the methods used to create, update, and delete usergroups.
 *
-* @version 1.0
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
-
+*
 */
 
 class Usergroup_model extends CI_Model
@@ -18,6 +18,13 @@ class Usergroup_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	/*
+	* New Usergroup
+	*
+	* @param string $name The usergroup name
+	*
+	* @return int $usergroup_id
+	*/
 	function new_group ($name) {
 		$insert_fields = array(
 								'usergroup_name' => $name
@@ -28,16 +35,33 @@ class Usergroup_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	function update_group ($id, $name) {
+	/*
+	* Update Usergroup
+	*
+	* @param int $group_id The group ID
+	* @param string $name The new group name
+	*
+	* @return boolean TRUE
+	*/
+	function update_group ($group_id, $name) {
 		$update_fields = array(
 								'usergroup_name' => $name
 							);
 												
-		$this->db->update('usergroups',$update_fields, array('usergroup_id' => $id));
+		$this->db->update('usergroups',$update_fields, array('usergroup_id' => $group_id));
 		
 		return TRUE;
 	}
 	
+	/*
+	* Make Default Group
+	*
+	* Sets the default usergroup for new registrations
+	*
+	* @param int $group_id The usergroup to set it to
+	*
+	* @return boolean TRUE
+	*/
 	function make_default ($group_id) {
 		$this->db->update('usergroups',array('usergroup_default' => '0'));
 	
@@ -46,6 +70,13 @@ class Usergroup_model extends CI_Model
 		return TRUE;	
 	}
 	
+	/*
+	* Delete Usergroup
+	*
+	* @param int $group_id
+	*
+	* @return boolean TRUE
+	*/
 	function delete_group ($group_id) {
 		$users = $this->user_model->get_users(array('group' => $group_id));
 		foreach ($users as $user) {
@@ -57,6 +88,11 @@ class Usergroup_model extends CI_Model
 		return TRUE;
 	}
 	
+	/*
+	* Get Default Usergroup
+	*
+	* @return int $group_id The default usergroup ID
+	*/
 	function get_default () {
 		$this->db->select('usergroup_id');
 		$this->db->where('usergroup_default','1');
@@ -68,8 +104,15 @@ class Usergroup_model extends CI_Model
 		return $group['usergroup_id'];
 	}
 	
-	function get_group ($id) {
-		$return = $this->get_usergroups(array('id' => $id));
+	/*
+	* Get Usergroup
+	* 
+	* @param int $group_id The usergroup ID to retrieve
+	*
+	* @return array|boolean Array of group data, else FALSE
+	*/
+	function get_group ($group_id) {
+		$return = $this->get_usergroups(array('id' => $group_id));
 		
 		if (empty($return)) {
 			return FALSE;
@@ -79,6 +122,13 @@ class Usergroup_model extends CI_Model
 		}
 	}
 	
+	/*
+	* Get Usergroups
+	*
+	* @param $filters['id'] The group ID
+	*
+	* return array|boolean Array of group data, else FALSE
+	*/
 	function get_usergroups ($filters = array()) {
 		if (isset($filters['id'])) {
 			$this->db->where('usergroup_id',$filters['id']);

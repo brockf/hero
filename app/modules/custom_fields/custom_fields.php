@@ -6,6 +6,7 @@
 * Declares the module, update code, etc.
 *
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
 *
 */
@@ -21,6 +22,13 @@ class Custom_fields extends Module {
 		parent::__construct();
 	}
 	
+	/*
+	* Module update
+	*
+	* @param int $db_version The current DB version
+	*
+	* @return int The current software version, to update the database
+	*/
 	function update($db_version) {
 		if ($db_version < 1.0) {
 			$this->CI->settings_model->make_writeable_folder(setting('path_custom_field_uploads'),TRUE);

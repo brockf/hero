@@ -1,5 +1,16 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
+/*
+* Custom Fields Control Panel
+*
+* Displays all control panel forms, datasets, and other displays
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Publisher
+*
+*/
+
 class Admincp extends Admincp_Controller {
 	function __construct()
 	{

@@ -3,12 +3,12 @@
 /**
 * Settings Model 
 *
-* Contains all the methods used to create, update, and delete settings.
+* Contains all the methods used to update system settings.
 *
-* @version 1.0
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
-
+*
 */
 
 class Settings_model extends CI_Model
@@ -24,7 +24,7 @@ class Settings_model extends CI_Model
 	* Make Writeable Folder
 	*
 	* This function creates a writeable folder and places a blank index.html file into it
-	* It throws errors upon failure
+	* It throws errors upon failure.
 	*
 	* @param string $path The filepath
 	* @param boolean $no_access Set to TRUE to write a .htaccess file which will deny all access to this folder directly
@@ -61,6 +61,14 @@ class Settings_model extends CI_Model
 		}
 	}
 	
+	/*
+	* Auto-set Settings
+	*
+	* Takes all settings from the `settings` table and places them in the active
+	* $this->config array
+	*
+	* @return boolean TRUE upon completion
+	*/
 	function set_settings () {
 		$result = $this->db->get('settings');
 		
@@ -71,12 +79,35 @@ class Settings_model extends CI_Model
 		return TRUE;
 	}
 	
+	/*
+	* Update Setting
+	*
+	* Updates a setting's value by name
+	*
+	* @param string $name The current name
+	* @param string $value The new setting value
+	*/
 	function update_setting ($name, $value) {
 		$this->db->update('settings',array('setting_value' => $value), array('setting_name' => $name));
 		
 		return TRUE;
 	}
 	
+	/*
+	* New Setting
+	*
+	* Creates a new setting
+	*
+	* @param int $setting_group The setting group ID
+	* @param string $setting_name The name of the setting
+	* @param string $setting_valued The default value of the setting
+	* @param string $setting_help The help text for the setting
+	* @param string $setting_type The type of setting it is (options: toggle, textarea, text)
+	* @param string $setting_options A serialized array of options for toggle settings
+	* @param date $setting_time The time of the creation of the setting
+	*
+	* @return int $setting_id
+	*/
 	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_type = 'text', $setting_options = '', $setting_time = FALSE) {
 		$insert_fields = array(
 							 	'setting_group' => $setting_group,
@@ -92,6 +123,15 @@ class Settings_model extends CI_Model
 		return $this->db->insert_id();	
 	}
 	
+	/*
+	* Get Setting
+	*
+	* Gets a setting by name
+	*
+	* @param string $name Setting name
+	*
+	* @return boolean|string Setting value, FALSE if it doesn't exist
+	*/
 	function get_setting ($name) {
 		$settings = $this->get_settings(array('name' => $name));
 		

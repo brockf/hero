@@ -6,8 +6,9 @@
 * Contains all the methods used to track login records
 *
 * @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
 * @package Electric Publisher
-
+*
 */
 
 class Login_model extends CI_Model
@@ -17,6 +18,13 @@ class Login_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	/*
+	* Record Login
+	*
+	* @param int $user_id
+	*
+	* @return int $login_id
+	*/
 	function new_login ($user_id) {
 		$insert_fields = array(
 							'user_id' => $user_id,
@@ -26,8 +34,28 @@ class Login_model extends CI_Model
 							);
 							
 		$this->db->insert('user_logins',$insert_fields);
+		
+		return $this->db->insert_id();
 	}
 	
+	/*
+	* Get Login Records
+	*
+	* @param int $filters['id'] Specify login record ID
+	* @param int $filters['user_id'] Filter by user ID
+	* @param string $filters['username'] Filter by username
+	* @param int $filters['group_id'] Filter by usergroup ID
+	* @param string $filters['ip'] Filter by IP address search (e.g., "125.34.")
+	* @param string $filters['browser'] Filter by browser search (e.g., "mozilla")
+	* @param date $filters['start_date'] Only retrieve records after or including this date (requires $filters['end_date'])
+	* @param date $filters['end_date'] Only retrieve records before or including this date (requires $filters['start_date'])
+	* @param string $filters['sort'] Field to sort by
+	* @param string $filters['sort_dir'] ASC or DESC
+	* @param int $filters['limit'] How many records to retrieve
+	* @param int $filters['offset'] Start records retrieval at this record
+	*
+	* @return array|boolean Login records, else FALSE
+	*/
 	function get_logins ($filters = array()) {
 		if (isset($filters['id'])) {
 			$this->db->where('user_login_id',$filters['id']);
