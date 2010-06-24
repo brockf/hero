@@ -7,7 +7,6 @@
 	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
-	- Minify ".js" files automatic with Electric Packager
 	- Allow multi-page articles with "Insert PageBreak"
 	
 - Order Form:
@@ -34,4 +33,4 @@
 		- Link to plan (extends plan)
 	- Links to members via customer_id
 	
-- Requires: PHP5, mod_rewrite, cURL, fallow_url_fopen = On
+- Requires: PHP5, mod_rewrite, cURL, fopen_allow_url = On, GD2 for thumbnails (or ImageMagick if you update the image_manipulation library)

@@ -37,7 +37,8 @@ class Admincp extends Admincp_Controller {
 						array(
 							'name' => 'ID #',
 							'type' => 'id',
-							'width' => '5%'
+							'width' => '5%',
+							'filter' => 'id'
 							),
 						array(
 							'name' => 'Username',
@@ -88,10 +89,6 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('user_model','get_users');
 		$this->dataset->base_url(site_url('admincp/users/index'));
-		
-		// total rows
-		$total_rows = $this->db->where('user_deleted','0')->get('users')->num_rows(); 
-		$this->dataset->total_rows($total_rows);
 		
 		// initialize the dataset
 		$this->dataset->initialize();

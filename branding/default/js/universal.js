@@ -123,6 +123,12 @@ $(document).ready(function() {
 	}
 	
 	$('#dataset_form').submit(function () {
+		if ($(this).attr('rel') != $(this).attr('action')) {
+			// we have customized the form action, likely with an embedded options drop down
+			// none of this applies
+			return true;
+		}
+	
 		var serialized_filters = $('#dataset_form tr.filters input.text, tr.filters select').serialize();
 		
 		$.post($('#base_url').html()+'dataset/prep_filters', { filters: serialized_filters },

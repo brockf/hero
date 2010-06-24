@@ -40,7 +40,7 @@ class Array_to_csv {
 		
 		foreach ($this->parsed_data as $line) {
 			foreach ($this->headers as $header) {
-				$value = $line[$header];
+				$value = (isset($line[$header])) ? $line[$header] : '';
 				$value = str_replace("\n",' ',$value);
 				$csv .= '"' . $value . '",';
 			}
