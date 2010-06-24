@@ -8,6 +8,7 @@
 	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
 	- Allow multi-page articles with "Insert PageBreak"
+	- Specify an end_date for backend new subscriptions
 	
 - Order Form:
 	- settings: require_user_account

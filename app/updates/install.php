@@ -408,7 +408,7 @@ INSERT INTO `settings` (`setting_id`, `setting_group`, `setting_name`, `setting_
 (2, 1, 'site_email', 'email@example.com', 'The reply-to email address for all outgoing system emails.', NOW(), 'text', ''),
 (3, 1, 'email_name', 'Your Website', 'The reply-to name for all outgoing system emails.', NOW(), 'text', ''),
 (4, 2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', ''),
-(5, 1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:2:"Off";i:1;s:3:"On";}'),
+(5, 1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}'),
 (6, 2, 'default_gateway', '0', 'This payment gateway, referenced by ID, will be the default gateway for site purchases.', NOW(), 'text', ''),
 (7, 1, 'locale', 'US', 'Some payment gateways and other integrations require this 2-character ISO-standard country code to determine your locale.', NOW(), 'text', ''),
 (8, 1, 'email_signature', 'Sincerely,\nThe [[SITE_NAME]] Team\n[[SITE_LINK]]', 'If this setting is set, it will be attached to each outgoing email', NOW(), 'textarea', '');

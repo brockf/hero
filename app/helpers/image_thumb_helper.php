@@ -15,13 +15,14 @@ function image_thumb ($image_path, $height, $width)
 {
 	// Get the CodeIgniter super object
 	$CI =& get_instance();
+	$CI->load->helper('file_extension');
 	
 	// generate image thumbnail filename from full path and dimensions
-	$file_name = md5($image_path . $height . $width);
+	$file_name = md5($image_path . $height . $width) . '.' . file_extension($image_path);
 
 	// Path to image thumbnail
-	$image_thumb = setting('path_image_thumbs') . $filename;
-
+	$image_thumb = setting('path_image_thumbs') . $file_name;
+	
 	if (!file_exists($image_thumb))
 	{
 		// load library
