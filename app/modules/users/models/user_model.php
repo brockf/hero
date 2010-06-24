@@ -525,7 +525,7 @@ class User_model extends CI_Model
 		// get custom fields
 		$CI =& get_instance();
 		$CI->load->model('custom_fields_model');
-		$custom_fields = $CI->custom_fields_model->get_custom_fields('1');
+		$custom_fields = $CI->custom_fields_model->get_custom_fields(array('group' => '1'));
 		
 		$users = array();
 		foreach ($result->result_array() as $user) {

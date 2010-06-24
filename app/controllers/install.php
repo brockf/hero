@@ -233,10 +233,9 @@ class Install extends Controller {
 													 $this->input->post('last_name'),
 													 FALSE,
 													 FALSE,
-													 FALSE,
 													 TRUE);
 				
-				if (isset($user_id)) {
+			if (isset($user_id)) {
 					// success!
 					$this->session->set_userdata('username',$this->input->post('username'));
 					$this->session->set_userdata('email',$this->input->post('email'));

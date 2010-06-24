@@ -10,13 +10,6 @@
 |
 */
 
-$hook['post_controller_constructor'] = array(
-                                'class'    => '',
-                                'function' => 'install_redirect',
-                                'filename' => 'install_redirect_helper.php',
-                                'filepath' => 'helpers'
-                                );
-
 
 /* End of file hooks.php */
 /* Location: ./system/opengateway/config/hooks.php */

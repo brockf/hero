@@ -58,7 +58,7 @@
 
     </div>
     <div id="files">
-        <div id="fileList" class="data"><?php echo $this->drawFiles($_dir, $_files) ?></div>
+        <div id="fileList" class="data"><?php echo $this->drawFiles($_dir, (is_array($_files)) ? $_files : array()) ?></div>
         <div id="content"></div>
     </div>
 </div>

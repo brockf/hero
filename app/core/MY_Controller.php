@@ -3,5 +3,9 @@
 class MY_Controller extends Controller {
 	public function __construct() {
 		parent::__construct();
+		
+		// we don't want to do anything if we're not installed
+		$this->load->helper('install_redirect_helper');
+		install_redirect();
 	}	
 }
