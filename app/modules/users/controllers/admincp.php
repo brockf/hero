@@ -631,6 +631,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data () {
+		$this->navigation->parent_active('configuration');
+		
 		$this->navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
 		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/1/' . urlencode(base64_encode(site_url('admincp/users/data')))));
 		
@@ -680,6 +682,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data_add () {
+		$this->navigation->parent_active('configuration');
+		
 		$data = array(
 						'field' => array(),
 						'form_title' => 'New Member Data Field',
@@ -690,6 +694,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function post_data ($action, $id = FALSE) {
+		$this->navigation->parent_active('configuration');
+		
 		if ($this->input->post('name') == '') {
 			$this->notices->SetError('Field name is a required field.');
 			$error = true;
@@ -765,6 +771,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data_edit ($id) {
+		$this->navigation->parent_active('configuration');
+		
 		$field = $this->user_model->get_custom_field($id);
 		
 		$data = array(
@@ -779,7 +787,7 @@ class Admincp extends Admincp_Controller {
 	/**
 	* Delete Custom Fields
 	*
-	* Delete gateways as passed from the dataset
+	* Delete user custom fields as passed from the dataset
 	*
 	* @param string Hex'd, base64_encoded, serialized array of user_field ID's
 	* @param string Return URL for Dataset
@@ -787,6 +795,8 @@ class Admincp extends Admincp_Controller {
 	* @return bool Redirects to dataset
 	*/
 	function data_delete ($fields, $return_url) {
+		$this->navigation->parent_active('configuration');
+		
 		$this->load->library('asciihex');
 		
 		$fields = unserialize(base64_decode($this->asciihex->HexToAscii($fields)));

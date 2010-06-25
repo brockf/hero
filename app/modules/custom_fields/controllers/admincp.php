@@ -22,6 +22,13 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	/*
+	* Introduction to custom fields, with individual links
+	*/
+	function index () {
+		$this->load->view('custom_fields.php');
+	}
+	
+	/*
 	* Re-position a custom field group
 	*
 	* @param int $custom_field_group Custom field group ID

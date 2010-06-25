@@ -22,6 +22,12 @@ class Custom_fields extends Module {
 		parent::__construct();
 	}
 	
+	function admin_preload () {
+		$CI =& get_instance();
+		
+		$CI->navigation->child_link('configuration',40,'Custom Fields',site_url('admincp/custom_fields'));
+	}
+	
 	/*
 	* Module update
 	*

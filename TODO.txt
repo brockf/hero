@@ -1,5 +1,6 @@
 - Roadmap:
 	- Product options (more custom fields)
+	- Fix images UL
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Make dataset a library
 	- Tax rules (options: Applies to subscriptions)
