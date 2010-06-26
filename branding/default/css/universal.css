@@ -592,6 +592,7 @@ div.image_gallery_form div.images, div.product_images {
 
 div.product_images {
 	margin: 0;
+	padding-bottom: 5px;
 }
 
 div.image_gallery_form div.images ul li {
@@ -605,8 +606,7 @@ div.image_gallery_form div.images ul li {
 div.product_images ul {
 	margin: 0;
 	list-style-type: none;
-	position: relative;
-	left: -130px;
+	clear: both;
 	padding: 0;
 	border: 0;
 }
@@ -621,6 +621,7 @@ div.product_images ul li {
 	padding: 10px;
 	margin-right: 20px;
 	position: relative;
+	margin-bottom: 10px;
 }
 
 div.product_images a.delete {
