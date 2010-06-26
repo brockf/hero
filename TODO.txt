@@ -1,9 +1,8 @@
 - Roadmap:
+	- Tax rules
+	- Track taxes in separate database, allow for "Tax Reports" to see how much tax they owe
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
-	- Tax rules (options: Applies to subscriptions)
 	- Add setting: require_account for orders
-	- Limit user_fields to subscription_plans and products via serialized arrays in `user_fields`
-	- Write documentation for model's Get function requirements for Datasets (filters, etc.)
 	- Update Dataset to have sorting
 	- Allow multi-page articles with "Insert PageBreak"
 	- Product options (more custom fields)
