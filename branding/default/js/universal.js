@@ -94,6 +94,9 @@ $(document).ready(function() {
 	
 	if (typeof $.fn.datePicker == 'function') {
 		Date.format = 'yyyy-mm-dd';
+		// general datepick fields
+		$('input.datepick').datePicker({clickInput:true,startDate:'2009-01-01'});
+		
 		$('#dataset_form input.date_start').datePicker({clickInput:true,startDate:'2009-01-01'});
 		$('#dataset_form input.date_end').datePicker({clickInput:true,startDate:'2009-01-01'});
 		

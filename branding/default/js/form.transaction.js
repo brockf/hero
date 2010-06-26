@@ -3,6 +3,16 @@ $(document).ready(function () {
 	
 	ShowHide();
 	
+	$('#no_enddate').click(function () {
+		if ($(this).attr('checked') == true) {
+			$('#end_date').val('');
+		}
+	});
+	
+	$('#end_date').focus(function () {
+		$('#no_enddate').attr('checked',false);
+	});
+	
 	$('#gateway').change(function () {
 		ShowHide();
 	});
@@ -48,6 +58,7 @@ function ShowHide () {
 		$('#initial_charge').val('0');
 		$('#transaction_gateway').hide();
 		$('#transaction_cc').hide();
+		$('#transaction_cc input').removeClass('required');
 		$('#transaction_customer').hide();
 		$('#row_initial_charge').hide();
 		$('#row_free_trial').hide();

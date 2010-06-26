@@ -1,5 +1,4 @@
 - Roadmap:
-	- Specify an end_date for backend new subscriptions
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Tax rules (options: Applies to subscriptions)
 	- Add setting: require_account for orders
