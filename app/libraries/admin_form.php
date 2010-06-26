@@ -64,8 +64,9 @@ class Admin_form {
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
 	* @param string $li_id The ID of the LI element containing the field
+	* @param array $classes Additional classes to apply to the element
 	*/
-	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '') {
+	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -80,7 +81,8 @@ class Admin_form {
 								'required' => $required,
 								'mark_empty' => $mark_empty,
 								'full' => $full,
-								'li_id' => $li_id
+								'li_id' => $li_id,
+								'classes' => $classes
 							);
 	}
 	
@@ -481,6 +483,10 @@ class Admin_form {
 					if ($field['mark_empty'] != FALSE) {
 						$classes[] = 'mark_empty';
 						$rel = $field['mark_empty'];
+					}
+					
+					if (is_array($field['classes'])) {
+						$classes = array_merge($classes,$field['classes']);
 					}
 					
 					$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';

@@ -1,6 +1,4 @@
 - Roadmap:
-	- Tax rules
-	- Track taxes in separate database, allow for "Tax Reports" to see how much tax they owe
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders
 	- Update Dataset to have sorting

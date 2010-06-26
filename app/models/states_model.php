@@ -74,6 +74,7 @@ class States_model extends CI_Model
 		$states = array();
 		foreach ($result->result_array() as $state) {
 			$states[] = array(
+							'id' => $state['state_id'],
 							'code' => $state['name_short'],
 							'name' => $state['name_long']
 						);
@@ -96,6 +97,7 @@ class States_model extends CI_Model
 		$countries = array();
 		foreach ($result->result_array() as $country) {
 			$countries[] = array(
+							'id' => $country['country_id'],
 							'iso2' => $country['iso2'],
 							'name' => $country['name']
 						);
