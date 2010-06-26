@@ -22,7 +22,7 @@ class Admincp extends Admincp_Controller {
 	function index () {
 		$this->navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
 	
-		$this->load->model('admincp/dataset','dataset');
+		$this->load->library('dataset');
 		
 		$this->load->model('usergroup_model');			
 	    $usergroups = $this->usergroup_model->get_usergroups();
@@ -408,7 +408,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function logins () {
-		$this->load->model('admincp/dataset');
+		$this->load->library('dataset');
 		
 		$this->load->model('usergroup_model');			
 	    $usergroups = $this->usergroup_model->get_usergroups();
@@ -483,7 +483,7 @@ class Admincp extends Admincp_Controller {
 	function groups () {
 		$this->navigation->module_link('Add New Member Group',site_url('admincp/users/group_add'));
 		
-		$this->load->model('admincp/dataset','dataset');
+		$this->load->library('dataset');
 		
 		$columns = array(
 						array(
@@ -636,7 +636,7 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
 		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/1/' . urlencode(base64_encode(site_url('admincp/users/data')))));
 		
-		$this->load->model('admincp/dataset','dataset');
+		$this->load->library('dataset');
 		
 		$columns = array(
 						array(

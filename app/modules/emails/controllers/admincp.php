@@ -28,7 +28,7 @@ class Admincp extends Admincp_Controller {
 	*/
 	function index()
 	{
-		$this->load->model('admincp/dataset','dataset');
+		$this->load->library('dataset');
 		
 		$columns = array(
 						array(

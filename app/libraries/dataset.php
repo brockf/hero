@@ -13,7 +13,7 @@
 * @package Electric Publisher
 
 */
-class Dataset extends CI_Model {
+class Dataset {
 	var $columns;
 	var $base_url;
 	var $filters;
@@ -26,9 +26,7 @@ class Dataset extends CI_Model {
 	var $data_model;
 	var $data_function;
 
-    function Dataset() {
-        parent::CI_Model();
-        
+    function __construct() {
         $this->rows_per_page = 50;
     }
     
