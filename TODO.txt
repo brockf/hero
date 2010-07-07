@@ -1,5 +1,5 @@
 - Roadmap:
-	- Create Content Editor
+	- Create Content Editor (with inline topic adder)
 	- Uncomment content deletion from delete_content_type() in content_type_model
 	- Create default content types: Pages
 	- Create XML/RSS Feed Manager, Blog Manager, Listings Manager

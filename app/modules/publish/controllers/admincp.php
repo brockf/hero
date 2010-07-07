@@ -19,6 +19,165 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->parent_active('publish');
 	}
 	
+	function topic_add () {
+		$this->load->library('admin_form');
+		$form = new Admin_form;
+		$form->fieldset('Topic');
+		
+		$this->load->model('topic_model');
+		$topics = $this->topic_model->get_tiered_topics();
+		
+		$options = array();
+		$options[0] = 'No parent';
+		foreach ($topics as $data) {
+			$options[$data['id']] = $data['name'];
+		}
+		
+		$form->dropdown('Parent','parent',$options,'0',FALSE,FALSE,'If a parent is selected, this topic will act as a sub-topic of its parent.',TRUE);
+		$form->text('Topic Name','name','',FALSE,TRUE,'e.g., Entertainment &amp; Leisure',TRUE);
+		$form->textarea('Description','description','',FALSE,FALSE,'basic',TRUE);
+		
+		$data = array(
+					'form' => $form->display(),
+					'form_action' => site_url('admincp/publish/post_topic/new'),
+					'form_title' => 'New Topic'
+					);
+					
+		$this->load->view('topic_form',$data);
+	}
+	
+	function topic_edit ($id) {
+		$this->load->library('admin_form');
+		$form = new Admin_form;
+		$form->fieldset('Edit Topic');
+		
+		$this->load->model('topic_model');
+		$topics = $this->topic_model->get_tiered_topics();
+		
+		$topic = $this->topic_model->get_topic($id);
+		
+		$options = array();
+		$options[0] = 'No parent';
+		foreach ($topics as $data) {
+			$options[$data['id']] = $data['name'];
+		}
+		
+		$form->dropdown('Parent','parent',$options,$topic['parent'],FALSE,FALSE,'If a parent is selected, this topic will act as a sub-topic of its parent.',TRUE);
+		$form->text('Topic Name','name',$topic['name'],FALSE,TRUE,'e.g., Entertainment &amp; Leisure',TRUE);
+		$form->textarea('Description','description',$topic['description'],FALSE,FALSE,'basic',TRUE);
+		
+		$data = array(
+					'form' => $form->display(),
+					'form_action' => site_url('admincp/publish/post_topic/edit/' . $topic['id']),
+					'form_title' => 'Edit Topic'
+					);
+					
+		$this->load->view('topic_form',$data);
+	}
+	
+	function post_topic ($action, $id = FALSE) {
+		$this->load->library('form_validation');
+		
+		$this->form_validation->set_rules('name','Name','trim|required');
+		$this->form_validation->set_rules('parent','Parent','is_natural');
+		
+		if ($this->form_validation->run() === FALSE) {
+			$errors = rtrim(validation_errors('','||'),'|');
+			$errors = explode('||',str_replace('<p>','',$errors));
+			
+			$this->notices->SetError($errors);
+			$error = TRUE;
+		}
+		
+		if (isset($error)) {
+			if ($action == 'new') {
+				redirect('admincp/publish/topic_add');
+				return FALSE;
+			}
+			else {
+				redirect('admincp/publish/topic_edit/' . $id);
+			}	
+		}
+		
+		$this->load->model('topic_model');
+		
+		if ($action == 'new') {
+			$topic_id = $this->topic_model->new_topic(
+													$this->input->post('name'),
+													$this->input->post('description'),
+													$this->input->post('parent')
+												);
+													
+			$this->notices->SetNotice('Topic added successfully.');
+		}
+		elseif ($action == 'edit') {
+			$this->topic_model->update_topic(
+											$id,
+											$this->input->post('name'),
+											$this->input->post('description'),
+											$this->input->post('parent')
+										);
+											
+			$this->notices->SetNotice('Topic updated successfully.');
+		}
+		
+		redirect('admincp/publish/topics');
+	}
+	
+	function topics () {
+		$this->navigation->module_link('Add Topic',site_url('admincp/publish/topic_add'));
+		
+		$this->load->library('dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'ID #',
+							'type' => 'id',
+							'width' => '5%'
+							),
+						array(
+							'name' => 'Name',
+							'width' => '70%',
+							'filter' => 'name',
+							'type' => 'text'
+							),
+						array(
+							'name' => '',
+							'width' => '25%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('topic_model','get_tiered_topics');
+		$this->dataset->base_url(site_url('admincp/publish/topics'));
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		// add actions
+		$this->dataset->action('Delete','admincp/publish/topics_delete');
+		
+		$this->load->view('topics');
+	}
+	
+	function topics_delete ($topics, $return_url) {
+		$this->load->library('asciihex');
+		$this->load->model('topic_model');
+		
+		$topics = unserialize(base64_decode($this->asciihex->HexToAscii($topics)));
+		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
+		
+		foreach ($topics as $topic) {
+			$this->topic_model->delete_topic($topic);
+		}
+		
+		$this->notices->SetNotice('Topic(s) deleted successfully.');
+		
+		redirect($return_url);
+		
+		return TRUE;
+	}
+	
 	function types () {
 		$this->navigation->module_link('New Content Type',site_url('admincp/publish/type_new'));
 		
@@ -89,6 +248,7 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Options');
 		$form->checkbox('Standard page fields?', 'is_standard', '1', TRUE, 'If checked, each content item will have the following fields: "Title", "URL Path", and "Topic".  These are standard items which allow ' . setting('app_name') . ' to display this content as an individual web page, include in blog/topic listings, etc.');
 		$form->checkbox('Restrict to certain member groups?', 'is_privileged', '1', TRUE, 'If checked, you will be able to specify the member group(s) that have permissions to see this content (or make it public).');
+		
 		
 		$data = array(
 					'form' => $form->display(),
