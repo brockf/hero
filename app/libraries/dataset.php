@@ -76,6 +76,10 @@ class Dataset {
     	
     	$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
     	
+    	// if we have default parameters to pass to the method, we'll add them here
+    	// they are set with the $this->data_source() method
+    	$params = array_merge($params, $this->default_data_filters);
+    	
     	// calculate parameters without limits
     	$params_no_limits = array();
 	    $params_no_limits = (!empty($filter_params)) ? $filter_params : $params_no_limits;
@@ -212,9 +216,10 @@ class Dataset {
     *
     * @return boolean TRUE
     */
-    function datasource ($data_model, $data_function) {
+    function datasource ($data_model, $data_function, $data_filters = array()) {
     	$this->data_model = $data_model;
     	$this->data_function = $data_function;
+    	$this->default_data_filters = $data_filters;
     	
     	return TRUE;
     }

@@ -489,6 +489,20 @@ class Custom_fields_model extends CI_Model {
 	}
 	
 	/*
+	* Delete Group
+	*
+	* Deletes the custom field group as well as all fields in it
+	*
+	* @param int $group_id
+	*/
+	function delete_group ($id) {
+		$this->db->delete('custom_field_groups',array('custom_field_group_id' => $id));
+		$this->db->delete('custom_fields',array('custom_field_group' => $id));
+		
+		return TRUE;
+	}
+	
+	/*
 	* Format the options array
 	*
 	* @param string|array $options Either a newline-separated field of values, or an array of pre-formatted values

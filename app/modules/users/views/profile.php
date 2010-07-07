@@ -45,7 +45,7 @@
 					<option value="0" selected="selected"></option>
 					<? if ($subscription['status'] == 'active') { ?>
 					<option value="cancel">cancel subscription</option>
-					<option value="change_price">change recurring amount</option>
+					<? if ((int)$subscription['amount'] != 0) { ?><option value="change_price">change recurring amount</option><? } ?>
 					<option value="change_plan">change plan</option>
 					<? } ?>
 					<option value="view_all">report: view all related charges</option>
