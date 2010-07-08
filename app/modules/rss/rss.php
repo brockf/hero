@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* Publish Module Definition
+* RSS Module Definition
 *
 * Declares the module, update code, etc.
 *
@@ -12,7 +12,7 @@
 */
 
 class Rss extends Module {
-	var $version = '1.01';
+	var $version = '1.02';
 	var $name = 'rss';
 
 	function __construct () {
@@ -35,13 +35,13 @@ class Rss extends Module {
 	}
 	
 	function update ($db_version) {
-		if ($db_version < 1.01) {
+		if ($db_version < 1.02) {
 			$this->CI->db->query('DROP TABLE IF EXISTS `rss_feeds`');
 			
 			$this->CI->db->query('CREATE TABLE `rss_feeds` (
  								 `rss_id` int(11) NOT NULL auto_increment,
+ 								 `link_id` int(11) NOT NULL,
  								 `content_type_id` int(11) NOT NULL,
-								 `rss_url_path` varchar(255) NOT NULL,
 								 `rss_title` varchar(255) NOT NULL,
 								 `rss_description` text NOT NULL,
  								 `rss_filter_author` varchar(250) NOT NULL,

@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.07';
+	var $version = '1.09';
 	var $name = 'publish';
 
 	function __construct () {
@@ -43,7 +43,6 @@ class Publish extends Module {
 			$weight++;
 		}
 		
-		$CI->navigation->child_link('publish',30,'Blogs/Listings',site_url('admincp/publish/blogs'));
 		$CI->navigation->child_link('publish',50,'Topics',site_url('admincp/publish/topics'));
 		$CI->navigation->child_link('publish',60,'Content Types',site_url('admincp/publish/types'));
 	}
@@ -56,10 +55,21 @@ class Publish extends Module {
 	* @return int The current software version, to update the database
 	*/
 	function update ($db_version) {
-		if ($db_version < 1.07) {
+		if ($db_version < 1.09) {
+			$this->CI->db->query('CREATE TABLE IF NOT EXISTS `links` (
+ 								 `link_id` int(11) NOT NULL auto_increment,
+ 								 `link_url_path` varchar(255) NOT NULL,
+ 								 `link_module` varchar(250),
+ 								 `link_controller` varchar(250),
+ 								 `link_method` varchar(250),
+   								 PRIMARY KEY  (`link_id`)
+								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								 
 			$this->CI->db->query('DROP TABLE IF EXISTS `content`');
+			
 			$this->CI->db->query('CREATE TABLE `content` (
  								 `content_id` int(11) NOT NULL auto_increment,
+ 								 `link_id` int(11) NOT NULL,
  								 `content_type_id` int(11) NOT NULL,
  								 `user_id` int(11) NOT NULL,
  								 `content_date` DATETIME NOT NULL,
@@ -67,7 +77,6 @@ class Publish extends Module {
  								 `content_topics` VARCHAR(255) NOT NULL,
  								 `content_is_standard` tinyint(1) NOT NULL,
  								 `content_title` varchar(255),
- 								 `content_url_path` varchar(255),
  								 `content_privileges` varchar(255),
    								 PRIMARY KEY  (`content_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');

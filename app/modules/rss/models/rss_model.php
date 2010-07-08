@@ -22,6 +22,7 @@ class Rss_model extends CI_Model
 	* Create New RSS Feed
 	* @param int $content_type_id
  	* @param string $title Feed title
+ 	* @param string $url_path
  	* @param string $description Feed description
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
@@ -29,14 +30,18 @@ class Rss_model extends CI_Model
  	*
  	* @return $feed_id
  	*/
-	function new_feed ($content_type_id, $title, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
+	function new_feed ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
 		$this->load->helper('clean_string');
-		$url_path = clean_string($title);
+		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+		
+		$this->load->model('link_model');
+		$url_path = $this->link_model->get_unique_url_path($url_path);
+		$link_id = $this->link_model->new_link($url_path, 'rss', 'feed', 'view');
 		
 		$insert_fields = array(
+							'link_id' => $link_id,
 							'content_type_id' => $content_type_id,
 							'rss_title' => $title,
-							'rss_url_path' => $url_path,
 							'rss_description' => $description,
 							'rss_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'rss_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
@@ -54,6 +59,7 @@ class Rss_model extends CI_Model
 	* @param int $feed_id
 	* @param int $content_type_id
  	* @param string $title Feed title
+ 	* @param string $url_path
  	* @param string $description Feed description
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
@@ -61,7 +67,17 @@ class Rss_model extends CI_Model
  	*
  	* @return TRUE
  	*/
-	function update_feed ($feed_id, $content_type_id, $title, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
+	function update_feed ($feed_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
+		$feed = $this->get_feed($feed_id);
+		
+		if ($url_path != $feed['url_path']) {
+			$this->load->helper('clean_string');
+			$url_path = clean_string($url_path);
+			
+			$this->load->model('link_model');
+			$url_path = $this->link_model->get_unique_url_path($url_path);
+		}
+	
 		$update_fields = array(
 							'content_type_id' => $content_type_id,
 							'rss_title' => $title,
@@ -84,7 +100,10 @@ class Rss_model extends CI_Model
 	* @return boolean TRUE
 	*/
 	function delete_feed ($feed_id) {
+		$rss = $this->get_feed($feed_id);
+	
 		$this->db->delete('rss_feeds',array('rss_id' => $feed_id));
+		$this->db->delete('links',array('link_id' => $rss['link_id']));
 		
 		return TRUE;
 	}
@@ -126,6 +145,7 @@ class Rss_model extends CI_Model
 	
 		$this->db->order_by('rss_title');
 		$this->db->join('content_types','content_types.content_type_id = rss_feeds.content_type_id','left');
+		$this->db->join('links','links.link_id = rss_feeds.link_id','left');
 		$result = $this->db->get('rss_feeds');
 		
 		if ($result->num_rows() == 0) {
@@ -136,6 +156,7 @@ class Rss_model extends CI_Model
 		foreach ($result->result_array() as $row) {
 			$feeds[] = array(
 						'id' => $row['rss_id'],
+						'link_id' => $row['link_id'],
 						'title' => $row['rss_title'],
 						'description' => $row['rss_description'],
 						'filter_authors' => (!empty($row['rss_filter_author'])) ? unserialize($row['rss_filter_author']) : FALSE,
@@ -143,8 +164,8 @@ class Rss_model extends CI_Model
 						'type' => $row['content_type_id'],
 						'type_name' => $row['content_type_friendly_name'],
 						'summary_field' => (!empty($row['rss_summary_field'])) ? $row['rss_summary_field'] : FALSE,
-						'url' => site_url('rss/feed/' . $row['rss_url_path']),
-						'url_path' => $row['rss_url_path']
+						'url' => site_url($row['link_url_path']),
+						'url_path' => $row['link_url_path']
 					);
 		}
 		

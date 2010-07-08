@@ -1,5 +1,4 @@
 - Roadmap:
-	- Create Blog Manager, Listings Manager
 	- Create Menu Manager
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)

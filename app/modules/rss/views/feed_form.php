@@ -4,6 +4,7 @@
 if (!isset($feed)) {
 	$feed = array(
 				'title' => '',
+				'url_path' => '',
 				'description' => '',
 				'type' => FALSE,
 				'filter_authors' => array(0),
@@ -21,10 +22,21 @@ if (!isset($feed)) {
 	<ul class="form">
 		<li>
 			<label class="full" for="title">Feed Name</label>
+		</li>
+		<li>
 			<input type="text" class="required full text" id="title" name="title" value="<?=$feed['title'];?>" />
 		</li>
 		<li>
+			<label for="url_path">URL Path</label>
+			<input type="text" class="text mark_empty" id="url_path" rel="e.g, /feeds/my_feed.rss" name="url_path" value="<?=$feed['url_path'];?>" />
+		</li>
+		<li>
+			<div class="help">If you leave this blank, it will be auto-generated from the Feed Name above.</div>
+		</li>
+		<li>
 			<label class="full" for="description">Feed Description</label>
+		</li>
+		<li>
 			<input type="text" class="required full text" id="description" name="description" value="<?=$feed['description'];?>" />
 		</li>
 	</ul>

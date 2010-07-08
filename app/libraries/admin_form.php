@@ -569,7 +569,9 @@ class Admin_form {
 						$classes[] = 'wysiwyg';
 						$classes[] = $field['wysiwyg']; // the toolbar set
 						
-						define('INCLUDE_CKEDITOR','TRUE');
+						if (!defined('INCLUDE_CKEDITOR')) {
+							define('INCLUDE_CKEDITOR','TRUE');
+						}
 					}
 					
 					$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';

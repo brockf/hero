@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
-* XML/RSS Control Panel
+* Blog Control Panel
 *
 * Displays all control panel forms, datasets, and other displays
 *
@@ -20,7 +20,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function index () {	
-		$this->navigation->module_link('New RSS Feed',site_url('admincp/rss/add'));
+		$this->navigation->module_link('New Blog',site_url('admincp/blogs/add'));
 	
 		$this->load->library('dataset');
 		
@@ -58,30 +58,30 @@ class Admincp extends Admincp_Controller {
 					);
 						
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('rss_model','get_feeds');
-		$this->dataset->base_url(site_url('admincp/rss'));
+		$this->dataset->datasource('blog_model','get_blogs');
+		$this->dataset->base_url(site_url('admincp/blog'));
 		
 		// initialize the dataset
 		$this->dataset->initialize();
 
 		// add actions
-		$this->dataset->action('Delete','admincp/rss/delete');
+		$this->dataset->action('Delete','admincp/blogs/delete');
 		
-		$this->load->view('rss_feeds');
+		$this->load->view('blogs');
 	}
 	
-	function delete ($feeds, $return_url) {
+	function delete ($blogs, $return_url) {
 		$this->load->library('asciihex');
-		$this->load->model('rss_model');
+		$this->load->model('blog_model');
 		
-		$feeds = unserialize(base64_decode($this->asciihex->HexToAscii($feeds)));
+		$blogs = unserialize(base64_decode($this->asciihex->HexToAscii($blogs)));
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
 		
-		foreach ($feeds as $feed) {
-			$this->rss_model->delete_feed($feed);
+		foreach ($blogs as $blog) {
+			$this->blog_model->delete_blog($blog);
 		}
 		
-		$this->notices->SetNotice('Feed(s) deleted successfully.');
+		$this->notices->SetNotice('Blog(s) deleted successfully.');
 		
 		redirect($return_url);
 		
@@ -89,6 +89,8 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function add () {
+		define('INCLUDE_CKEDITOR','TRUE');
+		
 		$this->load->helper('form');
 	
 		// get content types
@@ -120,18 +122,20 @@ class Admincp extends Admincp_Controller {
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
-					'form_title' => 'Create New RSS Feed',
-					'form_action' => site_url('admincp/rss/post/new')
+					'form_title' => 'Create New Blog',
+					'form_action' => site_url('admincp/blogs/post/new')
 				);
 		
-		$this->load->view('feed_form', $data);
+		$this->load->view('blog_form', $data);
 	}
 	
 	function edit ($id) {
-		$this->load->helper('form');
-		$this->load->model('rss_model');
+		define('INCLUDE_CKEDITOR','TRUE');
 		
-		$feed = $this->rss_model->get_feed($id);
+		$this->load->helper('form');
+		$this->load->model('blog_model');
+		
+		$blog = $this->blog_model->get_blog($id);
 	
 		// get content types
 		$this->load->model('publish/content_type_model');
@@ -159,11 +163,10 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// get field options
-		$type = $this->content_type_model->get_content_type($feed['type']);
+		$type = $this->content_type_model->get_content_type($blog['type']);
 		
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$field_options = array();
-		$field_options['0'] = 'Do not include a summary for each item in the RSS feed.';
 		foreach ($custom_fields as $field) {
 			$field_options[$field['name']] = $field['friendly_name'];
 		}
@@ -173,32 +176,33 @@ class Admincp extends Admincp_Controller {
 					'users' => $user_options,
 					'topics' => $topic_options,
 					'field_options' => $field_options,
-					'feed' => $feed,
-					'form_title' => 'Edit RSS Feed',
-					'form_action' => site_url('admincp/rss/post/edit/' . $feed['id'])
+					'blog' => $blog,
+					'form_title' => 'Edit Blog',
+					'form_action' => site_url('admincp/blogs/post/edit/' . $blog['id'])
 				);
 		
-		$this->load->view('feed_form', $data);
+		$this->load->view('blog_form', $data);
 	}
 	
 	function post ($action = 'new', $id = FALSE) {
-		$this->load->model('rss_model');
+		$this->load->model('blog_model');
 		
 		if ($action == 'new') {
-			$rss_id = $this->rss_model->new_feed(
+			$blog_id = $this->blog_model->new_blog(
 										$this->input->post('type'),
 										$this->input->post('title'),
 										$this->input->post('url_path'),
 										$this->input->post('description'),
 										(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 										(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-										$this->input->post('summary_field')
+										$this->input->post('summary_field'),
+										($this->input->post('auto_trim') == '1') ? TRUE : FALSE
 									);
 										
-			$this->notices->SetNotice('RSS Feed added successfully.');
+			$this->notices->SetNotice('Blog added successfully.');
 		}
 		elseif ($action == 'edit') {
-			$this->rss_model->update_feed(
+			$this->blog_model->update_blog(
 									$id,
 									$this->input->post('type'),
 									$this->input->post('title'),
@@ -206,13 +210,14 @@ class Admincp extends Admincp_Controller {
 									$this->input->post('description'),
 									(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 									(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-									$this->input->post('summary_field')
+									$this->input->post('summary_field'),
+										($this->input->post('auto_trim') == '1') ? TRUE : FALSE
 								);
 										
-			$this->notices->SetNotice('RSS Feed edited successfully.');
+			$this->notices->SetNotice('Blog edited successfully.');
 		}
 		
-		redirect('admincp/rss');
+		redirect('admincp/blogs');
 	}
 	
 	function get_fields ($type_id) {
@@ -224,7 +229,6 @@ class Admincp extends Admincp_Controller {
 		
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$options = array();
-		$options['0'] = 'Do not include a summary for each item in the RSS feed.';
 		foreach ($custom_fields as $field) {
 			$options[$field['name']] = $field['friendly_name'];
 		}

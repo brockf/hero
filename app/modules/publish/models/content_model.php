@@ -38,20 +38,21 @@ class Content_model extends CI_Model
 			return FALSE;
 		}
 		
-		if (empty($url_path)) {
-			$this->load->helper('clean_string');
-			$url_path = clean_string($title);
-		}
+		$this->load->helper('clean_string');
+		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 		
+		// get a global link ID
 		// make sure URL is unique
-		$url_path = $this->get_unique_url_path($url_path);
+		$this->load->model('link_model');
+		$url_path = $this->link_model->get_unique_url_path($url_path);
+		$link_id = $this->link_model->new_link($url_path, 'publish', 'content', 'view');
 		
 		// insert it into standard content table first
 		$insert_fields = array(
+							'link_id' => $link_id,
 							'content_type_id' => $type['id'],
 							'content_is_standard' => (empty($title)) ? '0' : '1',
 							'content_title' => $title,
-							'content_url_path' => $url_path,
 							'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'content_date' => date('Y-m-d H:i:s'),
 							'content_modified' => date('Y-m-d H:i:s'),
@@ -110,13 +111,14 @@ class Content_model extends CI_Model
 		
 		// make sure URL is unique (unless it hasn't changed, of course)
 		if ($content['url_path'] != $url_path) {
-			$url_path = $this->get_unique_url_path($url_path);
+			$this->load->model('link_model');
+			$url_path = $this->link_model->get_unique_url_path($url_path);
+			$this->link_model->update_url($content['link_id'], $url_path);
 		}
 		
 		// update standard content table first
 		$update_fields = array(
 							'content_title' => $title,
-							'content_url_path' => $url_path,
 							'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'content_modified' => date('Y-m-d H:i:s'),
 							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : ''
@@ -166,41 +168,10 @@ class Content_model extends CI_Model
 		}
 		
 		$this->db->delete('content',array('content_id' => $content_id));
+		$this->db->delete('links',array('link_id' => $content['link_id']));
 		$this->db->delete($type['system_name'], array('content_id' => $content_id));
 		
 		return TRUE;
-	}
-	
-	/*
-	* Get Unique URL Path
-	*
-	* Checks a string to make sure it's a unique URL path in the system.
-	* If not, it makes it url_path_2, url_path_3, etc.
-	*
-	* @param string $url_path
-	*
-	* @return string $url_path
-	*/
-	function get_unique_url_path ($url_path) {
-		$this->db->where('content_url_path',$url_path);
-		$this->db->select('content_id');
-		$result = $this->db->get('content');
-		$count = 1;
-		while ($result->num_rows() > 0) {
-			// strip final numbers
-			$url_path = preg_replace('/(.*?)([0-9]*)$/i','',$url_path);
-			
-			// try with a new appended number
-			$url_path = $url_path . '_' . $count;
-			
-			$count++;
-			
-			$this->db->where('content_url_path',$url_path);
-			$this->db->select('content_id');
-			$result = $this->db->get('content');
-		}
-		
-		return $url_path;
 	}
 	
 	/*
@@ -308,6 +279,7 @@ class Content_model extends CI_Model
 		
 		$this->db->join('users','users.user_id = content.user_id','left');
 		$this->db->join('content_types','content_types.content_type_id = content.content_type_id','left');
+		$this->db->join('links','links.link_id = content.link_id','left');
 		
 		$result = $this->db->get('content');
 		
@@ -319,6 +291,7 @@ class Content_model extends CI_Model
 		foreach ($result->result_array() as $content) {
 			$this_content = array(
 								'id' => $content['content_id'],
+								'link_id' => $content['link_id'],
 								'date' => $content['content_date'],
 								'modified_date' => $content['content_modified'],
 								'author_id' => $content['user_id'],
@@ -330,8 +303,8 @@ class Content_model extends CI_Model
 								'type_name' => $content['content_type_friendly_name'],
 								'is_standard' => ($content['content_is_standard'] == '1') ? TRUE : FALSE,
 								'title' => ($content['content_is_standard'] == '1') ? $content['content_title'] : 'Entry #' . $content['content_id'],
-								'url_path' => $content['content_url_path'],
-								'url' => site_url($content['content_url_path']),
+								'url_path' => $content['link_url_path'],
+								'url' => site_url($content['link_url_path']),
 								'privileges' => (!empty($content['content_privileges'])) ? unserialize($content['content_privileges']) : FALSE,
 								'topics' => (!empty($content['content_topics'])) ? unserialize($content['content_topics']) : FALSE
 							);
