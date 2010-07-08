@@ -33,9 +33,6 @@
 			</ul>
 			<div style="clear: both"></div>
 		</div>
-		<div id="nav_children">
-		
-		</div>
 		<div style="clear: both"></div>
 	</div>
 	<div id="wrapper">
