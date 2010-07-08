@@ -147,10 +147,16 @@ class Content_type_model extends CI_Model
 	/*
 	* Get Content Types
 	*
+	* @param int $filters['id']
+	* @param int $filters['is_standard'] Either 1 or 0
+	*
 	*/
 	function get_content_types ($filters = array()) {
 		if (isset($filters['id'])) {
 			$this->db->where('content_type_id',$filters['id']);
+		}
+		if (isset($filters['is_standard'])) {
+			$this->db->where('content_type_is_standard',$filters['is_standard']);
 		}
 	
 		$this->db->order_by('content_type_friendly_name');

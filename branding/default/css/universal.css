@@ -93,6 +93,7 @@ a:hover {
 	background-color: #222;
 	padding: 15px 15px 15px 30px;
 	position: relative;
+	border-bottom: 8px solid #DEDEDE;
 }
 
 #navigation ul {
@@ -192,11 +193,6 @@ a:hover {
 	background-color: #fff;
 	color: #000;
 	text-shadow: none;
-}
-
-#nav_children {
-	background-color: #DEDEDE;
-	height: 8px;
 }
 
 ul.module_links {

@@ -1,6 +1,5 @@
 - Roadmap:
-	- Add Inline Topic Adder
-	- Create XML/RSS Feed Manager, Blog Manager, Listings Manager
+	- Create Blog Manager, Listings Manager
 	- Create Menu Manager
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)

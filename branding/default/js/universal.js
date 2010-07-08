@@ -13,8 +13,11 @@ $(document).ready(function() {
 	// menu
 	
 	// click functions
+	$(document).click(function() {
+		$('div#navigation ul.children').hide();
+	});
+	
 	$('div#navigation ul a.parent').click(function() {
-		// clear the slate
 		$('div#navigation ul.children').hide();
 		
 		if ($(this).parent().children('ul.children').length != 0) {

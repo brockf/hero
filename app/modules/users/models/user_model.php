@@ -549,6 +549,9 @@ class User_model extends CI_Model
 			$this->db->like('user_first_name',$filters['name']);
 			$this->db->or_like('user_last_name',$filters['name']);
 		}
+		if (isset($filters['is_admin'])) {
+			$this->db->where('users.user_is_admin',$filters['is_admin']);
+		}
 		
 		$this->db->where('user_deleted','0');
 		

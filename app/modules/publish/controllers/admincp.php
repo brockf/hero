@@ -19,75 +19,249 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->parent_active('publish');
 	}
 	
-	function index () {
-		$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
+	function manage	($type_id) {
+		$this->session->set_userdata('manage_content_type', $type_id);
 		
-		$this->load->model('content_type_model');
-		$types = $this->content_type_model->get_content_types();
+		redirect('admincp/publish');
+	}
+	
+	function index () {		
+		// get type_id from session
+		$type_id = $this->session->userdata('manage_content_type');
 		
-		$content_types = array();
-		if (!empty($types)) {
-			foreach ($types as $type) {
-				$content_types[$type['id']] = $type['name'];
+		// we'll show all content if they don't pass a $type_id
+		if ($type_id == FALSE) {
+			$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
+			
+			$this->load->model('content_type_model');
+			$types = $this->content_type_model->get_content_types();
+			
+			$content_types = array();
+			if (!empty($types)) {
+				foreach ($types as $type) {
+					$content_types[$type['id']] = $type['name'];
+				}
 			}
+			
+			$this->load->library('dataset');
+			
+			$columns = array(
+							array(
+								'name' => 'ID #',
+								'type' => 'id',
+								'width' => '5%',
+								'filter' => 'text'
+								),
+							array(
+								'name' => 'Title',
+								'width' => '30%',
+								'filter' => 'title',
+								'type' => 'text',
+								'sort_column' => 'content.title'
+								),
+							array(
+								'name' => 'Author',
+								'width' => '15%',
+								'filter' => 'author',
+								'type' => 'text'
+								),
+							array(
+								'name' => 'Date',
+								'width' => '20%',
+								'sort_column' => 'content.content_date',
+								'type' => 'date',
+								'filter' => 'date',
+								'field_start_date' => 'start_date',
+								'field_end_date' => 'end_date'
+								),
+							array(
+								'name' => 'Type',
+								'width' => '15%',
+								'type' => 'select',
+								'options' => $content_types,
+								'filter' => 'type',
+								'sort_column' => 'content_type.content_type_friendly_name'
+								),
+							array(
+								'name' => '',
+								'width' => '15%'
+								)
+						);
+							
+			$this->dataset->columns($columns);
+			$this->dataset->datasource('content_model','get_contents');
+			$this->dataset->base_url(site_url('admincp/publish'));
+			
+			// initialize the dataset
+			$this->dataset->initialize();
+	
+			// add actions
+			$this->dataset->action('Delete','admincp/publish/delete');
+			
+			$this->load->view('content');
+		}
+		else {
+			// they passed a type id
+			$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create_post/' . $type_id));
+			
+			$this->load->model('content_type_model');
+			$type = $this->content_type_model->get_content_type($type_id);
+			
+			if (empty($type)) {
+				die(show_error('Content type does not exist.'));
+			}
+			
+			if ($type['is_standard'] == TRUE) {
+				// standard content, we'll display it as such
+				
+				$this->load->library('dataset');
+			
+				$columns = array(
+								array(
+									'name' => 'ID #',
+									'type' => 'id',
+									'width' => '5%',
+									'filter' => 'text'
+									),
+								array(
+									'name' => 'Title',
+									'width' => '40%',
+									'filter' => 'title',
+									'type' => 'text',
+									'sort_column' => 'content.title'
+									),
+								array(
+									'name' => 'Author',
+									'width' => '20%',
+									'filter' => 'author_like',
+									'type' => 'text'
+									),
+								array(
+									'name' => 'Date',
+									'width' => '20%',
+									'sort_column' => 'content.content_date',
+									'type' => 'date',
+									'filter' => 'date',
+									'field_start_date' => 'start_date',
+									'field_end_date' => 'end_date'
+									),
+								array(
+									'name' => '',
+									'width' => '15%'
+									)
+							);
+								
+				$this->dataset->columns($columns);
+				$this->dataset->datasource('content_model','get_contents', array('type' => $type['id']));
+				$this->dataset->base_url(site_url('admincp/publish'));
+				
+				// initialize the dataset
+				$this->dataset->initialize();
+		
+				// add actions
+				$this->dataset->action('Delete','admincp/publish/delete');
+				
+				$data = array(
+							'type' => $type
+						);
+				
+				$this->load->view('content_standard', $data);
+			}
+			else {
+				// content type is non-standard, so we need to generate a table on the fly
+				
+				// get the custom fields
+				$this->load->model('custom_fields_model');
+				$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+				
+				$columns = array();
+				
+				// we need to track dynamic columns so that, in the view, we know what to display in the table cells
+				$data_columns = array();
+				
+				// add ID column
+				$columns[] = array(
+								'name' => 'ID #',
+								'type' => 'id',
+								'sort_column' => 'id',
+								'width' => '5%',
+								'filter' => 'text'
+								);
+				
+				$count = 1;
+				foreach ($custom_fields as $field) {
+					// max 3 fields
+					if ($count > 3) {
+						break;
+					}
+					
+					// only text, radio, and dropdown fields are eligible here
+					if (in_array($field['type'], array('text', 'radio', 'dropdown'))) {
+						$columns[] = array(
+											'name' => $field['friendly_name'],
+											'width' => '20%',
+											'sort_column' => $type['system_name'] . '.' . $field['name']
+										);
+										
+						$data_columns[] = $field['name'];
+						
+						$count++;
+					}
+				}
+				
+				$columns[] = array(
+									'name' => 'Date',
+									'width' => '20%',
+									'sort_column' => 'content.content_date',
+									'type' => 'date',
+									'filter' => 'date',
+									'field_start_date' => 'start_date',
+									'field_end_date' => 'end_date'
+									);
+				
+				$columns[] = array(
+								'name' => '',
+								'width' => '15%'
+							);
+							
+				$this->load->library('dataset');
+								
+				$this->dataset->columns($columns);
+				$this->dataset->datasource('content_model','get_contents', array('type' => $type['id']));
+				$this->dataset->base_url(site_url('admincp/publish'));
+				
+				// initialize the dataset
+				$this->dataset->initialize();
+		
+				// add actions
+				$this->dataset->action('Delete','admincp/publish/delete');
+				
+				$data = array(
+							'type' => $type,
+							'columns' => $data_columns
+						);
+				
+				$this->load->view('content_non_standard', $data);
+			}
+		}	
+	}
+	
+	function delete ($contents, $return_url) {
+		$this->load->library('asciihex');
+		$this->load->model('content_model');
+		
+		$contents = unserialize(base64_decode($this->asciihex->HexToAscii($contents)));
+		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
+		
+		foreach ($contents as $content) {
+			$this->content_model->delete_content($content);
 		}
 		
-		$this->load->library('dataset');
+		$this->notices->SetNotice('Post(s) deleted successfully.');
 		
-		$columns = array(
-						array(
-							'name' => 'ID #',
-							'type' => 'id',
-							'width' => '5%',
-							'filter' => 'text'
-							),
-						array(
-							'name' => 'Title',
-							'width' => '30%',
-							'filter' => 'title',
-							'type' => 'text',
-							'sort_column' => 'content.title'
-							),
-						array(
-							'name' => 'Author',
-							'width' => '15%',
-							'filter' => 'author',
-							'type' => 'text'
-							),
-						array(
-							'name' => 'Date',
-							'width' => '20%',
-							'sort_column' => 'content.content_date',
-							'type' => 'date',
-							'filter' => 'date',
-							'field_start_date' => 'start_date',
-							'field_end_date' => 'end_date'
-							),
-						array(
-							'name' => 'Type',
-							'width' => '15%',
-							'type' => 'select',
-							'options' => $content_types,
-							'filter' => 'type',
-							'sort_column' => 'content_type.content_type_friendly_name'
-							),
-						array(
-							'name' => '',
-							'width' => '15%'
-							)
-					);
-						
-		$this->dataset->columns($columns);
-		$this->dataset->datasource('content_model','get_contents');
-		$this->dataset->base_url(site_url('admincp/publish'));
+		redirect($return_url);
 		
-		// initialize the dataset
-		$this->dataset->initialize();
-
-		// add actions
-		$this->dataset->action('Delete','admincp/publish/delete');
-		
-		$this->load->view('content');
+		return TRUE;
 	}
 	
 	function create () {
@@ -156,7 +330,7 @@ class Admincp extends Admincp_Controller {
 				$options[$data['id']] = $data['name'];
 			}
 			
-			$standard->dropdown('Topic(s)','topics[]',$options, array(), TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			$standard->dropdown('Topic(s)','topics[]',$options, array(), TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$standard = $standard->display();
 		}
@@ -178,7 +352,7 @@ class Admincp extends Admincp_Controller {
 				$options[$group['id']] = $group['name'];
 			}
 			
-			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$privileges = $privileges->display();
 		}
@@ -238,7 +412,7 @@ class Admincp extends Admincp_Controller {
 				$options[$data['id']] = $data['name'];
 			}
 			
-			$standard->dropdown('Topic(s)','topics[]',$options, ($content['topics'] == FALSE) ? array() : $content['topics'], TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			$standard->dropdown('Topic(s)','topics[]',$options, ($content['topics'] == FALSE) ? array() : $content['topics'], TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$standard = $standard->display();
 		}
@@ -260,7 +434,7 @@ class Admincp extends Admincp_Controller {
 				$options[$group['id']] = $group['name'];
 			}
 			
-			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,($content['privileges'] == FALSE) ? array(0) : $content['privileges'], TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,($content['privileges'] == FALSE) ? array(0) : $content['privileges'], TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$privileges = $privileges->display();
 		}
@@ -328,7 +502,7 @@ class Admincp extends Admincp_Controller {
 			$this->notices->SetNotice('Post updated successfully.');
 		}
 		
-		redirect('admincp/publish');
+		redirect('admincp/publish/manage/' . $this->input->post('type'));
 	}
 	
 	function topic_add () {
