@@ -357,7 +357,7 @@ class Admin_form {
 					$value = $field['default'];
 				}
 				
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'mini', TRUE, $field['width'], '150px', $field['id']);
+				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'complete', TRUE, $field['width'], '150px', $field['id']);
 			}
 			elseif ($field['type'] == 'select') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		

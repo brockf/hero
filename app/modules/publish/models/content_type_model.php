@@ -58,10 +58,8 @@ class Content_type_model extends CI_Model
 		$this->load->dbforge();
 		
 		// add ID, date, edit_date, admin rows
-		$this->dbforge->add_field('`' . $system_name . '_id` INT(11) NOT NULL auto_increment PRIMARY KEY');
-		$this->dbforge->add_field('`' . $system_name . '_date` DATETIME NOT NULL');
-		$this->dbforge->add_field('`' . $system_name . '_modified` DATETIME NOT NULL');
-		$this->dbforge->add_field('`' . $system_name . '_user` INT(11) NOT NULL');
+		$this->dbforge->add_field('`' . $system_name . '_id` INT(11) auto_increment PRIMARY KEY');
+		$this->dbforge->add_field('`content_id` INT(11) NOT NULL');
 		
 		// create table
 		$this->dbforge->create_table($system_name);
@@ -111,12 +109,12 @@ class Content_type_model extends CI_Model
 		$this->load->model('custom_fields_model');
 		$this->custom_fields_model->delete_group($type['custom_field_group_id']);
 		
-		/*// delete content from content database
+		// delete content from content database
 		$this->load->model('content_model');
 		$content = $this->content_model->get_contents(array('type' => $type['id']));
 		foreach ($content as $item) {
 			$this->content_model->delete_content($item['id']);
-		}*/
+		}
 		
 		// delete table
 		$this->load->dbforge();

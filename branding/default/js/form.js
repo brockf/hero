@@ -98,6 +98,10 @@ $(document).ready(function () {
 		if (errors_in_form == true) {
 			return false;
 		}
+		
+		// no errors, looks like we're continuing with the submission!
+		// let's make sure those empty_highlighted fields are value-less though
+		$('.highlight_empty').val('');
 	});
 	
 });

@@ -1,12 +1,12 @@
 - Roadmap:
-	- Create Content Editor (with inline topic adder)
-	- Uncomment content deletion from delete_content_type() in content_type_model
-	- Create default content types: Pages
+	- Add Inline Topic Adder
 	- Create XML/RSS Feed Manager, Blog Manager, Listings Manager
 	- Create Menu Manager
+	- Comments moderator (modeled after WordPress) and comments model/library
+	- Create Search Manager (which content types are available, how often to rebuild index, etc.)
 	- Add Default View Template to each Content Type add/edit
 	- Add Template to each blog/listings add/edit
-	- Customize whether Member Data is "Admin-only", "Registration Only", or "Registration & Profile Editing"
+	- Apply time_since/formatting to each Admin panel date
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders
 	- Update Dataset to have sorting
@@ -24,7 +24,6 @@
 		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"
 	- Add "validate" class to forms
 	- Get rid of lang calls
-	
 	
 - Orders
 	- "customer_id" may lead to a member, if the user had an account

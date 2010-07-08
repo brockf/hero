@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.03';
+	var $version = '1.06';
 	var $name = 'publish';
 
 	function __construct () {
@@ -31,11 +31,12 @@ class Publish extends Module {
 	{
 		$CI =& get_instance();
 		
-		$CI->navigation->child_link('publish',10,'Create New Content',site_url('admincp/publish/new'));
+		$CI->navigation->child_link('publish',10,'Publish New Content',site_url('admincp/publish/create'));
 		$CI->navigation->child_link('publish',20,'Manage Content',site_url('admincp/publish'));
 		$CI->navigation->child_link('publish',30,'Blogs/Listings',site_url('admincp/publish/blogs'));
-		$CI->navigation->child_link('publish',40,'Topics',site_url('admincp/publish/topics'));
-		$CI->navigation->child_link('publish',50,'Content Types',site_url('admincp/publish/types'));
+		$CI->navigation->child_link('publish',40,'XML/RSS Feeds',site_url('admincp/publish/rss'));
+		$CI->navigation->child_link('publish',50,'Topics',site_url('admincp/publish/topics'));
+		$CI->navigation->child_link('publish',60,'Content Types',site_url('admincp/publish/types'));
 	}
 	
 	/*
@@ -46,6 +47,22 @@ class Publish extends Module {
 	* @return int The current software version, to update the database
 	*/
 	function update ($db_version) {
+		if ($db_version < 1.06) {
+			$this->CI->db->query('DROP TABLE IF EXISTS `content`');
+			$this->CI->db->query('CREATE TABLE `content` (
+ 								 `content_id` int(11) NOT NULL auto_increment,
+ 								 `content_type_id` int(11) NOT NULL,
+ 								 `user_id` int(11) NOT NULL,
+ 								 `content_date` DATETIME NOT NULL,
+ 								 `content_modified` DATETIME NOT NULL,
+ 								 `content_topics` VARCHAR(255) NOT NULL,
+ 								 `content_is_standard` tinyint(1) NOT NULL,
+ 								 `content_title` varchar(255),
+ 								 `content_url_path` varchar(255),
+ 								 `content_privileges` varchar(255),
+   								 PRIMARY KEY  (`content_id`)
+								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
 		if ($db_version < 1.03) {
 			$this->CI->db->query('CREATE TABLE `topic_maps` (
  								 `topic_map_id` int(11) NOT NULL auto_increment,

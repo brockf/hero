@@ -19,6 +19,318 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->parent_active('publish');
 	}
 	
+	function index () {
+		$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
+		
+		$this->load->model('content_type_model');
+		$types = $this->content_type_model->get_content_types();
+		
+		$content_types = array();
+		if (!empty($types)) {
+			foreach ($types as $type) {
+				$content_types[$type['id']] = $type['name'];
+			}
+		}
+		
+		$this->load->library('dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'ID #',
+							'type' => 'id',
+							'width' => '5%',
+							'filter' => 'text'
+							),
+						array(
+							'name' => 'Title',
+							'width' => '30%',
+							'filter' => 'title',
+							'type' => 'text',
+							'sort_column' => 'content.title'
+							),
+						array(
+							'name' => 'Author',
+							'width' => '15%',
+							'filter' => 'author',
+							'type' => 'text'
+							),
+						array(
+							'name' => 'Date',
+							'width' => '20%',
+							'sort_column' => 'content.content_date',
+							'type' => 'date',
+							'filter' => 'date',
+							'field_start_date' => 'start_date',
+							'field_end_date' => 'end_date'
+							),
+						array(
+							'name' => 'Type',
+							'width' => '15%',
+							'type' => 'select',
+							'options' => $content_types,
+							'filter' => 'type',
+							'sort_column' => 'content_type.content_type_friendly_name'
+							),
+						array(
+							'name' => '',
+							'width' => '15%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('content_model','get_contents');
+		$this->dataset->base_url(site_url('admincp/publish'));
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		// add actions
+		$this->dataset->action('Delete','admincp/publish/delete');
+		
+		$this->load->view('content');
+	}
+	
+	function create () {
+		$this->load->library('admin_form');
+		$form = new Admin_form;
+		$form->fieldset('Publish New Content');
+		
+		$this->load->model('content_type_model');
+		
+		$types = $this->content_type_model->get_content_types();
+		
+		// are there any content types?
+		if (empty($types)) {
+			die(show_error('You need to create at least one content "type" before publishing content.  <a href="' . site_url('admincp/publish/type_new') . '">Click here to add your first content type</a>.'));
+		}
+		
+		// if there's only one content type, this step is redundant
+		if (count($types) == 1) {
+			redirect('admincp/publish/create_post/' . $types[0]['id']);
+			return TRUE;
+		}
+		
+		$options = array();
+		$options[0] = '';
+		foreach ($types as $type) {
+			$options[$type['id']] = $type['name'];
+		}
+		
+		$form->dropdown('Type','type',$options, 0);
+		
+		$data = array(
+					'form' => $form->display(),
+					'form_action' => site_url('admincp/publish/create_post'),
+					'form_title' => 'Select content type'
+				);
+				
+		$this->load->view('create_type', $data);
+	}
+	
+	function create_post ($type_id = FALSE) {
+		$type = ($type_id == FALSE) ? $this->input->get_post('type') : $type_id; 
+		
+		$this->load->model('content_type_model');
+		$type = $this->content_type_model->get_content_type($type);
+		
+		if (empty($type)) {
+			die(show_error('This type does not exist.'));
+		}
+		
+		$this->load->library('admin_form');
+		
+		if ($type['is_standard'] == TRUE) {
+			// we require Title, URL Path, and Topic fields
+			
+			$standard = new Admin_form;
+			$standard->fieldset('Standard Page Elements');
+			$standard->text('Title','title','',FALSE,TRUE,FALSE,TRUE);
+			$standard->text('URL Path','url_path','','If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
+			
+			$this->load->model('topic_model');
+			$topics = $this->topic_model->get_tiered_topics();
+			
+			$options = array();
+			$options[0] = 'No topics';
+			foreach ($topics as $data) {
+				$options[$data['id']] = $data['name'];
+			}
+			
+			$standard->dropdown('Topic(s)','topics[]',$options, array(), TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			
+			$standard = $standard->display();
+		}
+		else {
+			$standard = FALSE;
+		}
+		
+		if ($type['is_privileged'] == TRUE) {
+			// we require a member group access privileges dropdown
+			$this->load->model('users/usergroup_model');
+			$groups = $this->usergroup_model->get_usergroups();
+			
+			$privileges = new Admin_form;
+			$privileges->fieldset('Member Group Access');
+			
+			$options = array();
+			$options[0] = 'Public / Any Member Group';
+			foreach ($groups as $group) {
+				$options[$group['id']] = $group['name'];
+			}
+			
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			
+			$privileges = $privileges->display();
+		}
+		else {
+			$privileges = FALSE;
+		}
+		
+		// handle custom fields
+		$this->load->model('custom_fields_model');
+		$custom_fieldset = new Admin_form;
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+		if (empty($custom_fields)) {
+			$custom_fields = FALSE;
+		}
+		else {
+			$custom_fieldset->fieldset('Custom Product Data');
+			$custom_fieldset->custom_fields($custom_fields);
+			$custom_fields = $custom_fieldset->display();
+		}
+
+		
+		$data = array(
+					'standard' => $standard,
+					'privileges' => $privileges,
+					'custom_fields' => $custom_fields,
+					'type' => $type,
+					'form_title' => 'Publish New Content',
+					'form_action' => site_url('admincp/publish/post/new')
+				);
+				
+		$this->load->view('create_post', $data);
+	}
+	
+	function edit ($id) {
+		$this->load->model('content_model');
+		$content = $this->content_model->get_content($id);
+	
+		$this->load->model('content_type_model');
+		$type = $this->content_type_model->get_content_type($content['type_id']);
+		
+		$this->load->library('admin_form');
+		
+		if ($type['is_standard'] == TRUE) {
+			// we require Title, URL Path, and Topic fields
+			
+			$standard = new Admin_form;
+			$standard->fieldset('Standard Page Elements');
+			$standard->text('Title','title',$content['title'],FALSE,TRUE,FALSE,TRUE);
+			$standard->text('URL Path','url_path',$content['url_path'],'If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
+			
+			$this->load->model('topic_model');
+			$topics = $this->topic_model->get_tiered_topics();
+			
+			$options = array();
+			$options[0] = 'No topics';
+			foreach ($topics as $data) {
+				$options[$data['id']] = $data['name'];
+			}
+			
+			$standard->dropdown('Topic(s)','topics[]',$options, ($content['topics'] == FALSE) ? array() : $content['topics'], TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			
+			$standard = $standard->display();
+		}
+		else {
+			$standard = FALSE;
+		}
+		
+		if ($type['is_privileged'] == TRUE) {
+			// we require a member group access privileges dropdown
+			$this->load->model('users/usergroup_model');
+			$groups = $this->usergroup_model->get_usergroups();
+			
+			$privileges = new Admin_form;
+			$privileges->fieldset('Member Group Access');
+			
+			$options = array();
+			$options[0] = 'Public / Any Member Group';
+			foreach ($groups as $group) {
+				$options[$group['id']] = $group['name'];
+			}
+			
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,($content['privileges'] == FALSE) ? array(0) : $content['privileges'], TRUE, FALSE, 'Select multiple collections by holding the CTRL or CMD button and selecting multiple options.');
+			
+			$privileges = $privileges->display();
+		}
+		else {
+			$privileges = FALSE;
+		}
+		
+		// handle custom fields
+		$this->load->model('custom_fields_model');
+		$custom_fieldset = new Admin_form;
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+		if (empty($custom_fields)) {
+			$custom_fields = FALSE;
+		}
+		else {
+			$custom_fieldset->fieldset('Custom Product Data');
+			$custom_fieldset->custom_fields($custom_fields, $content);
+			$custom_fields = $custom_fieldset->display();
+		}
+
+		
+		$data = array(
+					'standard' => $standard,
+					'privileges' => $privileges,
+					'custom_fields' => $custom_fields,
+					'type' => $type,
+					'form_title' => 'Edit Content',
+					'form_action' => site_url('admincp/publish/post/edit/' . $content['id'])
+				);
+				
+		$this->load->view('create_post', $data);
+	}
+	
+	function post ($action = 'new', $id = FALSE) {
+		$this->load->model('content_type_model');
+		$type = $this->content_type_model->get_content_type($this->input->post('type'));
+		
+		$this->load->model('content_model');
+		$this->load->model('custom_fields_model');
+		$custom_fields = $this->custom_fields_model->post_to_array($type['custom_field_group_id']);
+		
+		if ($action == 'new') {
+			$content_id = $this->content_model->new_content(
+													$this->input->post('type'),
+													$this->user_model->get('id'),
+													$this->input->post('title'),
+													$this->input->post('url_path'),
+													$this->input->post('topics'),
+													$this->input->post('privileges'),
+													$custom_fields
+												);
+													
+			$this->notices->SetNotice('Content posted successfully.');
+		}
+		elseif ($action == 'edit') {
+			$this->content_model->update_content(
+											$id,
+											$this->input->post('title'),
+											$this->input->post('url_path'),
+											$this->input->post('topics'),
+											$this->input->post('privileges'),
+											$custom_fields
+										);
+											
+			$this->notices->SetNotice('Post updated successfully.');
+		}
+		
+		redirect('admincp/publish');
+	}
+	
 	function topic_add () {
 		$this->load->library('admin_form');
 		$form = new Admin_form;
