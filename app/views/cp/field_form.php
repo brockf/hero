@@ -58,7 +58,8 @@ $field['width'] = (isset($field['width'])) ? $field['width'] : '250px';
 								'multiselect' => 'Multiselect Dropdown',
 								'radio' => 'Radio',
 								'checkbox' => 'Checkbox',
-								'file' => 'File Upload'
+								'file' => 'File Upload',
+								'date' => 'Date'
 							), $field['type'], 'id="type"');?>
 </li>
 <li class="field_options">

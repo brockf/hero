@@ -342,6 +342,9 @@ class Custom_fields_model extends CI_Model {
 			case 'radio':
 				$db_type = 'VARCHAR(100)';
 				break;
+			case 'date':
+				$db_type = 'DATE';
+				break;
 			default:
 				$db_type = 'VARCHAR(250)';
 		}

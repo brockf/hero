@@ -299,6 +299,40 @@ class Admin_form {
 	}
 	
 	/*
+	* Add Date Field
+	*
+	* @param string $label The human friendly form label
+	* @param string $name Field name
+	* @param string $value Current value of the field
+	* @param string $help A piece of help text
+	* @param boolean $required Is the field required for submission?
+	* @param boolean $mark_empty Should the field have an "empty" default value?
+	* @param boolean $full Should the field take up the entire pane?
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
+	* @param string $li_id The ID of the LI element containing the field
+	* @param array $classes Additional classes to apply to the element
+	*/
+	function date ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
+		if ($this->fieldset == 0) {
+			show_error('You must create a fieldset before adding fields.');
+		}
+	
+		$this->fields[$this->fieldset][] = array(
+								'type' => 'date',
+								'name' => $name,
+								'label' => $label,
+								'value' => $value,
+								'width' => $width,
+								'help' => $help,
+								'required' => $required,
+								'mark_empty' => $mark_empty,
+								'full' => $full,
+								'li_id' => $li_id,
+								'classes' => $classes
+							);
+	}
+	
+	/*
 	* Add New Fieldset
 	*
 	* Adds a fieldset to the form, breaking up the form
@@ -417,6 +451,15 @@ class Admin_form {
 			}
 			elseif ($field['type'] == 'file') {
 				$this->file($field['friendly_name'], $field['name'], $field['width'], FALSE, $field['id']);
+			}
+			elseif ($field['type'] == 'date') {
+				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
+				
+				if (empty($value) and $no_defaults == FALSE) {
+					$value = $field['default'];
+				}
+				
+				$this->date($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
 			}
 		}
 	}
@@ -604,6 +647,35 @@ class Admin_form {
 				// file
 				elseif ($field['type'] == 'file') {
 					$return .= '<input type="file" id="' . $field['name'] . '" name="' . $field['name'] . '" />';
+				}
+				// date
+				elseif ($field['type'] == 'date') {
+					if (!defined('INCLUDE_DATEPICKER')) {
+						define('INCLUDE_DATEPICKER','TRUE');
+					}
+					
+					$classes = array('text','datepick');
+					$rel = '';
+					
+					if ($field['required'] == TRUE) {
+						$classes[] = 'required';
+					}
+					
+					if ($field['full'] == TRUE) {
+						$classes[] = 'full';
+						$field['width'] = '100%';
+					}
+					
+					if ($field['mark_empty'] != FALSE) {
+						$classes[] = 'mark_empty';
+						$rel = $field['mark_empty'];
+					}
+					
+					if (is_array($field['classes'])) {
+						$classes = array_merge($classes,$field['classes']);
+					}
+					
+					$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
 				}
 				elseif ($field['type'] == 'value_row') {
 					$return .= $field['value'];

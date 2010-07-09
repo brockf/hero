@@ -196,6 +196,13 @@ class Dataset {
 	    		die(show_error('Unable to create a "select" filter without options.'));
 	    	}
 	    	
+	    	if (isset($column['type']) and $column['type'] == 'date') {
+	    		// this is necessary so we know to include the datepicker JS
+				if (!defined('INCLUDE_DATEPICKER')) {
+					define('INCLUDE_DATEPICKER','TRUE');
+				}
+	    	}
+	    	
 	    	// so do we have filters?			
 	    	if (isset($column['filter'])) {
 	    		$this->filters = true;
