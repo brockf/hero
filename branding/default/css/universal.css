@@ -148,6 +148,10 @@ a:hover {
 	background-image: url(../images/nav_storefront.png);
 }
 
+#navigation ul li.design a.parent {
+	background-image: url(../images/nav_design.png);
+}
+
 #navigation ul li.reports a.parent {
 	background-image: url(../images/nav_reports.png);
 }

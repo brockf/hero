@@ -262,6 +262,10 @@ class Content_model extends CI_Model
 			$this->db->where('content.content_id',$filters['id']);
 		}
 		
+		if (isset($filters['is_standard'])) {
+			$this->db->where('content.content_is_standard',$filters['is_standard']);
+		}
+		
 		if (isset($filters['topic'])) {
 			$this->db->join('topic_maps','topic_maps.content_id = content.content_id','left');
 			$this->db->where('topic_maps.topic_id',$filters['topic']);

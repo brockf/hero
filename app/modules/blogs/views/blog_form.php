@@ -38,7 +38,7 @@ if (!isset($blog)) {
 			<label class="full" for="description">Blog Description</label>
 		</li>
 		<li>
-			<textarea class="text required full wysiwyg complete" id="description" name="description"><?=$blog['description'];?></textarea>
+			<textarea class="text full wysiwyg complete" id="description" name="description"><?=$blog['description'];?></textarea>
 		</li>
 		<li>
 			<div class="help" style="margin:0">(Optional) Your site may use this description at the top or side of your blog as a summary of its purpose, history, your background, etc.</div>

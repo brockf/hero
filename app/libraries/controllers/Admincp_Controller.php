@@ -30,6 +30,7 @@ class Admincp_Controller extends MY_Controller {
 		$this->navigation->parent_link('storefront','Storefront');
 		$this->navigation->parent_link('members','Members');
 		$this->navigation->parent_link('reports','Reports');
+		$this->navigation->parent_link('design','Design');
 		$this->navigation->parent_link('configuration','Configuration');
 		
 		$this->navigation->child_link('dashboard',1,'Dashboard',site_url('admincp'));
