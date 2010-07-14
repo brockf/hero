@@ -102,14 +102,14 @@ class Admincp extends Admincp_Controller {
 		}
 		else {
 			// they passed a type id
-			$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create_post/' . $type_id));
-			
 			$this->load->model('content_type_model');
 			$type = $this->content_type_model->get_content_type($type_id);
 			
 			if (empty($type)) {
 				die(show_error('Content type does not exist.'));
 			}
+			
+			$this->navigation->module_link('Publish New ' . $type['singular_name'],site_url('admincp/publish/create_post/' . $type_id));
 			
 			if ($type['is_standard'] == TRUE) {
 				// standard content, we'll display it as such

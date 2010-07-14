@@ -391,7 +391,7 @@ class Admin_form {
 					$value = $field['default'];
 				}
 				
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'complete', TRUE, $field['width'], '150px', $field['id']);
+				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'complete', FALSE, $field['width'], '150px', $field['id']);
 			}
 			elseif ($field['type'] == 'select') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
@@ -617,7 +617,15 @@ class Admin_form {
 						}
 					}
 					
+					if ($field['full'] != TRUE) {
+						$return .= '<div style="float:left">';
+					}
+					
 					$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';
+					
+					if ($field['full'] != TRUE) {
+						$return .= '</div>';
+					}
 				}
 				// radio
 				elseif ($field['type'] == 'radio') {

@@ -1,5 +1,4 @@
 - Roadmap:	
-	- Modify the 'links' table to store the module name and article title
 	- Create Menu Manager
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)
