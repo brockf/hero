@@ -17,11 +17,25 @@ class Link_model extends CI_Model {
 		parent::CI_Model();
 	}
 	
-	function new_link ($url_path, $module, $controller, $method) {
+	/*
+	* Create New Link
+	*
+	* @param string $url_path The path to the content
+	* @param string $title The title of the page/content
+	* @param string $type_name The type name to refer to the content as (e.g., RSS Feed, Download, Article)
+	* @param string $module The module name in the modules/ folder
+	* @param string $controller The controller to initiate
+	* @param string $method The method to instantiate and pass the $url_path string to via mod_rewrite
+	*
+	* @return $link_id
+	*/
+	function new_link ($url_path, $title, $type_name, $module, $controller, $method) {
 		$url_path = $this->prep_url_path($url_path);
 	
 		$insert_fields = array(
 								'link_url_path' => $url_path,
+								'link_title' => $title,
+								'link_type' => $type_name,
 								'link_module' => $module,
 								'link_controller' => $controller,
 								'link_method' => $method
@@ -32,12 +46,20 @@ class Link_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
+	function update_title ($link_id, $title) {
+		$update_fields = array('link_title' => $title);
+		$this->db->update('links',$update_fields,array('link_id' => $link_id));
+		
+		return TRUE;
+	}
+	
 	function update_url ($link_id, $url_path) {
 		$url_path = $this->prep_url_path($url_path);
 		
 		$update_fields = array('link_url_path' => $url_path);
-		
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
+		
+		return TRUE;
 	}
 	
 	/*

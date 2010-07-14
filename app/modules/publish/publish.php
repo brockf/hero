@@ -36,6 +36,7 @@ class Publish extends Module {
 		// alows for 20 possible content types in the menu - more than enough
 		$weight = 11;
 		
+		$CI->db->where('content_type_is_module','0');
 		$CI->db->order_by('content_type_friendly_name','ASC');
 		$result = $CI->db->get('content_types');
 		foreach ($result->result_array() as $type) {
@@ -56,15 +57,6 @@ class Publish extends Module {
 	*/
 	function update ($db_version) {
 		if ($db_version < 1.09) {
-			$this->CI->db->query('CREATE TABLE IF NOT EXISTS `links` (
- 								 `link_id` int(11) NOT NULL auto_increment,
- 								 `link_url_path` varchar(255) NOT NULL,
- 								 `link_module` varchar(250),
- 								 `link_controller` varchar(250),
- 								 `link_method` varchar(250),
-   								 PRIMARY KEY  (`link_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
-								 
 			$this->CI->db->query('DROP TABLE IF EXISTS `content`');
 			
 			$this->CI->db->query('CREATE TABLE `content` (
@@ -104,6 +96,7 @@ class Publish extends Module {
 										 
 			$this->CI->db->query('CREATE TABLE `content_types` (
  								 `content_type_id` int(11) NOT NULL auto_increment,
+ 								 `content_type_is_module` tinyint(1) NOT NULL,
  								 `content_type_is_standard` tinyint(1) NOT NULL,
  								 `content_type_is_privileged` tinyint(1) NOT NULL,
  								 `custom_field_group_id` int(11) NOT NULL,

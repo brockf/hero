@@ -691,7 +691,7 @@ class Admincp extends Admincp_Controller {
 					);
 		
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('content_type_model','get_content_types');
+		$this->dataset->datasource('content_type_model','get_content_types', array('is_module','0'));
 		$this->dataset->base_url(site_url('admincp/publish/types'));
 		$this->dataset->rows_per_page(1000);
 

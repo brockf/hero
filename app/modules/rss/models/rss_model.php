@@ -36,7 +36,7 @@ class Rss_model extends CI_Model
 		
 		$this->load->model('link_model');
 		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, 'rss', 'feed', 'view');
+		$link_id = $this->link_model->new_link($url_path, $title, 'RSS Feed', 'rss', 'feed', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
@@ -70,13 +70,15 @@ class Rss_model extends CI_Model
 	function update_feed ($feed_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
 		$feed = $this->get_feed($feed_id);
 		
+		$this->load->model('link_model');
 		if ($url_path != $feed['url_path']) {
 			$this->load->helper('clean_string');
 			$url_path = clean_string($url_path);
 			
-			$this->load->model('link_model');
 			$url_path = $this->link_model->get_unique_url_path($url_path);
+			$this->link_model->update_url($feed['link_id'], $url_path);
 		}
+		$this->link_model->update_title($feed['link_id'], $title);
 	
 		$update_fields = array(
 							'content_type_id' => $content_type_id,

@@ -37,7 +37,7 @@ class Blog_model extends CI_Model
 		
 		$this->load->model('link_model');
 		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, 'blog', 'blog', 'view');
+		$link_id = $this->link_model->new_link($url_path, $title, 'Blog/Listing', 'blog', 'blog', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
@@ -73,13 +73,15 @@ class Blog_model extends CI_Model
 	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE) {
 		$blog = $this->get_blog($blog_id);
 		
+		$this->load->model('link_model');
 		if ($url_path != $blog['url_path']) {
 			$this->load->helper('clean_string');
 			$url_path = clean_string($url_path);
 			
-			$this->load->model('link_model');
 			$url_path = $this->link_model->get_unique_url_path($url_path);
+			$this->link_model->update_url($blog['link_id'], $url_path);
 		}
+		$this->link_model->update_title($blog['link_id'], $title);
 	
 		$update_fields = array(
 							'content_type_id' => $content_type_id,

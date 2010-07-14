@@ -25,10 +25,11 @@ class Content_type_model extends CI_Model
 	* @param string $name
 	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown?
 	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown?
+	* @param boolean $is_module Should this be treated as an automatic content type?  Or is there another admin module which will manage this content type?
 	*
 	* @return int $content_type_id
 	*/
-	function new_content_type ($name, $is_standard = TRUE, $is_privileged = FALSE) {
+	function new_content_type ($name, $is_standard = TRUE, $is_privileged = FALSE, $is_module = FALSE) {
 		// get system name
 		$this->load->helper('clean_string');
 		$system_name = clean_string($name);
@@ -43,6 +44,7 @@ class Content_type_model extends CI_Model
 		$custom_field_group_id = $this->custom_fields_model->new_group('Content: ' . $name);
 		
 		$insert_fields = array(
+							'content_type_is_module' => ($is_module == FALSE) ? '0' : '1',
 							'content_type_friendly_name' => $name,
 							'content_type_system_name' => $system_name,
 							'content_type_is_standard' => ($is_standard == TRUE) ? '1' : '0',
@@ -54,15 +56,19 @@ class Content_type_model extends CI_Model
 		
 		$content_type_id = $this->db->insert_id();
 		
-		// database functions
-		$this->load->dbforge();
-		
-		// add ID, date, edit_date, admin rows
-		$this->dbforge->add_field('`' . $system_name . '_id` INT(11) auto_increment PRIMARY KEY');
-		$this->dbforge->add_field('`content_id` INT(11) NOT NULL');
-		
-		// create table
-		$this->dbforge->create_table($system_name);
+		// if this content type isn't another admin module, we'll create a table for it
+		// otherwise, we expect the developer to create it's own table in the module install
+		if ($is_module == FALSE) {
+			// database functions
+			$this->load->dbforge();
+			
+			// add ID, date, edit_date, admin rows
+			$this->dbforge->add_field('`' . $system_name . '_id` INT(11) auto_increment PRIMARY KEY');
+			$this->dbforge->add_field('`content_id` INT(11) NOT NULL');
+			
+			// create table
+			$this->dbforge->create_table($system_name);
+		}
 		
 		return $content_type_id;
 	}
@@ -149,6 +155,7 @@ class Content_type_model extends CI_Model
 	*
 	* @param int $filters['id']
 	* @param int $filters['is_standard'] Either 1 or 0
+	* @param int $filters['is_module']
 	*
 	*/
 	function get_content_types ($filters = array()) {
@@ -158,6 +165,9 @@ class Content_type_model extends CI_Model
 		if (isset($filters['is_standard'])) {
 			$this->db->where('content_type_is_standard',$filters['is_standard']);
 		}
+		if (isset($filters['is_module'])) {
+			$this->db->where('content_type_is_module',$filters['is_module']);
+		}
 	
 		$this->db->order_by('content_type_friendly_name');
 		$result = $this->db->get('content_types');
@@ -166,11 +176,15 @@ class Content_type_model extends CI_Model
 			return FALSE;
 		}
 		
+		// load inflection library for singular names
+		$this->load->library('inflect');
+		
 		$types = array();
 		foreach ($result->result_array() as $row) {
 			$types[] = array(
 						'id' => $row['content_type_id'],
 						'name' => $row['content_type_friendly_name'],
+						'singular_name' => $this->inflect->singularize($row['content_type_friendly_name']),
 						'system_name' => $row['content_type_system_name'],
 						'is_privileged' => ($row['content_type_is_privileged'] == '1') ? TRUE : FALSE,
 						'is_standard' => ($row['content_type_is_standard'] == '1') ? TRUE : FALSE,

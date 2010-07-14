@@ -45,7 +45,8 @@ class Content_model extends CI_Model
 		// make sure URL is unique
 		$this->load->model('link_model');
 		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, 'publish', 'content', 'view');
+		
+		$link_id = $this->link_model->new_link($url_path, $title, $type['singular_name'], 'publish', 'content', 'view');
 		
 		// insert it into standard content table first
 		$insert_fields = array(
@@ -110,11 +111,12 @@ class Content_model extends CI_Model
 		}
 		
 		// make sure URL is unique (unless it hasn't changed, of course)
+		$this->load->model('link_model');
 		if ($content['url_path'] != $url_path) {
-			$this->load->model('link_model');
 			$url_path = $this->link_model->get_unique_url_path($url_path);
 			$this->link_model->update_url($content['link_id'], $url_path);
 		}
+		$this->link_model->update_title($content['link_id'], $title);
 		
 		// update standard content table first
 		$update_fields = array(
