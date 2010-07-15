@@ -51,8 +51,7 @@ class Menu_model extends CI_Model
 	* @param int $parent_link If it's a 2nd_tier link name the parent
 	* @param string $type Either 'external', 'special', or 'link'
 	* @param int $link_id If it's in the universal link database, what's the link_id?
-	* @param string $module If it's in the universal link database, which module will parse it?
-	* @param string $name The display text
+	* @param string $text The display text
 	* @param string $special_type If it's a "special" link, give it a name (e.g., "store", "account")
 	* @param string $external_url The full URL for external links
 	* @param array $privileges A serialized array of member groups who can see it
@@ -60,7 +59,7 @@ class Menu_model extends CI_Model
 	*
 	* @return int $menu_link_id
 	*/
-	function add_link ($menu_id, $parent_link = FALSE, $type, $link_id = FALSE, $module = FALSE, $name, $special_type = FALSE, $external_url = FALSE, $privileges = array(), $require_active_parent = FALSE) {
+	function add_link ($menu_id, $parent_link = FALSE, $type, $link_id = FALSE, $text, $special_type = FALSE, $external_url = FALSE, $privileges = array(), $require_active_parent = FALSE) {
 		// get next order
 		$links = $this->get_links(array('menu' => $menu_id));
 		if (is_array($links)) {
@@ -77,8 +76,7 @@ class Menu_model extends CI_Model
 								'parent_menu_link_id' => $parent_link,
 								'menu_link_type' => $type,
 								'link_id' => (!empty($link_id)) ? $link_id : '0',
-								'menu_link_module' => (!empty($module)) ? $module : '',
-								'menu_link_name' => $name,
+								'menu_link_text' => $text,
 								'menu_link_special_type' => (!empty($special_type)) ? $special_type : '',
 								'menu_link_external_url' => (!empty($external_url)) ? $external_url : '',
 								'menu_link_privileges' => (!empty($privileges)) ? serialize($privileges) : '',
@@ -89,6 +87,28 @@ class Menu_model extends CI_Model
 		$this->db->insert('menus_links', $insert_fields);
 		
 		return $this->db->insert_id();
+	}
+	
+	/*
+	* Update Link
+	*
+	* @param int $menu_link_id The link ID to edit
+	* @param string $text The display text
+	* @param array $privileges A serialized array of member groups who can see it
+	* @param boolean $require_active_parent If it's a child, does it require an active parent to be visible?
+	*
+	* @return int $menu_link_id
+	*/
+	function update_link ($menu_link_id, $text, $privileges = array(), $require_active_parent = FALSE) {
+		$update_fields = array(
+								'menu_link_text' => $text,
+								'menu_link_privileges' => (!empty($privileges)) ? serialize($privileges) : '',
+								'menu_link_require_active_parent' => (!empty($require_active_parent)) ? '1' : '0'
+							);
+							
+		$this->db->update('menus_links', $update_fields, array('menu_link_id' => $menu_link_id));
+		
+		return TRUE;
 	}
 	
 	function remove_link ($menu_link_id) {
@@ -140,6 +160,17 @@ class Menu_model extends CI_Model
 		return $menus;
 	}
 	
+	function get_link ($id) {
+		$link = $this->get_links(array('id' => $id));
+		
+		if (empty($link)) {
+			return FALSE;
+		}
+		else {
+			return $link[0];
+		}
+	}
+	
 	/*
 	* Get Links
 	*
@@ -157,6 +188,9 @@ class Menu_model extends CI_Model
 		if (isset($filters['parent'])) {
 			$this->db->where('parent_menu_link_id',$filters['parent']);
 		}
+		if (isset($filters['id'])) {
+			$this->db->where('menu_link_id',$filters['id']);
+		}
 	
 		$this->db->order_by('menu_link_order');
 		$result = $this->db->get('menus_links');
@@ -167,11 +201,16 @@ class Menu_model extends CI_Model
 		
 		$links = array();
 		foreach ($result->result_array() as $row) {
+			$this->db->where('parent_menu_link_id',$row['menu_link_id']);
+			$result2 = $this->db->get('menus_links');
+			$children = $result2->num_rows();
+		
 			$links[] = array(
 						'id' => $row['menu_link_id'],
 						'menu_id' => $row['menu_id'],
+						'children' => $children,
 						'parent_menu_link_id' => $row['parent_menu_link_id'],
-						'name' => $row['menu_link_name'],
+						'text' => $row['menu_link_text'],
 						'type' => $row['menu_link_type'],
 						'link_id' => $row['link_id'],
 						'special_type' => (!empty($row['menu_link_special_type'])) ? $row['menu_link_special_type'] : FALSE,

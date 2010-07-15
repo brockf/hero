@@ -116,4 +116,45 @@ class Link_model extends CI_Model {
 		
 		return $url_path;
 	}
+	
+	/*
+	* Get Universal Content Links
+	*
+	* @param $filters['sort']
+	* @param $filters['sort_dir']
+	* @param $filters['offset']
+	* @param $filters['limit']
+	*
+	* @return array|boolean
+	*/
+	function get_links ($filters = array()) {
+		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'links.link_title';
+		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
+		$this->db->order_by($order_by, $order_dir);
+		
+		if (isset($filters['limit'])) {
+			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+			$this->db->limit($filters['limit'], $offset);
+		}
+		
+		$result = $this->db->get('links');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$links = array();
+		foreach ($result->result_array() as $link) {
+			$links[] = array(
+								'id' => $link['link_id'],
+								'title' => $link['link_title'],
+								'type' => $link['link_type'],
+								'module' => $link['link_module'],
+								'controller' => $link['link_controller'],
+								'method' => $link['link_method']
+							);
+		}
+		
+		return $links;
+	}
 }

@@ -14,7 +14,7 @@ if (!isset($feed)) {
 }
 
 ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/rss_feed.js') . '"></script>'));?>
+<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.rss_feed.js') . '"></script>'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_rss" method="post" action="<?=$form_action;?>">
 <fieldset>

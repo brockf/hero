@@ -15,7 +15,7 @@ if (!isset($blog)) {
 }
 
 ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/rss_feed.js') . '"></script>'));?>
+<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.blog.js') . '"></script>'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_blog" method="post" action="<?=$form_action;?>">
 <fieldset>
@@ -75,7 +75,7 @@ if (!isset($blog)) {
 			<? } ?>
 		</li>
 		<li>
-			<div class="help" style="margin:0">This field populates the summary displayed on the main blog listing page.  It can be a dedicated "Summary" field or the full text of your article (i.e., a "Body" field).</div>
+			<div class="help">This field populates the summary displayed on the main blog listing page.  It can be a dedicated "Summary" field or the full text of your article (i.e., a "Body" field).</div>
 		</li>
 		<li>
 			<label>&nbsp;</label><?=form_checkbox('auto_trim','1',($blog['auto_trim'] == TRUE) ? TRUE : FALSE);?> <b>Automatically shorten the summary to <?=setting('blog_summary_length');?> characters?</b>  This setting is customizable under Configuration > Settings.

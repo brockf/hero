@@ -1,5 +1,4 @@
 - Roadmap:	
-	- Create Menu Manager
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)
 	- Add Default View Template to each Content Type add/edit
@@ -11,6 +10,7 @@
 	- Allow multi-page articles with "Insert PageBreak"
 	- When previewing/arranging fields, make sure that we don't have any "full" fields, as they create two draggable items (one for each LI)
 	- Add delayed publishing for all content
+	- Add Affiliates Module (affiliate code already exists in subscriptions table)
 	
 - Order Form:
 	- settings: require_user_account

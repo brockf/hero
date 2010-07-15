@@ -2,15 +2,46 @@
 <p>This menu is currently empty.</p>
 <? } else { ?>
 
-<ul>
+<ul class="current_links">
 	<? foreach ($links as $link) { ?>
-	<li rel="<?=$link['id'];?>">
-		<span class="handle"><a href="#"><img src="<?=branded_include('images/arrow.png');?>" alt="drag to move" title="drag to move" /></a></span>
-		<span class="name"><?=$link['name'];?></span>
+	<li id="link_<?=$link['id'];?>" rel="<?=$link['id'];?>">
+		<span class="handle"><img src="<?=branded_include('images/arrow.png');?>" alt="drag to move" title="drag to move" class="handle" /></span>
+		<span class="text"><?=$link['text'];?></span>
 		<span class="actions">
 			<input type="button" class="button edit_link" name="go" value="Edit" />
 			<input type="button" class="button remove_link" name="go" value="Remove" />
+			<? if ($parent_id == 0) { ?>
+				<? if ($link['children'] == 0) { ?>
+					<? if ($link['type'] != 'special') { ?>
+					<input type="button" class="button manage_children" name="go" value="Create Submenu" />	
+					<? } ?>
+				<? } else { ?>
+				<input type="button" class="button manage_children" name="go" value="Manage <?=$link['children'];?> Sublinks" />	
+				<? } ?>
+			<? } ?>
 		</span>
+		<div class="editing">
+			<form class="validate" method="post" action="<?=site_url('menu_manager/post_edit_link');?>">
+				<table>
+					<tr>
+						<td valign="top">
+							<label for="text">Display Text</label><br />
+							<input type="text" class="text required" name="text" id="text" style="width: 97%" value="<?=$link['text'];?>" />
+						</td>
+						<td valign="top">
+							<label for="privileges">Visibility</label><br />
+							<select name="privileges" id="privileges" multiple="multiple" style="height: 50px">
+								<option value="0" <? if ($link['privileges'] == FALSE or in_array(0,$link['privileges'])) { ?>selected="selected"<? } ?>>Public / All Member Groups</option>
+								<? foreach ($groups as $group) { ?>
+									<option value="<?=$group['id'];?>" <? if ($link['privileges'] != FALSE and in_array($group['id'], $link['privileges'])) { ?>selected="selected"<? } ?>><?=$group['name'];?></option>
+								<? } reset($groups); ?>
+							</select>
+						</td>
+					</tr>
+				</table>
+			</form>
+		</div>
+		<div style="clear:both"></div>
 	</li>
 	<? } ?>
 	<div style="clear:both"></div>

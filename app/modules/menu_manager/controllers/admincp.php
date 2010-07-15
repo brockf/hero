@@ -29,18 +29,29 @@ class Admincp extends Admincp_Controller {
 		
 		if (!$this->session->userdata('manage_menu_id')) {
 			$this->switch_active($menus[0]['id']);
+			$this->session->set_userdata('manage_menu_parent_link_id','0');
 			
 			return FALSE;
+		}
+		
+		if (!$this->session->userdata('manage_menu_parent_link_id')) {
+			$this->session->set_userdata('manage_menu_parent_link_id','0');
 		}
 		
 		$active_menu_id = $this->session->userdata('manage_menu_id');
 		$active_menu = $this->menu_model->get_menu($active_menu_id);
 		
 		// set title from menu and possibly child menu
-		$title = '<a href="' . site_url('admincp/menu_manager') . '">' . $active_menu['name'] . '</a>';
+		$title = '<a href="' . site_url('admincp/menu_manager/switch_parent/0') . '">' . $active_menu['name'] . '</a>';
+		
+		if ($this->session->userdata('manage_menu_parent_link_id') and $this->session->userdata('manage_menu_parent_link_id') != 0) {
+			$link = $this->menu_model->get_link($this->session->userdata('manage_menu_parent_link_id'));
+			$title .= ' > <a href="' . site_url('admincp/menu_manager/switch_parent/' . $link['id']) . '">' . $link['text'] . '</a>';
+		}
 		
 		// get possible links
-		$possible_links = $this->get_possible_links($active_menu['id']);
+		$possible_links = $this->get_possible_links($active_menu['id']);	
+		$possible_links = $this->load->view('possible_links', array('possible_links' => $possible_links), TRUE);
 		
 		$data = array(
 						'menus' => $menus,
@@ -58,119 +69,126 @@ class Admincp extends Admincp_Controller {
 		redirect('admincp/menu_manager');
 	}
 	
-	function get_possible_links ($menu_id) {
-		// this array stores link_id > name combinations so that we can sort it and get a sorted array
-		// each key is prefaced with "item" so that PHP doesn't ignore numerical indeces in asort()
-		$sortable_links = array();
+	function switch_parent ($id) {
+		$this->session->set_userdata('manage_menu_parent_link_id', $id);
+		
+		redirect('admincp/menu_manager');
+	}
 	
-		// content
-		$this->load->model('publish/content_model');
-		$content = $this->content_model->get_contents(array('is_standard' => '1'));
+	function get_possible_links ($menu_id) {
+		// Each "possible link" must have the following 3 attributes:
+		// - Text (display text)
+		// - Type (content type, not used technically but just to show what type of content it is)
+		// - Code (a base64_encoded, serialized array of data including:
+		//		- link_type (either "link" or "special),
+		//		- link_id (if in universal `links` table and link_type == "link"),
+		//		- special_type (if link_type == "special")
 		
-		if (is_array($content)) {
-			foreach ($content as $item) {
-				$sortable_links['item' . $item['link_id']] = $item['title'];
-				$links[$item['link_id']] = array(
-													'name' => $item['title'],
-													'module' => 'content',
-													'type' => 'link',
-													'code' => 'link[|]' . $item['link_id'] . '[|]content[|]' . $item['title']
-												);
-			}
-		}
-										
-		// blogs/listings
-		$this->load->model('blogs/blog_model');
-		$blogs = $this->blog_model->get_blogs();
-		
-		if (is_array($blogs)) {
-			foreach ($blogs as $blog) {
-				$sortable_links['item' . $blog['link_id']] = $blog['title'];
-				$links[$blog['link_id']] = array(
-													'name' => $blog['title'],
-													'module' => 'blog/listing',
-													'type' => 'link',
-													'code' => 'link[|]' . $blog['link_id'] . '[|]blog[|]' . $blog['title']
-												);
-			}
-		}
-		
-		// rss feeds
-		$this->load->model('rss/rss_model');
-		$feeds = $this->rss_model->get_feeds();
-		
-		if (is_array($feeds)) {
-			foreach ($feeds as $feed) {
-				$sortable_links['item' . $feed['id']] = $feed['title'];
-				$links[$feed['link_id']] = array(
-												'name' => $feed['title'],
-												'module' => 'rss feed',
-												'type' => 'link',
-												'code' => 'link[|]' . $feed['link_id'] . '[|]rss[|]' . $feed['title']
-											);
-			}
-		}
-		
-		// sort the links by name
-		asort($sortable_links);
-		
-		// get current links to stop duplicates
-		$current_links = $this->menu_model->get_links(array('menu' => $this->session->userdata('manage_menu_id')));
-		
-		$link_duplicates = array();
-		if (is_array($current_links)) {
-			foreach ($current_links as $link) {
-				if ($link['type'] == 'link') {
-					$link_duplicates[] = $link['link_id'];
-				}
-			}
-		}
-		
-		// now get the true links data in this order
 		$possible_links = array();
-		foreach ($sortable_links as $link_id => $name) {
-			$link_id = str_replace('item','',$link_id);
-			if (array_key_exists($link_id,$links)) {
-				// no duplicates
-				if ($links[$link_id]['type'] == 'link' and !in_array($link_id, $link_duplicates)) {
-					$possible_links[] = $links[$link_id];
-				}
+		
+		// get current links so we can prevent duplicates
+		$this->load->model('menu_model');
+		$current_links = $this->menu_model->get_links(array('menu' => $this->session->userdata('manage_menu_id'), 'parent' => $this->session->userdata('manage_menu_parent_link_id')));
+		
+		// add special links
+		$special_links = array(
+								'home' => 'Home',
+								'control_panel' => 'Control Panel',
+								'my_account' => 'My Account',
+								'store' => 'Store',
+								'search' => 'Search'
+							);
+							
+		foreach ($special_links as $special_link_code => $special_link_name) {
+			if (!$this->special_link_in_array($current_links, $special_link_code)) {
+				$possible_links[] = array(
+										'text' => $special_link_name,
+										'type' => 'Special',
+										'code' => base64_encode(serialize(array(
+																			'special_type' => $special_link_code,
+																			'link_type' => 'special',
+																			'link_text' => $special_link_name
+																		)))
+									);
+			}
+		}
+		
+		// get all content links from the universal link database
+		$this->load->model('link_model');
+		$links = $this->link_model->get_links();
+		
+		foreach ($links as $link) {
+			if (!$this->universal_link_in_array($current_links, $link['id'])) {
+				$possible_links[] = array(
+										'text' => $link['title'],
+										'type' => $link['type'],
+										'code' => base64_encode(serialize(array(
+																		'link_id' => $link['id'],
+																		'link_type' => 'link',
+																		'link_text' => $link['title']
+																	)))
+									);
 			}
 		}
 		
 		return $possible_links;
 	}
 	
+	/*
+	* Helper Method to browse current links in array and make sure that this special link type isn't in it
+	*
+	* @param array $links Array of current links
+	* @param string $special_type The special type to browse for (e.g., my_account, store)
+	*
+	* @return boolean TRUE if it exists in the links array
+	*/
+	function special_link_in_array($links = array(), $special_type = '') {
+		if (!is_array($links)) {
+			return FALSE;
+		}
+	
+		foreach ($links as $link) {
+			if ($link['special_type'] == $special_type) {
+				return TRUE;
+			}
+		}
+		
+		return FALSE;
+	}
+	
+	function universal_link_in_array($links = array(), $link_id = '') {
+		if (!is_array($links)) {
+			return FALSE;
+		}
+		
+		foreach ($links as $link) {
+			if ($link['link_id'] == $link_id) {
+				return TRUE;
+			}
+		}
+		
+		return FALSE;
+	}
+	
 	function add_link () {
 		// parse code for type, ID, and module
 		$code = $this->input->post('code');
-		list($type,$data1,$data2,$name) = explode('[|]',$code);
 		
 		$this->load->model('menu_model');
 		
-		if ($type == 'link') {
-			$this->menu_model->add_link($this->session->userdata('manage_menu_id'), FALSE, 'link', $data1, $data2, $name, FALSE, FALSE, FALSE, FALSE);
+		if (!$this->input->post('external')) {
+			$link = unserialize(base64_decode($code));
+			
+			if ($link['link_type'] == 'link') {
+				$this->menu_model->add_link($this->session->userdata('manage_menu_id'), $this->session->userdata('manage_menu_parent_link_id'), 'link', $link['link_id'], $link['link_text']);
+			}
+			elseif ($link['link_type'] == 'special') {
+				$this->menu_model->add_link($this->session->userdata('manage_menu_id'), $this->session->userdata('manage_menu_parent_link_id'), 'special', 0, $link['link_text'], $link['special_type']);
+			}
 		}
-		elseif ($type == 'external') {
-			$this->menu_model->add_link($this->session->userdata('manage_menu_id'), FALSE, 'external', FALSE, FALSE, $name, FALSE, $data2, FALSE, FALSE);
+		else {
+			$this->menu_model->add_link($this->session->userdata('manage_menu_id'), $this->session->userdata('manage_menu_parent_link_id'), 'external', 0, $this->input->post('text'), FALSE, $this->input->post('url'));
 		}
-		
-		/*
-		* Add Link to Menu
-		*
-		* @param int $menu_id Which menu does it belong to?
-		* @param int $parent_link If it's a 2nd_tier link name the parent
-		* @param string $type Either 'external', 'special', or 'link'
-		* @param int $link_id If it's in the universal link database, what's the link_id?
-		* @param string $module If it's in the universal link database, which module will parse it?
-		* @param string $name The display text
-		* @param string $special_type If it's a "special" link, give it a name (e.g., "store", "account")
-		* @param string $external_url The full URL for external links
-		* @param array $privileges A serialized array of member groups who can see it
-		* @param boolean $require_active_parent If it's a child, does it require an active parent to be visible?
-		*
-		* @return int $menu_link_id
-		*/
 		
 		// return the current menu
 		$this->get_links();
@@ -186,12 +204,52 @@ class Admincp extends Admincp_Controller {
 	function get_links () {
 		$this->load->model('menu_model');
 		
-		$links = $this->menu_model->get_links(array('menu' => $this->session->userdata('manage_menu_id'), 'parent' => '0'));
+		$this->load->model('users/usergroup_model');
+		$groups = $this->usergroup_model->get_usergroups();
+		
+		$parent_id = ($this->session->userdata('manage_menu_parent_link_id')) ? $this->session->userdata('manage_menu_parent_link_id') : 0;
+		
+		$links = $this->menu_model->get_links(array('menu' => $this->session->userdata('manage_menu_id'), 'parent' => $parent_id));
 			
 		$data = array(
-					'links' => $links
+					'links' => $links,
+					'groups' => $groups,
+					'parent_id' => $parent_id
 					);	
 		$this->load->view('links', $data);
+	}
+	
+	function show_possible_links () {
+		$this->load->model('users/usergroup_model');
+		
+		$possible_links = $this->get_possible_links($this->session->userdata('manage_menu_id'));
+		$this->load->view('possible_links', array('possible_links' => $possible_links));
+	}
+	
+	/*
+	* Saves Link Order
+	*
+	*/
+	function save_order () {
+		$order = $this->input->post('link');
+		$count = 1;
+		foreach ($order as $link) {
+			$this->db->update('menus_links',array('menu_link_order' => $count), array('menu_link_id' => $link));
+			
+			$count++;
+		}
+	}
+	
+	function edit_link () {
+		$link_id = $this->input->post('link_id');
+		$text = $this->input->post('text');
+		$privileges = $this->input->post('privileges');
+		
+		$this->load->model('menu_model');
+		
+		$this->menu_model->update_link($link_id, $text, $privileges, FALSE);
+		
+		echo 'Edit saved.';
 	}
 	
 	function create () {
@@ -223,6 +281,7 @@ class Admincp extends Admincp_Controller {
 			
 			// manage this menu
 			$this->session->set_userdata('manage_menu_id',$menu_id);
+			$this->session->set_userdata('manage_menu_parent_link_id','0');
 		}
 		else {
 			$this->menu_model->update_menu($id, $this->input->post('name'));

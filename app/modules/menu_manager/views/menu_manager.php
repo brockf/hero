@@ -1,4 +1,5 @@
 <?=$this->load->view(branded_view('cp/header'), array('head_files' => '<link href="' . branded_include('css/menu_manager.css') . '" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="' . branded_include('js/jquery-ui-1.8.2.min.js') . '"></script>
 <script type="text/javascript" src="' . branded_include('js/menu_manager.js') . '"></script>'));?>
 <h1>Menu Manager</h1>
 <div id="menu_manager">
@@ -22,17 +23,7 @@
 			<div id="link_creator">
 				<h2>Add Link(s) to Menu</h2>
 				<div id="link_creator_wrapper">
-					<table class="links" cellspacing="0" cellpadding="0">
-						<tbody>
-							<? foreach ($possible_links as $link) { ?>
-								<tr>
-									<td class="title"><?=$link['name'];?></td>
-									<td class="type"><?=$link['module'];?></td>
-									<td class="button"><input rel="<?=$link['code'];?>" type="button" class="button add_link" name="go" value="Add this Link" /></td>
-								</tr>
-							<? } ?>
-						</tbody>
-					</table>
+					<?=$possible_links;?>
 				</div>
 				<div id="external_form">
 					<input type="text" class="text mark_empty" rel="http://www.yahoo.com" id="external_link" name="external_link" />
@@ -43,4 +34,5 @@
 		</div>
 	</div>
 </div>
+<div style="clear:both"></div>
 <?=$this->load->view(branded_view('cp/footer'));?>

@@ -18,7 +18,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="5">No blog feeds available.</td>
+	<td colspan="5">No blogs available.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>

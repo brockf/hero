@@ -1,6 +1,5 @@
 div#menu_manager {
 	background-color: #fff;
-	height: 600px;
 	width: 968px;
 	position: relative;
 }
@@ -17,9 +16,7 @@ div#menu_manager li {
 
 div#list_menus {
 	background-color: #fff;
-	position: absolute;
-	top: 10px;
-	left: 10px;
+	float: left;
 	width: 180px;
 	height: 564px;
 	padding: 8px 0px 8px 8px;
@@ -63,47 +60,34 @@ div#list_menus h2 {
 
 div#active_menu {
 	background-color: #12727b;
-	position: absolute;
-	top: 10px;
-	left: 198px;
+	float: left;
 	width: 740px;
-	height: 560px;
 	padding: 10px;
 }
 
-div#active_menu_wrapper {
-	position: relative;
-	background-color: #fff;
-	padding: 8px;
-	height: 544px;
-}
-
-div#active_menu h2 {
+div#list_items h2 {
 	background-color: #333;
 	color: #f0f0f1;
 	padding: 5px;
 	margin-bottom: 5px;
 	font-size: 11pt;
+	font-weight: bold;
 }
 
-div#active_menu h2 a:hover {
+div#list_items h2 a:hover {
 	color: #fff;
 }
 
 div#list_items {
-	position: absolute;
-	top: 8px;
-	left: 8px;
-	height: 250px;
+	position: relative;
 	width: 724px;
+	padding: 8px;
+	background-color: #fff;
 }
 
 div#link_creator {
-	position: absolute;
-	top: 258px;
-	left: 8px;
-	width: 724px;
-	height: 300px;
+	width: 740px;
+	background-color: #12727B;
 }
 
 div#link_creator_wrapper {
@@ -151,21 +135,14 @@ table.links tr.hover td.type {
 
 div#external_form {
 	background-color: #f0f0f1;
-	position: absolute;
-	bottom: 6px;
-	left: 0px;
-	width: 712px;
+	margin: 6px 0px 0px;
+	width: 728px;
 	padding: 5px;
 	border: 1px solid #ccc;
 }
 
 div#external_form input.text {
-	width: 284px;
-}
-
-div#list_items_wrapper {
-	overflow: auto;
-	height: 210px;
+	width: 290px;
 }
 
 div#list_items_wrapper ul li {
@@ -173,7 +150,6 @@ div#list_items_wrapper ul li {
 	border: 1px solid #f0f0f1;
 	padding: 5px;
 	clear: both;
-	height: 30px;
 	margin-bottom: 5px;
 }
 
@@ -185,14 +161,15 @@ div#list_items_wrapper ul li span.handle {
 	display: block;
 	float: left;
 	width: 5%;
-	padding-top: 8px;
+	padding-top: 6px;
 	text-align: center;
+	cursor: move;
 }
 
-div#list_items_wrapper ul li span.name {
+div#list_items_wrapper ul li span.text {
 	display: block;
 	float: left;
-	width: 65%;
+	width: 50%;
 	padding-top: 5px;
 }
 
@@ -200,5 +177,39 @@ div#list_items_wrapper ul li span.actions {
 	display: block;
 	float: left;
 	text-align: right;
-	width: 30%;
+	width: 45%;
+}
+
+div#link_creator h2 {
+	color: #fff;
+	font-size: 11pt;
+	font-weight: bold;
+	margin: 8px 0px 5px;
+}
+
+ul.current_links li {
+	background-color: #fff;
+}
+
+div.editing {
+	background-color: #f0f0f0;
+	clear: both;
+	margin-top: 35px;
+	display: none;
+}
+
+div.editing table {
+	width: 100%;
+}
+
+div.editing table td {
+	border: 0px;
+	margin: 0;
+	padding: 5px;
+	font-size: 9pt;
+	color: #222;
+}
+
+div.editing label {
+	font-weight: bold;
 }
