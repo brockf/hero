@@ -37,7 +37,7 @@ class Blog_model extends CI_Model
 		
 		$this->load->model('link_model');
 		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, $title, 'Blog/Listing', 'blog', 'blog', 'view');
+		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Blog/Listing', 'blog', 'blog', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,

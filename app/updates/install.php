@@ -372,6 +372,7 @@ INSERT INTO `emails` (`email_id`, `trigger_id`, `plan_id`, `to_address`, `bcc_ad
 
 CREATE TABLE IF NOT EXISTS `links` (
 	 `link_id` int(11) NOT NULL auto_increment,
+	 `link_topics` varchar(255),
 	 `link_url_path` varchar(255) NOT NULL,
 	 `link_title` varchar(255) NOT NULL,
 	 `link_type` varchar(255) NOT NULL,

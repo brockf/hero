@@ -167,7 +167,7 @@ a:hover {
 #navigation ul.children {
 	position: absolute;
 	top: 35px;
-	left: 0px;
+	left: -6px;
 	display: none;
 	background-color: #222;
 	border-radius: 6px;

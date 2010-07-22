@@ -21,6 +21,7 @@ class Link_model extends CI_Model {
 	* Create New Link
 	*
 	* @param string $url_path The path to the content
+	* @param array|boolean $topics Either an array of Topic ID's or FALSE
 	* @param string $title The title of the page/content
 	* @param string $type_name The type name to refer to the content as (e.g., RSS Feed, Download, Article)
 	* @param string $module The module name in the modules/ folder
@@ -29,10 +30,11 @@ class Link_model extends CI_Model {
 	*
 	* @return $link_id
 	*/
-	function new_link ($url_path, $title, $type_name, $module, $controller, $method) {
+	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method) {
 		$url_path = $this->prep_url_path($url_path);
 	
 		$insert_fields = array(
+								'link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '',
 								'link_url_path' => $url_path,
 								'link_title' => $title,
 								'link_type' => $type_name,
@@ -57,6 +59,13 @@ class Link_model extends CI_Model {
 		$url_path = $this->prep_url_path($url_path);
 		
 		$update_fields = array('link_url_path' => $url_path);
+		$this->db->update('links',$update_fields,array('link_id' => $link_id));
+		
+		return TRUE;
+	}
+	
+	function update_topics ($link_id, $topics) {
+		$update_fields = array('link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '');
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
 		
 		return TRUE;
