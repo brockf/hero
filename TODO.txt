@@ -1,6 +1,7 @@
 - Roadmap:	
 	- Add delayed publishing for all content
 	- Add Content template plugin
+	- Articles should show, even if not set for future publish, if you're an administrator
 	
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)

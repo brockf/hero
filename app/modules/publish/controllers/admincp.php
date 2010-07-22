@@ -332,6 +332,8 @@ class Admincp extends Admincp_Controller {
 			
 			$standard->dropdown('Topic(s)','topics[]',$options, array(), TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
+			$standard->date('Publish Date', 'date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+			
 			$standard = $standard->display();
 		}
 		else {
@@ -414,6 +416,8 @@ class Admincp extends Admincp_Controller {
 			
 			$standard->dropdown('Topic(s)','topics[]',$options, ($content['topics'] == FALSE) ? array() : $content['topics'], TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
 			
+			$standard->date('Publish Date', 'date', date('Y-m-d', strtotime($content['date'])), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+			
 			$standard = $standard->display();
 		}
 		else {
@@ -484,6 +488,7 @@ class Admincp extends Admincp_Controller {
 													$this->input->post('url_path'),
 													$this->input->post('topics'),
 													$this->input->post('privileges'),
+													$this->input->post('date'),
 													$custom_fields
 												);
 													
@@ -496,6 +501,7 @@ class Admincp extends Admincp_Controller {
 											$this->input->post('url_path'),
 											$this->input->post('topics'),
 											$this->input->post('privileges'),
+											$this->input->post('date'),
 											$custom_fields
 										);
 											

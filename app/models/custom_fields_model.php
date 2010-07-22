@@ -151,7 +151,7 @@ class Custom_fields_model extends CI_Model {
 			}
 			elseif ($field['type'] == 'file') {
 				// do the upload
-				if (is_uploaded_file($_FILES[$field['name']]['tmp_name'])) {
+				if (isset($_FILES[$field['name']]) and is_uploaded_file($_FILES[$field['name']]['tmp_name'])) {
 					$CI =& get_instance();
 					$CI->settings_model->make_writeable_folder($this->upload_directory,FALSE);
 					
