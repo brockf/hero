@@ -57,21 +57,4 @@ class Admincp_Controller extends MY_Controller {
 		$_SESSION['KCFINDER']['uploadURL'] = str_replace(FCPATH,'','/writeable/editor_uploads');
 		$_SESSION['KCFINDER']['uploadDir'] = rtrim(setting('path_editor_uploads'),'/');
 	}
-	
-	function module_names ($directory) {
-		$name = str_replace('.php','',strtolower($directory));
-		$class_name = ucfirst($name) . '_cp';
-		$object_name = strtolower($class_name);
-		$load_name = $name . '/' . $name . '_cp';
-		$filename = ucfirst($name) . '_cp.php';
-	
-		return array(
-					'name' => $name,
-					'class_name' => $class_name,
-					'object_name' => $object_name,
-					'load_name' => $load_name,
-					'filename' => $filename
-				);
-	}
-
 }
