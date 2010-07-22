@@ -48,6 +48,7 @@ class Blogs extends Module {
  								 `blog_filter_topic` varchar(250) NOT NULL,
  								 `blog_summary_field` VARCHAR(255) NOT NULL,
  								 `blog_auto_trim` tinyint(1) NOT NULL,
+ 								 `blog_template` varchar(255) NOT NULL,
    								 PRIMARY KEY  (`blog_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}

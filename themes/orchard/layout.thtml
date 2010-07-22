@@ -3,7 +3,7 @@
 <head>
 <title>{block name="title"}{setting name="site_name"}{/block}</title>
 <link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src="{url path="themes/common/js/jquery-1.4.2.min.js"}"></script>
+<script type="text/javascript" src="{url path="themes/common/jquery-1.4.2.min.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/box_layout.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/brock_bar.js"}"></script>

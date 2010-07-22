@@ -82,6 +82,9 @@ if (!isset($blog)) {
 		</li>
 	</ul>
 </fieldset>
+
+<?=$form;?>
+
 <div class="submit">
 	<input type="submit" class="button" name="form_blog" value="Save Blog" />
 </div>

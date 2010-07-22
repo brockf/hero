@@ -113,6 +113,7 @@ class Publish extends Module {
  								 `custom_field_group_id` int(11) NOT NULL,
  								 `content_type_friendly_name` varchar(100) NOT NULL,
  								 `content_type_system_name` varchar(50) NOT NULL,
+ 								 `content_type_template` varchar(255) NOT NULL,
  								 PRIMARY KEY  (`content_type_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}

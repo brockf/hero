@@ -28,10 +28,11 @@ class Blog_model extends CI_Model
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
+ 	* @param string $template The filename of the template in the theme directory to use for output
  	*
  	* @return $blog_id
  	*/
-	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE) {
+	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE, $template = 'blog.thtml') {
 		$this->load->helper('clean_string');
 		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 		
@@ -47,7 +48,8 @@ class Blog_model extends CI_Model
 							'blog_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'blog_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
 							'blog_summary_field' => (!empty($summary_field)) ? $summary_field : '',
-							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0'
+							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
+							'blog_template' => $template
 							);
 							
 		$this->db->insert('blogs',$insert_fields);
@@ -67,10 +69,11 @@ class Blog_model extends CI_Model
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
+ 	* @param string $template The filename of the template in the theme directory to use for output
  	*
  	* @return TRUE
  	*/
-	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE) {
+	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE, $template = 'blog.thtml') {
 		$blog = $this->get_blog($blog_id);
 		
 		$this->load->model('link_model');
@@ -90,7 +93,8 @@ class Blog_model extends CI_Model
 							'blog_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'blog_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
 							'blog_summary_field' => (!empty($summary_field)) ? $summary_field : '',
-							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0'
+							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
+							'blog_template' => $template
 							);
 							
 		$this->db->update('blogs',$update_fields,array('blog_id' => $blog_id));
@@ -174,7 +178,8 @@ class Blog_model extends CI_Model
 						'summary_field' => (!empty($row['blog_summary_field'])) ? $row['blog_summary_field'] : FALSE,
 						'url' => site_url($row['link_url_path']),
 						'url_path' => $row['link_url_path'],
-						'auto_trim' => ($row['blog_auto_trim'] == '1') ? TRUE : FALSE
+						'auto_trim' => ($row['blog_auto_trim'] == '1') ? TRUE : FALSE,
+						'template' => $row['blog_template']
 					);
 		}
 		

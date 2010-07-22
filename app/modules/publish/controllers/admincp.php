@@ -735,6 +735,10 @@ class Admincp extends Admincp_Controller {
 		$form->checkbox('Standard page fields?', 'is_standard', '1', TRUE, 'If checked, each content item will have the following fields: "Title", "URL Path", and "Topic".  These are standard items which allow ' . setting('app_name') . ' to display this content as an individual web page, include in blog/topic listings, etc.');
 		$form->checkbox('Restrict to certain member groups?', 'is_privileged', '1', TRUE, 'If checked, you will be able to specify the member group(s) that have permissions to see this content (or make it public).');
 		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, 'content.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.');
 		
 		$data = array(
 					'form' => $form->display(),
@@ -763,6 +767,11 @@ class Admincp extends Admincp_Controller {
 		$form->checkbox('Standard page fields?', 'is_standard', '1', $type['is_standard'], 'If checked, each content item will have the following fields: "Title", "URL Path", and "Topic".  These are standard items which allow ' . setting('app_name') . ' to display this content as an individual web page, include in blog/topic listings, etc.');
 		$form->checkbox('Restrict to certain member groups?', 'is_privileged', '1', $type['is_privileged'], 'If checked, you will be able to specify the member group(s) that have permissions to see this content (or make it public).');
 		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, $type['template'], FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.');
+		
 		$data = array(
 					'form' => $form->display(),
 					'form_title' => 'Edit Content Type',
@@ -776,6 +785,7 @@ class Admincp extends Admincp_Controller {
 	function post_type ($action = 'new', $id = false) {		
 		$this->load->library('form_validation');
 		$this->form_validation->set_rules('name','Name','required|trim');
+		$this->form_validation->set_rules('template','Template','required');
 		
 		if ($this->form_validation->run() === FALSE) {
 			$this->notices->SetError('You must include a content type name.');
@@ -799,7 +809,9 @@ class Admincp extends Admincp_Controller {
 			$type_id = $this->content_type_model->new_content_type(
 																$this->input->post('name'),
 																($this->input->post('is_standard') == '1') ? TRUE : FALSE,
-																($this->input->post('is_privileged') == '1') ? TRUE : FALSE
+																($this->input->post('is_privileged') == '1') ? TRUE : FALSE,
+																FALSE,
+																$this->input->post('template')
 															);
 															
 			$this->notices->SetNotice('Content type added successfully.');
@@ -811,7 +823,8 @@ class Admincp extends Admincp_Controller {
 													$id,
 													$this->input->post('name'),
 													($this->input->post('is_standard') == '1') ? TRUE : FALSE,
-													($this->input->post('is_privileged') == '1') ? TRUE : FALSE
+													($this->input->post('is_privileged') == '1') ? TRUE : FALSE,
+													$this->input->post('template')
 												);
 												
 			$this->notices->SetNotice('Content type updated successfully.');

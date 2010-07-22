@@ -118,12 +118,21 @@ class Admincp extends Admincp_Controller {
 			$topic_options[$topic['id']] = $topic['name'];
 		}
 		
+		$this->load->library('Admin_form');
+		$form = new Admin_form;
+		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, 'blog.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/listing page.');
+		
 		$data = array(
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
 					'form_title' => 'Create New Blog',
-					'form_action' => site_url('admincp/blogs/post/new')
+					'form_action' => site_url('admincp/blogs/post/new'),
+					'form' => $form->display()
 				);
 		
 		$this->load->view('blog_form', $data);
@@ -171,12 +180,21 @@ class Admincp extends Admincp_Controller {
 			$field_options[$field['name']] = $field['friendly_name'];
 		}
 		
+		$this->load->library('Admin_form');
+		$form = new Admin_form;
+		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, $blog['template'], FALSE, TRUE, 'This template in your theme directory will be used to display this blog/listing page.');
+		
 		$data = array(
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
 					'field_options' => $field_options,
 					'blog' => $blog,
+					'form' => $form->display(),
 					'form_title' => 'Edit Blog',
 					'form_action' => site_url('admincp/blogs/post/edit/' . $blog['id'])
 				);
@@ -196,7 +214,8 @@ class Admincp extends Admincp_Controller {
 										(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 										(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
 										$this->input->post('summary_field'),
-										($this->input->post('auto_trim') == '1') ? TRUE : FALSE
+										($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
+										$this->input->post('template')
 									);
 										
 			$this->notices->SetNotice('Blog added successfully.');
@@ -211,7 +230,8 @@ class Admincp extends Admincp_Controller {
 									(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 									(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
 									$this->input->post('summary_field'),
-										($this->input->post('auto_trim') == '1') ? TRUE : FALSE
+									($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
+									$this->input->post('template')
 								);
 										
 			$this->notices->SetNotice('Blog edited successfully.');
