@@ -25,7 +25,7 @@
 		<div id="app_bar">
 			<span class="app_name"><?=setting('site_name');?></span> | Control Panel
 			<div id="logged_in">
-				Logged in as <span class="username"><?=$this->user_model->get('username');?></span> (<a href="<?=site_url('admincp/login/logout');?>">logout</a>)
+				Logged in as <span class="username"><?=$this->user_model->get('username');?></span> (<a href="<?=site_url('admincp/logout');?>">logout</a>)
 			</div>
 			<a id="get_support" href="<?=setting('app_support');?>">Get Support</a>
 		</div>

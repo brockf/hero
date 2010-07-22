@@ -45,7 +45,28 @@ class Link_model extends CI_Model {
 							
 		$this->db->insert('links',$insert_fields);
 		
-		return $this->db->insert_id();
+		$link_id = $this->db->insert_id();
+		
+		// update routes file
+		$this->gen_routes_file();
+		
+		return $link_id;
+	}
+	
+	/*
+	* Delete Inactive Link
+	*
+	* @param $link_id
+	*
+	* @return boolean TRUE
+	*/
+	function delete_link ($link_id) {
+		$this->db->delete('links',array('link_id' => $link_id));
+		
+		// update routes file
+		$this->gen_routes_file();
+		
+		return TRUE;
 	}
 	
 	function update_title ($link_id, $title) {
@@ -60,6 +81,9 @@ class Link_model extends CI_Model {
 		
 		$update_fields = array('link_url_path' => $url_path);
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
+		
+		// update routes file
+		$this->gen_routes_file();
 		
 		return TRUE;
 	}
@@ -156,6 +180,7 @@ class Link_model extends CI_Model {
 		foreach ($result->result_array() as $link) {
 			$links[] = array(
 								'id' => $link['link_id'],
+								'url_path' => $link['link_url_path'],
 								'title' => $link['link_title'],
 								'type' => $link['link_type'],
 								'module' => $link['link_module'],
@@ -165,5 +190,33 @@ class Link_model extends CI_Model {
 		}
 		
 		return $links;
+	}
+	
+	/*
+	* Create Routes File
+	*
+	* Generates a CodeIgniter routes declaration file included in /app/config/routes.php from
+	* the universal links database
+	*
+	* @return boolean TRUE
+	*/
+	function gen_routes_file () {
+		$this->load->helper('file');
+		
+		$links = $this->get_links();
+		
+		$routes = array();
+		foreach ($links as $link) {
+			$routes[$link['url_path']] = $link['module'] . '/' . $link['controller'] . '/' . $link['method'] . '/' . $link['url_path'];
+		}
+		
+		// generate PHP file
+		$file = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n\n";
+		
+		foreach ($routes as $route => $path) {
+			$file .= '$route[\'' . $route . '\'] = \'' . $path . '\';' . "\n";
+		}
+		
+		write_file(FCPATH . 'writeable/routes.php',$file,'w');
 	}
 }

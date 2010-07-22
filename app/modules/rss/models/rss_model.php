@@ -105,7 +105,9 @@ class Rss_model extends CI_Model
 		$rss = $this->get_feed($feed_id);
 	
 		$this->db->delete('rss_feeds',array('rss_id' => $feed_id));
-		$this->db->delete('links',array('link_id' => $rss['link_id']));
+		
+		$this->load->model('link_model');
+		$this->link_model->delete_link($rss['link_id']);
 		
 		return TRUE;
 	}

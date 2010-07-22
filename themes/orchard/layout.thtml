@@ -1,0 +1,134 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<title>{block name="title"}{setting name="site_name"}{/block}</title>
+<link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{url path="themes/common/js/jquery-1.4.2.min.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/box_layout.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/brock_bar.js"}"></script>
+</head>
+<body>
+<div id="notices"></div>
+
+<div class="container">
+	<div id="header">
+		<a id="logo" href="#"><img src="{theme_url path="images/logo.gif"}" alt="Inside Music Media" /></a>
+		<div id="topnav">
+			<a href="#">home</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
+			<a href="#">subscribe</a>
+		</div>
+
+		<div id="search"><form method="get" action="#" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="query" /></form></div>
+	</div>
+</div>
+<div id="boxtop"></div>
+<div id="box">
+	<div class="container">
+		<div id="nav">
+			<ul>
+				<li><a class="active current" href="#">Frontpage</a></a></li>
+				<li><a class="jerry" href="#">About Jerry</a></li>
+
+				<li><a class="subscribe" href="#">Subscribe</a></li>
+				<li><a class="archives" href="#">Archives</a></li>
+				<li><a class="favorites" href="#">Favorite Things</a></li>
+				<li><a class="store" href="#">Store</a></li>
+				<li><a class="events" href="#">Conferences</a></li>
+				<li><a class="app" href="#">App</a></li>
+
+				<li><a class="contact" href="#">Contact Jerry</a></li>
+				<li><a class="tipster" href="#">Tipster</a></li>
+			</ul>
+		</div>
+		<div id="content">
+			<h1>This is a fake but very engaging headline</h1>
+			<div class="byline">
+
+				<span class="date">Saturday, May 29, 2010</span>
+			</div>
+			<div class="article">
+				<img src="{theme_url path="images/jerry.jpg"}" alt="Jerry" />
+				<p><span class="author">by Jerry Del Colliano</span></p>
+				<p>The radio and music businesses used to be so simple.</p>
+
+<p>Give the audience what they want and they'll come back for more.</p>
+
+<p>Since the Internet, the mobile generation and the many alternate choices for entertainment available at a touch, swipe or click, these industries radio need to go back to school on social media changes.</p>
+
+<p>Steve Jobs is the expert on reading his young consumer base. It doesn't matter that he is a baby boomer or that his tactics seem to be more old school than new age. But when it comes to understanding how consumers prefer to use new technology, he's the professor.</p>
+
+<p>Still, there is hope which is why I want to run a few social media changes by you this morning to stimulate thought on how traditional media can come away with a better understanding of what consumers want them to do before they expend time, effort and money doing the opposite.  <a href="article.html">Read more</a>.</p>
+			</div>
+			<h1 class="secondary">Video: A Gripping Interview</h1>
+			<div class="video article" style="height: 120px">
+
+				<img style="float:right" src="images/video.gif" alt="Play Video" />
+				<p style="float: right; padding-right: 40px; width: 410px; color: #666;">Blah blah blah this would be a small descriptor of the video to create interest.  Otherwise,
+				the video will speak for itself.  <a href="#">Watch video</a>.</p>
+			</div>
+			<h1 class="secondary">Is the future of new media the web?  Find out at Jerry's conference</h1>
+			<div class="article">
+				<p>This is a promo that Jerry wrote to talk about the conferene.  Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nullam sit amet purus eget neque eleifend molestie. Fusce leo tortor, interdum eu aliquam eget, dignissim ac eros.</p>
+
+				<p>Aliquam dignissim, odio adipiscing placerat vestibulum, diam arcu blandit nisi, nec blandit orci tortor eget purus. Ut sodales porttitor vehicula. In ultrices viverra lacinia. Donec et nunc eros, dignissim porta urna.  <a href="#">Register now for January Conference!</a></p>
+			</div>
+		</div>
+		<div style="clear:both"></div>
+	</div>
+</div>
+<div id="boxbot"></div>
+
+<div class="boxes">
+	<div class="boxestop">
+
+	
+	</div>
+	<div class="boxes">
+		<div class="boxes2">
+			<div class="container">
+				<div class="box">
+					<h4>Conference Update!</h4>
+					<p>This is a major update about the conference.
+					It will hopefully drive traffic and registrations.
+					It's down here below the content, hoping to catch
+					the reader's eye after they have read the content.
+					Interesting, eh?  <a href="#">Sign up for
+					the January conference here</a>.</p>
+
+				</div>
+				<div class="box">
+					<h4 style="color: #13a9a0">Latest Video</h4>
+					<p>Watch Jerry interview a celebrity.</p>
+					<p style="text-align:center"><img src="images/video.gif" alt="Play the Video" /></p>
+				</div>
+				<div class="box">
+					<h4 style="color: #26a12c">Latest Posts</h4>
+
+					<ol>
+						<li><a href="#">Radio's Believe It or Not</a></li>
+						<li><a href="#">Armageddon or Radio's Promised Land</a></li>
+						<li><a href="#">Citadel: Life After Bankruptcy</a></li>
+						<li><a href="#">Comcast's Breakthrough iPad App</a></li>
+						<li><a href="#">Social Media Changes to Watch</a></li>
+
+						<li><a href="#">Radio's Believe It or Not</a></li>
+						<li><a href="#">Armageddon or Radio's Promised Land</a></li>
+					</ol>
+				</div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
+	</div>
+
+	<div class="boxesbot">
+	
+	</div>
+</div>
+
+<div class="container footer">
+	Copyright &copy; 2007-2010, Jerry Del Colliano LLC.  All Rights Reserved.  Designed and developed by <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.
+</div>
+</body>
+</html>

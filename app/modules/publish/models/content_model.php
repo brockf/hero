@@ -163,6 +163,9 @@ class Content_model extends CI_Model
 	function delete_content ($content_id) {
 		$content = $this->get_content($content_id);
 		
+		$this->load->model('link_model');
+		$this->link_model->delete_link($content['link_id']);
+		
 		$this->load->model('publish/content_type_model');
 		$type = $this->content_type_model->get_content_type($content['type_id']);
 		
@@ -171,7 +174,6 @@ class Content_model extends CI_Model
 		}
 		
 		$this->db->delete('content',array('content_id' => $content_id));
-		$this->db->delete('links',array('link_id' => $content['link_id']));
 		$this->db->delete($type['system_name'], array('content_id' => $content_id));
 		
 		return TRUE;

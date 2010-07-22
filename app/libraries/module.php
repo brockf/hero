@@ -32,9 +32,14 @@ class Module {
 		
 			$this->run_updates($version);
 			
-			// do we need to preload for the admin panel
+			// do we need to preload for the admin panel?
 			if (defined("_CONTROLPANEL")) {
 				$this->do_admin_preload();
+			}
+			
+			// do we need to preload for the frontend?
+			if (defined("_FRONTEND")) {
+				$this->do_front_preload();
 			}
 		}
 	}
@@ -70,14 +75,26 @@ class Module {
 	}
 	
 	/*
-	* Get Admin Navigation
+	* Call Admin Preload
 	*
-	* Checks if there's an admin_navigation() method to be called and, if so, calls it
+	* Checks if there's an admin_preload() method to be called and, if so, calls it
 	*/
 	function do_admin_preload () {
 	
 		if (method_exists($this, 'admin_preload')) {
 			$this->admin_preload();
+		}
+	}
+	
+	/*
+	* Call Frontend Preload
+	*
+	* Checks if there's an front_preload() method to be called and, if so, calls it
+	*/
+	function do_front_preload () {
+	
+		if (method_exists($this, 'front_preload')) {
+			$this->front_preload();
 		}
 	}
 }

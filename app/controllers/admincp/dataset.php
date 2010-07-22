@@ -11,7 +11,7 @@
 */
 class Dataset extends Controller {
 
-	function Transactions()
+	function __construct()
 	{
 		parent::Controller();
 	}

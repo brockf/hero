@@ -17,7 +17,7 @@ class Publish extends Module {
 
 	function __construct () {
 		// set the active module
-		$this->active_module = $this->name;
+		$this->active_module = $this->name;	
 		
 		parent::__construct();
 	}
@@ -46,6 +46,17 @@ class Publish extends Module {
 		
 		$CI->navigation->child_link('publish',50,'Topics',site_url('admincp/publish/topics'));
 		$CI->navigation->child_link('publish',60,'Content Types',site_url('admincp/publish/types'));
+	}
+	
+	/*
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$CI =& get_instance();
+		
+		$CI->smarty->addPluginsDir(APPPATH . 'modules/publish/template_plugins/');
 	}
 	
 	/*

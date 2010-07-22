@@ -12,7 +12,7 @@
 */
 
 class Theme extends Module {
-	var $version = '1.0';
+	var $version = '1.01';
 	var $name = 'theme';
 
 	function __construct () {
@@ -35,9 +35,14 @@ class Theme extends Module {
 	}
 	
 	function update($db_version) {
+		if ($db_version < 1.01) {
+			$this->CI->settings_model->make_writeable_folder(FCPATH . 'writeable/templates_compile/');
+			$this->CI->settings_model->make_writeable_folder(FCPATH . 'writeable/templates_cache/');
+		}
+	
 		if ($db_version < 1.0) {
 			$this->CI->settings_model->new_setting(5, 'theme', 'orchard', 'This is the name of the folder in /themes/ in which to access your template files.','text');
-			$this->CI->settings_model->new_setting(5, 'frontpage_template', 'frontpage.html', 'Which template should be loaded when someone access the homepage?','text');
+			$this->CI->settings_model->new_setting(5, 'frontpage_template', 'frontpage', 'Which template should be loaded when someone access the homepage?','text');
 		}
 		
 		return $this->version;

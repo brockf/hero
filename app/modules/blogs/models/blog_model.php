@@ -107,9 +107,11 @@ class Blog_model extends CI_Model
 	*/
 	function delete_blog ($blog_id) {
 		$blog = $this->get_blog($blog_id);
-	
+		
 		$this->db->delete('blogs',array('blog_id' => $blog_id));
-		$this->db->delete('links',array('link_id' => $blog['link_id']));
+		
+		$this->load->model('link_model');
+		$this->link_model->delete_link($blog['link_id']);
 		
 		return TRUE;
 	}
