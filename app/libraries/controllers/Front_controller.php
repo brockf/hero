@@ -1,6 +1,6 @@
 <?php
 
-class Admincp_Controller extends MY_Controller {
+class Front_Controller extends MY_Controller {
 	var $navigation;
 
 	function __construct () {
