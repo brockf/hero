@@ -1,6 +1,6 @@
 <?php
 
-function time_since($time, $now = FALSE, $date_format = 'M d, Y @ h:ia') {
+function time_since($time, $now = FALSE) {
 	if ($now == FALSE) {
 		$now = time();
 	}
@@ -13,9 +13,9 @@ function time_since($time, $now = FALSE, $date_format = 'M d, Y @ h:ia') {
 	$since = $now - $time;
 	
 	// greater than a day?
-	if ($since > (60*60*24)) {
+	if ($since > (60*60*24) or $since < 0) {
 		// it's more than a day ago, let's just return the data
-		$return = 'on ' . local_time($time);
+		return FALSE;
 	}
 	else {
 	    $chunks = array(

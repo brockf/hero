@@ -595,8 +595,8 @@ class User_model extends CI_Model
 							'username' => $user['user_username'],
 							'email' => $user['user_email'],
 							'referrer' => $user['user_referrer'],
-							'signup_date' => $user['user_signup_date'],
-							'last_login' => ($user['user_last_login'] == '0000-00-00 00:00:00') ? FALSE : $user['user_last_login'],
+							'signup_date' => local_time($user['user_signup_date']),
+							'last_login' => local_time($user['user_last_login']),
 							'suspended' => ($user['user_suspended'] == 1) ? TRUE : FALSE,
 							'admin_link' => site_url('admincp/users/profile/' . $user['user_id'])
 							);

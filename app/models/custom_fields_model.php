@@ -335,6 +335,7 @@ class Custom_fields_model extends CI_Model {
 	function get_type ($type) {
 		switch($type) {
 			case 'textarea':
+			case 'wysiwyg':
 				$db_type = 'TEXT';
 				break;
 			case 'select':

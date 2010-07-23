@@ -1,5 +1,5 @@
 - Roadmap:	
-	- Add delayed publishing for all content
+	- Take all {$block:item} tags and rewrite as [$block:item] tags before Smarty compile so that these can be parsed in later
 	- Add Content template plugin
 	- Articles should show, even if not set for future publish, if you're an administrator
 	
@@ -14,6 +14,7 @@
 	- Add Affiliates Module (affiliate code already exists in subscriptions table)
 	- Video module: Add a video and give embed code for the video
 	- Template File Browser/Editor
+	- Find Google Adsense ?gcid= fix.
 	
 - Order Form:
 	- settings: require_user_account

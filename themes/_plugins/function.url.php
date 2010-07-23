@@ -10,5 +10,9 @@
 * @return string URL
 */
 function smarty_function_url ($params, $smarty, $template) {
+	if (!isset($params['path'])) {
+		return base_url();
+	}
+	
 	return site_url($params['path']);
 }

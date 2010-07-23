@@ -205,6 +205,7 @@ div#slogan {
 
 #content h1.secondary {
 	margin-top: 45px;
+	clear: both;
 }
 
 div.byline {
@@ -213,6 +214,7 @@ div.byline {
 	color: #666;
 	padding-bottom: 10px;
 	border-bottom: 1px solid #f0f0f1;
+	margin-bottom: 10px;
 }
 
 span.author {

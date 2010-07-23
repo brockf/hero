@@ -89,7 +89,7 @@ class Admincp extends Admincp_Controller {
 						);
 							
 			$this->dataset->columns($columns);
-			$this->dataset->datasource('content_model','get_contents');
+			$this->dataset->datasource('content_model','get_contents', array('allow_future' => TRUE));
 			$this->dataset->base_url(site_url('admincp/publish'));
 			
 			// initialize the dataset
@@ -152,7 +152,7 @@ class Admincp extends Admincp_Controller {
 							);
 								
 				$this->dataset->columns($columns);
-				$this->dataset->datasource('content_model','get_contents', array('type' => $type['id']));
+				$this->dataset->datasource('content_model','get_contents', array('allow_future' => TRUE, 'type' => $type['id']));
 				$this->dataset->base_url(site_url('admincp/publish'));
 				
 				// initialize the dataset
@@ -227,7 +227,7 @@ class Admincp extends Admincp_Controller {
 				$this->load->library('dataset');
 								
 				$this->dataset->columns($columns);
-				$this->dataset->datasource('content_model','get_contents', array('type' => $type['id']));
+				$this->dataset->datasource('content_model','get_contents', array('allow_future' => TRUE, 'type' => $type['id']));
 				$this->dataset->base_url(site_url('admincp/publish'));
 				
 				// initialize the dataset

@@ -187,7 +187,7 @@ class Content_model extends CI_Model
 	* @return boolean TRUE
 	*/
 	function delete_content ($content_id) {
-		$content = $this->get_content($content_id);
+		$content = $this->get_content($content_id, TRUE);
 		
 		$this->load->model('link_model');
 		$this->link_model->delete_link($content['link_id']);
@@ -205,6 +205,30 @@ class Content_model extends CI_Model
 		return TRUE;
 	}
 	
+	/**
+	* Get Content ID
+	*
+	* Returns content ID from a URL_path
+	*
+	* @param $url_path
+	* 
+	* @return boolean|int The content ID, or FALSE
+	*/
+	function get_content_id($url_path) {
+		$this->db->select('content_id');
+		$this->db->where('link_url_path',$url_path);
+		$this->db->join('links','content.link_id = links.link_id','inner');
+		$result = $this->db->get('content');
+		
+		if ($result->num_rows() == FALSE) {
+			return FALSE;
+		}
+		
+		$content = $result->row_array();
+		
+		return $content['content_id'];
+	}
+	
 	/*
 	* Get Content
 	*
@@ -214,8 +238,14 @@ class Content_model extends CI_Model
 	*
 	* @return array $content
 	*/
-	function get_content ($content_id) {
-		$content = $this->get_contents(array('id' => $content_id));
+	function get_content ($content_id, $allow_future = FALSE) {
+		$filters = array('id' => $content_id);
+		
+		if ($allow_future == TRUE) {
+			$filters['allow_future'] = TRUE;
+		}
+	
+		$content = $this->get_contents($filters);
 		
 		if (empty($content)) {
 			return FALSE;
@@ -236,6 +266,12 @@ class Content_model extends CI_Model
 	* @param int $filters['type'] Only content of this type
 	* @param int $filters['id']
 	* @param int $filters['topic']
+	* @param string $filters['date_format'] The format to return dates in
+	* @param boolean $filters['allow_future'] Allow content from the future?  Default: No/FALSE
+	* @param string $sort
+	* @param string $sort_dir
+	* @param int $limit
+	* @param int $offset
 	*
 	* @return array|boolean Array of content, or FALSE
 	*/
@@ -298,8 +334,19 @@ class Content_model extends CI_Model
 		}
 		
 		if (isset($filters['topic'])) {
-			$this->db->join('topic_maps','topic_maps.content_id = content.content_id','left');
-			$this->db->where('topic_maps.topic_id',$filters['topic']);
+			if (!is_array($filters['topic'])) {
+				$this->db->join('topic_maps','topic_maps.content_id = content.content_id');
+				$this->db->where('topic_maps.topic_id',$filters['topic']);
+			}
+			else {
+				$this->db->join('topic_maps','topic_maps.content_id = content.content_id');
+				$this->db->where_in('topic_maps.topic_id',$filters['topic']);
+			}
+		}
+		
+		// will we allow future content?
+		if (!isset($filters['allow_future']) or $filters['allow_future'] != TRUE) {
+			$this->db->where('content.content_date <',date('Y-m-d H:i:s'));
 		}
 		
 		// standard ordering and limiting
@@ -316,19 +363,23 @@ class Content_model extends CI_Model
 		$this->db->join('content_types','content_types.content_type_id = content.content_type_id','left');
 		$this->db->join('links','links.link_id = content.link_id','left');
 		
+		$this->db->group_by('content.content_id');
+		
 		$result = $this->db->get('content');
 		
 		if ($result->num_rows() == 0) {
 			return FALSE;
 		}
 		
+		$date_format = (isset($filters['date_format'])) ? $filters['date_format'] : FALSE;
+		
 		$contents = array();
 		foreach ($result->result_array() as $content) {
 			$this_content = array(
 								'id' => $content['content_id'],
 								'link_id' => $content['link_id'],
-								'date' => $content['content_date'],
-								'modified_date' => $content['content_modified'],
+								'date' => local_time($content['content_date'], $date_format),
+								'modified_date' => local_time($content['content_modified'], $date_format),
 								'author_id' => $content['user_id'],
 								'author_username' => $content['user_username'],
 								'author_first_name' => $content['user_first_name'],
@@ -341,7 +392,8 @@ class Content_model extends CI_Model
 								'url_path' => $content['link_url_path'],
 								'url' => site_url($content['link_url_path']),
 								'privileges' => (!empty($content['content_privileges'])) ? unserialize($content['content_privileges']) : FALSE,
-								'topics' => (!empty($content['content_topics'])) ? unserialize($content['content_topics']) : FALSE
+								'topics' => (!empty($content['content_topics'])) ? unserialize($content['content_topics']) : FALSE,
+								'template' => $content['content_type_template']
 							);
 							
 			// are we loading in all content data?

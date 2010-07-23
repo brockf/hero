@@ -37,7 +37,7 @@ class Custom_fields extends Module {
 	*/
 	function update($db_version) {
 		if ($db_version < 1.0) {
-			$this->CI->settings_model->make_writeable_folder(setting('path_custom_field_uploads'),TRUE);
+			$this->CI->settings_model->make_writeable_folder(setting('path_custom_field_uploads'));
 		}
 		
 		return $this->version;

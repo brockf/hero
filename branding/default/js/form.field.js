@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function ShowHideFieldOptions () {
 	// handle preset values
-	if ($('#type').val() == 'text' || $('#type').val() == 'file' || $('#type').val() == 'date' || $(this).val() == 'wysiwyg' || $('#type').val() == 'textarea' || $('#type').val() == 'checkbox') {
+	if ($('#type').val() == 'text' || $('#type').val() == 'file' || $('#type').val() == 'date' || $('#type').val() == 'wysiwyg' || $('#type').val() == 'textarea' || $('#type').val() == 'checkbox') {
 		$('.field_options').hide();
 	}
 	else {
