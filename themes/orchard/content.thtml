@@ -14,6 +14,46 @@
 		<img src="{$feature_image}" width="{$image_size}" alt="" />
 		
 		{$body}
+		
+		<div class="brock_bar">
+			<div class="options">
+				<ul>
+					<li><a href="#">Email Jerry</a></li>
+
+					<li><a id="sharing" href="#">Share This</a></li>
+					<li><a href="#">Discuss</a></li>
+					<li><a href="#">Newsletter</a></li>
+				</ul>
+				<div style="clear:both"></div>
+			</div>
+			<div class="sharing">
+
+				<div class="social">
+					<h5>Social Tools</h5>
+					<div class="openlike">
+						<script type="text/javascript" src="http://openlike.org/v1/openlike.js"></script>
+						<script type="text/javascript">OPENLIKE.Widget({ header:"" })</script>
+					</div>
+					<div class="tweetmeme">
+
+					<script type="text/javascript">
+					tweetmeme_style = 'compact';
+					tweetmeme_source = 'jdelcolliano';
+					</script>
+					<script type="text/javascript" src="http://tweetmeme.com/i/scripts/button.js"></script>
+					</div>
+				</div>
+				<div class="email">
+					<h5>Send to a Friend</h5>
+					<form method="post" action="#" class="validate">
+
+						<label for="email" style="display:none">Email Address</label>
+						<input type="text" name="email" id="email" class="text required mark_empty" rel="email@example.com">&nbsp;<input type="submit" name="share" value="Send Article" />
+					</form>
+				</div>
+				<div style="clear:both"></div>
+			</div>
+		</div>
 	</div>
 	
 	{content type="2" limit="1" date_format="l, F j, Y"}

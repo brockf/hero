@@ -150,6 +150,7 @@ class Settings_model extends CI_Model
 	*
 	* @param $filters['group_id'] Setting group ID
 	* @param $filters['name'] The setting name
+	* @param boolean $filters['show_hidden'] Show hidden settings?  Default: TRUE
 	* @param $filters['sort'] Field to sort by
 	* @param $filters['sort_dir'] ASC or DESC
 	*
@@ -162,6 +163,10 @@ class Settings_model extends CI_Model
 		
 		if (isset($filters['name'])) {
 			$this->db->where('setting_name',$filters['name']);
+		}
+		
+		if (isset($filters['show_hidden']) and $filters['show_hidden'] == FALSE) {
+			$this->db->where('setting_hidden','0');
 		}
 		
 		if (isset($filters['sort'])) {

@@ -408,6 +408,7 @@ CREATE TABLE `settings` (
   `setting_update_date` datetime default NULL,
   `setting_type` varchar(250) default NULL,
   `setting_options` text,
+  `setting_hidden` tinyint(1),
   PRIMARY KEY  (`setting_id`)
 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
 
@@ -415,17 +416,17 @@ CREATE TABLE `settings` (
 -- Dumping data for table `settings`
 -- 
 
-INSERT INTO `settings` (`setting_group`, `setting_name`, `setting_value`, `setting_help`, `setting_update_date`, `setting_type`, `setting_options`) VALUES
-(1, 'site_name', 'Your Website', 'The name of your website.', NOW(), 'text', ''),
-(1, 'site_email', 'email@example.com', 'The reply-to email address for all outgoing system emails.', NOW(), 'text', ''),
-(1, 'email_name', 'Your Website', 'The reply-to name for all outgoing system emails.', NOW(), 'text', ''),
-(2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', ''),
-(1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}'),
-(2, 'default_gateway', '0', 'This payment gateway, referenced by ID, will be the default gateway for site purchases.', NOW(), 'text', ''),
-(1, 'locale', 'US', 'Some payment gateways and other integrations require this 2-character ISO-standard country code to determine your locale.', NOW(), 'text', ''),
-(1, 'email_signature', 'Sincerely,\nThe [[SITE_NAME]] Team\n[[SITE_LINK]]', 'If this setting is set, it will be attached to each outgoing email', NOW(), 'textarea', ''),
-(1, 'use_time_since', '1', 'Should we display dates within 24 hours as "X minutes/hours ago"?', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}'),
-(1, 'date_format', 'd-M-Y h:ia', 'The default format (in PHP date() style) for system dates.', NOW(), 'text', '');
+INSERT INTO `settings` (`setting_group`, `setting_name`, `setting_value`, `setting_help`, `setting_update_date`, `setting_type`, `setting_options`, `setting_hidden`) VALUES
+(1, 'site_name', 'Your Website', 'The name of your website.', NOW(), 'text', '', '0'),
+(1, 'site_email', 'email@example.com', 'The reply-to email address for all outgoing system emails.', NOW(), 'text', '', '0'),
+(1, 'email_name', 'Your Website', 'The reply-to name for all outgoing system emails.', NOW(), 'text', '', '0'),
+(2, 'currency_symbol', '$', 'Denotes currency on the site and in emails.', NOW(), 'text', '', '0'),
+(1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}', '0'),
+(2, 'default_gateway', '0', 'This payment gateway, referenced by ID, will be the default gateway for site purchases.', NOW(), 'text', '', '0'),
+(1, 'locale', 'US', 'Some payment gateways and other integrations require this 2-character ISO-standard country code to determine your locale.', NOW(), 'text', '', '0'),
+(1, 'email_signature', 'Sincerely,\nThe [[SITE_NAME]] Team\n[[SITE_LINK]]', 'If this setting is set, it will be attached to each outgoing email', NOW(), 'textarea', '', '0'),
+(1, 'use_time_since', '1', 'Should we display dates within 24 hours as "X minutes/hours ago"?', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}', '0'),
+(1, 'date_format', 'd-M-Y h:ia', 'The default format (in PHP date() style) for system dates.', NOW(), 'text', '', '0');
 
 -- --------------------------------------------------------
 

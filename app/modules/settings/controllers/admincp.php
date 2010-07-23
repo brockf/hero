@@ -23,8 +23,12 @@ class Admincp extends Admincp_Controller {
 	{
 		$groups = $this->settings_model->get_setting_groups(array('sort' => 'setting_group_name'));
 		
-		foreach ($groups as $group) {
-			$settings[$group['id']] = $this->settings_model->get_settings(array('group_id' => $group['id'], 'sort' => 'setting_name'));
+		foreach ($groups as $key => $group) {
+			$settings[$group['id']] = $this->settings_model->get_settings(array('group_id' => $group['id'], 'show_hidden' => FALSE, 'sort' => 'setting_name'));
+			
+			if (empty($settings[$group['id']])) {
+				unset($groups[$key]);
+			}
 		}
 		reset($groups);
 		
