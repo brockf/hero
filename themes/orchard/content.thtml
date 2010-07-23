@@ -11,7 +11,7 @@
 	<div class="article">
 		<span class="author">By {$author_first_name} {$author_last_name}</span>
 	
-		<img src="{$feature_image}" width="{$feature_image_size}" alt="" />
+		<img src="{$feature_image}" width="{$image_size}" alt="" />
 		
 		{$body}
 	</div>
