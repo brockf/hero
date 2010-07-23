@@ -1,8 +1,4 @@
 - Roadmap:	
-	- Take all {$block:item} tags and rewrite as [$block:item] tags before Smarty compile so that these can be parsed in later
-	- Add Content template plugin
-	- Articles should show, even if not set for future publish, if you're an administrator
-	
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Create Search Manager (which content types are available, how often to rebuild index, etc.)
 	- Apply time_since/formatting to each Admin panel date
