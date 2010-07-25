@@ -1,41 +1,39 @@
 [h1]Module Development[/h1]
 
-A module is a collection of files that add new functionality to the platform.  These files can function entirely in the background (e.g., small integration plugins) or include control panel interfaces and frontend modules.  They can also include database tables, session access, etc.
+A *module* is a collection of files that add new functionality to the platform.  These files can function entirely in the background (e.g., small integration plugins) or include control panel interfaces and frontend modules.  They can also include database tables, session access, etc.
 
 Third-party modules created by developers and standard modules included in the application share identical rights within the application.
 
 Creating a module is simple and requires the following:
 
-- A folder: /modules/[modulename]/
-- A module definition and installation file: /modules/[modulename]/[modulename].php
+- A folder: [filename]/modules/[modulename]/[/filename]
+- A module definition and installation file: [filename]/modules/[modulename]/[modulename].php[/filename]
 
 Optionally, you can add the following:
 
-- One or more model definition files at: /modules/[modulename]/models/[modelname]_model.php
-- A control panel controller file at: /modules/[modulename]/controllers/admincp.php
-- Other controller files (accessible via URL's) at: /modules/[modulename]/controllers/
-- A views folder for control panel interface screens: /modules/[modulename]/views/
-- Helper files in: /modules/[modulename]/helpers/
-- Library files in: /modules/[modulename]/libraries/
+- One or more model definition files at: [filename]/modules/[modulename]/models/[modelname]_model.php[/filename]
+- A control panel controller file at: [filename]/modules/[modulename]/controllers/admincp.php[/filename]
+- Other controller files at: [filename]/modules/[modulename]/controllers/[/filename]
+- A views folder for control panel interface screens: [filename]/modules/[modulename]/views/[/filename]
+- Helper files in: [filename]/modules/[modulename]/helpers/[/filename]
+- Library files in: [filename]/modules/[modulename]/libraries/[/filename]
 
-Developers have access to all standard CodeIgniter libraries/helpers, as well as a number of additional libraries and helpers specific to this application.
+Developers have access to all standard [http://www.codeigniter.com/user_guide](CodeIgniter) libraries/helpers, as well as a number of additional libraries and helpers specific to this application.  So, it's highly encouraged to use the [http://www.codeigniter.com/user_guide](CodeIgniter documentation) as much as possible.
 
-For more information on these, check out the following reference files for commonly-used classes:
+For more information on these, check out the following documentation for commonly-used classes:
 
-- Administration Form Library (AdminForm)
-- Dataset Listing Library (Dataset)
-- Notification Library (Notifications)
-- Navigation Library (Navigation)
-- Universal Links Model (Link_model)
-- Settings Model (Settings_model)
+- [devs/classes/admin_form](Administration Form Library) (Admin_form)
+- [devs/classes/dataset](Dataset Listing Library) (Dataset)
+- [devs/classes/notifications](Notification Library) (Notifications)
+- [devs/classes/navigation](Navigation Library) (Navigation)
+- [devs/classes/links](Universal Links Model) (Link_model)
+- [devs/classes/settings](Settings Model) (Settings_model)
 
-Furthermore, in the frontend, developers have access to the Smarty API and are highly encouraged to use the included Smarty templating engine for displaying their web pages.
+Furthermore, in the frontend, developers have access to the Smarty API and are highly encouraged to use the included [http://www.smarty.net](Smarty templating engine) for displaying their web pages.
 
 This documentation will cover each potential component of a module.
 
-
-Module Definition & Installation File (/modules/[modulename]/[modulename].php)
-----------------------------------------------------------------------------------------
+[h2]Module Definition & Installation File ([filename]/modules/[modulename]/[modulename].php[/filename])[/h2]
 
 This file has 3 main responsibilities:
 
@@ -64,7 +62,7 @@ Here, we've specified the current module name as well as version.  We've also ex
 
 The CodeIgniter superobject is now accessible within our module definition class at $this->CI.
 
-NO OTHER CODE IS REQUIRED in the module definition, but few modules will be that simple.
+*No other code is required* in the module definition, but few modules will be that simple.
 
 For example, we may want to include some installation/upgrade logic with a method like so:
 
@@ -94,11 +92,11 @@ class Modulename extends Module {
 }
 [/code]
 
-Keep in mind that, if your module is in version 1.05 (for example), and you have 5 if statements performing separate operations, all 5 of these statements will be executed upon a fresh install.  You don't need to modify each one repeatedly adding the new logic.
+Keep in mind that, if your module is in version 1.05 (for example), and you have 5 [span_code]if[/span_code] statements performing separate operations, all 5 of these statements will be executed upon a fresh install.  You don't need to modify each one repeatedly adding the new logic.
 
 Right now, our module defines itself and performs some installation/update logic.
 
-We will now add a new item to the control panel navigation via a new method, admin_preload().  This method, if it exists, is run prior to any control panel screen running.
+We will now add a new item to the control panel navigation via a new method, [span_code]admin_preload()[/span_code].  This method, if it exists, is run prior to any control panel screen running.
 
 [code]
 class Modulename extends Module {
@@ -110,9 +108,9 @@ class Modulename extends Module {
 }
 [/code]
 
-The single line in the admin_preload method above adds a new navigation link to the control panel as a sub-link of the "configuration" tab.  It's weight is "60" (i.e., it appears after something weighted 59 but before links weighted 61), has Module Name Configuration as its text, and links to /admincp/modulename/configuration.  Your module's control panel controller is always accessible at /admincp/modulename, and here we are specifying the configuration method within that controller.
+The single line in the admin_preload method above adds a new navigation link to the control panel as a sub-link of the "configuration" tab.  It's weight is "60" (i.e., it appears after something weighted 59 but before links weighted 61), has "Module Name Configuration" as its text, and links to [url]/admincp/modulename/configuration[/url].  Your module's control panel controller is always accessible at [url]/admincp/modulename[/url], and here we are specifying the configuration method within that controller.
 
-Similarly to admin_preload, front_preload is executed prior to every page load in the frontend.  It's less commonly used than admin_preload, but can be useful when your module adds new Smarty template plugins or needs to attach a function to an application hook.
+Similarly to [span_code]admin_preload()[/span_code], [span_code]front_preload()[/span_code] is executed prior to every page load in the frontend.  It is less commonly used than [span_code]admin_preload()[/span_code], but can be useful when your module adds new Smarty template plugins or needs to attach a function to an application hook.
 
 Here, we will say that we are adding a new folder filled with Smarty plugins in our module:
 
@@ -126,19 +124,15 @@ class Modulename extends Module {
 }
 [/code]
 
-Now, Smarty will look in this directory for function/block plugin files like function.your_plugin.php.
+Now, Smarty will look in this directory for function/block plugin files like [filename]function.your_plugin.php[/filename].  For more information on creating template plugins, via our [devs/template-plugins](documentation on creating a template plugin).
 
+[h2]Model File(s) ([filename]/modules/modulename/models/your_model.php[/filename])[/h2]
 
-Model File(s) (/modules/modulename/models/your_model.php)
--------------------------------------------------------------------------
+These model definition files are standard CodeIgniter model files.  They usually contain a series of methods used for creating, updating, and deleting database records related to your module. For more information on models, look at [http://www.codeigniter.com/user_guide](CodeIgniter's documentation).
 
-These model definition files are standard CodeIgniter model files.  They usually contain a series of methods used for creating, updating, and deleting database records related to your module. For more information on models, look at CodeIgniter's documentation.
+[h2]Control Panel File ([filename]/modules/modulename/controllers/admincp.php[/filename])[/h2]
 
-
-Control Panel File (/modules/modulename/controllers/admincp.php)
--------------------------------------------------------------------------
-
-If your module has at least one control panel screen, you must create this control panel controller file.  It then allows for control panel pages viewable at /admincp/modulename (this will automatically load the index method in your controller, e.g., your module's control panel home page) and /admincp/modulename/another_method (loads another_method in your controller).  All URL segments after this are passed as the first, second, third, (etc.) arguments to the specified method.
+If your module has at least one control panel screen, you must create this control panel controller file.  It then allows for control panel pages viewable at [url]/admincp/modulename[/url] (this will automatically load the index method in your controller, e.g., your module's control panel home page) and [url]/admincp/modulename/another_method[/url] (loads another_method in your controller).  All URL segments after this are passed as the first, second, third, (etc.) arguments to the specified method.
 
 As a start, your control panel controller will include the following code:
 
@@ -156,21 +150,20 @@ class Admincp extends Admincp_Controller {
 }
 [/code]
 
-You should also have an index method to be displayed at /admincp/modulename.
+You should also have an index method to be displayed at [url]/admincp/modulename[/url].  If not, and the user accesses this page, they will get a 404 error.
 
-As for other methods, you can add as many as you would like.  These are standard CodeIgniter controllers so all CodeIgniter documentation applies.
+As for other methods, you can add as many as you would like.  These are standard CodeIgniter controllers so all [http://www.codeigniter.com/user_guide](CodeIgniter documentation) applies.
 
 
-Frontend Controller Files (/modules/modulename/controllers/)
--------------------------------------------------------------------------
+[h2]Frontend Controller Files ([filename]/modules/modulename/controllers/[/filename])[/h2]
 
 Frontend controller files give you new frontend presences.  For example, the Publish module has a frontend controller called "content" which displays a piece of content retrieved via the content model.  Controller code is usually quite simple like this.
 
-Frontend controllers automatically map to URL's.  For example, a controller called "test.php" is accessible at /modulename/test, and any methods inside of it are accessible at /modulename/test/method_name.
+Frontend controllers automatically map to URL's.  For example, a controller called "test.php" is accessible at [url]/modulename/test[/url], and any methods inside of it are accessible at [url]/modulename/test/method_name[/url].
 
-However, by tapping into the Universal Links model (Link_model), you can map any URL path (such as "/my/fake/url/path") to the module > controller > method of your choice.  The URL path will be passed to your method as it's first argument.  For example, in the Publish module, URL's like "/my_article" are mapped to publish (module) > content (controller) > view (method).  The content::view() method takes one argument, $url_path, and looks up the content in the database using this $url_path.
+However, by tapping into the [devs/classes/links](Universal Links model) (Link_model), you can map any URL path (such as [url]/my/fake/url/path[/url]) to the module > controller > method of your choice.  The URL path will be passed to your method as its first argument.  For example, in the Publish module, URL's like [url]/my_article[/url] are mapped to publish (module) > content (controller) > view (method).  The [span_code]content::view()[/span_code] method takes one argument, $url_path, and looks up the content in the database using this $url_path.
 
-As a start, your frontend controller must extend the Front_Controller class and call it's parent's constructor:
+As a start, your frontend controller must extend the [span_code]Front_Controller[/span_code] class and call its parent's constructor:
 
 [code]
 class Any_controller_name extends Front_Controller {
@@ -202,22 +195,21 @@ class Any_controller_name extends Front_Controller {
 }
 [/code]
 
-Frontend controllers will almost always assign variables and display templates with the Smarty template engine and API.  Click here for more information on Smarty.
+Frontend controllers will almost always assign variables and display templates with the Smarty template engine and API.  [http://www.smarty.net](Click here for more information on Smarty).
 
 
-Views, Helpers, and Libraries
--------------------------------------------------------------------------
+[h2]Views, Helpers, and Libraries[/h2]
 
 These are all optional components of your module and also standard parts of the CodeIgniter framework.  They exist at the following folders (not required):
 
-- /modules/modulename/views/
-- /modules/modulename/helpers/
-- /modules/modulename/libraries/
+- [filename]/modules/modulename/views/[/filename]
+- [filename]/modules/modulename/helpers/[/filename]
+- [filename]/modules/modulename/libraries/[/filename]
 
-Views are most commonly used for control panel screens (frontend pages use the Smarty template engine).
+Views are most commonly used for control panel screens (frontend pages use the [http://www.smarty.net](Smarty template engine)).
 
 Helpers are one-off function definitions that provide additional functionality.
 
-Libraries are class files.
+Libraries are simple class files and are not required to extend any base classes.
 
-All 3 can be loaded via the load method on the CodeIgniter superobject (e.g., $this->CI->load() in module definition files, $this->load() in models/controllers).  More information is available in CodeIgniter documentation.
+All 3 can be loaded via the load method on the CodeIgniter superobject (e.g., [span_code]$this->CI->load()[/span_code] in module definition files, [span_code]$this->load()[/span_code] in models/controllers).  More information is available in [http://www.codeigniter.com/user_guide](CodeIgniter documentation).

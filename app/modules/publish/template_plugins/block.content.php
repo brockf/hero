@@ -16,22 +16,6 @@
 
 function smarty_block_content ($params, $tagdata, $smarty, $repeat){
 	if (!$repeat) {		
-		/*
-		* Get Contents
-		*
-		* Gets content by filters
-		* If an ID or Type ID is present in filters, it will retrieve all content data from the specific content table
-		*
-		* @param date $filters['start_date'] Only content after this date
-		* @param date $filters['end_date'] Only content before this date
-		* @param string $filters['author_like'] Only content created by this user (by username, text search)
-		* @param int $filters['type'] Only content of this type
-		* @param int $filters['id']
-		* @param int $filters['topic']
-		*
-		* @return array|boolean Array of content, or FALSE
-		*/
-		
 		if (!isset($params['type']) or empty($params['type'])) {
 			$return = 'You must specify a "type" parameter for template {content} calls.';
 		}

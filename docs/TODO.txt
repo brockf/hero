@@ -2,3 +2,11 @@
 
 [h1][/h1]
 [APPNAME]
+[code]
+[span_code] (inline code tag)
+[filename]
+[url] (not a real link, just an indication of a hypothetical URL)
+*text* (bold)
+**text** (bold, italics)
+[http://www.link.com](link)  - normal ink
+[devs/classes/admin_form](link text)  - internal link
