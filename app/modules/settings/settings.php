@@ -29,8 +29,6 @@ class Settings extends Module {
 	*/
 	function admin_preload ()
 	{
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('configuration',10,'Settings',site_url('admincp/settings'));
+		$this->CI->navigation->child_link('configuration',10,'Settings',site_url('admincp/settings'));
 	}
 }

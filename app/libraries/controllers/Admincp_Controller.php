@@ -8,7 +8,7 @@ class Admincp_Controller extends MY_Controller {
 		
 		define("_CONTROLPANEL","TRUE");
 		
-		$this->load->library('admincp/notices');
+		$this->load->library('notices');
 		$this->load->helper('admincp/get_notices');
 		
 		// are they logged in?

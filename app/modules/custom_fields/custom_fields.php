@@ -23,9 +23,7 @@ class Custom_fields extends Module {
 	}
 	
 	function admin_preload () {
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('configuration',40,'Custom Fields',site_url('admincp/custom_fields'));
+		$this->CI->navigation->child_link('configuration',40,'Custom Fields',site_url('admincp/custom_fields'));
 	}
 	
 	/*

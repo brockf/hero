@@ -29,9 +29,7 @@ class Menu_manager extends Module {
 	*/
 	function admin_preload ()
 	{
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
+		$this->CI->navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
 	}
 	
 	function update ($db_version) {

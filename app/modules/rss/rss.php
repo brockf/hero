@@ -29,9 +29,7 @@ class Rss extends Module {
 	*/
 	function admin_preload ()
 	{
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('publish',40,'RSS Feeds',site_url('admincp/rss'));
+		$this->CI->navigation->child_link('publish',40,'RSS Feeds',site_url('admincp/rss'));
 	}
 	
 	function update ($db_version) {

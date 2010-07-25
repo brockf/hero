@@ -29,9 +29,7 @@ class Blogs extends Module {
 	*/
 	function admin_preload ()
 	{
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('publish',30,'Blogs/Content Listings',site_url('admincp/blogs'));
+		$this->CI->navigation->child_link('publish',30,'Blogs/Content Listings',site_url('admincp/blogs'));
 	}
 	
 	function update ($db_version) {

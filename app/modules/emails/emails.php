@@ -29,8 +29,6 @@ class Emails extends Module {
 	*/
 	function admin_preload ()
 	{
-		$CI =& get_instance();
-		
-		$CI->navigation->child_link('configuration',20,'Emails',site_url('admincp/emails'));
+		$this->CI->navigation->child_link('configuration',20,'Emails',site_url('admincp/emails'));
 	}
 }
