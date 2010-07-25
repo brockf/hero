@@ -6,17 +6,19 @@
 * Loads content item(s) from the content
 *
 * @param int $type The content type (required)
+* @param int $id The content ID
 * @param int|array $topic The topic ID like "X" or "X|Y|Z"
 * @param string $sort The column to sort by
 * @param string $sort_dir The direction, ASC or DESC, to sort
 * @param int $limit The number of items to pull
+* @param int $offset Database offset
 * @param string $date_format The format (in PHP date() style) to use for dates
 *
 */
 
 function smarty_block_content ($params, $tagdata, $smarty, $repeat){
 	if (!$repeat) {		
-		if (!isset($params['type']) or empty($params['type'])) {
+		if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
 			$return = 'You must specify a "type" parameter for template {content} calls.';
 		}
 		else {
@@ -62,11 +64,6 @@ function smarty_block_content ($params, $tagdata, $smarty, $repeat){
 			// param: offset
 			if (isset($params['offset'])) {
 				$filters['offset'] = $params['offset'];
-			}
-			
-			// param: date_format
-			if (isset($params['date_format'])) {
-				$filters['date_format'] = $params['date_format'];
 			}
 			
 			// make content request

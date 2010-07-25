@@ -106,12 +106,10 @@ class CI_Smarty extends Smarty {
 			
 			// does the modifier have arguments?
 			if (strpos($modifier,'(') !== FALSE) {
-				list($modifier,$mod_arguments) = explode('(', $modifier);
+				list($modifier,$mod_argument) = explode('(', $modifier);
 				
 				// remove trailing ")"
-				$mod_arguments = substr_replace($mod_arguments, '', -1, 1);
-				
-				$mod_arguments = explode(',', $mod_arguments);
+				$mod_argument = substr_replace($mod_argument, '', -1, 1);
 			}
 		}
 		else {
@@ -127,7 +125,7 @@ class CI_Smarty extends Smarty {
 		
 		if ($modifier == "shorten") {
 			// we need one argument, string length
-			$length = $mod_arguments[0];
+			$length = $mod_argument;
 			
 			$this->CI->load->helper('shorten');
 			$data = shorten($data, $length);
@@ -135,9 +133,15 @@ class CI_Smarty extends Smarty {
 		
 		// modifier: date_format[format]
 		elseif ($modifier == "date_format") {
-			$format = $mod_arguments[0];
+			$format = $mod_argument;
 			
-			$data = strftime($format, strtotime($data));
+			// we'll take strftime or date formatting:
+			if (strpos($format, '%') !== FALSE) {				
+				$data = strftime($format, strtotime($data));
+			}
+			else {
+				$data = date($format, strtotime($data));
+			}
 		}
 		
 		return $data;

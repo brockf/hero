@@ -1,0 +1,62 @@
+[h2]Publish Module[/h2]
+
+[h2]Displaying Content[/h2]
+
+Content, by default, is displayed through the [filename]content.thtml[/filename] template.  However, as you can define any type of content type with an unlimited number of custom fields, it is not likely that one template will suffice.  You can choose to display a specific content type through another template by specifying the "Output Template" when adding/editing a content type in the control panel in Publish > Content Types.
+
+All content variables are available in this template as standard Smarty templates (and can be modified as such).  By default, all standard content includes the following variables:
+
+* {$title}
+* {$date}
+* {$modified_date}
+* {$author_id}
+* {$author_username}
+* {$author_first_name}
+* {$author_last_name}
+* {$author_email}
+* {$type_id}
+* {$type_name}
+* {$url_path} (relative URL to the content)
+* {$url} (absolute URL to the content)
+* {$template} (template filename)
+
+[h2]Template Tags[/h2]
+
+[h3]content (arguments: type, topic, sort, sort_dir, limit, offset)[/h3]
+
+Retrieve content and display it in the format you specify between the tags.
+
+Required variables:
+
+* [span_code]type[/span_code] - The content type ID for the content you would like to retrieve. **OR**
+* [span_code]id[/span_code] - The content ID number.
+
+Optional variables:
+
+* [span_code]topic[/span_code] - One or more topic ID's to limit content retrieval (e.g., "5" or "5|10|15" for multiple topics).
+* [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "title", "custom_field_name").  Default: "date".
+* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: ASC.
+* [span_code]limit[/span_code] - How many results would you like to retrieve?  Default: As many as possible.
+* [span_code]offset[/span_code] - At what point in the results would you like to start returning them?  (e.g., an offset of "5" with a limit of "5" will return results 6-10).
+
+Example - retrieve the latest 10 items for a content type:
+
+[code]
+{content type="3" limit="10"}
+<p>{block:$title}<br />{block:$summary}</p>
+{/content}
+[/code]
+
+Example - retrieve one piece of content in its entirety:
+
+[code]
+{content id="431"}
+<h1>{block:$title}</h1>
+Custom Field: {block:$custom_field}
+Publish Date: {block:$date|date_format(Y-m-d)}
+
+Body:
+
+{block:$body}
+{/content}
+[/code]

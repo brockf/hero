@@ -6,7 +6,7 @@
 	<h1>{$title}</h1>
 	<ul>
 	{foreach $content as $item}
-		<li><a href="{$item.url}">{$item.title}</a> - {$item.date}</li>
+		<li><a href="{$item.url}">{$item.title}</a> - {$item.date|date_format:"%A, %B %e, %Y"}</li>
 	{/foreach}
 	</ul>
 {/block}

@@ -1,0 +1,91 @@
+[h1]Template Plugins[/h1]
+
+The following [http://www.smarty.net](Smarty) template functions and blocks are available throughout your templates.  These are available above and beyond the standard Smarty template functions, available at [http://www.smarty.net](Smarty's documentation).
+
+[h2]restricted (arguments: in_group, not_in_group)[/h2]
+
+If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).
+
+Basic usage:
+
+[code]
+{restricted in_group="3"}
+Only users in group #3 can see this.
+{/restricted}
+[/code]
+
+Check against multiple member groups:
+
+[code]
+{restricted in_group="1|5"}
+Users in either or both groups #1 and #5 can see this.
+{/restricted}
+[/code]
+
+User must be in a group but not in another group:
+
+[code]
+{restricted in_group="5" not_in_group="3"}
+Content is only shown if user is in group #5 but no in group #3.
+{/restricted}
+[/code]
+
+[h2]setting (arguments: path)[/h2]
+
+Retrieve a site configuration or setting value.  All standard [APPNAME] settings viewable in the control panel at Configuration > Settings.  Furthermore, all configuration variables defined in /app/config (standard CodeIgniter variables) are also available.
+
+Usage:
+
+[code]
+{setting name="site_title}
+[/code]
+
+Returns to template:
+
+[code]
+Your site title
+[/code]
+
+Another example:
+
+[code]
+{setting name="base_url"}
+[/code]
+
+Returns to template:
+
+[code]
+http://www.yourbaseurl.com OR https://www.yourbaseurl.com
+[/code]
+
+[h2]theme_url (arguments: path)[/h2]
+
+Retrieve an absolute URL within your active theme's folder with a relative URL path.  Will use HTTPS if necessary.
+
+Usage:
+
+[code]
+{theme_url path="images/theme_header.gif"}
+[/code]
+
+Returns to template:
+
+[code]
+http://www.yourdomain.com/themes/yourtheme/images/theme_header.gif
+[/code]
+
+[h2]url (arguments: path)[/h2]
+
+Retrieve an absolute URL relative to your site's base URL.  Will use HTTPS if necessary.
+
+Usage:
+
+[code]
+{url path="my_page.html"}
+[/code]
+
+Returns to template:
+
+[code]
+http://www.yourdomain.com/my_page.html
+[/code]

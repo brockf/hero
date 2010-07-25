@@ -1,0 +1,58 @@
+[h1]Template Variables[/h1]
+
+Throughout your template, variables are replaced with their respective data.  This is at the heart of the template process.  For example, in the content template, you may use the [span_code]{$title}[/span_code] and [span_code]{$date}[/span_code] variables:
+
+[code]
+<h1>{$title}</h1>
+Published: {$date}
+[/code]
+
+[h2]Modifying Variables[/h2]
+
+Many variables can be displayed without modification (e.g, the title tag just needs to display the title).  However, other variables may need to be modified before being displayed.  For example, we may want to customize the way the "date" is being displayed with the following modifier:
+
+[code]
+{$date|date_format:"%A, %B %e, %Y"}
+[/code]
+
+These are all standard Smarty modifiers and information is available at the [http://www.smarty.net](Smarty documentation).
+
+[h2]Block Variables[/h2]
+
+When using a block template plugin to retrieve content with their own variables (e.g., the [designers/publish/index]({get_content} tag)), the variables are handled differently than standard Smarty variables.
+
+For example, we will load the last 10 content items from content type ID #1 in a list:
+
+[code]
+<ul class="content_listing">
+{content type="1" limit="10"}
+<li><a href="{block:$url}">{block:$title}</a></li>
+{/content}
+</ul>
+[/code]
+
+As you can see, block variables include [span_code]{block:[/span_code] before the variable name.
+
+Important to note: Standard Smarty modifiers are not available with block variables.  However, there are some modifiers still available:
+
+[h3]shorten (argument: length)[/h3]
+
+Shortens the variable to the specified length (if it's longer than the length).
+
+Usage:
+
+[code]
+{block:$title|shorten(50)} {* Shortens the title to 50 characters *}
+[/code]
+
+[h3]date_format (argument: format)[/h3]
+
+Formats the given date to display as you would like.  You can pass [span_code]format[/span_code] as either a [http://www.php.net/strftime](strftime)-formatted string (e.g., "%A, %B %e, %Y") or [http://www.php.net/date](date)-formatted string (e.g., "Y-m-d H:ia").
+
+Usage:
+
+[code]
+{content id="43"}
+{block:$title} - Published {block:$data|date_format(Y-m-d H:ia)}
+{/content}
+[/code]

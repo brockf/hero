@@ -14,7 +14,42 @@
 
 function smarty_block_restricted ($params, $tagdata, $smarty, $repeat){
 	if (!$repeat) {		
+		// by default, content is hidden
+		$show_content = FALSE;
+		$return = '';
 		
+		if (isset($params['in_group'])) {
+			$groups = (strpos($params['in_group'], '|') !== FALSE) ? explode('|', $params['in_group']) : $params['in_group'];
+			
+			if ($smarty->user_model->in_group($groups)) {
+				// do we have a not_in_group, though?
+				
+				if (isset($params['not_in_group'])) {
+					// yes, so we have to verify this
+					$groups = (strpos($params['not_in_group'], '|') !== FALSE) ? explode('|', $params['not_in_group']) : $params['not_in_group'];
+					
+					if ($smarty->user_model->not_in_group($groups)) {
+						$show_content = TRUE;
+					}
+				}
+				else {
+					// nope, so we're good
+					$show_content = TRUE;
+				}
+			}
+		}
+		elseif (isset($params['not_in_group'])) {
+			// we only have a not_in_group call
+			$groups = (strpos($params['not_in_group'], '|') !== FALSE) ? explode('|', $params['not_in_group']) : $params['not_in_group'];
+			
+			if ($smarty->user_model->not_in_group($groups)) {
+				$show_content = TRUE;
+			}
+		}
+		
+		if ($show_content === TRUE) {
+			$return = $tagdata;
+		}
 				
 		return $return;
 	}

@@ -123,6 +123,60 @@ class User_model extends CI_Model
     }
     
     /*
+    * Is user in this group?
+    *
+    * @param int|array A group ID, or array of group ID's (they must be in one of the groups)
+    *
+    * @return boolean TRUE if in the group
+    */
+    function in_group ($group) {
+    	if (is_array($group)) {
+			// are they in any of these groups?
+    		foreach ($group as $one_group) {
+    			if (in_array($one_group, $this->active_user['usergroups'])) {
+    				return TRUE;
+    			}
+    		}
+    	}
+    	else {
+    		// are they in this group?
+    		if (in_array($group, $this->active_user['usergroups'])) {
+    			return TRUE;
+    		}
+    	}
+    	
+    	// nope
+    	return FALSE;
+    }
+    
+    /*
+    * Is user NOT in this group?
+    *
+    * @param int|array A group ID, or array of group ID's (they must NOT be in any of the groups)
+    *
+    * @return boolean TRUE if in the group
+    */
+    function not_in_group ($group) {
+    	if (is_array($group)) {
+			// are they in any of these groups?
+    		foreach ($group as $one_group) {
+    			if (in_array($one_group, $this->active_user['usergroups'])) {
+    				return FALSE;
+    			}
+    		}
+    	}
+    	else {
+    		// are they in this group?
+    		if (in_array($group, $this->active_user['usergroups'])) {
+    			return FALSE;
+    		}
+    	}
+    	
+    	// nope, they aren't in any of them
+    	return TRUE;
+    }
+    
+    /*
     * Get user data
     *
     * @param string $parameter The name of the piece of user data (e.g., email)
