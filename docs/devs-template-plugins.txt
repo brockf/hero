@@ -1,0 +1,3 @@
+[h1]Template Plugins[/h1]
+
+[APPNAME] offers a variety of template plugins that can be used throughout your template files to do things like retrieve content, access setting values, and generate proper URL's.

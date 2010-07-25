@@ -9,7 +9,9 @@ if (!isset($feed)) {
 				'type' => FALSE,
 				'filter_authors' => array(0),
 				'filter_topics' => array(0),
-				'summary_field' => ''
+				'summary_field' => '',
+				'sort_field' => '',
+				'sort_dir' => 'ASC'
 			);
 }
 
@@ -65,16 +67,32 @@ if (!isset($feed)) {
 			<label for="summary_field">Summary Field</label>
 			<? if (isset($field_options)) { ?>
 				<? // we are editing and must have a field_options array which we can select from ?>
-				<?=form_dropdown('summary_field',$field_options,$feed['summary_field'],'id="summary_field" class="editing"');?>
+				<?=form_dropdown('summary_field',$field_options,$feed['summary_field'],'id="summary_field" class="editing populate_fields"');?>
 			<? } else { ?>
-				<?=form_dropdown('summary_field',array('' => 'Loading...'),'','id="summary_field"');?>
+				<?=form_dropdown('summary_field',array('' => 'Loading...'),'','id="summary_field" class="populate_fields"');?>
 			<? } ?>
 		</li>
 		<li>
 			<div class="help">This field populates each RSS feed item's summary.  It helps give users an idea of what the content is about.  All text will automatically be shortened to an appropriate length.</div>
 		</li>
+		
+		<li>
+			<label for="sort_field">Sort by</label>
+			<? if (isset($field_options)) { ?>
+			<? reset($field_options); ?>
+				<? // we are editing and must have a field_options array which we can select from ?>
+				<?=form_dropdown('sort_field',$field_options,$feed['sort_field'],'id="sort_field" class="populate_fields editing"');?>
+			<? } else { ?>
+				<?=form_dropdown('sort_field',array('' => 'Loading...'),'','id="sort_field" class="populate_fields"');?>
+			<? } ?>
+			&nbsp;&nbsp;
+			<?=form_dropdown('sort_dir',array('ASC' => 'Ascending (First to Last, Oldest to Newest)', 'DESC' => 'Descending (Last to First, Newest to Oldest'), $feed['sort_dir']);?>
+		</li>
 	</ul>
 </fieldset>
+
+<?=$form;?>
+
 <div class="submit">
 	<input type="submit" class="button" name="form_rss" value="Save RSS Feed" />
 </div>

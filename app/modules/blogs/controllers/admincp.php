@@ -20,7 +20,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function index () {	
-		$this->navigation->module_link('New Blog',site_url('admincp/blogs/add'));
+		$this->navigation->module_link('New Blog/Archive',site_url('admincp/blogs/add'));
 	
 		$this->load->library('dataset');
 		
@@ -124,13 +124,14 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Design');
 		$this->load->helper('template_files');
 		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, 'blog.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/listing page.');
+		$form->dropdown('Output Template', 'template', $template_files, 'blog.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/archive page.');
+		$form->text('Items per Page','per_page', '25', 'Automatic pagination will occur if the total number of content items is greater than this number.', TRUE, FALSE, FALSE, '70px', '', array('number'));
 		
 		$data = array(
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
-					'form_title' => 'Create New Blog',
+					'form_title' => 'Create New Blog/Archive',
 					'form_action' => site_url('admincp/blogs/post/new'),
 					'form' => $form->display()
 				);
@@ -176,6 +177,10 @@ class Admincp extends Admincp_Controller {
 		
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$field_options = array();
+		$field_options['content_title'] = 'Title';
+		$field_options['content_date'] = 'Date Created';
+		$field_options['content_modified'] = 'Date Modified';
+		$field_options['link_url_path'] = 'URL Path';
 		foreach ($custom_fields as $field) {
 			$field_options[$field['name']] = $field['friendly_name'];
 		}
@@ -186,7 +191,8 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Design');
 		$this->load->helper('template_files');
 		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, $blog['template'], FALSE, TRUE, 'This template in your theme directory will be used to display this blog/listing page.');
+		$form->dropdown('Output Template', 'template', $template_files, $blog['template'], FALSE, TRUE, 'This template in your theme directory will be used to display this blog/archive page.');
+		$form->text('Items per Page','per_page', $blog['per_page'], 'Automatic pagination will occur if the total number of content items is greater than this number.', TRUE, FALSE, FALSE, '70px', '', array('number'));
 		
 		$data = array(
 					'types' => $type_options,
@@ -195,7 +201,7 @@ class Admincp extends Admincp_Controller {
 					'field_options' => $field_options,
 					'blog' => $blog,
 					'form' => $form->display(),
-					'form_title' => 'Edit Blog',
+					'form_title' => 'Edit Blog/Archive',
 					'form_action' => site_url('admincp/blogs/post/edit/' . $blog['id'])
 				);
 		
@@ -214,8 +220,11 @@ class Admincp extends Admincp_Controller {
 										(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 										(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
 										$this->input->post('summary_field'),
+										$this->input->post('sort_field'),
+										$this->input->post('sort_dir'),
 										($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
-										$this->input->post('template')
+										$this->input->post('template'),
+										$this->input->post('per_page')
 									);
 										
 			$this->notices->SetNotice('Blog added successfully.');
@@ -230,8 +239,11 @@ class Admincp extends Admincp_Controller {
 									(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 									(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
 									$this->input->post('summary_field'),
+									$this->input->post('sort_field'),
+									$this->input->post('sort_dir'),
 									($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
-									$this->input->post('template')
+									$this->input->post('template'),
+									$this->input->post('per_page')
 								);
 										
 			$this->notices->SetNotice('Blog edited successfully.');
@@ -249,6 +261,10 @@ class Admincp extends Admincp_Controller {
 		
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$options = array();
+		$options['content_title'] = 'Title';
+		$options['content_date'] = 'Date Created';
+		$options['content_modified'] = 'Date Modified';
+		$options['link_url_path'] = 'URL Path';
 		foreach ($custom_fields as $field) {
 			$options[$field['name']] = $field['friendly_name'];
 		}

@@ -21,10 +21,12 @@ function template_files () {
 
 function parse_template_files_array ($files, $return = array()) {
 	foreach ($files as $file) {
+		$extension = (!is_array($file) and strpos($file, '.') !== FALSE) ? end(explode('.', $file)) : '';
+		
 		if (is_array($file)) {
 			$return = array_merge($return,parse_template_files_array($file, $return));
 		}
-		elseif (strpos($file, '.') !== FALSE and end(explode('.', $file)) == 'thtml') {
+		elseif (strpos($file, '.') !== FALSE and ($extension == 'thtml' or $extension == 'txml')) {
 			$return[$file] = $file;
 		}
 	}

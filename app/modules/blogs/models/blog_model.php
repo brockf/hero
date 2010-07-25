@@ -27,18 +27,21 @@ class Blog_model extends CI_Model
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
+ 	* @param string $sort_field The column name to sort by
+ 	* @param string $sort_dir Sort direction
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
  	* @param string $template The filename of the template in the theme directory to use for output
+ 	* @param int $per_page How many items to show per page?
  	*
  	* @return $blog_id
  	*/
-	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE, $template = 'blog.thtml') {
+	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25) {
 		$this->load->helper('clean_string');
 		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 		
 		$this->load->model('link_model');
 		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Blog/Listing', 'blog', 'blog', 'view');
+		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Blog/Listing', 'blogs', 'blog', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
@@ -48,8 +51,11 @@ class Blog_model extends CI_Model
 							'blog_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'blog_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
 							'blog_summary_field' => (!empty($summary_field)) ? $summary_field : '',
+							'blog_sort_field' => (!empty($sort_field)) ? $sort_field : '',
+							'blog_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
 							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
-							'blog_template' => $template
+							'blog_template' => $template,
+							'blog_per_page' => $per_page
 							);
 							
 		$this->db->insert('blogs',$insert_fields);
@@ -68,12 +74,15 @@ class Blog_model extends CI_Model
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
+ 	* @param string $sort_field The column name to sort by
+ 	* @param string $sort_dir Sort direction
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
  	* @param string $template The filename of the template in the theme directory to use for output
+ 	* @param int $per_page How many items to show per page?
  	*
  	* @return TRUE
  	*/
-	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $auto_trim = TRUE, $template = 'blog.thtml') {
+	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25) {
 		$blog = $this->get_blog($blog_id);
 		
 		$this->load->model('link_model');
@@ -93,8 +102,11 @@ class Blog_model extends CI_Model
 							'blog_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'blog_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
 							'blog_summary_field' => (!empty($summary_field)) ? $summary_field : '',
+							'blog_sort_field' => (!empty($sort_field)) ? $sort_field : '',
+							'blog_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
 							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
-							'blog_template' => $template
+							'blog_template' => $template,
+							'blog_per_page' => $per_page
 							);
 							
 		$this->db->update('blogs',$update_fields,array('blog_id' => $blog_id));
@@ -118,6 +130,80 @@ class Blog_model extends CI_Model
 		$this->link_model->delete_link($blog['link_id']);
 		
 		return TRUE;
+	}
+	
+	/**
+	* Get Blog ID
+	*
+	* Returns blog ID from a URL_path
+	*
+	* @param $url_path
+	* 
+	* @return boolean|int The blog ID, or FALSE
+	*/
+	function get_blog_id($url_path) {
+		$this->db->select('blog_id');
+		$this->db->where('link_url_path',$url_path);
+		$this->db->join('links','blogs.link_id = links.link_id','inner');
+		$result = $this->db->get('blogs');
+		
+		if ($result->num_rows() == FALSE) {
+			return FALSE;
+		}
+		
+		$blog = $result->row_array();
+		
+		return $blog['blog_id'];
+	}
+	
+	/**
+	* Get Blog Content
+	*
+	* Retrieves content for a specific blog
+	*
+	* @param int $blog_id
+	* @param int $page
+	*
+	* @return array|boolean Array of content else FALSE
+	*/
+	function get_blog_content ($blog_id, $page = 0) {
+		$blog = $this->get_blog($blog_id);
+		
+		if (empty($blog)) {
+			return FALSE;
+		}
+		
+		// prepare filters for get_contents
+		$filters = array();
+		$filters['type'] = $blog['type'];
+		
+		if (!empty($blog['sort_field'])) {
+			$filters['sort'] = $blog['sort_field'];
+			$filters['sort_dir'] = $blog['sort_dir'];
+		}
+		
+		if (!empty($page)) {
+			$filters['offset'] = ($blog['per_page'] * $page);
+		}
+		
+		$filters['limit'] = $blog['per_page'];
+		
+		// get content
+		$CI =& get_instance();
+		$CI->load->model('publish/content_model');
+		$CI->load->helper('shorten');
+		$contents = $CI->content_model->get_contents($filters);
+		
+		if (empty($contents)) {
+			return FALSE;
+		}
+		
+		foreach ($contents as $key => $content) {
+			// prep summary
+			$contents[$key]['summary'] = ($blog['auto_trim'] == TRUE) ? shorten($content[$blog['summary_field']], setting('blog_summary_length'), TRUE) : $content[$blog['summary_field']];
+		}
+		
+		return $contents;
 	}
 	
 	/*
@@ -179,7 +265,10 @@ class Blog_model extends CI_Model
 						'url' => site_url($row['link_url_path']),
 						'url_path' => $row['link_url_path'],
 						'auto_trim' => ($row['blog_auto_trim'] == '1') ? TRUE : FALSE,
-						'template' => $row['blog_template']
+						'template' => $row['blog_template'],
+						'sort_field' => (!empty($row['blog_sort_field'])) ? $row['blog_sort_field'] : FALSE,
+						'sort_dir' => (!empty($row['blog_sort_dir'])) ? $row['blog_sort_dir'] : FALSE,
+						'per_page' => $row['blog_per_page']
 					);
 		}
 		

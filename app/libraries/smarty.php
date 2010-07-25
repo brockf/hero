@@ -111,7 +111,7 @@ class CI_Smarty extends Smarty {
 				// remove trailing ")"
 				$mod_arguments = substr_replace($mod_arguments, '', -1, 1);
 				
-				$mod_arguments = explode('|', $mod_arguments);
+				$mod_arguments = explode(',', $mod_arguments);
 			}
 		}
 		else {
@@ -131,6 +131,13 @@ class CI_Smarty extends Smarty {
 			
 			$this->CI->load->helper('shorten');
 			$data = shorten($data, $length);
+		}
+		
+		// modifier: date_format[format]
+		elseif ($modifier == "date_format") {
+			$format = $mod_arguments[0];
+			
+			$data = strftime($format, strtotime($data));
 		}
 		
 		return $data;

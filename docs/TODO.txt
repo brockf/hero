@@ -1,0 +1,4 @@
+- Find and replace:
+
+[h1][/h1]
+[APPNAME]

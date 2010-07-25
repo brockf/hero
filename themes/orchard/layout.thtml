@@ -32,7 +32,7 @@
 				<li><a class="jerry" href="#">About Jerry</a></li>
 
 				<li><a class="subscribe" href="#">Subscribe</a></li>
-				<li><a class="archives" href="#">Archives</a></li>
+				<li><a class="archives" href="{url path="archives"}">Archives</a></li>
 				<li><a class="favorites" href="#">Favorite Things</a></li>
 				<li><a class="store" href="#">Store</a></li>
 				<li><a class="events" href="#">Conferences</a></li>
@@ -78,7 +78,7 @@
 
 					<ol>
 						{content type="1" limit="7"}
-						<li><a href="{block:$link}">{block:$title|shorten(32)}</a></li>
+						<li><a href="{block:$url}">{block:$title|shorten(32)}</a></li>
 						{/content}
 					</ol>
 				</div>

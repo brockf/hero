@@ -12,7 +12,7 @@
 */
 
 class Rss extends Module {
-	var $version = '1.02';
+	var $version = '1.03';
 	var $name = 'rss';
 
 	function __construct () {
@@ -35,7 +35,7 @@ class Rss extends Module {
 	}
 	
 	function update ($db_version) {
-		if ($db_version < 1.02) {
+		if ($db_version < 1.03) {
 			$this->CI->db->query('DROP TABLE IF EXISTS `rss_feeds`');
 			
 			$this->CI->db->query('CREATE TABLE `rss_feeds` (
@@ -47,6 +47,9 @@ class Rss extends Module {
  								 `rss_filter_author` varchar(250) NOT NULL,
  								 `rss_filter_topic` varchar(250) NOT NULL,
  								 `rss_summary_field` VARCHAR(255) NOT NULL,
+ 								 `rss_sort_field` varchar(100) NOT NULL,
+ 								 `rss_sort_dir` varchar(5) NOT NULL,
+ 								 `rss_template` varchar(150) NOT NULL,
    								 PRIMARY KEY  (`rss_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}

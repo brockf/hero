@@ -27,10 +27,13 @@ class Rss_model extends CI_Model
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
+ 	* @param string $sort_field The column name to sort by
+ 	* @param string $sort_dir Sort direction
+ 	* @param string $template The template file to use for output
  	*
  	* @return $feed_id
  	*/
-	function new_feed ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
+	function new_feed ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = '', $sort_dir = '', $template = 'rss_feed.txml') {
 		$this->load->helper('clean_string');
 		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 		
@@ -45,7 +48,10 @@ class Rss_model extends CI_Model
 							'rss_description' => $description,
 							'rss_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'rss_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
-							'rss_summary_field' => (!empty($summary_field)) ? $summary_field : ''
+							'rss_summary_field' => (!empty($summary_field)) ? $summary_field : '',
+							'rss_sort_field' => (!empty($sort_field)) ? $sort_field : '',
+							'rss_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
+							'rss_template' => $template
 							);
 							
 		$this->db->insert('rss_feeds',$insert_fields);
@@ -64,10 +70,13 @@ class Rss_model extends CI_Model
  	* @param array $filter_author The user ID(s) to filter by
  	* @param array $filter_topic The topic ID(s) to filter by
  	* @param string $summary_field The column name to use for the summary
+ 	* @param string $sort_field The column name to sort by
+ 	* @param string $sort_dir Sort direction
+ 	* @param string $template The template file to use for output
  	*
  	* @return TRUE
  	*/
-	function update_feed ($feed_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE) {
+	function update_feed ($feed_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = '', $sort_dir = '', $template = 'rss_feed.txml') {
 		$feed = $this->get_feed($feed_id);
 		
 		$this->load->model('link_model');
@@ -86,7 +95,10 @@ class Rss_model extends CI_Model
 							'rss_description' => $description,
 							'rss_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
 							'rss_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
-							'rss_summary_field' => (!empty($summary_field)) ? $summary_field : ''
+							'rss_summary_field' => (!empty($summary_field)) ? $summary_field : '',
+							'rss_sort_field' => (!empty($sort_field)) ? $sort_field : '',
+							'rss_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
+							'rss_template' => $template
 							);
 							
 		$this->db->update('rss_feeds',$update_fields,array('rss_id' => $feed_id));
@@ -169,7 +181,10 @@ class Rss_model extends CI_Model
 						'type_name' => $row['content_type_friendly_name'],
 						'summary_field' => (!empty($row['rss_summary_field'])) ? $row['rss_summary_field'] : FALSE,
 						'url' => site_url($row['link_url_path']),
-						'url_path' => $row['link_url_path']
+						'url_path' => $row['link_url_path'],
+						'template' => $row['rss_template'],
+						'sort_field' => (!empty($row['rss_sort_field'])) ? $row['rss_sort_field'] : FALSE,
+						'sort_dir' => (!empty($row['rss_sort_dir'])) ? $row['rss_sort_dir'] : FALSE
 					);
 		}
 		

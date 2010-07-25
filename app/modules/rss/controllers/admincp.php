@@ -116,10 +116,20 @@ class Admincp extends Admincp_Controller {
 			$topic_options[$topic['id']] = $topic['name'];
 		}
 		
+		// template
+		$this->load->library('Admin_form');
+		$form = new Admin_form;
+		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, 'rss_feed.txml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/archive page.');
+		
 		$data = array(
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
+					'form' => $form->display(),
 					'form_title' => 'Create New RSS Feed',
 					'form_action' => site_url('admincp/rss/post/new')
 				);
@@ -164,9 +174,22 @@ class Admincp extends Admincp_Controller {
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$field_options = array();
 		$field_options['0'] = 'Do not include a summary for each item in the RSS feed.';
+		$field_options['content_title'] = 'Title';
+		$field_options['content_date'] = 'Date Created';
+		$field_options['content_modified'] = 'Date Modified';
+		$field_options['link_url_path'] = 'URL Path';
 		foreach ($custom_fields as $field) {
 			$field_options[$field['name']] = $field['friendly_name'];
 		}
+		
+		// template
+		$this->load->library('Admin_form');
+		$form = new Admin_form;
+		
+		$form->fieldset('Design');
+		$this->load->helper('template_files');
+		$template_files = template_files();
+		$form->dropdown('Output Template', 'template', $template_files, $feed['template'], FALSE, TRUE, 'This template in your theme directory will be used to display this RSS feed.');
 		
 		$data = array(
 					'types' => $type_options,
@@ -174,6 +197,7 @@ class Admincp extends Admincp_Controller {
 					'topics' => $topic_options,
 					'field_options' => $field_options,
 					'feed' => $feed,
+					'form' => $form->display(),
 					'form_title' => 'Edit RSS Feed',
 					'form_action' => site_url('admincp/rss/post/edit/' . $feed['id'])
 				);
@@ -192,7 +216,10 @@ class Admincp extends Admincp_Controller {
 										$this->input->post('description'),
 										(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 										(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-										$this->input->post('summary_field')
+										$this->input->post('summary_field'),
+										$this->input->post('sort_field'),
+										$this->input->post('sort_dir'),
+										$this->input->post('template')
 									);
 										
 			$this->notices->SetNotice('RSS Feed added successfully.');
@@ -206,7 +233,10 @@ class Admincp extends Admincp_Controller {
 									$this->input->post('description'),
 									(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
 									(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-									$this->input->post('summary_field')
+									$this->input->post('summary_field'),
+									$this->input->post('sort_field'),
+									$this->input->post('sort_dir'),
+									$this->input->post('template')
 								);
 										
 			$this->notices->SetNotice('RSS Feed edited successfully.');
@@ -225,6 +255,10 @@ class Admincp extends Admincp_Controller {
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		$options = array();
 		$options['0'] = 'Do not include a summary for each item in the RSS feed.';
+		$options['content_title'] = 'Title';
+		$options['content_date'] = 'Date Created';
+		$options['content_modified'] = 'Date Modified';
+		$options['link_url_path'] = 'URL Path';
 		foreach ($custom_fields as $field) {
 			$options[$field['name']] = $field['friendly_name'];
 		}

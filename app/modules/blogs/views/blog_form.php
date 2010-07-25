@@ -10,6 +10,8 @@ if (!isset($blog)) {
 				'filter_authors' => array(0),
 				'filter_topics' => array(0),
 				'summary_field' => '',
+				'sort_field' => '',
+				'sort_dir' => 'ASC',
 				'auto_trim' => TRUE
 			);
 }
@@ -69,9 +71,9 @@ if (!isset($blog)) {
 			<label for="summary_field">Summary Field</label>
 			<? if (isset($field_options)) { ?>
 				<? // we are editing and must have a field_options array which we can select from ?>
-				<?=form_dropdown('summary_field',$field_options,$blog['summary_field'],'id="summary_field" class="editing"');?>
+				<?=form_dropdown('summary_field',$field_options,$blog['summary_field'],'id="summary_field" class="populate_fields editing"');?>
 			<? } else { ?>
-				<?=form_dropdown('summary_field',array('' => 'Loading...'),'','id="summary_field"');?>
+				<?=form_dropdown('summary_field',array('' => 'Loading...'),'','id="summary_field" class="populate_fields"');?>
 			<? } ?>
 		</li>
 		<li>
@@ -79,6 +81,19 @@ if (!isset($blog)) {
 		</li>
 		<li>
 			<label>&nbsp;</label><?=form_checkbox('auto_trim','1',($blog['auto_trim'] == TRUE) ? TRUE : FALSE);?> <b>Automatically shorten the summary to <?=setting('blog_summary_length');?> characters?</b>  This setting is customizable under Configuration > Settings.
+		</li>
+		
+		<li>
+			<label for="sort_field">Sort by</label>
+			<? if (isset($field_options)) { ?>
+			<? reset($field_options); ?>
+				<? // we are editing and must have a field_options array which we can select from ?>
+				<?=form_dropdown('sort_field',$field_options,$blog['sort_field'],'id="sort_field" class="populate_fields editing"');?>
+			<? } else { ?>
+				<?=form_dropdown('sort_field',array('' => 'Loading...'),'','id="sort_field" class="populate_fields"');?>
+			<? } ?>
+			&nbsp;&nbsp;
+			<?=form_dropdown('sort_dir',array('ASC' => 'Ascending (First to Last, Oldest to Newest)', 'DESC' => 'Descending (Last to First, Newest to Oldest'), $blog['sort_dir']);?>
 		</li>
 	</ul>
 </fieldset>

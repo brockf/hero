@@ -285,6 +285,7 @@ div.footer {
 }
 
 div.brock_bar {
+	clear: both;
 	background-color: #c6e4fd;
 	border-radius: 10px;
 	-moz-border-radius: 10px;

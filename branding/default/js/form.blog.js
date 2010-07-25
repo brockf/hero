@@ -1,5 +1,5 @@
 $(document).ready(function () {
-	if ($('#summary_field').hasClass('editing')) {
+	if ($('select.populate_fields').hasClass('editing')) {
 		// we don't want to do this, or we will get rid of the pre-selected item
 	}
 	else {
@@ -25,6 +25,6 @@ function get_fields_for_summary_field () {
 				options_options = options_options + '<option value="' + intIndex + '">' + objValue + '</option>';
 		});
 		
-		$('#summary_field').html(options_options);
+		$('select.populate_fields').html(options_options);
 	});
 }

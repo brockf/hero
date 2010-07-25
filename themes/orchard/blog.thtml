@@ -1,0 +1,12 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	<ul>
+	{foreach $content as $item}
+		<li><a href="{$item.url}">{$item.title}</a> - {$item.date}</li>
+	{/foreach}
+	</ul>
+{/block}

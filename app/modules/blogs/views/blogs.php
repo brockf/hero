@@ -1,5 +1,5 @@
 <?=$this->load->view(branded_view('cp/header'));?>
-<h1>Manage Blogs</h1>
+<h1>Manage Blogs/Archives</h1>
 <?=$this->dataset->table_head();?>
 <?
 if (!empty($this->dataset->data)) {
