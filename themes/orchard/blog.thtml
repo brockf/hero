@@ -4,9 +4,14 @@
 {/block}
 {block name="content"}
 	<h1>{$title}</h1>
-	<ul>
+	<ul class="archives">
 	{foreach $content as $item}
-		<li><a href="{$item.url}">{$item.title}</a> - {$item.date|date_format:"%A, %B %e, %Y"}</li>
+		<li>
+			<h4 class="date">{$item.date|date_format:"%A, %B %e, %Y"}</h4>
+			<a href="{$item.url}">{$item.title}</a>
+		</li>
 	{/foreach}
 	</ul>
+	
+	{$pagination}
 {/block}

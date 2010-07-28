@@ -124,6 +124,30 @@ class Rss_model extends CI_Model
 		return TRUE;
 	}
 	
+	/**
+	* Get Feed ID
+	*
+	* Returns feed ID from a URL_path
+	*
+	* @param $url_path
+	* 
+	* @return boolean|int The feed ID, or FALSE
+	*/
+	function get_feed_id($url_path) {
+		$this->db->select('rss_id');
+		$this->db->where('link_url_path',$url_path);
+		$this->db->join('links','rss_feeds.link_id = links.link_id','inner');
+		$result = $this->db->get('rss_feeds');
+		
+		if ($result->num_rows() == FALSE) {
+			return FALSE;
+		}
+		
+		$feed = $result->row_array();
+		
+		return $feed['rss_id'];
+	}
+	
 	/*
 	* Get RSS Feed
 	*
@@ -139,6 +163,64 @@ class Rss_model extends CI_Model
 		}
 		
 		return $feed[0];
+	}
+	
+	/**
+	* Get Feed Content
+	*
+	* Retrieves content for a specific feed
+	*
+	* @param int $feed_id
+	*
+	* @return array|boolean Array of content else FALSE
+	*/
+	function get_feed_content ($feed_id) {
+		$feed = $this->get_feed($feed_id);
+		
+		if (empty($feed)) {
+			return FALSE;
+		}
+		
+		// prepare filters for get_contents
+		$filters = array();
+		$filters['type'] = $feed['type'];
+		
+		// filter by author?
+		if ($feed['filter_authors'] !== FALSE) {
+			$filters['author'] = $feed['filter_authors'];
+		}
+		
+		// filter by topic?
+		if ($feed['filter_topics'] !== FALSE) {
+			$filters['topic'] = $feed['filter_topics'];
+		}
+		
+		if (!empty($feed['sort_field'])) {
+			$filters['sort'] = $feed['sort_field'];
+			$filters['sort_dir'] = $feed['sort_dir'];
+		}
+		
+		$filters['limit'] = setting('feed_items_count');
+		
+		// get content
+		$CI =& get_instance();
+		$CI->load->model('publish/content_model');
+		$CI->load->helper('shorten');
+		$contents = $CI->content_model->get_contents($filters);
+		
+		if (empty($contents)) {
+			return FALSE;
+		}
+		
+		// we may need to prep a summary field
+		if (!empty($feed['summary_field'])) {
+			foreach ($contents as $key => $content) {
+				// prep summary
+				$contents[$key]['summary'] = shorten($content[$feed['summary_field']], 400, TRUE);
+			}
+		}
+		
+		return $contents;
 	}
 	
 	/*

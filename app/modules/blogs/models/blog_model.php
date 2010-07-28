@@ -13,6 +13,8 @@
 
 class Blog_model extends CI_Model
 {
+	var $blogs; // cache
+
 	function __construct()
 	{
 		parent::CI_Model();
@@ -177,6 +179,16 @@ class Blog_model extends CI_Model
 		$filters = array();
 		$filters['type'] = $blog['type'];
 		
+		// filter by author?
+		if ($blog['filter_authors'] !== FALSE) {
+			$filters['author'] = $blog['filter_authors'];
+		}
+		
+		// filter by topic?
+		if ($blog['filter_topics'] !== FALSE) {
+			$filters['topic'] = $blog['filter_topics'];
+		}
+		
 		if (!empty($blog['sort_field'])) {
 			$filters['sort'] = $blog['sort_field'];
 			$filters['sort_dir'] = $blog['sort_dir'];
@@ -206,6 +218,69 @@ class Blog_model extends CI_Model
 		return $contents;
 	}
 	
+	/**
+	* Get Blog Pagination
+	*
+	* Generates Pagination HTML for a blog when given the current page
+	*
+	* @param int $blog_id
+	* @param string $base_url
+	* @param int $page (Default: 0)
+	*
+	* @return string HTML
+	*/
+	function get_blog_pagination($blog_id, $base_url, $page = 0) {
+		$blog = $this->get_blog($blog_id);
+		
+		if (empty($blog)) {
+			return FALSE;
+		}
+		
+		// do we need to append the "?" for the query string?
+		if (strpos($base_url, '?') === FALSE) {
+			$base_url .= '?';
+		}
+
+		$this->load->library('pagination');
+		
+		// get total rows
+		$this->db->select('content_id');
+		$this->db->where('content_type_id',$blog['type']);
+		
+		// filter by author?
+		if ($blog['filter_authors'] !== FALSE) {
+			$this->db->where_in('user_id', $blog['filter_authors']);
+		}
+		
+		// filter by topic?
+		if ($blog['filter_topics'] !== FALSE) {
+			$this->db->where_in('topic_id', $blog['filter_topics']);
+		}
+		
+		$result = $this->db->get('content');
+		$total_rows = $result->num_rows();
+
+		$config['base_url'] = $base_url;
+		$config['total_rows'] = $total_rows;
+		$config['per_page'] = $blog['per_page'];
+		$config['page_query_string'] = TRUE;
+		$config['query_string_segment'] = 'page';
+		
+		$this->pagination->initialize($config);
+		
+		$links = $this->pagination->create_links();
+		
+		// we may have cases of ?& because of CodeIgniter thinking we have universally enabled query strings
+		$links = str_replace('?&amp;','?', $links);
+		
+		return $links;
+	}
+	
+	/**
+	* Get Blog Pagination
+	*
+	* 
+	
 	/*
 	* Get Blog
 	*
@@ -214,7 +289,16 @@ class Blog_model extends CI_Model
 	* @return array
 	*/
 	function get_blog ($blog_id) {
-		$blog = $this->get_blogs(array('id' => $blog_id));
+		// available in cache?
+		if (!isset($this->blogs[$blog_id])) {
+			$blog = $this->get_blogs(array('id' => $blog_id));
+			
+			// set cache
+			$this->blogs[$blog_id] = $blog;
+		}
+		else {
+			$blog = $this->blogs[$blog_id];
+		}
 		
 		if (empty($blog)) {
 			return FALSE;

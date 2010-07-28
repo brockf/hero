@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<rss version="2.0"
+    xmlns:dc="http://purl.org/dc/elements/1.1/"
+    xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+    xmlns:admin="http://webns.net/mvcb/"
+    xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+    xmlns:content="http://purl.org/rss/1.0/modules/content/">
+
+    <channel>
+    
+    <title>{$title}</title>
+
+    <link>{$url}</link>
+    <description>{$description}</description>
+    <dc:creator>{setting name="site_email"}</dc:creator>
+
+    <dc:rights>Copyright {$smarty.now|date_format:"%Y"}</dc:rights>
+    <admin:generatorAgent rdf:resource="{setting name="app_link"}" />
+
+    {foreach $content as $item}
+    
+        <item>
+
+          <title>{$item.title}</title>
+          <link>{$item.url}</link>
+          <guid>{$item.url_path}</guid>
+			
+		  {if $summary_field}
+          <description><![CDATA[
+     		{$item.summary}
+     	  ]]></description>
+     	  {/if}
+          <pubDate>{$item.date|date_format:"%a %b %e %H:%M:%S %Z %Y"}</pubDate>
+        </item>
+
+        
+    {/foreach}
+    
+    </channel></rss> 
+

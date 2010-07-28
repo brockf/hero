@@ -28,14 +28,18 @@ class Blog extends Front_Controller {
 		}
 		
 		// get blog
-		$content = $this->blog_model->get_blog_content($blog_id);
+		$content = $this->blog_model->get_blog_content($blog_id, $this->input->get('page'));
 		
 		if (empty($content)) {
 			return show_404($url_path);
 		}
 		
+		// get pagination
+		$pagination = $this->blog_model->get_blog_pagination($blog_id, site_url($blog['url_path']), $this->input->get('page'));
+		
 		// show content
 		$this->smarty->assign('content',$content);
+		$this->smarty->assign('pagination',$pagination);
 		$this->smarty->assign($blog);
 		
 		return $this->smarty->display($blog['template']);

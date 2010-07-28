@@ -265,7 +265,8 @@ class Content_model extends CI_Model
 	* @param string $filters['author_like'] Only content created by this user (by username, text search)
 	* @param int $filters['type'] Only content of this type
 	* @param int $filters['id']
-	* @param int $filters['topic']
+	* @param int|array $filters['topic'] Single topic ID or array of multiple topics
+	* @param int|array $filters['author'] Single author ID or array of multiple authors
 	* @param string $filters['date_format'] The format to return dates in
 	* @param boolean $filters['allow_future'] Allow content from the future?  Default: No/FALSE
 	* @param string $sort
@@ -331,6 +332,15 @@ class Content_model extends CI_Model
 		
 		if (isset($filters['is_standard'])) {
 			$this->db->where('content.content_is_standard',$filters['is_standard']);
+		}
+		
+		if (isset($filters['author'])) {
+			if (!is_array($filters['author'])) {
+				$this->db->where('content.user_id',$filters['author']);
+			}
+			else {
+				$this->db->where_in('content.user_id',$filters['author']);
+			}
 		}
 		
 		if (isset($filters['topic'])) {

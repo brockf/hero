@@ -29,11 +29,11 @@
 		<div id="nav">
 			<ul>
 				<li><a class="active current" href="{url}">Frontpage</a></a></li>
-				<li><a class="jerry" href="#">About Jerry</a></li>
+				<li><a class="jerry" href="{url path="about"}">About Jerry</a></li>
 
 				<li><a class="subscribe" href="#">Subscribe</a></li>
 				<li><a class="archives" href="{url path="archives"}">Archives</a></li>
-				<li><a class="favorites" href="#">Favorite Things</a></li>
+				<li><a class="favorites" href="{url path="favorites"}">Favorite Things</a></li>
 				<li><a class="store" href="#">Store</a></li>
 				<li><a class="events" href="#">Conferences</a></li>
 				<li><a class="app" href="#">App</a></li>

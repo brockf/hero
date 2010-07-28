@@ -12,7 +12,7 @@
 */
 
 class Rss extends Module {
-	var $version = '1.03';
+	var $version = '1.04';
 	var $name = 'rss';
 
 	function __construct () {
@@ -33,6 +33,10 @@ class Rss extends Module {
 	}
 	
 	function update ($db_version) {
+		if ($db_version < 1.04) {
+			$this->CI->settings_model->new_setting(4, 'feed_items_count', '25', 'How many items would you to show in an RSS feed?', 'text');
+		}
+	
 		if ($db_version < 1.03) {
 			$this->CI->db->query('DROP TABLE IF EXISTS `rss_feeds`');
 			

@@ -13,6 +13,12 @@ class MY_Input extends CI_Input {
 	*/
 	function get($index = '', $xss_clean = FALSE)
 	{
+		if (!defined('MY_QUERY_STRING')) {
+			// no $_GET data exists
+			
+			return FALSE;
+		}
+	
 		// do we have a query string?
 		$my_query_string = unserialize(MY_QUERY_STRING);
 		if (is_array($my_query_string)) {

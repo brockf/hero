@@ -438,3 +438,20 @@ div.promo h3 {
 div.promo p {
 	line-height: 1.5em;
 }
+
+ul.archives li {
+	margin-bottom: 10px;
+}
+
+h4.date {
+	font-size: 8pt;
+	font-weight: bold;
+	text-transform: uppercase;
+	color: #444;
+	margin: 0 0 5px;
+	padding: 0;
+}
+
+div.pagination a, div.pagination b {
+	margin-right: 5px;
+}
