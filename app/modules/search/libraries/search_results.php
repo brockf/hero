@@ -41,7 +41,9 @@ class Search_results {
 				if (!empty($content)) {
 					foreach ($content as $item) {
 						// prep summary field
-						$item['summary'] = shorten(strip_tags($item[$summary_field]), setting('search_trim'), TRUE);
+						if (!empty($summary_field)) {
+							$item['summary'] = shorten(strip_tags($item[$summary_field]), setting('search_trim'), TRUE);
+						}
 						$item['result_type'] = 'content';
 						
 						$this->content_results[$item['id']] = $item;

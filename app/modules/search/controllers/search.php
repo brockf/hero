@@ -26,6 +26,11 @@ class Search extends Front_Controller {
 		$title = 'Search ' . setting('site_name');
 		
 		if ($this->input->get('q', TRUE) != FALSE) {
+			// have we waited long enough before searches?
+			if (setting('search_delay') != 0 and $this->session->userdata('last_search') != FALSE and ((time() - $this->session->userdata('last_search')) < setting('search_delay'))) {
+				die(show_error('You must wait ' . setting('search_delay') . ' between searches.  <a href="javascript:location.reload(true)">Refresh and try again</a>.'));
+			}
+		
 			$searching = TRUE;
 			$query = $this->input->get('q', TRUE);
 			
@@ -39,6 +44,9 @@ class Search extends Front_Controller {
 			$pagination = $this->search_results->get_pagination(site_url('search/?q=' . urlencode($query)));
 			
 			$title = 'Search Results for "' . $query . '"';
+			
+			// record latest search time
+			$this->session->set_userdata('last_search',time());
 		}
 				
 		// display

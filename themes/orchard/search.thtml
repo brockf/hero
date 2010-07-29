@@ -7,7 +7,7 @@
 	
 	<div id="search_form">
 	<form method="get" action="{url path="search"}" class="validate">
-	<input id="query" class="text mark_empty required" rel="search keyword(s)" name="q" />&nbsp;<input id="submit" type="submit" name="go" value="Search" />
+	<input id="query" class="text mark_empty required" rel="search keyword(s)" name="q" value="{if $query}{$query}{/if}" />&nbsp;<input id="submit" type="submit" name="go" value="Search" />
 	</form>
 	</div>
 	
@@ -21,7 +21,7 @@
 			{foreach $results as $result}
 				{if $result.result_type == "content"}
 					<li>
-						<a href="{$result.url}">{$result.title}</a> <span class="relevance">relevance: {$result.relevance}</span>
+						<a href="{$result.url}">{$result.title}</a>{if $result.relevance != 0} <span class="relevance">relevance: {$result.relevance}</span>{/if}
 						{if $result.summary}<br /><p>{$result.summary}</p>{/if}
 					</li>
 				{elseif $result.result_type == "product"}
