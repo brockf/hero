@@ -7,6 +7,13 @@ Throughout your template, variables are replaced with their respective data.  Th
 Published: {$date}
 [/code]
 
+[h2]Global Variables[/h2]
+
+The following variables are accessible in any template:
+
+* [span_code]{$setting.setting_name}[/span_code] (where setting_name is the name of the setting you are trying to access)
+* [span_code]{$logged_in}[/span_code] (TRUE if the user is logged in, FALSE if not)
+
 [h2]Modifying Variables[/h2]
 
 Many variables can be displayed without modification (e.g, the title tag just needs to display the title).  However, other variables may need to be modified before being displayed.  For example, we may want to customize the way the "date" is being displayed with the following modifier:

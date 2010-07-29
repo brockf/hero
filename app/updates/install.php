@@ -550,7 +550,3 @@ CREATE TABLE `system` (
 -- 
 
 INSERT INTO `system` (`db_version`) VALUES ('3.0');
-
--- 
--- Dumping data for table `users`
--- 

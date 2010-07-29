@@ -246,7 +246,7 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
 			$CI->email->send();
 			
 			// send a BCC?
-			$send_bcc = false;
+			$send_bcc = FALSE;
 			if (!empty($email['bcc_address'])) {
 				if ($email['bcc_address'] == 'site_email') {
 					$send_bcc = $site_email;

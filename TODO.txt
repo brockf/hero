@@ -1,7 +1,7 @@
 - Roadmap:	
+	- Forgot Password
+	
 	- Comments moderator (modeled after WordPress) and comments model/library
-	- Create Search Manager (which content types are available, whether to search products)
-	- Apply time_since/formatting to each Admin panel date
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders
 	- Update Dataset to have sorting

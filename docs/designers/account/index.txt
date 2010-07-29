@@ -1,0 +1,101 @@
+[h2]Account Module[/h2]
+
+[h2]Important URL's[/h2]
+
+* [url]users/[/url] - Account Manager
+* [url]users/register[/url] - Registration Form
+* [url]users/login[/url] - Login Form
+* [url]users/logout[/url] - Logout
+* [url]users/forgot_password[/url] - Forgot Password Form
+
+[h2]Specifying a Return URL during Login[/h2]
+
+If you want to send users to the main login page at [url]users/login[/url] but have them sent back to a specific page when they have logged in, you can specify a return URL with the [span_code]return[/span_code] query string variable.
+
+This variable must be encoded with the function [span_code]query_value_encode[/span_code].
+
+Example:
+
+[code]
+<?php
+// redirect to login page with specified URL
+header('Location: ' . site_url('users/login?return=' . query_value_encode('my_relative_url')));
+?>
+
+This URL can also be absolute:
+
+[code]
+<?php
+// redirect to login page with specified URL
+header('Location: ' . site_url('users/login?return=' . query_value_encode('http://www.yahoo.com')));
+?>
+[/code]
+
+[h2]Template Plugins[/h2]
+
+[h3]login_form (arguments: return, username)[/h3]
+
+Display a login form which (optionally) returns the user to a specified URL after a successful login.
+
+Optional variables:
+
+* [span_code]return[/span_code] - The URL that you would like to return the user to after logging in.  Can be relative or absolute.
+* [span_code]username[/span_code] - Value for the username field.  This is mainly for system use and would rarely be specified in your plugin calls.
+
+Available block variables:
+
+* {block:$form_action} (the value for the form's "action" attribute")
+* {block:$return} (the encoded value for the hidden "return" field)
+* {block:$username} (the value to populate the username field - may be empty)
+
+Example login form:
+
+[code]
+{login_form return=$return}
+	<h1>Account Login</h1>
+	<form method="post" action="{block:$form_action}">
+		<input type="hidden" name="return" value="{block:$return}">
+	
+		<ul class="form">
+			<li>
+				<label for="username">Username/Email</label>
+				<input type="text" id="username" name="username" value="{block:$username}">
+			</li>
+			<li>
+				<label>Password</label>
+				<input type="password" id="password" name="password" />
+			</li>
+			<li>
+				<input type="checkbox" value="1" name="remember" /> Remember me for future visits?
+			</li>
+			<li>
+				<input type="submit" name="login" value="Login" />
+			</li>
+		</ul>
+		
+		<ul class="login_form_links">
+			<li>
+				<a href="{url path="account/register?return={block:$return}">Don't have an account? Click here to register.</a>
+			</li>
+			<li>
+				<a href="{url path="account/forgot_password"}">Forgot your password?</a>
+			</li>
+		</ul>
+	</form>
+{/login_form}
+[/code]
+
+[h3]register_form (arguments: return)[/h3]
+
+Display a register form which (optionally) returns the user to a specified URL after a successful registration.
+
+[note]If you are using custom fields in your registration form, you should set the [span_code]<form>[/span_code]'s [span_code]enctype[/span_code] attribute to "multipart/form-data".  This is necessary for the form to handle file uploads.[/note]
+
+Optional variables:
+
+* [span_code]return[/span_code] - The URL that you would like to return the user to after logging in.  Can be relative or absolute.
+
+Available block variables:
+
+* {block:$form_action} (the value for the form's "action" attribute")
+* {block:$return} (the encoded value for the hidden "return" field)

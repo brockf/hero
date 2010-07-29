@@ -25,14 +25,14 @@ All search results are displayed with the "search.thtml" template in your theme 
 
 The following variables are available in the search template at all times:
 
-* {$searching} (TRUE or FALSE if we are actively doing a search or not)
-* {$query}
+* [span_code]{$searching}[/span_code] (TRUE or FALSE if we are actively doing a search or not)
+* [span_code]{$query}[/span_code]
 
 If we are actively searching:
 
-* {$num_results} (check to see if this == "0" before looping through results)
-* {$results} (an array of results containing the items below)
-* {$pagination}
+* [span_code]{$num_results}[/span_code] (check to see if this == "0" before looping through results)
+* [span_code]{$results}[/span_code] (an array of results containing the items below)
+* [span_code]{$pagination}[/span_code]
 
 Each result item has a "result_type" field which says whether it is "content" or "product".  For example, you would use something like this:
 
@@ -54,41 +54,41 @@ Each result item has a "result_type" field which says whether it is "content" or
 
 Each *content* type item has the following tags:
 
-* {$id}
-* {$title}
-* {$date}
-* {$modified_date}
-* {$author_id}
-* {$author_username}
-* {$author_first_name}
-* {$author_last_name}
-* {$author_email}
-* {$type_id}
-* {$type_name}
-* {$url_path} (relative URL to the content)
-* {$url} (absolute URL to the content)
-* {$summary} (the auto-generated summary field, specified in search configuration)
-* {$relevance} (the search relevance, e.g., 1.345070991)
-* plus a tag for each of their custom fields like {$custom_field_name}
+* [span_code]{$id}[/span_code]
+* [span_code]{$title}[/span_code]
+* [span_code]{$date}[/span_code]
+* [span_code]{$modified_date}[/span_code]
+* [span_code]{$author_id}[/span_code]
+* [span_code]{$author_username}[/span_code]
+* [span_code]{$author_first_name}[/span_code]
+* [span_code]{$author_last_name}[/span_code]
+* [span_code]{$author_email}[/span_code]
+* [span_code]{$type_id}[/span_code]
+* [span_code]{$type_name}[/span_code]
+* [span_code]{$url_path}[/span_code] (relative URL to the content)
+* [span_code]{$url}[/span_code] (absolute URL to the content)
+* [span_code]{$summary}[/span_code] (the auto-generated summary field, specified in search configuration)
+* [span_code]{$relevance}[/span_code] (the search relevance, e.g., 1.345070991)
+* plus a tag for each of their custom fields like [span_code]{$custom_field_name}[/span_code]
 
 Each *product* type item has the following tags:
 
-* {$id}
-* {$url} (absolute URL to product page)
-* {$collections} (array of collection ID's)
-* {$name}
-* {$description}
-* {$price}
-* {$weight}
-* {$requires_shipping} (TRUE or FALSE)
-* {$track_inventory} (TRUE or FALSE)
-* {$inventory} (# of inventory in stock)
-* {$inventory_allow_oversell} (do we allow overselling?)
-* {$sku} (SKU #)
-* {$is_taxable} (TRUE or FALSE)
-* {$is_download} (TRUE or FALSE)
-* {$download_name}
-* {$download_size}
-* {$feature_image}
-* {$summary} (based on the "description" field, this summary doesn't contain any HTML and may be shortened to meet the settings specified in search configuration)
-* {$relevance} (the search relevance, e.g., 1.345070991)
+* [span_code]{$id}[/span_code]
+* [span_code]{$url}[/span_code] (absolute URL to product page)
+* [span_code]{$collections}[/span_code] (array of collection ID's)
+* [span_code]{$name}[/span_code]
+* [span_code]{$description}[/span_code]
+* [span_code]{$price}[/span_code]
+* [span_code]{$weight}[/span_code]
+* [span_code]{$requires_shipping}[/span_code] (TRUE or FALSE)
+* [span_code]{$track_inventory}[/span_code] (TRUE or FALSE)
+* [span_code]{$inventory}[/span_code] (# of inventory in stock)
+* [span_code]{$inventory_allow_oversell}[/span_code] (do we allow overselling?)
+* [span_code]{$sku}[/span_code] (SKU #)
+* [span_code]{$is_taxable}[/span_code] (TRUE or FALSE)
+* [span_code]{$is_download}[/span_code] (TRUE or FALSE)
+* [span_code]{$download_name}[/span_code]
+* [span_code]{$download_size}[/span_code]
+* [span_code]{$feature_image}[/span_code]
+* [span_code]{$summary}[/span_code] (based on the "description" field, this summary doesn't contain any HTML and may be shortened to meet the settings specified in search configuration)
+* [span_code]{$relevance}[/span_code] (the search relevance, e.g., 1.345070991)

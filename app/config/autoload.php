@@ -72,7 +72,8 @@ $autoload['helper'] = array('ioncube_license',
 							'url',
 							'branding/branded_include',
 							'branding/branded_view',
-							'setting_helper'
+							'setting',
+							'query_value'
 						);
 
 

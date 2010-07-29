@@ -935,7 +935,7 @@ class Admincp extends Admincp_Controller {
 		// build validators
 		$validators = array();
 		
-		if ($this->input->post('file')) {
+		if ($this->input->post('type') != 'file') {
 			if ($this->input->post('validate_email') == '1') { $validators[] = 'email'; }
 			if ($this->input->post('validate_whitespace') == '1') { $validators[] = 'whitespace'; }
 			if ($this->input->post('validate_alphanumeric') == '1') { $validators[] = 'alphanumeric'; }

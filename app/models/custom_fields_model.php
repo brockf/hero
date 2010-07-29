@@ -74,24 +74,28 @@ class Custom_fields_model extends CI_Model {
 			if ($field['type'] != 'file' and isset($field['validators'])) {
 				foreach ($field['validators'] as $validator) {
 					if ($validator == 'whitespace') {
-						$rules[] = $validator['trim'];
+						$rules[] = 'trim';
 					}
 					elseif ($validator == 'alphanumeric') {
-						$rules[] = $validator['alpha_numeric'];
+						$rules[] = 'alpha_numeric';
 					}
 					elseif ($validator == 'numeric') {
-						$rules[] = $validator['numeric'];
+						$rules[] = 'numeric';
 					}
 					elseif ($validator == 'domain') {
-						$rules[] = $validator['valid_domain'];
+						$rules[] = 'valid_domain';
 					}
+				}
+				
+				if ($field['required'] == TRUE) {
+					$rules[] = 'required';
 				}
 				
 				if (!empty($rules)) {
 					$return[] = array(
 									'field' => $field['name'],
 									'label' => $field['friendly_name'],
-									'rules' => $rules
+									'rules' => implode('|',$rules)
 								);
 				}
 			}

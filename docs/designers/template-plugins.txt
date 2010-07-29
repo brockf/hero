@@ -2,6 +2,28 @@
 
 The following [http://www.smarty.net](Smarty) template functions and blocks are available throughout your templates.  These are available above and beyond the standard Smarty template functions, available at [http://www.smarty.net](Smarty's documentation).
 
+[h2]custom_field (arguments: field, value)[/h2]
+
+Display a form element from a standard custom field data array for one field.  If no value is specified as a parameter, it will try to deduce the current submitted value from the $_POST array and/or the field's default value(s).
+
+Usage (assuming the template has been passed an array of custom fields as [span_code]$custom_fields[/span_code]):
+
+[code]
+{foreach $custom_fields as $field}
+	<li>
+		<label for="field_{$field.name}">{$field.friendly_name}</label>
+	</li>
+	<li>
+		{custom_field field=$field}
+	</li>
+	{if $field.help}
+		<li>
+			<div class="help">{$field.help}</div>
+		</li>
+	{/if}
+{/foreach}
+[/code]
+
 [h2]restricted (arguments: in_group, not_in_group)[/h2]
 
 If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).

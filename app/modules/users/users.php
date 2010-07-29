@@ -11,8 +11,8 @@
 *
 */
 
-class Users extends Module {
-	var $version = '1.04';
+class Users_module extends Module {
+	var $version = '1.05';
 	var $name = 'users';
 
 	function __construct () {
@@ -36,6 +36,15 @@ class Users extends Module {
 	}
 	
 	/*
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/users/template_plugins/');
+	}
+	
+	/*
 	* Module update
 	*
 	* @param int $db_version The current DB version
@@ -43,6 +52,11 @@ class Users extends Module {
 	* @return int The current software version, to update the database
 	*/
 	function update ($db_version) {
+		if ($db_version < 1.05) {
+			$this->CI->settings_model->new_setting(3, 'registration_redirect', 'users/', 'Redirect to this address after a user registers.  Can be an absolute or relative URL.', 'text', '');
+			$this->CI->settings_model->new_setting(3, 'show_subscriptions', '1', 'After a registration, should we redirect to subscription packages (if they exist)?  If this redirect doesn\'t happen, the "registration_redirect" setting will be used.', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+		}
+	
 		if ($db_version < 1.04) {
 			$this->CI->db->query('CREATE TABLE `user_logins` (
 								  `user_login_id` int(11) NOT NULL auto_increment,
@@ -105,6 +119,8 @@ class Users extends Module {
 								  `user_last_login` datetime default NULL,
 								  `user_suspended` int(11) NOT NULL default \'0\',
 								  `user_deleted` int(11) NOT NULL default \'0\',
+								  `user_validate_key` varchar(32),
+								  `user_remember_key` varchar(32),
 								  PRIMARY KEY  (`user_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;');
 		}

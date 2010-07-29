@@ -27,6 +27,15 @@ class Custom_fields extends Module {
 	}
 	
 	/*
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/custom_fields/template_plugins/');
+	}
+	
+	/*
 	* Module update
 	*
 	* @param int $db_version The current DB version

@@ -28,7 +28,7 @@
 							<?=$setting['value'];?>
 						<? } elseif ($setting['type'] == 'textarea') { ?>
 							<?=nl2br(shorten($setting['value'],250));?>
-							<textarea style="display:none" class="value" id="<?=$setting['name'];?>"><?=$setting['value'];?></textarea>
+							<textarea style="display:none; height: 150px" class="value" id="<?=$setting['name'];?>"><?=$setting['value'];?></textarea>
 						<? } elseif ($setting['type'] == 'toggle') { ?>
 							<?=$setting['toggle_value'];?>
 						<? } ?></td>

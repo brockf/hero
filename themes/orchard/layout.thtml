@@ -4,6 +4,7 @@
 <title>{block name="title"}{setting name="site_name"}{/block}</title>
 <link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="{url path="themes/_common/jquery-1.4.2.min.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/universal.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/box_layout.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/brock_bar.js"}"></script>
@@ -16,8 +17,13 @@
 		<a id="logo" href="{url}"><img src="{theme_url path="images/logo.gif"}" alt="Inside Music Media" /></a>
 		<div id="topnav">
 			<a href="{url}">home</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			<a href="#">subscribe</a>
+			{if $logged_in}
+				<a href="{url path="users"}">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="{url path="users/logout"}">logout</a>
+			{else}
+				<a href="{url path="users/login"}">login</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				<a href="{url path="users/register"}">subscribe</a>
+			{/if}
 		</div>
 
 		<div id="search"><form method="get" action="{url path="search"}" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="q" /></form></div>

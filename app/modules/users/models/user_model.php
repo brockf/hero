@@ -14,6 +14,7 @@
 class User_model extends CI_Model
 {
 	var $active_user;  // the logged-in use
+	var $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
 	
 	function __construct()
 	{
@@ -25,6 +26,8 @@ class User_model extends CI_Model
         	$this->set_active($this->session->userdata('user_id'));
         }
         else {
+        	$this->load->helper('cookie');
+        	
         	// we may have a remembered user
         	if (get_cookie('user_remember_key',TRUE)) {
         		// does this correspond with a remember key?
@@ -68,13 +71,20 @@ class User_model extends CI_Model
 		if ($query->num_rows() > 0) {
 			$user = $query->row_array();
 			$user = $this->get_user($user['user_id']);
+			
+			// let's make sure they are activated if it's been more than 1 day
+			if (!empty($user['validate_key']) and ((time() - strtotime($user['signup_date'])) > (60*60*24))) {
+				$this->failed_due_to_activation = TRUE;
+				
+				return FALSE;
+			}
 		}
 		else {
 			return FALSE;
 		}
 		
 		// track login
-		$this->login_by_id($user_id); 
+		$this->login_by_id($user['id']); 
 		
 		// remember?
 		if ($remember == TRUE) {
@@ -88,7 +98,7 @@ class User_model extends CI_Model
 			}
 			
 			// create the cookie with the key
-			$this->load->helper('cookies');
+			$this->load->helper('cookie');
 			
 			$cookie = array(
 			                   'name'   => 'user_remember_key',
@@ -99,7 +109,7 @@ class User_model extends CI_Model
 			set_cookie($cookie); 
 			
 			// put key in database
-			$this->db->update('users',array('remember_key' => $remember_key),array('user_id' => $user['id']));
+			$this->db->update('users',array('user_remember_key' => $remember_key),array('user_id' => $user['id']));
 		}
 		
 		return TRUE;
@@ -111,10 +121,11 @@ class User_model extends CI_Model
     * @param int $user_id
     */
     function login_by_id ($user_id) {
-    	$this->load->model('users/login_model');
-		$this->login_model->new_login($user_id);
+    	$CI =& get_instance();
+    	$CI->load->model('users/login_model');
+		$CI->login_model->new_login($user_id);
 		
-		$this->db->update('users',array('user_last_login' => date('Y-m-d h:i:s')),array('user_id' => $user_id));
+		$this->db->update('users',array('user_last_login' => date('Y-m-d H:i:s')),array('user_id' => $user_id));
     	
     	$this->session->set_userdata('user_id',$user_id);
     	$this->session->set_userdata('login_time',now());
@@ -131,6 +142,10 @@ class User_model extends CI_Model
     */
     function logout () {
     	$this->session->unset_userdata('user_id','login_time');
+    	
+		$CI =& get_instance();
+		$CI->load->helper('cookie');
+		delete_cookie('user_remember_key');
     	
     	return TRUE;
     }
@@ -468,16 +483,31 @@ class User_model extends CI_Model
 	* @param int $affiliate Affiliate ID of referrer
 	* @param boolean $is_admin Check to make an administrator
 	* @param array $custom_fields An array of custom field data, matching in name
+	* @param boolean $require_validation Should we require email validation?
 	*
 	* @return int $user_id
 	*/
-	function new_user($email, $password, $username, $first_name, $last_name, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE, $custom_fields = array()) {
+	function new_user($email, $password, $username, $first_name, $last_name, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE, $custom_fields = array(), $require_validation = FALSE) {
 		if (empty($groups)) {
 			$this->load->model('users/usergroup_model');
 			
 			$group = $this->usergroup_model->get_default();
 			
 			$groups = array($group);
+		}
+		
+		if ($require_validation == TRUE) {
+			$validate_key = random_string('unique');
+			
+			$result = $this->db->select('user_id')->where('user_validate_key',$validate_key)->get('users');
+			while ($result->num_rows() > 0) {
+				$validate_key = random_string('unique');
+				
+				$result = $this->db->select('user_id')->where('user_validate_key',$validate_key)->get('users');
+			}
+		}
+		else {
+			$validate_key = '';
 		}
 		
 		$insert_fields = array(
@@ -492,7 +522,9 @@ class User_model extends CI_Model
 								'user_signup_date' => date('Y-m-d H:i:s'),
 								'user_last_login' => '0000-00-00 00:00:00',
 								'user_suspended' => '0',
-								'user_deleted' => '0'
+								'user_deleted' => '0',
+								'user_remember_key' => '',
+								'user_validate_key' => $validate_key
 							);
 		
 		if (is_array($custom_fields)) {					
@@ -711,7 +743,9 @@ class User_model extends CI_Model
 							'signup_date' => local_time($user['user_signup_date']),
 							'last_login' => local_time($user['user_last_login']),
 							'suspended' => ($user['user_suspended'] == 1) ? TRUE : FALSE,
-							'admin_link' => site_url('admincp/users/profile/' . $user['user_id'])
+							'admin_link' => site_url('admincp/users/profile/' . $user['user_id']),
+							'remember_key' => $user['user_remember_key'],
+							'validate_key' => $user['user_validate_key']
 							);
 							
 			foreach ($custom_fields as $field) {
