@@ -11,6 +11,7 @@
 [http://www.link.com](link)  - normal ink
 [devs/classes/admin_form](link text)  - internal link
 * list
+[note][/note]
 
 - Files:
 

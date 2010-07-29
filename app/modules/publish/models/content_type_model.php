@@ -136,6 +136,56 @@ class Content_type_model extends CI_Model
 		return TRUE;
 	}
 	
+	/**
+	* Build Search Index
+	*
+	* Builds the FULLTEXT search key for a content table, if it's standard content
+	*
+	* @param int $content_type_id
+	*
+	* @return boolean TRUE
+	*/
+	function build_search_index ($content_type_id) {
+		$type = $this->get_content_type($content_type_id);
+		
+		if (empty($type)) {
+			die(show_error('Error re-building search index for content type id #' . $content_type_id . '.  Content type does not exist.'));
+		}
+		elseif ($type['is_standard'] == FALSE) {
+			// non-standard content types don't get automatic search indeces like this
+			return FALSE;
+		}
+		
+		$this->load->model('custom_fields_model');
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+		
+		$search_fields = array();
+		foreach ($custom_fields as $field) {
+			$search_fields[] = '`' . $field['name'] . '`';
+		}
+		
+		$search_fields = implode(', ', $search_fields);
+		
+		// we'll only drop the key if it already exists
+		$result = $this->db->query('SHOW INDEX FROM `' . $type['system_name'] . '`');
+		
+		$key_exists = FALSE;
+		
+		foreach ($result->result_array() as $key) {
+			if ($key['Key_name'] == 'search') {
+				$key_exists = TRUE;
+			}
+		}
+		
+		if ($key_exists == TRUE) {
+			$this->db->query('ALTER TABLE `' . $type['system_name'] . '` DROP index `search`');
+		}
+		
+		$this->db->query('CREATE FULLTEXT INDEX `search` ON `' . $type['system_name'] . '` (' . $search_fields . ');');
+		
+		return TRUE;
+	}
+	
 	/*
 	* Get Content Type
 	*

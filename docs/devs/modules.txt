@@ -60,6 +60,8 @@ class Modulename extends Module {
 
 Here, we've specified the current module name as well as version.  We've also extended the Module class which handles much of the shared logic for modules.
 
+[note]If there is a class conflict (e.g., your frontend controller class is [span_code]Modulename[/span_code] and you can't use [span_code]Modulename[/span_code] for the module definition class), you can use [span_code]Modulename_module[/span_code] (e.g., "[span_code]Search_module[/span_code]") as the class name for the module definition file.[/note]
+
 The CodeIgniter superobject is now accessible within our module definition class at $this->CI.
 
 *No other code is required* in the module definition, but few modules will be that simple.

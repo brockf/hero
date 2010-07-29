@@ -20,7 +20,7 @@
 			<a href="#">subscribe</a>
 		</div>
 
-		<div id="search"><form method="get" action="#" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="query" /></form></div>
+		<div id="search"><form method="get" action="{url path="search"}" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="q" /></form></div>
 	</div>
 </div>
 <div id="boxtop"></div>

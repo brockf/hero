@@ -267,6 +267,7 @@ class Content_model extends CI_Model
 	* @param int $filters['id']
 	* @param int|array $filters['topic'] Single topic ID or array of multiple topics
 	* @param int|array $filters['author'] Single author ID or array of multiple authors
+	* @param string $filters['keyword'] A keyword to search the content for (only applies if specifying a content type in $filters['type']).  If selected, each element returns a "relevance" datum.
 	* @param string $filters['date_format'] The format to return dates in
 	* @param boolean $filters['allow_future'] Allow content from the future?  Default: No/FALSE
 	* @param string $sort
@@ -305,6 +306,22 @@ class Content_model extends CI_Model
 				
 				// join this table into the mix
 				$this->db->join($type['system_name'], 'content.content_id = ' . $type['system_name'] . '.content_id','left');
+				
+				// are we doing a fulltext search?
+				if (isset($filters['keyword'])) {
+					$search_fields = array();
+					foreach ($custom_fields as $field) {
+						$search_fields[] = '`' . $field['name'] . '`';
+					}
+					reset($custom_fields);
+					
+					$search_fields = implode(', ', $search_fields);
+					
+					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . $filters['keyword'] . '%\')', NULL, FALSE);  
+					
+					$this->db->select('*');
+					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
+				}
 			}
 		}
 	
@@ -403,7 +420,8 @@ class Content_model extends CI_Model
 								'url' => site_url($content['link_url_path']),
 								'privileges' => (!empty($content['content_privileges'])) ? unserialize($content['content_privileges']) : FALSE,
 								'topics' => (!empty($content['content_topics'])) ? unserialize($content['content_topics']) : FALSE,
-								'template' => $content['content_type_template']
+								'template' => $content['content_type_template'],
+								'relevance' => (isset($content['relevance'])) ? $content['relevance'] : FALSE
 							);
 							
 			// are we loading in all content data?

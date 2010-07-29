@@ -1,6 +1,6 @@
 - Roadmap:	
 	- Comments moderator (modeled after WordPress) and comments model/library
-	- Create Search Manager (which content types are available, how often to rebuild index, etc.)
+	- Create Search Manager (which content types are available, whether to search products)
 	- Apply time_since/formatting to each Admin panel date
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders
@@ -35,16 +35,5 @@
 	- Links to members via customer_id
 - Templates
 	- Have ".thtml" extension
-- Modules
-	- Defined in /modules/modname/modname.php
-	- Mandatory Methods:
-		- __construct();
-	- Optional Methods:
-		- admin_preload();
-			- Build admin navigation
-		- front_preload();
-			- Add template plugin directories with $this->CI->smarty->addPluginsDir();
-		- update($db_version);
-			- Create settings, writeable folders, and update the database
 	
 - Requires: PHP5, mod_rewrite, cURL, fopen_allow_url = On, GD2 for thumbnails (or ImageMagick if you update the image_manipulation library)

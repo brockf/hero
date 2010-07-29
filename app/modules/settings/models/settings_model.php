@@ -105,10 +105,11 @@ class Settings_model extends CI_Model
 	* @param string $setting_type The type of setting it is (options: toggle, textarea, text)
 	* @param string $setting_options A serialized array of options for toggle settings
 	* @param date $setting_time The time of the creation of the setting
+	* @param boolean $setting_hidden Is the setting hidden from the normal Settings manager?
 	*
 	* @return int $setting_id
 	*/
-	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_type = 'text', $setting_options = '', $setting_time = FALSE) {
+	function new_setting ($setting_group = '0', $setting_name, $setting_value, $setting_help = '', $setting_type = 'text', $setting_options = '', $setting_time = FALSE, $setting_hidden = FALSE) {
 		$insert_fields = array(
 							 	'setting_group' => $setting_group,
 							 	'setting_name' => $setting_name,
@@ -116,7 +117,8 @@ class Settings_model extends CI_Model
 							 	'setting_help' => $setting_help,
 							 	'setting_update_date' => ($setting_time == FALSE) ? date('Y-m-d H:i:s') : $setting_time,
 							 	'setting_type' => $setting_type,
-							 	'setting_options' => $setting_options
+							 	'setting_options' => $setting_options,
+							 	'setting_hidden' => ($setting_hidden == TRUE) ? '1' : '0'
 							);				                                
 		$this->db->insert('settings',$insert_fields);
 		

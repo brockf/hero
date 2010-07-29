@@ -967,6 +967,8 @@ class Admincp extends Admincp_Controller {
 																$validators,
 																$type['system_name']
 															);
+															
+			$this->content_type_model->build_search_index($this->input->post('content_type_id'));
 			
 			$this->notices->SetNotice('Field added successfully.');
 		}
@@ -984,6 +986,8 @@ class Admincp extends Admincp_Controller {
 												$validators,
 												$type['system_name']
 											);
+											
+			$this->content_type_model->build_search_index($this->input->post('content_type_id'));
 															
 			$this->notices->SetNotice('Field edited successfully.');
 		}
@@ -1023,6 +1027,8 @@ class Admincp extends Admincp_Controller {
 		foreach ($fields as $field) {
 			$this->custom_fields_model->delete_custom_field($field, $type['system_name']);
 		}
+		
+		$this->content_type_model->build_search_index($type['id']);
 		
 		$this->notices->SetNotice('Field(s) deleted successfully.');
 		

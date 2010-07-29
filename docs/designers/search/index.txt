@@ -1,0 +1,94 @@
+[h2]Search Module[/h2]
+
+The search module is a powerful way to open up all of your site's standard content and products to users with a one-keyword search.  Only standard content types (with a title & URL) can be included in search results.  Search options are configured at Configuration > Search in the control panel.
+
+[h2]Creating a Search Form[/h2]
+
+To create a search form, you need to setup a form with the following attributes:
+
+* Form Action: {url path="search"}
+* Form Method: GET
+
+It must contain one text field named "q".  This will contain the user's query.
+
+[h2]Example Search Form[/h2]
+
+[code]
+<form action="{url path="search"}" method="GET">
+Search Query: <input type="text" name="q" />&nbsp;&nbsp;<input type="submit" name="do_search" value="Search" />
+</form>
+[/code]
+
+[h2]Displaying Search Results[/h2]
+
+All search results are displayed with the "search.thtml" template in your theme directory.
+
+The following variables are available in the search template at all times:
+
+* {$searching} (TRUE or FALSE if we are actively doing a search or not)
+* {$query}
+
+If we are actively searching:
+
+* {$num_results} (check to see if this == "0" before looping through results)
+* {$results} (an array of results containing the items below)
+* {$pagination}
+
+Each result item has a "result_type" field which says whether it is "content" or "product".  For example, you would use something like this:
+
+[code]
+{if $searching == TRUE}
+	{if $num_results > 0}
+	{foreach $results as $result}
+		{if $result.result_type == "content"}
+			{* This is a content item.  We will use content tags. *}
+		{else}
+			{* This is a product item.  We will use product tags. *}
+		{/if}
+	{/foreach}
+	{else}
+		There were not results matching your query.
+	{/if}
+{/if}
+[/code]
+
+Each *content* type item has the following tags:
+
+* {$id}
+* {$title}
+* {$date}
+* {$modified_date}
+* {$author_id}
+* {$author_username}
+* {$author_first_name}
+* {$author_last_name}
+* {$author_email}
+* {$type_id}
+* {$type_name}
+* {$url_path} (relative URL to the content)
+* {$url} (absolute URL to the content)
+* {$summary} (the auto-generated summary field, specified in search configuration)
+* {$relevance} (the search relevance, e.g., 1.345070991)
+* plus a tag for each of their custom fields like {$custom_field_name}
+
+Each *product* type item has the following tags:
+
+* {$id}
+* {$url} (absolute URL to product page)
+* {$collections} (array of collection ID's)
+* {$name}
+* {$description}
+* {$price}
+* {$weight}
+* {$requires_shipping} (TRUE or FALSE)
+* {$track_inventory} (TRUE or FALSE)
+* {$inventory} (# of inventory in stock)
+* {$inventory_allow_oversell} (do we allow overselling?)
+* {$sku} (SKU #)
+* {$is_taxable} (TRUE or FALSE)
+* {$is_download} (TRUE or FALSE)
+* {$download_name}
+* {$download_size}
+* {$feature_image}
+* {$summary} (based on the "description" field, this summary doesn't contain any HTML and may be shortened to meet the settings specified in search configuration)
+* {$relevance} (the search relevance, e.g., 1.345070991)

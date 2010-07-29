@@ -1,0 +1,23 @@
+[h1]Store Module[/h1]
+
+[h2]Displaying Products[/h2]
+
+Each product has the following tags available:
+
+* {$id}
+* {$url} (absolute URL to product page)
+* {$collections} (array of collection ID's)
+* {$name}
+* {$description}
+* {$price}
+* {$weight}
+* {$requires_shipping} (TRUE or FALSE)
+* {$track_inventory} (TRUE or FALSE)
+* {$inventory} (# of inventory in stock)
+* {$inventory_allow_oversell} (do we allow overselling?)
+* {$sku} (SKU #)
+* {$is_taxable} (TRUE or FALSE)
+* {$is_download} (TRUE or FALSE)
+* {$download_name}
+* {$download_size}
+* {$feature_image}

@@ -301,7 +301,15 @@ class MY_Loader extends CI_Loader
 					
 					$CI =& get_instance();
 					
-					$CI->module_definitions->$module = new $module;
+					// because of a name conflict, this may be called Modulename_module
+					if (class_exists($module . '_module')) {
+						$class_name = $module . '_module';
+					}
+					else {
+						$class_name = $module;
+					}
+					
+					$CI->module_definitions->$module = new $class_name;
 				}
 			}
 		}

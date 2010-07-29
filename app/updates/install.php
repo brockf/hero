@@ -449,7 +449,8 @@ INSERT INTO `settings_groups` (`setting_group_id`, `setting_group_name`, `settin
 (2, 'E-commerce', 'Configurations related to subscriptions, products, and checkout.'),
 (3, 'Members', 'Related to registration and site members.'),
 (4, 'Publishing', 'Related to site content and publishing.'),
-(5, 'Design', 'Configures the look of your site.  Often managed in the Design tab.');
+(5, 'Design', 'Configures the look of your site.  Often managed in the Design tab.'),
+(6, 'Search', 'How should the site searching work?');
 
 -- --------------------------------------------------------
 
