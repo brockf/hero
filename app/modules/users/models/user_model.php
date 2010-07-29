@@ -24,6 +24,27 @@ class User_model extends CI_Model
         	// load active user into cache for future ->Get() calls
         	$this->set_active($this->session->userdata('user_id'));
         }
+        else {
+        	// we may have a remembered user
+        	if (get_cookie('user_remember_key',TRUE)) {
+        		// does this correspond with a remember key?
+        		$this->db->select('user_id');
+        		$this->db->where('user_remember_key', get_cookie('user_remember_key', TRUE));
+        		$result = $this->db->get('users');
+        		
+        		if ($result->num_rows() == 0) {
+        			// no correspondence, this key has expired
+        			delete_cookie('user_remember_key');
+        			
+        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => $remember_key));
+        		}
+        		else {
+        			$user = $result->row_array();
+        			
+        			$this->login_by_id($user['user_id']);
+        		}
+        	}
+        }
 	}
 	
 	/*
@@ -33,10 +54,11 @@ class User_model extends CI_Model
 	*
 	* @param string $username Either the username or email of the user
 	* @param string $password Their password
+	* @param boolean $remember Remember the user with a cookie to re-log them in at future visits
 	*
 	* @return boolean FALSE upon failure, TRUE upon success
 	*/
-	function login ($username, $password) {
+	function login ($username, $password, $remember = FALSE) {
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
 		$this->db->where('user_password',md5($password));
 		$this->db->where('user_suspended','0');
@@ -52,15 +74,52 @@ class User_model extends CI_Model
 		}
 		
 		// track login
-		$this->load->model('users/login_model');
-		$this->login_model->new_login($user['id']);
+		$this->login_by_id($user_id); 
 		
-		$this->db->update('users',array('user_last_login' => date('Y-m-d h:i:s')),array('user_id' => $user['id']));
+		// remember?
+		if ($remember == TRUE) {
+			$remember_key = random_string('unique');
+			
+			$result = $this->db->select('user_id')->where('user_remember_key',$remember_key)->get('users');
+			while ($result->num_rows() > 0) {
+				$remember_key = random_string('unique');
+				
+				$result = $this->db->select('user_id')->where('user_remember_key',$remember_key)->get('users');
+			}
+			
+			// create the cookie with the key
+			$this->load->helper('cookies');
+			
+			$cookie = array(
+			                   'name'   => 'user_remember_key',
+			                   'value'  => $remember_key,
+			                   'expire' => (60*60*24*365) // 1 year
+			               );
+			
+			set_cookie($cookie); 
+			
+			// put key in database
+			$this->db->update('users',array('remember_key' => $remember_key),array('user_id' => $user['id']));
+		}
+		
+		return TRUE;
+    }
+    
+    /**
+    * Login by ID
+    *
+    * @param int $user_id
+    */
+    function login_by_id ($user_id) {
+    	$this->load->model('users/login_model');
+		$this->login_model->new_login($user_id);
+		
+		$this->db->update('users',array('user_last_login' => date('Y-m-d h:i:s')),array('user_id' => $user_id));
     	
-    	$this->session->set_userdata('user_id',$user['id']);
+    	$this->session->set_userdata('user_id',$user_id);
     	$this->session->set_userdata('login_time',now());
 		
-		$this->set_active($user['id']); 
+		$this->set_active($user_id);
 		
 		return TRUE;
     }
