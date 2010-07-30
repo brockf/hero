@@ -39,6 +39,9 @@ class CI_Smarty extends Smarty {
 		// are we loggedin
 		$this->assign('logged_in',($this->CI->user_model->logged_in() ? TRUE : FALSE));
 		
+		// user data
+		$this->assign('member', $this->CI->user_model->get());
+		
 		// register output variable which manipulates templates prior to Smarty parsing
 		$this->loadFilter('pre','pre_smarty_parse');
 	}

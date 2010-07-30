@@ -14,6 +14,16 @@ The following variables are accessible in any template:
 * [span_code]{$setting.setting_name}[/span_code] (where setting_name is the name of the setting you are trying to access)
 * [span_code]{$logged_in}[/span_code] (TRUE if the user is logged in, FALSE if not)
 
+If we have a logged in, active user, the following variables are available:
+
+* [span_code]{$member.username}[/span_code]
+* [span_code]{$member.email}[/span_code]
+* [span_code]{$member.first_name}[/span_code]
+* [span_code]{$member.last_name}[/span_code]
+* [span_code]{$member.last_login}[/span_code]
+* [span_code]{$member.signup_date}[/span_code]
+* [span_code]{$member.is_admin} (TRUE or FALSE)[/span_code]
+
 [h2]Modifying Variables[/h2]
 
 Many variables can be displayed without modification (e.g, the title tag just needs to display the title).  However, other variables may need to be modified before being displayed.  For example, we may want to customize the way the "date" is being displayed with the following modifier:
