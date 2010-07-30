@@ -514,6 +514,10 @@ ul.search_results span.price {
 }
 
 /* forms */
+form.form {
+	line-height: normal;
+}
+
 form.form fieldset {
 	display: block;
 	margin: 0;
@@ -623,6 +627,17 @@ ul.login_form_links a {
 div.errors {
 	background-color: #f84040;
 	color: #fff;
+	font-size: 9pt;
+	margin: 15px 0px;
+	padding: 10px 25px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+}
+
+div.notices {
+	background-color: #d0ffc9;
+	color: #222;
 	font-size: 9pt;
 	margin: 15px 0px;
 	padding: 10px 25px;

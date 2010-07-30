@@ -25,7 +25,101 @@ class Users extends Front_Controller {
 	}
 	
 	function index () {
+		$notice = $this->session->flashdata('notice');
+	
+		$this->smarty->assign('notice', $notice);
 		return $this->smarty->display('account_home.thtml');
+	}
+	
+	function profile () {
+		// get custom fields
+		$this->load->model('custom_fields_model');
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		
+		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : $this->user_model->get();
+		
+		$errors = ($this->input->get('errors') == 'true') ? $this->session->flashdata('profile_errors') : FALSE;
+		
+		$this->smarty->assign('custom_fields',$custom_fields);
+		$this->smarty->assign('values',$values);
+		$this->smarty->assign('validation_errors',$errors);
+		return $this->smarty->display('account_profile.thtml');
+	}
+	
+	function post_profile () {
+		// create an array of current values in case we redirect with an error
+		$values = array();
+		$values['username'] = $this->input->post('username');
+		$values['email'] = $this->input->post('email');
+		$values['first_name'] = $this->input->post('first_name');
+		$values['last_name'] = $this->input->post('last_name');
+		
+		$this->load->model('custom_fields_model');
+		
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		foreach ($custom_fields as $field) {
+			$values[$field['name']] = $_POST[$field['name']];
+		}
+		
+		$values = query_value_encode(serialize($values));
+		
+		// validate standard and custom form fields
+		$validated = $this->user_model->validation(TRUE);
+		
+		if ($validated !== TRUE) {
+			$this->session->set_flashdata('profile_errors',validation_errors());
+		
+			return redirect('users/profile?errors=true&values=' . $values);
+		}
+		
+		// we validated!  let's update the account
+		$custom_fields = $this->custom_fields_model->post_to_array('1');
+			
+		$this->user_model->update_user(
+										$this->user_model->get('id'),
+										$this->input->post('email'),
+										$this->input->post('password'),
+										$this->input->post('username'),
+										$this->input->post('first_name'),
+										$this->input->post('last_name'),
+										$this->user_model->get('usergroups'),
+										($this->user_model->is_admin()) ? TRUE : FALSE, // not an administratior
+										$custom_fields
+									);
+											
+		$this->session->set_flashdata('notice','You have successfully updated your profile.');
+		
+		return redirect('users/');
+	}
+	
+	function password () {
+		$validation_errors = ($this->input->get('errors') == 'true') ? $this->session->flashdata('password_errors') : FALSE;
+	
+		$this->smarty->assign('validation_errors',$validation_errors);	
+		return $this->smarty->display('account_change_password.thtml');
+	}
+	
+	function post_password () {
+		$this->load->library('form_validation');
+		
+		// this helper will verify their current password
+		$this->load->helper('verify_password');
+		
+		$this->form_validation->set_rules('password','Current Password','required|verify_password');
+		$this->form_validation->set_rules('new_password','New Password','required|min_length[6]|matches[new_password2]');
+		$this->form_validation->set_rules('new_password2','Repeat New Password','required');
+		
+		if ($this->form_validation->run() == FALSE) {
+			$this->session->set_flashdata('password_errors',validation_errors());
+		
+			return redirect('users/password?errors=true');
+		}
+		
+		$this->user_model->update_password($this->user_model->get('id'), $this->input->post('new_password'));
+		
+		$this->session->set_flashdata('notice','You have successfully updated your password.');
+		
+		redirect('users');
 	}
 	
 	function forgot_password () {
@@ -142,10 +236,6 @@ class Users extends Front_Controller {
 		$validated = $this->user_model->validation(FALSE);
 		
 		if ($validated !== TRUE) {
-			$error_string = '';
-			foreach ($validated as $error) {
-				$error_string = '<p>' . $error . '</p>';
-			}
 			$this->session->set_flashdata('register_errors',validation_errors());
 		
 			return redirect('users/register?return=' . query_value_encode($return) . '&errors=true&values=' . $values);

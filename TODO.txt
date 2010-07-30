@@ -1,5 +1,4 @@
 - Roadmap:	
-	- My Account Manager
 	- Frontend Forms
 	
 	- Comments moderator (modeled after WordPress) and comments model/library

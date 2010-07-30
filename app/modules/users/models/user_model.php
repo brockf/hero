@@ -622,6 +622,20 @@ class User_model extends CI_Model
 	}
 	
 	/**
+	* Update Password
+	*
+	* @param int $user_id
+	* @param string $new_password
+	*
+	* @return TRUE
+	*/
+	function update_password ($user_id, $new_password) {
+		$this->db->update('users',array('user_password' => md5($new_password)),array('user_id' => $user_id));
+		
+		return TRUE;
+	}
+	
+	/**
 	* Reset Password
 	*
 	* @param int $user_id

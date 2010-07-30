@@ -4,6 +4,13 @@ Account Manager
 {/block}
 {block name="content"}
 	<h1>Account Manager</h1>
+	
+	{if $notice}
+		<div class="notices">
+			<p>{$notice}</p>
+		</div>
+	{/if}
+	
 	<p>Hello, {$member.first_name}!</p>
 	<p>Welcome back to your account manager.  Here, you can review your account records, update your profile and password, and review
 	your purchases.</p>
