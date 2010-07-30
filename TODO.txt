@@ -1,5 +1,6 @@
 - Roadmap:	
-	- Forgot Password
+	- My Account Manager
+	- Frontend Forms
 	
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Make store accessible only to certain usergroup(s) (Store Configuration)

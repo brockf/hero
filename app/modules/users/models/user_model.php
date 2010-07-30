@@ -603,6 +603,9 @@ class User_model extends CI_Model
 												
 		$this->db->update('users',$update_fields,array('user_id' => $user_id));
 		
+		// update email in customers table
+		$this->db->update('customers',array('email' => $email),array('internal_id' => $user_id));
+		
 		return TRUE;
 	}
 	
@@ -615,6 +618,41 @@ class User_model extends CI_Model
 	*/
 	function delete_user ($user_id) {
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
+		return TRUE;
+	}
+	
+	/**
+	* Reset Password
+	*
+	* @param int $user_id
+	*
+	* @return boolean TRUE
+	*/
+	function reset_password ($user_id) {
+		$user = $this->get_user($user_id);
+		
+		if (empty($user)) {
+			return FALSE;
+		}
+		
+		// reset the password
+		$this->load->helper('string');
+		
+		$password = random_string('alnum',9);
+		$this->db->update('users',array('user_password' => md5($password)),array('user_id' => $user['id']));
+	
+		$this->db->where('customer_id',$user['customer_id']);
+		$result = $this->db->get('customers');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$customer = $result->row_array();
+	
+		// send the email
+		TriggerTrip('forgot_password', FALSE, FALSE, $customer['customer_id'], FALSE, array('new_password' => $password));
+		
 		return TRUE;
 	}
 	
@@ -734,6 +772,7 @@ class User_model extends CI_Model
 			$this_user = array(
 							'id' => $user['user_id'],
 							'is_admin' => ($user['user_is_admin'] == '1') ? TRUE : FALSE,
+							'customer_id' => $user['customer_id'],
 							'usergroups' => $user_groups,
 							'first_name' => $user['user_first_name'],
 							'last_name' => $user['user_last_name'],

@@ -17,7 +17,7 @@ class Users extends Front_Controller {
 	function __construct() {
 		parent::__construct();
 		
-		$this->public_methods = array('login','post_login','forgot_password','register','post_registration');
+		$this->public_methods = array('password_reset','login','post_login','forgot_password','post_forgot_password','register','post_registration');
 		
 		if (!in_array($this->router->fetch_method(), $this->public_methods) and $this->user_model->logged_in() == FALSE) {
 			redirect('users/login?return=' . query_value_encode(current_url()));
@@ -25,7 +25,48 @@ class Users extends Front_Controller {
 	}
 	
 	function index () {
+		return $this->smarty->display('account_home.thtml');
+	}
+	
+	function forgot_password () {
+		$error = ($this->input->get('error')) ? query_value_decode($this->input->get('error')) : '';
+	
+		$this->smarty->assign('error',$error);
+		return $this->smarty->display('account_forgot_password.thtml');
+	}
+	
+	function post_forgot_password () {
+		// validate
+		$this->load->library('form_validation');
 		
+		$this->form_validation->set_rules('email','Email','trim|valid_email');
+		
+		if ($this->form_validation->run() == FALSE) {
+			return redirect('users/forgot_password?error=' . query_value_encode('You have entered an invalid email address.'));
+		}
+	
+		$users = $this->user_model->get_users(array('email' => $this->input->post('email')));
+		
+		if (count($users) > 1) {
+			return redirect('users/forgot_password?error=' . query_value_encode('There was an error retrieving your account.'));
+		}
+		elseif (empty($users)) {
+			return redirect('users/forgot_password?error=' . query_value_encode('Your account record could not be retrieved.'));
+		}
+		elseif (count($users) == 1) {
+			// success
+			$user = $users[0];
+			
+			$this->user_model->reset_password($user['id']);
+			
+			return redirect('users/password_reset');
+		}
+		
+		return FALSE;
+	}
+	
+	function password_reset () {
+		return $this->smarty->display('account_forgot_password_complete.thtml');
 	}
 	
 	function register () {

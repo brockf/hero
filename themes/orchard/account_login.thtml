@@ -33,10 +33,10 @@ Account Login
 			
 			<ul class="login_form_links">
 				<li>
-					<a href="{url path="account/register"}">Don't have an account? Click here to register.</a>
+					<a href="{url path="users/register"}">Don't have an account? Click here to register.</a>
 				</li>
 				<li>
-					<a href="{url path="account/forgot_password"}">Forgot your password?</a>
+					<a href="{url path="users/forgot_password"}">Forgot your password?</a>
 				</li>
 			</ul>
 		</form>
