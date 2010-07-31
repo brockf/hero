@@ -11,8 +11,6 @@ $(document).ready(function() {
 	});
 	
 	// menu
-	
-	// click functions
 	$(document).click(function() {
 		$('div#navigation ul.children').hide();
 	});
@@ -26,8 +24,18 @@ $(document).ready(function() {
 		}
 	});
 	
-	// table row colours
+	// delete confirmations
+	$('input[value="Delete"]').click(function() { 
+		var confirmed = confirm('Are you sure you want to do this?');
+		
+		if (!confirmed) {
+			$('input.action_items').attr('checked',false);
+			$('input.action_items').parent().parent().removeClass('selected');
+			return false;
+		}
+	});
 	
+	// table row colours
 	$('table.dataset tr:even').addClass('odd');
 	
 	// handle row clicks/checkbox clicks
