@@ -47,6 +47,9 @@ if (!isset($blog)) {
 		</li>
 	</ul>
 </fieldset>
+
+<?=$privilege_form;?>
+
 <fieldset>
 	<legend>Filters</legend>
 	<ul class="form">

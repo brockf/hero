@@ -34,10 +34,11 @@ class Blog_model extends CI_Model
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
  	* @param string $template The filename of the template in the theme directory to use for output
  	* @param int $per_page How many items to show per page?
+ 	* @param string Standard privileges array of member group ID's
  	*
  	* @return $blog_id
  	*/
-	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25) {
+	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25, $privileges = array()) {
 		$this->load->helper('clean_string');
 		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 		
@@ -56,6 +57,7 @@ class Blog_model extends CI_Model
 							'blog_sort_field' => (!empty($sort_field)) ? $sort_field : '',
 							'blog_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
 							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
+							'blog_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'blog_template' => $template,
 							'blog_per_page' => $per_page
 							);
@@ -81,10 +83,11 @@ class Blog_model extends CI_Model
  	* @param boolean $auto_trim Should we auto trim the summary field in listings?
  	* @param string $template The filename of the template in the theme directory to use for output
  	* @param int $per_page How many items to show per page?
+ 	* @param string $privileges Standard privileges array of member group ID's
  	*
  	* @return TRUE
  	*/
-	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25) {
+	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25, $privileges = array()) {
 		$blog = $this->get_blog($blog_id);
 		
 		$this->load->model('link_model');
@@ -107,6 +110,7 @@ class Blog_model extends CI_Model
 							'blog_sort_field' => (!empty($sort_field)) ? $sort_field : '',
 							'blog_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
 							'blog_auto_trim' => ($auto_trim == TRUE) ? '1' : '0',
+							'blog_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'blog_template' => $template,
 							'blog_per_page' => $per_page
 							);
@@ -352,6 +356,7 @@ class Blog_model extends CI_Model
 						'template' => $row['blog_template'],
 						'sort_field' => (!empty($row['blog_sort_field'])) ? $row['blog_sort_field'] : FALSE,
 						'sort_dir' => (!empty($row['blog_sort_dir'])) ? $row['blog_sort_dir'] : FALSE,
+						'privileges' => (!empty($row['blog_privileges'])) ? unserialize($row['blog_privileges']) : FALSE,
 						'per_page' => $row['blog_per_page']
 					);
 		}

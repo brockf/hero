@@ -119,6 +119,25 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		$this->load->library('Admin_form');
+		
+		// privileges form
+		$this->load->model('users/usergroup_model');
+		$groups = $this->usergroup_model->get_usergroups();
+		
+		$privileges = new Admin_form;
+		$privileges->fieldset('Member Group Access');
+		
+		$options = array();
+		$options[0] = 'Public / Any Member Group';
+		foreach ($groups as $group) {
+			$options[$group['id']] = $group['name'];
+		}
+		
+		$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
+		
+		$privilege_form = $privileges->display();
+		
+		// template form
 		$form = new Admin_form;
 		
 		$form->fieldset('Design');
@@ -131,6 +150,7 @@ class Admincp extends Admincp_Controller {
 					'types' => $type_options,
 					'users' => $user_options,
 					'topics' => $topic_options,
+					'privilege_form' => $privilege_form,
 					'form_title' => 'Create New Blog/Archive',
 					'form_action' => site_url('admincp/blogs/post/new'),
 					'form' => $form->display()
@@ -186,6 +206,26 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		$this->load->library('Admin_form');
+		
+		// privileges form
+		$this->load->model('users/usergroup_model');
+		$groups = $this->usergroup_model->get_usergroups();
+		
+		$privileges = new Admin_form;
+		$privileges->fieldset('Member Group Access');
+		
+		$options = array();
+		$options[0] = 'Public / Any Member Group';
+		foreach ($groups as $group) {
+			$options[$group['id']] = $group['name'];
+		}
+		
+		$privileges->dropdown('Access Requires Membership to Group','privileges',$options,(!empty($blog['privileges'])) ? $blog['privileges'] : array(0), TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
+		
+		$privilege_form = $privileges->display();
+		
+		// template form
+		
 		$form = new Admin_form;
 		
 		$form->fieldset('Design');
@@ -201,6 +241,7 @@ class Admincp extends Admincp_Controller {
 					'field_options' => $field_options,
 					'blog' => $blog,
 					'form' => $form->display(),
+					'privilege_form' => $privilege_form,
 					'form_title' => 'Edit Blog/Archive',
 					'form_action' => site_url('admincp/blogs/post/edit/' . $blog['id'])
 				);
@@ -224,7 +265,8 @@ class Admincp extends Admincp_Controller {
 										$this->input->post('sort_dir'),
 										($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
 										$this->input->post('template'),
-										$this->input->post('per_page')
+										$this->input->post('per_page'),
+										$this->input->post('privileges')
 									);
 										
 			$this->notices->SetNotice('Blog added successfully.');
@@ -243,7 +285,8 @@ class Admincp extends Admincp_Controller {
 									$this->input->post('sort_dir'),
 									($this->input->post('auto_trim') == '1') ? TRUE : FALSE,
 									$this->input->post('template'),
-									$this->input->post('per_page')
+									$this->input->post('per_page'),
+									$this->input->post('privileges')
 								);
 										
 			$this->notices->SetNotice('Blog edited successfully.');
