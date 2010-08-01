@@ -24,24 +24,24 @@ All content variables are available in this template as standard Smarty template
 
 [h3]content (arguments: type, topic, sort, sort_dir, limit, offset)[/h3]
 
-Retrieve content and display it in the format you specify between the tags.
+Retrieve content of a specific type and display it in the format you specify between the tags.  This function makes all of the content's data available as variables.
 
 Required variables:
 
-* [span_code]type[/span_code] - The content type ID for the content you would like to retrieve. **OR**
-* [span_code]id[/span_code] - The content ID number.
+* Either [span_code]type[/span_code] - The content type ID for the content you would like to retrieve.
+* or [span_code]id[/span_code] - The content ID number.
 
 Optional variables:
 
 * [span_code]topic[/span_code] - One or more topic ID's to limit content retrieval (e.g., "5" or "5|10|15" for multiple topics).
-* [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "title", "custom_field_name").  Default: "date".
-* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: ASC.
+* [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
+* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: DESC.
 * [span_code]limit[/span_code] - How many results would you like to retrieve?  Default: As many as possible.
 * [span_code]offset[/span_code] - At what point in the results would you like to start returning them?  (e.g., an offset of "5" with a limit of "5" will return results 6-10).
 
 Available block variables:
 
-* All content variables list above under "Displaying Content" are available in the format of [span_code]{block:$variable_name}[/span_code].
+* All content variables listed above under "Displaying Content" are available in the format of [span_code]{block:$variable_name}[/span_code].
 
 Example - retrieve the latest 10 items for a content type:
 
@@ -57,10 +57,59 @@ Example - retrieve one piece of content in its entirety:
 {content id="431"}
 <h1>{block:$title}</h1>
 Custom Field: {block:$custom_field}
-Publish Date: {block:$date|date_format(Y-m-d)}
+Publish Date: [span_code]{block:$
 
 Body:
 
 {block:$body}
 {/content}
+[/code]
+
+[h3]content_in_topic (arguments: topic, sort, sort_dir, limit, offset)[/h3]
+
+Retrieve all content of a specific topic (or set of topics).  Because we are accessing multiple content types but want to make the most use of server resources, we have a limited set of data available in variables.
+
+Required variables:
+
+* [span_code]topic[/span_code] - The ID of the topic, or a set of topics separated by pipes (e.g., "3|6|2").
+
+Optional variables:
+
+* [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
+* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: DESC.
+* [span_code]limit[/span_code] - How many results would you like to retrieve?  Default: As many as possible.
+* [span_code]offset[/span_code] - At what point in the results would you like to start returning them?  (e.g., an offset of "5" with a limit of "5" will return results 6-10).
+
+Available block variables:
+
+* [span_code]{block:$title}[/span_code]
+* [span_code]{block:$date}[/span_code]
+* [span_code]{block:$modified_date}[/span_code]
+* [span_code]{block:$author_id}[/span_code]
+* [span_code]{block:$author_username}[/span_code]
+* [span_code]{block:$author_first_name}[/span_code]
+* [span_code]{block:$author_last_name}[/span_code]
+* [span_code]{block:$author_email}[/span_code]
+* [span_code]{block:$type_id}[/span_code]
+* [span_code]{block:$type_name}[/span_code]
+* [span_code]{block:$url_path}[/span_code] (relative URL to the content)
+* [span_code]{block:$url}[/span_code] (absolute URL to the content)
+* [span_code]{block:$template}[/span_code] (template filename)
+
+Example - retrieve the last 10 content items from a topic:
+
+[code]
+<ul class="topic_list">
+{content_in_topic topic="4" limit="10"}
+	<li><a href="{block:$url}">{block:$title}</a> (published {block:$date|date_format("Y-m-d")})</li>
+{/content_in_topic}
+[/code]
+
+Example - retrieve the first 5 alphabetically-sorted items from multiple topics:
+
+[code]
+<ul class="topic_list">
+{content_in_topic topic="1|3|4" limit="5" sort="content_title" sort_dir="ASC"}
+	<li><a href="{block:$url}">{block:$title}</a> (published {block:$date|date_format("Y-m-d")})</li>
+{/content_in_topic}
 [/code]

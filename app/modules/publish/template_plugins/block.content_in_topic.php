@@ -1,13 +1,11 @@
 <?php
 
 /**
-* Get Content
+* Get Content in Topic
 *
-* Loads content item(s) from the content database
+* Loads content item(s) from specified topic(s)
 *
-* @param int $type The content type (required)
-* @param int $id The content ID
-* @param int|array $topic The topic ID like "X" or "X|Y|Z"
+* @param int $topic The topic ID like "X" or "X|Y|Z"
 * @param string $sort The column to sort by
 * @param string $sort_dir The direction, ASC or DESC, to sort
 * @param int $limit The number of items to pull
@@ -15,34 +13,22 @@
 *
 */
 
-function smarty_block_content ($params, $tagdata, $smarty, $repeat){
+function smarty_block_content_in_topic ($params, $tagdata, $smarty, $repeat){
 	if (!$repeat) {		
-		if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
-			$return = 'You must specify a "type" parameter for template {content} calls.';
+		if (!isset($params['topic'])) {
+			$return = 'You must specify a "topic" parameter for template {content_in_topic} calls.';
 		}
 		else {
 			// deal with filters
 			$filters = array();
 			
 			// param: topic
-			if (isset($params['topic'])) {
-				if (strpos($params['topic'],'|') !== FALSE) {
-					$topics = explode('|', $params['topic']);
-					$filters['topic'] = $topics;
-				}
-				else {
-					$filters['topic'] = $params['topic'];
-				}
+			if (strpos($params['topic'],'|') !== FALSE) {
+				$topics = explode('|', $params['topic']);
+				$filters['topic'] = $topics;
 			}
-			
-			// param: type
-			if (isset($params['type'])) {
-				$filters['type'] = $params['type'];
-			}
-			
-			// param: id
-			if (isset($params['id'])) {
-				$filters['id'] = $params['id'];
+			else {
+				$filters['topic'] = $params['topic'];
 			}
 			
 			// param: sort

@@ -1,5 +1,4 @@
 - Roadmap:	
-	- Get content by topic (from "links")
 	- Storefront
 	- Checkout
 	- Content/Form/Product Privileges
