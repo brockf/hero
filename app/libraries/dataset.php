@@ -83,6 +83,9 @@ class Dataset {
     	// calculate parameters without limits
     	$params_no_limits = array();
 	    $params_no_limits = (!empty($filter_params)) ? $filter_params : $params_no_limits;
+	    
+	    // add in the default parameters
+	    $params_no_limits = array_merge($params, $this->default_data_filters);
     	
     	// get data
     	$CI->load->model($this->data_model,'data_model');
