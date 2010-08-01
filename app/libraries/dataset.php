@@ -97,12 +97,12 @@ class Dataset {
     		$this->data = $CI->data_model->$data_function($params_no_limits);
     		
     		// convert to CSV
-			$this->load->library('array_to_csv');
-			$this->array_to_csv->input($this->data);
+			$CI->load->library('array_to_csv');
+			$CI->array_to_csv->input($this->data);
 			
 			header("Content-type: application/vnd.ms-excel");
   			header("Content-disposition: attachment; filename=export-" . $this->data_function . '-' . date("Y-m-d") . ".csv");
-			echo $this->array_to_csv->output();
+			echo $CI->array_to_csv->output();
 			die();
     	}
     	else {

@@ -19,87 +19,6 @@ class Form_model extends CI_Model
 	}
 	
 	/*
-	* New Response
-	*
-	* @param int $form_id
-	* @param int $user_id
-	* @param array $custom_fields
-	*
-	* @return $response_id
-	*/
-	function new_response($form_id, $user_id = FALSE, $custom_fields = array()) {
-		$form = $this->get_form($form_id);
-			
-		if (empty($form)) {
-			die(show_error('Invalid form ID.'));
-		}
-		
-		$date = date('Y-m-d H:i:s');
-		
-		$insert_fields = array(
-							'submission_date' => $date,
-							'user_id' => ($user_id) ? $user_id : 0
-						);
-						
-		foreach ($custom_fields as $field => $value) {
-			$insert_fields[$field] = $value;
-		}
-		reset($custom_fields);
-		
-		$insert_id = $this->db->insert($form['table_name'], $insert_fields);
-		
-		if (!empty($form['email'])) {
-			// build email
-			$config['mailtype'] = 'text';
-			$config['wordwrap'] = TRUE;
-			$this->email->initialize($config);
-			
-			// build body
-			$lines = array();
-			$lines[] = 'Date: ' . date('F j, Y, g:i a', strtotime($date));
-			
-			if (!empty($user_id)) {
-				$user = $this->user_model->get_user($user_id);
-				$lines[] = 'Member Username: ' . $user['username'];
-				$lines[] = 'Member Name: ' . $user['first_name'] . ' ' . $user['last_name'];
-				$lines[] = 'Member Email: ' . $user['email'];
-			}
-			else {
-				$lines[] = 'Member: None';
-			}
-
-			foreach ($form['custom_fields'] as $field) {
-				if ($field['type'] == 'multiselect') {
-					$value = implode(', ', unserialize($custom_fields[$field['name']]));
-				}
-				elseif ($field['type'] == 'file') {
-					$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
-				}
-				elseif ($field['type'] == 'date') {
-					$value = date('F j, Y', strtotime($custom_fields[$field['name']]));
-				}
-				else {
-					$value = $custom_fields[$field['name']];
-				}
-				
-				$lines[] = $field['friendly_name'] . ': ' . $value;
-			}
-			
-			$body = implode("\n\n", $lines);
-			
-			// send the email
-			$this->email->from(setting('email_name'), setting('site_email'));
-			$this->email->to($form['email']);
-			$this->email->subject('New Submission: ' . $form['title']);
-			$this->email->message($body);
-			
-			$this->email->send();
-		}
-		
-		return $insert_id;
-	}
-	
-	/*
 	* Create New Form
 	*
 	* @param string $title
@@ -154,7 +73,7 @@ class Form_model extends CI_Model
 		
 		// add ID, date, edit_date, admin rows
 		$this->dbforge->add_field('`' . $table_name . '_id` INT(11) auto_increment PRIMARY KEY');
-		$this->dbforge->add_field('`submission_date` INT(11) NOT NULL');
+		$this->dbforge->add_field('`submission_date` DATETIME NOT NULL');
 		$this->dbforge->add_field('`user_id` INT(11) NOT NULL');
 		
 		// create table
@@ -327,5 +246,207 @@ class Form_model extends CI_Model
 		}
 		
 		return $forms;
+	}
+	
+	/*
+	* New Response
+	*
+	* @param int $form_id
+	* @param int $user_id
+	* @param array $custom_fields
+	*
+	* @return $response_id
+	*/
+	function new_response($form_id, $user_id = FALSE, $custom_fields = array()) {
+		$form = $this->get_form($form_id);
+			
+		if (empty($form)) {
+			die(show_error('Invalid form ID.'));
+		}
+		
+		$date = date('Y-m-d H:i:s');
+		
+		$insert_fields = array(
+							'submission_date' => $date,
+							'user_id' => ($user_id) ? $user_id : 0
+						);
+						
+		foreach ($custom_fields as $field => $value) {
+			$insert_fields[$field] = $value;
+		}
+		reset($custom_fields);
+		
+		$insert_id = $this->db->insert($form['table_name'], $insert_fields);
+		
+		if (!empty($form['email'])) {
+			// build email
+			$config['mailtype'] = 'text';
+			$config['wordwrap'] = TRUE;
+			$this->email->initialize($config);
+			
+			// build body
+			$lines = array();
+			$lines[] = 'Date: ' . date('F j, Y, g:i a', strtotime($date));
+			
+			if (!empty($user_id)) {
+				$user = $this->user_model->get_user($user_id);
+				$lines[] = 'Member Username: ' . $user['username'];
+				$lines[] = 'Member Name: ' . $user['first_name'] . ' ' . $user['last_name'];
+				$lines[] = 'Member Email: ' . $user['email'];
+			}
+			else {
+				$lines[] = 'Member: None';
+			}
+
+			foreach ($form['custom_fields'] as $field) {
+				if ($field['type'] == 'multiselect') {
+					$value = implode(', ', unserialize($custom_fields[$field['name']]));
+				}
+				elseif ($field['type'] == 'file') {
+					$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
+				}
+				elseif ($field['type'] == 'date') {
+					$value = date('F j, Y', strtotime($custom_fields[$field['name']]));
+				}
+				else {
+					$value = $custom_fields[$field['name']];
+				}
+				
+				$lines[] = $field['friendly_name'] . ': ' . $value;
+			}
+			
+			$body = implode("\n\n", $lines);
+			
+			// send the email
+			$this->email->from(setting('email_name'), setting('site_email'));
+			$this->email->to($form['email']);
+			$this->email->subject('New Submission: ' . $form['title']);
+			$this->email->message($body);
+			
+			$this->email->send();
+		}
+		
+		return $insert_id;
+	}
+	
+	/**
+	* Delete Response
+	*
+	* @param int $form_id
+	* @param int $response_id
+	*
+	* @return boolean TRUE
+	*/
+	function delete_response ($form_id, $response_id) {
+		$form = $this->get_form($form_id);
+		
+		if (empty($form)) {
+			die(show_error('Form doesn\'t exist.'));
+		}
+	
+		$this->db->delete($form['table_name'],array($form['table_name'] . '_id' => $response_id));
+		
+		return TRUE;
+	}
+	
+	/**
+	* Get Response
+	*
+	* @param int $form_id
+	* @param int $response_id
+	*
+	* @return array|boolean response
+	*/
+	function get_response ($form_id, $response_id) {
+		$response = $this->get_responses(array('form_id' => $form_id, 'response_id' => $response_id));
+		
+		if (empty($response)) {
+			return FALSE;
+		}
+		
+		return $response[0];
+	}
+	
+	/**
+	* Get Responses
+	*
+	* @param int $filters['form_id'] (REQUIRED)
+	* @param int $filters['limit]
+	* @param int $filters['response_id']
+	* @param string $filters['start_date']
+	* @param string $filters['end_date']
+	* @param string $filters['username']
+	*
+	* @return array|boolean responses
+	*/
+	function get_responses ($filters = array()) {
+		if (!isset($filters['form_id'])) {
+			die(show_error('Form ID is required in get_responses.'));
+		}
+	
+		$form = $this->get_form($filters['form_id']);
+		
+		if (empty($form)) {
+			return FALSE;
+		}
+		
+		if (isset($filters['response_id'])) {
+			$this->db->where($form['table_name'] . '_id', $filters['response_id']);
+		}
+		
+		if (isset($filters['start_date'])) {
+			$start_date = date('Y-m-d H:i:s', strtotime($filters['start_date']));
+			$this->db->where('submission_date >=', $start_date);
+		}
+		
+		if (isset($filters['end_date'])) {
+			$end_date = date('Y-m-d H:i:s', strtotime($filters['end_date']));
+			$this->db->where('submission_date <=', $end_date);
+		}
+		
+		if (isset($filters['username'])) {
+			$this->db->like('users.user_username',$filters['username']);
+		}
+	
+		$this->db->order_by('submission_date','DESC');
+		
+		if (isset($filters['limit'])) {
+			$this->db->limit($filters['limit']);
+		}
+		
+		$this->db->join('users','users.user_id = ' . $form['table_name'] . '.user_id','LEFT');
+		$result = $this->db->get($form['table_name']);
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$responses = array();
+		foreach ($result->result_array() as $row) {
+			$this_response = array(
+								'id' => $row[$form['table_name'] . '_id'],
+								'form_id' => $form['id'],
+								'submission_date' => local_time($row['submission_date']),
+								'user_id' => $row['user_id']
+								);
+								
+			// member data?
+			if (!empty($row['user_id'])) {
+				$this_response['member_username'] = $row['user_username'];
+				$this_response['member_first_name'] = $row['user_first_name'];
+				$this_response['member_last_name'] = $row['user_last_name'];
+				$this_response['member_email'] = $row['user_email'];
+				$this_response['member_signup_date'] = local_time($row['user_signup_date']);
+			}
+			
+			// custom field data
+			foreach ($form['custom_fields'] as $field) {
+				$this_response[$field['name']] = $row[$field['name']];
+			}
+		
+			$responses[] = $this_response;
+		}
+		
+		return $responses;
 	}
 }

@@ -1,7 +1,6 @@
 - Roadmap:	
 	- Responses for Forms
 	- Add "privileges" to blogs
-	- Date Values in custom field template function
 	- Get content by topic (from "links")
 	- Storefront
 	- Checkout

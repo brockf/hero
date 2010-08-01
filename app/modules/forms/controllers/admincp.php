@@ -60,7 +60,15 @@ class Admincp extends Admincp_Controller {
 		$this->load->view('forms');
 	}
 	
-	function responses ($form_id) {
+	function responses ($form_id = FALSE) {
+		if (!empty($form_id) and is_numeric($form_id)) {
+			$this->session->set_userdata('responses_form_id', $form_id);
+		}
+		else {
+			// this is likely a string of filters, not a form_id
+			$form_id = $this->session->userdata('responses_form_id');
+		}
+	
 		$this->load->library('dataset');
 		
 		$columns = array(
@@ -79,7 +87,9 @@ class Admincp extends Admincp_Controller {
 							'field_end_date' => 'end_date'),
 						array(
 							'name' => 'Member',
-							'width' => '35%'
+							'width' => '35%',
+							'filter' => 'username',
+							'type' => 'text'
 							),
 						array(
 							'name' => '',
@@ -88,8 +98,8 @@ class Admincp extends Admincp_Controller {
 					);
 						
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('form_model','get_responses');
-		$this->dataset->base_url(site_url('admincp/forms'));
+		$this->dataset->datasource('form_model','get_responses', array('form_id' => $form_id));
+		$this->dataset->base_url(site_url('admincp/forms/responses'));
 		
 		// initialize the dataset
 		$this->dataset->initialize();
@@ -97,7 +107,69 @@ class Admincp extends Admincp_Controller {
 		// add actions
 		$this->dataset->action('Delete','admincp/forms/delete_responses');
 		
-		$this->load->view('forms');
+		$this->load->view('responses');
+	}
+	
+	function delete_responses ($responses, $return_url) {
+		$this->load->library('asciihex');
+		$this->load->model('form_model');
+		
+		$responses = unserialize(base64_decode($this->asciihex->HexToAscii($responses)));
+		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
+		
+		foreach ($responses as $response) {
+			$this->form_model->delete_response($this->session->userdata('responses_form_id'), $response);
+		}
+		
+		$this->notices->SetNotice('Response(s) deleted successfully.');
+		
+		redirect($return_url);
+		
+		return TRUE;
+	}
+	
+	function response ($form_id, $response_id) {
+		$this->navigation->module_link('Back to Responses','javascript:history.go(-1)');
+	
+		$this->load->model('form_model');
+		
+		$response = $this->form_model->get_response($form_id, $response_id);
+		$form = $this->form_model->get_form($form_id);
+		
+		if (empty($response)) {
+			die(show_error('Response doesn\'t exist.'));
+		}
+		
+		$lines = array();
+		$lines['Date'] = date('F j, Y, g:i a', strtotime($response['submission_date']));
+		
+		if (!empty($response['user_id'])) {
+			$lines['Member Username'] = '<a href="' . site_url('admincp/users/profile/' . $response['user_id']) . '">' . $response['member_username'] . '</a>';
+			$lines['Member Name'] = $response['member_first_name'] . ' ' . $response['member_last_name'];
+			$lines['Member Email'] = $response['member_email'];
+		}
+		else {
+			$lines['Member'] = 'None';
+		}
+
+		foreach ($form['custom_fields'] as $field) {
+			if ($field['type'] == 'multiselect') {
+				$value = implode(', ', unserialize($response[$field['name']]));
+			}
+			elseif ($field['type'] == 'file') {
+				$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $response[$field['name']]);
+			}
+			elseif ($field['type'] == 'date') {
+				$value = date('F j, Y', strtotime($response[$field['name']]));
+			}
+			else {
+				$value = $response[$field['name']];
+			}
+			
+			$lines[$field['friendly_name']] = $value;
+		}
+		
+		$this->load->view('response', array('form' => $form, 'response' => $response, 'lines' => $lines));
 	}
 	
 	function delete ($forms, $return_url) {
