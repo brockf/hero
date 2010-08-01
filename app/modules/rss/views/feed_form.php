@@ -30,7 +30,7 @@ if (!isset($feed)) {
 		</li>
 		<li>
 			<label for="url_path">URL Path</label>
-			<input type="text" class="text mark_empty" id="url_path" rel="e.g, /feeds/my_feed.rss" name="url_path" value="<?=$feed['url_path'];?>" />
+			<input type="text" class="text mark_empty" id="url_path" rel="e.g, feeds/my_feed.rss" style="width:500px" name="url_path" value="<?=$feed['url_path'];?>" />
 		</li>
 		<li>
 			<div class="help">If you leave this blank, it will be auto-generated from the Feed Name above.</div>

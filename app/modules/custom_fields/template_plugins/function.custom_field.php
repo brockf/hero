@@ -171,6 +171,52 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		
 		return $return;
 	}
+	elseif ($field['type'] == 'date') {
+		// get value
+		/*$value = strtotime($value);
+		$value = explode('-',date('Y-m-d', $value));
+		$selected_day = $value[2];
+		$selected_month = $value[1];
+		$selected_year = $value[0];*/
+		$selected_day = '15';
+		$selected_month = '2';
+		$selected_year = '2010';
+	
+		// we are creating 3 dropdowns here
+		// day
+		$options = array();
+		for ($i = 1; $i <= 31; $i++) {
+			$options[str_pad($i, 2, "0", STR_PAD_LEFT)] = $i;
+		}
+		
+		$return = form_dropdown($field['name'] . '_day', $options, $selected_day);
+		
+		// month
+		$options = array();
+		for ($i = 1; $i <= 12; $i++) {
+        	$return[$i] = date('m - M',mktime(1, 1, 1, $i, 1, 2010));
+        }
+        
+        $return .= form_dropdown($field['name'] . '_month', $options, $selected_month);
+		
+		// year
+		$options = array();
+	    for ($i = (date('Y') - 100); $i <= (date('Y') + 100); $i++) {
+        	$options[$i] = $i;
+        }
+        
+        $return = form_dropdown($field['name'] . '_year', $options, $selected_year);
+								
+		$classes = array();
+		
+		if ($field['required'] == '1') {
+			$classes[] = 'required';
+		}
+		
+		$return = str_replace('<select','<select class="' . implode(' ', $classes) . '" />', $return);
+		
+		return $return;
+	}
 	
 	return;
 }

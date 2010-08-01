@@ -31,7 +31,7 @@ if (!isset($blog)) {
 		</li>
 		<li>
 			<label for="url_path">URL Path</label>
-			<input type="text" class="text mark_empty" id="url_path" rel="e.g, my_blog" name="url_path" value="<?=$blog['url_path'];?>" />
+			<input type="text" class="text mark_empty" id="url_path" rel="e.g, my_blog" style="width:500px" name="url_path" value="<?=$blog['url_path'];?>" />
 		</li>
 		<li>
 			<div class="help">If you leave this blank, it will be auto-generated from the Title above.</div>

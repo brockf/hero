@@ -1,5 +1,11 @@
 - Roadmap:	
 	- Frontend Forms
+	- Add "privileges" to blogs
+	- Date Values in custom field template function
+	- Get content by topic (from "links")
+	- Storefront
+	- Checkout
+	- Content/Form/Product Privileges
 	
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
@@ -18,6 +24,7 @@
 		
 - When copying code from OpenGateway:
 	- Copy database
+	- Replace all calls to client_model
 	- Delete all references to client_id
 	- Make all "in-model" model loads call billing/model (not just model).
 		- Find in /modules/billing/models "load->model('" and replace with "load->model('billing"

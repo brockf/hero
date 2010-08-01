@@ -354,7 +354,7 @@ class Admincp extends Admincp_Controller {
 				$options[$group['id']] = $group['name'];
 			}
 			
-			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$privileges = $privileges->display();
 		}
@@ -438,7 +438,7 @@ class Admincp extends Admincp_Controller {
 				$options[$group['id']] = $group['name'];
 			}
 			
-			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,($content['privileges'] == FALSE) ? array(0) : $content['privileges'], TRUE, FALSE, 'Select multiple topics by holding the CTRL or CMD button and selecting multiple options.');
+			$privileges->dropdown('Access Requires Membership to Group','privileges',$options,($content['privileges'] == FALSE) ? array(0) : $content['privileges'], TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
 			
 			$privileges = $privileges->display();
 		}
