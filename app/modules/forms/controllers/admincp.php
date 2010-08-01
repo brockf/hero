@@ -39,11 +39,11 @@ class Admincp extends Admincp_Controller {
 							),
 						array(
 							'name' => 'Responses',
-							'width' => '30%'
+							'width' => '20%'
 							),
 						array(
 							'name' => '',
-							'width' => '20%'
+							'width' => '30%'
 							)
 					);
 						
@@ -56,6 +56,46 @@ class Admincp extends Admincp_Controller {
 
 		// add actions
 		$this->dataset->action('Delete','admincp/forms/delete');
+		
+		$this->load->view('forms');
+	}
+	
+	function responses ($form_id) {
+		$this->load->library('dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'ID #',
+							'type' => 'id',
+							'width' => '5%',
+							'filter' => 'text'
+							),
+						array(
+							'name' => 'Date',
+							'width' => '30%',
+							'type' => 'date',
+							'filter' => 'date',
+							'field_start_date' => 'start_date',
+							'field_end_date' => 'end_date'),
+						array(
+							'name' => 'Member',
+							'width' => '35%'
+							),
+						array(
+							'name' => '',
+							'width' => '30%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('form_model','get_responses');
+		$this->dataset->base_url(site_url('admincp/forms'));
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		// add actions
+		$this->dataset->action('Delete','admincp/forms/delete_responses');
 		
 		$this->load->view('forms');
 	}

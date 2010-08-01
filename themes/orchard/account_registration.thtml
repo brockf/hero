@@ -70,7 +70,7 @@ Create an Account
 					</li>
 					{if $field.help}
 					<li>
-						<div class="help">{$field.help}</div>
+						<div class="help flush">{$field.help}</div>
 					</li>
 					{/if}
 					{/foreach}

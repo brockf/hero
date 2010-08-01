@@ -36,7 +36,7 @@ if (!isset($form)) {
 			<label class="full" for="text">Introduction Text</label>
 		</li>
 		<li>
-			<textarea class="required full text wysiwyg basic" id="text" name="text"><?=$form['text'];?></textarea>
+			<textarea class="full text wysiwyg basic" id="text" name="text"><?=$form['text'];?></textarea>
 		</li>
 	</ul>
 </fieldset>

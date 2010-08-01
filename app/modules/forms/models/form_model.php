@@ -19,6 +19,87 @@ class Form_model extends CI_Model
 	}
 	
 	/*
+	* New Response
+	*
+	* @param int $form_id
+	* @param int $user_id
+	* @param array $custom_fields
+	*
+	* @return $response_id
+	*/
+	function new_response($form_id, $user_id = FALSE, $custom_fields = array()) {
+		$form = $this->get_form($form_id);
+			
+		if (empty($form)) {
+			die(show_error('Invalid form ID.'));
+		}
+		
+		$date = date('Y-m-d H:i:s');
+		
+		$insert_fields = array(
+							'submission_date' => $date,
+							'user_id' => ($user_id) ? $user_id : 0
+						);
+						
+		foreach ($custom_fields as $field => $value) {
+			$insert_fields[$field] = $value;
+		}
+		reset($custom_fields);
+		
+		$insert_id = $this->db->insert($form['table_name'], $insert_fields);
+		
+		if (!empty($form['email'])) {
+			// build email
+			$config['mailtype'] = 'text';
+			$config['wordwrap'] = TRUE;
+			$this->email->initialize($config);
+			
+			// build body
+			$lines = array();
+			$lines[] = 'Date: ' . date('F j, Y, g:i a', strtotime($date));
+			
+			if (!empty($user_id)) {
+				$user = $this->user_model->get_user($user_id);
+				$lines[] = 'Member Username: ' . $user['username'];
+				$lines[] = 'Member Name: ' . $user['first_name'] . ' ' . $user['last_name'];
+				$lines[] = 'Member Email: ' . $user['email'];
+			}
+			else {
+				$lines[] = 'Member: None';
+			}
+
+			foreach ($form['custom_fields'] as $field) {
+				if ($field['type'] == 'multiselect') {
+					$value = implode(', ', unserialize($custom_fields[$field['name']]));
+				}
+				elseif ($field['type'] == 'file') {
+					$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
+				}
+				elseif ($field['type'] == 'date') {
+					$value = date('F j, Y', strtotime($custom_fields[$field['name']]));
+				}
+				else {
+					$value = $custom_fields[$field['name']];
+				}
+				
+				$lines[] = $field['friendly_name'] . ': ' . $value;
+			}
+			
+			$body = implode("\n\n", $lines);
+			
+			// send the email
+			$this->email->from(setting('email_name'), setting('site_email'));
+			$this->email->to($form['email']);
+			$this->email->subject('New Submission: ' . $form['title']);
+			$this->email->message($body);
+			
+			$this->email->send();
+		}
+		
+		return $insert_id;
+	}
+	
+	/*
 	* Create New Form
 	*
 	* @param string $title
@@ -133,12 +214,17 @@ class Form_model extends CI_Model
 	* @return boolean TRUE
 	*/
 	function delete_form ($form_id) {
-		$form = $this->get_feed($form_id);
+		$form = $this->get_form($form_id);
 	
 		$this->db->delete('forms',array('form_id' => $form_id));
 		
+		// delete link
 		$this->load->model('link_model');
 		$this->link_model->delete_link($form['link_id']);
+		
+		// delete table
+		$this->load->dbforge();
+		$this->dbforge->drop_table($form['table_name']);
 		
 		return TRUE;
 	}
@@ -180,6 +266,14 @@ class Form_model extends CI_Model
 		if (empty($form)) {
 			return FALSE;
 		}
+		
+		// get custom fields
+		$CI =& get_instance();
+		
+		$CI->load->model('custom_fields_model');
+		$custom_fields = $CI->custom_fields_model->get_custom_fields(array('group' => $form[0]['custom_field_group_id']));
+		
+		$form[0]['custom_fields'] = $custom_fields;
 		
 		return $form[0];
 	}

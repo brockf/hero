@@ -85,6 +85,9 @@ class Custom_fields_model extends CI_Model {
 					elseif ($validator == 'domain') {
 						$rules[] = 'valid_domain';
 					}
+					elseif ($validator == 'email') {
+						$rules[] = 'valid_email';
+					}
 				}
 				
 				if ($field['required'] == TRUE) {
@@ -184,6 +187,10 @@ class Custom_fields_model extends CI_Model {
 					
 					$array[$field['name']] = str_replace(FCPATH,'',$this->upload_directory . $filename);
 				}
+			}
+			elseif ($field['type'] == 'date' and $this->input->post($field['name'] . '_day')) {
+				// we are getting the 3 individual date fields
+				$array[$field['name']] = $this->input->post($field['name'] . '_year') . '-' . $this->input->post($field['name'] . '_month') . '-' . $this->input->post($field['name'] . '_day');
 			}
 			else {
 				$array[$field['name']] = $this->input->post($field['name']);

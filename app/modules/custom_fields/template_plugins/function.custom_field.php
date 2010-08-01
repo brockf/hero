@@ -17,8 +17,9 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 	if (isset($params['value'])) {
 		$value = $params['value'];
 	}
-	elseif ($field['type'] == 'multiselect' and isset($_POST[$field['name']])) {
-		$value = $_POST[$field['name']];
+	elseif ($field['type'] == 'date' and $smarty->CI->input->post($field['name'] . '_day') != FALSE and $smarty->CI->input->post($field['name'] . '_day') != '') {
+		// we have a submission but it's of the 3 separate date fields
+		$value = $smarty->CI->input->post($field['name'] . '_year') . '-' . $smarty->CI->input->post($field['name'] . '_month') . '-' . $smarty->CI->input->post($field['name'] . '_day');
 	}
 	elseif ($smarty->CI->input->post($field['name'])) {
 		// take value from $_POST
@@ -30,7 +31,7 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 	else {
 		$value = FALSE;
 	}
-	
+
 	// load form helper
 	$smarty->CI->load->helper('form');
 	
@@ -172,15 +173,14 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		return $return;
 	}
 	elseif ($field['type'] == 'date') {
-		// get value
-		/*$value = strtotime($value);
-		$value = explode('-',date('Y-m-d', $value));
-		$selected_day = $value[2];
-		$selected_month = $value[1];
-		$selected_year = $value[0];*/
-		$selected_day = '15';
-		$selected_month = '2';
-		$selected_year = '2010';
+		if (!empty($value)) {
+			list($selected_year, $selected_month, $selected_day) = explode('-',date('Y-m-d',strtotime($value)));
+		}
+		else {
+			$selected_day = date('d');
+			$selected_month = date('m');
+			$selected_year = date('Y');
+		}
 	
 		// we are creating 3 dropdowns here
 		// day
@@ -189,15 +189,15 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 			$options[str_pad($i, 2, "0", STR_PAD_LEFT)] = $i;
 		}
 		
-		$return = form_dropdown($field['name'] . '_day', $options, $selected_day);
+		$return = form_dropdown($field['name'] . '_day', $options, $selected_day) . '&nbsp;';
 		
 		// month
 		$options = array();
 		for ($i = 1; $i <= 12; $i++) {
-        	$return[$i] = date('m - M',mktime(1, 1, 1, $i, 1, 2010));
+        	$options[$i] = date('m - M',mktime(1, 1, 1, $i, 1, 2010));
         }
         
-        $return .= form_dropdown($field['name'] . '_month', $options, $selected_month);
+        $return .= form_dropdown($field['name'] . '_month', $options, $selected_month) . '&nbsp;';
 		
 		// year
 		$options = array();
@@ -205,7 +205,7 @@ function smarty_function_custom_field ($params, $smarty, $template) {
         	$options[$i] = $i;
         }
         
-        $return = form_dropdown($field['name'] . '_year', $options, $selected_year);
+        $return .= form_dropdown($field['name'] . '_year', $options, $selected_year);
 								
 		$classes = array();
 		
@@ -213,7 +213,7 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 			$classes[] = 'required';
 		}
 		
-		$return = str_replace('<select','<select class="' . implode(' ', $classes) . '" />', $return);
+		$return = str_replace('<select','<select class="' . implode(' ', $classes) . '" ', $return);
 		
 		return $return;
 	}

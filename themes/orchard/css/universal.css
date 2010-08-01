@@ -545,7 +545,11 @@ ul.form {
 ul.form li {
 	display: block;
 	clear: both;
-	padding: 5px 0px 5px 0px;
+	padding: 5px 0px 8px 0px;
+}
+
+ul.form li:last-child {
+	margin-bottom: 13px;
 }
 
 ul.form li.indent {
@@ -574,6 +578,10 @@ form.form div.help {
 	color: #666;
 	font-style:italic;
 	font-size: 9pt;
+}
+
+form.form div.help.flush {
+	margin-left: 0;
 }
 
 form.form div.help ul {
