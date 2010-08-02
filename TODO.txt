@@ -12,6 +12,14 @@
 	- Video module: Add a video and give embed code for the video
 	- Template File Browser/Editor
 	
+- Dashboard:
+	- Latest Orders
+	- Latest Subscriptions
+	- Monthly Revenue Figures
+	- Latest Form Submissions
+	- Latest Registrations
+	- Caribou News
+	
 - Order Form:
 	- settings: require_user_account
 	- When a user makes an order, their customer record is forever tied to their user account

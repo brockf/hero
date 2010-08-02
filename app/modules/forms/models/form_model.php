@@ -318,7 +318,7 @@ class Form_model extends CI_Model
 			$body = implode("\n\n", $lines);
 			
 			// send the email
-			$this->email->from(setting('email_name'), setting('site_email'));
+			$this->email->from(setting('site_email'), setting('email_name'));
 			$this->email->to($form['email']);
 			$this->email->subject('New Submission: ' . $form['title']);
 			$this->email->message($body);
