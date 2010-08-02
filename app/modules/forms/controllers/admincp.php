@@ -365,7 +365,7 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->initialize();
 
 		// add actions
-		$this->dataset->action('Delete','admincp/publish/fields_delete/' . $form['id']);
+		$this->dataset->action('Delete','admincp/forms/fields_delete/' . $form['id']);
 		
 		$data = array(
 				'form' => $form
@@ -500,8 +500,6 @@ class Admincp extends Admincp_Controller {
 		foreach ($fields as $field) {
 			$this->custom_fields_model->delete_custom_field($field, $form['system_name']);
 		}
-		
-		$this->content_type_model->build_search_index($form['id']);
 		
 		$this->notices->SetNotice('Field(s) deleted successfully.');
 		

@@ -395,24 +395,10 @@ class Custom_fields_model extends CI_Model {
 		$this->load->helper('clean_string');
 		$system_name = clean_string($name);
 		
-		// get next order
-		$this->db->where('custom_field_group',$group);
-		$this->db->order_by('custom_field_order','DESC');
-		$result = $this->db->get('custom_fields');
-		
-		if ($result->num_rows() > 0) {
-			$last_field = $result->row_array();
-			$order = $last_field['custom_field_order'];
-		}
-		else {
-			$order = '1';
-		}
-		
 		$update_fields = array(
 							'custom_field_group' => $group,
 							'custom_field_name' => $system_name,
 							'custom_field_friendly_name' => $name,
-							'custom_field_order' => $order,
 							'custom_field_type' => $type,
 							'custom_field_options' => serialize($options),
 							'custom_field_default' => $default,

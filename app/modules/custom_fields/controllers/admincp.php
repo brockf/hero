@@ -51,10 +51,22 @@ class Admincp extends Admincp_Controller {
 		$this->load->library('admin_form');
 		$form = new Admin_form;
 		$form->fieldset('Custom Fields',array('sortable'));
+		
+		foreach ($custom_fields as $key => $field) {
+			// get rid of required fields
+			$custom_fields[$key]['required'] = '0';
+			
+			// no wysiwygs
+			if ($field['type'] == 'wysiwyg') {
+				$custom_fields[$key]['type'] = 'textarea';
+			}
+		}
+		
 		$form->custom_fields($custom_fields);
+		$form = $form->display();
 		
 		$data = array(
-						'form' => $form->display(),
+						'form' => $form,
 						'return_url' => urlencode(base64_encode($return_url)),
 						'field_group_id' => $custom_field_group
 					);

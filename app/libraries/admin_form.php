@@ -382,7 +382,7 @@ class Admin_form {
 					$value = $field['default'];
 				}
 					
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
+				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], '150px', $field['id']);
 			}
 			elseif ($field['type'] == 'wysiwyg') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		

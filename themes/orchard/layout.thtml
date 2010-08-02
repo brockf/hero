@@ -44,7 +44,7 @@
 				<li><a class="events" href="#">Conferences</a></li>
 				<li><a class="app" href="#">App</a></li>
 
-				<li><a class="contact" href="#">Contact Jerry</a></li>
+				<li><a class="contact" href="{url path="contact"}">Contact Jerry</a></li>
 				<li><a class="tipster" href="#">Tipster</a></li>
 			</ul>
 		</div>

@@ -8,7 +8,6 @@
 	- Add setting: require_account for orders
 	- Update Dataset to have sorting
 	- Allow multi-page articles with "Insert PageBreak"
-	- When previewing/arranging fields, make sure that we don't have any "full" fields, as they create two draggable items (one for each LI)
 	- Add Affiliates Module (affiliate code already exists in subscriptions table)
 	- Video module: Add a video and give embed code for the video
 	- Template File Browser/Editor
