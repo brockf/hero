@@ -40,7 +40,7 @@
 				<li><a class="subscribe" href="#">Subscribe</a></li>
 				<li><a class="archives" href="{url path="archives"}">Archives</a></li>
 				<li><a class="favorites" href="{url path="favorites"}">Favorite Things</a></li>
-				<li><a class="store" href="#">Store</a></li>
+				<li><a class="store" href="{url path="store"}">Store</a></li>
 				<li><a class="events" href="#">Conferences</a></li>
 				<li><a class="app" href="#">App</a></li>
 

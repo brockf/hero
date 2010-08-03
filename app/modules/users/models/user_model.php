@@ -24,6 +24,11 @@ class User_model extends CI_Model
         if ($this->session->userdata('user_id') != '') {
         	// load active user into cache for future ->Get() calls
         	$this->set_active($this->session->userdata('user_id'));
+        	
+        	// handle a potential card
+        	$CI =& get_instance();
+        	$CI->load->model('store/cart_model');
+        	$CI->cart_model->save_cart_to_db();
         }
         else {
         	$this->load->helper('cookie');
@@ -131,6 +136,11 @@ class User_model extends CI_Model
     	$this->session->set_userdata('login_time',now());
 		
 		$this->set_active($user_id);
+		
+		// cart functions
+		$CI =& get_instance();
+		$CI->load->model('store/cart_model');
+		$CI->cart_model->user_login($this->active_user);
 		
 		return TRUE;
     }
@@ -798,7 +808,8 @@ class User_model extends CI_Model
 							'suspended' => ($user['user_suspended'] == 1) ? TRUE : FALSE,
 							'admin_link' => site_url('admincp/users/profile/' . $user['user_id']),
 							'remember_key' => $user['user_remember_key'],
-							'validate_key' => $user['user_validate_key']
+							'validate_key' => $user['user_validate_key'],
+							'cart' => (empty($user['user_cart'])) ? FALSE : unserialize($user['user_cart'])
 							);
 							
 			foreach ($custom_fields as $field) {

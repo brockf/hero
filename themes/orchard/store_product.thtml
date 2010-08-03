@@ -1,0 +1,21 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$name}
+{/block}
+{block name="content"}
+	<h1>{$name}</h1>
+	
+	<div class="product">
+		<div class="description">
+			{$description}
+		</div>
+		
+		<div class="cart_form">
+			<form method="post" action="{url path="store/add_to_cart"}">
+				<input type="hidden" name="product_id" value="{$id}" />
+				<input type="text" name="quantity" value="1" />
+				<input type="submit" name="add_to_cart" value="Add to Cart" />
+			</form>
+		</div>
+	</div>
+{/block}

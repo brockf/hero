@@ -1,0 +1,43 @@
+{extends file="layout.thtml"}
+{block name="title"}
+My Shopping Cart
+{/block}
+{block name="content"}
+	<h1>My Shopping Cart</h1>
+	
+	<div class="cart">
+		<form method="post" action="{url path="store/update_cart"}">
+		<table>
+			<thead>
+				<tr>
+					<td>Product</td>
+					<td>Item Price</td>
+					<td>Quantity</td>
+					<td>Price</td>
+					<td></td>
+				</tr>
+			</thead>
+			<tbody>
+				{if $cart}
+				{foreach $cart as $item}
+				<tr>
+					<td>{$item.name}</td>
+					<td>{setting name="currency_symbol"}{$item.price}</td>
+					<td><input type="text" name="qty_{$item.rowid}" value="{$item.qty}" /></td>
+					<td>{setting name="currency_symbol"}{$item.subtotal}</td>
+					<td><a href="{$item.remove_link}">Remove</a></td>
+				</tr>
+				{/foreach}
+				{else}
+				<tr>
+					<td colspan="5">You don't have any products in your cart.  <a href="{url path="store"}">Continue shopping</a>.
+				</tr>
+				{/if}
+			</tbody>
+		</table>
+		
+		<p><b>Cart Subtotal: {setting name="currency_symbol"}{$cart_total}</b> (<a href="{url url="billing/checkout"}">Checkout</a>)</p>
+		<input type="submit" name="update" value="Update Cart" />
+		</form>			
+	</div>
+{/block}

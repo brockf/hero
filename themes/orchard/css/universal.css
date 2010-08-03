@@ -201,6 +201,7 @@ div#slogan {
 	font-size: 22pt;
 	font-weight: bold;
 	letter-spacing: -1px;
+	line-height: 1.4em;
 }
 
 #content h1.secondary {
@@ -652,4 +653,45 @@ div.notices {
 	-moz-border-radius: 10px;
 	-webkit-border-radius: 10px;
 	border-radius: 10px;
+}
+
+div.store ul.products {
+	list-style-type: none;
+	border-top: 1px solid #ccc;
+}
+
+div.store ul.products li {
+	display: block;
+	float: left;
+	width: 150px;
+	margin: 15px;
+	text-align: center;
+}
+
+div.store ul.products a.name {
+	font-weight: bold;
+	margin: 5px 0;
+}
+
+div.store ul.collections {
+	list-style-type: none;
+}
+
+div.store ul.collections p {
+	margin: 0;
+	padding: 0 0 5px 0;
+}
+
+div.store ul.collections li {
+	width: 225px;
+	padding: 10px;
+}
+
+div.store ul.collections a.name {
+	font-weight: bold;
+}
+
+div.store ul.collections div.description {
+	font-size: 9pt;
+	color: #555;
 }

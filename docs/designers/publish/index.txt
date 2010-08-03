@@ -22,16 +22,16 @@ All content variables are available in this template as standard Smarty template
 
 [h2]Template Plugins[/h2]
 
-[h3]content (arguments: type, topic, sort, sort_dir, limit, offset)[/h3]
+[h3]content (parameters: type, topic, sort, sort_dir, limit, offset)[/h3]
 
 Retrieve content of a specific type and display it in the format you specify between the tags.  This function makes all of the content's data available as variables.
 
-Required variables:
+Required parameters:
 
 * Either [span_code]type[/span_code] - The content type ID for the content you would like to retrieve.
 * or [span_code]id[/span_code] - The content ID number.
 
-Optional variables:
+Optional parameters:
 
 * [span_code]topic[/span_code] - One or more topic ID's to limit content retrieval (e.g., "5" or "5|10|15" for multiple topics).
 * [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
@@ -65,15 +65,15 @@ Body:
 {/content}
 [/code]
 
-[h3]content_in_topic (arguments: topic, sort, sort_dir, limit, offset)[/h3]
+[h3]content_in_topic (parameters: topic, sort, sort_dir, limit, offset)[/h3]
 
 Retrieve all content of a specific topic (or set of topics).  Because we are accessing multiple content types but want to make the most use of server resources, we have a limited set of data available in variables.
 
-Required variables:
+Required parameters:
 
 * [span_code]topic[/span_code] - The ID of the topic, or a set of topics separated by pipes (e.g., "3|6|2").
 
-Optional variables:
+Optional parameters:
 
 * [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
 * [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: DESC.

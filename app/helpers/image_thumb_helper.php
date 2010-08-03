@@ -11,7 +11,7 @@
 *
 * @return string Web path to image thumbnail
 */
-function image_thumb ($image_path, $height, $width)
+function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 {
 	// Get the CodeIgniter super object
 	$CI =& get_instance();
@@ -23,7 +23,9 @@ function image_thumb ($image_path, $height, $width)
 	// Path to image thumbnail
 	$image_thumb = setting('path_image_thumbs') . $file_name;
 	
-	if (!file_exists($image_thumb))
+	$modified_time = file_exists($image_thumb) ? filemtime($image_thumb) : FALSE;
+	
+	if (!file_exists($image_thumb) or ($modified_time and (time() - $modified_time > 120)))
 	{
 		// load library
 		$CI->load->library('image_lib');
@@ -33,8 +35,13 @@ function image_thumb ($image_path, $height, $width)
 		$config['source_image']		= $image_path;
 		$config['new_image']		= $image_thumb;
 		$config['maintain_ratio']	= TRUE;
-		$config['height']			= $height;
-		$config['width']			= $width;
+		if ($height) {
+			$config['height']			= $height;
+		}
+		if ($width) {
+			$config['width']			= $width;
+		}
+		
 		$CI->image_lib->initialize($config);
 		$CI->image_lib->resize();
 		$CI->image_lib->clear();

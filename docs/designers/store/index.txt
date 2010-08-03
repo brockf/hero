@@ -21,3 +21,70 @@ Each product has the following tags available:
 * {$download_name}
 * {$download_size}
 * {$feature_image}
+
+[h2]Template Plugins[/h2]
+
+[h3]cart[/h3]
+
+Display items from the current shopping cart.
+
+Available block variables:
+
+* [span_code]{block:$rowid}[/span_code] - Unique ID identifying this product and its specific options (so that 2 red T-shirts with different options don't conflict).
+* [span_code]{block:$id}[/span_code] - The product ID
+* [span_code]{block:$name}[/span_code] - The product name
+* [span_code]{block:$price}[/span_code] - The per-item price
+* [span_code]{block:$subtotal}[/span_code] - The total item price (per-item price * quantity)
+* [span_code]{block:$qty}[/span_code] - Item quantity
+* [span_code]{block:$remove_link}[/span_code] - The URL for a link that will remove the product from the cart
+
+Usage:
+
+[code]
+You have the following items in your cart:
+
+<ul class="cart">
+{cart}
+<li>{block:$name} ({setting name="currency_symbol"}{block:$price} each) - {setting name="currency_symbol"}{block:$subtotal}</li>
+{/cart}
+</ul>
+[/code]
+
+[h3]cart_total[/h3]
+
+Display the total price of the cart.
+
+Usage:
+
+[code]
+Total Cart Value: ${cart_total}
+[/code]
+
+[h3]cart_items[/h3]
+
+Displays the total number of items in the cart.
+
+Usage:
+
+[code]
+You have {cart_items} items in your <a href="{url path="store/cart"}">shopping cart</a>.
+[/code]
+
+[h3]product (parameters: id)[/h3]
+
+Display a product referenced by product ID.  All of the product's data is available in variables.
+
+Required parameters:
+
+* [span_code]id[/span_code] - The product ID for the product you want to display.
+
+All product data listed above under Displaying Products is available in standard block variable format (e.g., [span_code]{block:$name}[/span_code]).
+
+Usage:
+
+[code]
+<div>
+	Our feature product today is {product id="4343"}{block:$name}{/product}
+</div>
+[/code]
+

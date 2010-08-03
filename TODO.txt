@@ -1,5 +1,5 @@
 - Roadmap:	
-	- Storefront
+	- Create "Subscriptions" listing at billing/subscriptions
 	- Checkout
 	- Content/Form/Product Privileges
 	
@@ -11,6 +11,7 @@
 	- Add Affiliates Module (affiliate code already exists in subscriptions table)
 	- Video module: Add a video and give embed code for the video
 	- Template File Browser/Editor
+	- Flesh out product pages with image galleries and other data
 	
 - Dashboard:
 	- Latest Orders
