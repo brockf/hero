@@ -2,7 +2,7 @@
 
 The following [http://www.smarty.net](Smarty) template functions and blocks are available throughout your templates.  These are available above and beyond the standard Smarty template functions, available at [http://www.smarty.net](Smarty's documentation).
 
-[h2]custom_field (arguments: field, value)[/h2]
+[h2]custom_field (parameters: field, value)[/h2]
 
 Display a form element from a standard custom field data array for one field.  If no value is specified as a parameter, it will try to deduce the current submitted value from the $_POST array and/or the field's default value(s).
 
@@ -24,7 +24,7 @@ Usage (assuming the template has been passed an array of custom fields as [span_
 {/foreach}
 [/code]
 
-[h2]restricted (arguments: in_group, not_in_group)[/h2]
+[h2]restricted (parameters: in_group, not_in_group)[/h2]
 
 If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).
 
@@ -52,7 +52,7 @@ Content is only shown if user is in group #5 but no in group #3.
 {/restricted}
 [/code]
 
-[h2]setting (arguments: path)[/h2]
+[h2]setting (parameters: path)[/h2]
 
 Retrieve a site configuration or setting value.  All standard [APPNAME] settings viewable in the control panel at Configuration > Settings.  Furthermore, all configuration variables defined in /app/config (standard CodeIgniter variables) are also available.
 
@@ -80,7 +80,7 @@ Returns to template:
 http://www.yourbaseurl.com OR https://www.yourbaseurl.com
 [/code]
 
-[h2]theme_url (arguments: path)[/h2]
+[h2]theme_url (parameters: path)[/h2]
 
 Retrieve an absolute URL within your active theme's folder with a relative URL path.  Will use HTTPS if necessary.
 
@@ -96,7 +96,7 @@ Returns to template:
 http://www.yourdomain.com/themes/yourtheme/images/theme_header.gif
 [/code]
 
-[h2]url (arguments: path)[/h2]
+[h2]url (parameters: path)[/h2]
 
 Retrieve an absolute URL relative to your site's base URL.  Will use HTTPS if necessary.
 

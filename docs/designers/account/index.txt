@@ -33,7 +33,7 @@ header('Location: ' . site_url('users/login?return=' . query_value_encode('http:
 
 [h2]Template Plugins[/h2]
 
-[h3]login_form (arguments: return, username)[/h3]
+[h3]login_form (parameters: return, username)[/h3]
 
 Display a login form which (optionally) returns the user to a specified URL after a successful login.
 
@@ -85,7 +85,7 @@ Example login form:
 {/login_form}
 [/code]
 
-[h3]register_form (arguments: return)[/h3]
+[h3]register_form (parameters: return)[/h3]
 
 Display a register form which (optionally) returns the user to a specified URL after a successful registration.
 
