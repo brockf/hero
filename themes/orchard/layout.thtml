@@ -16,14 +16,14 @@
 	<div id="header">
 		<a id="logo" href="{url}"><img src="{theme_url path="images/logo.gif"}" alt="Inside Music Media" /></a>
 		<div id="topnav">
-			<a href="{url}">home</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			{if $logged_in}
 				<a href="{url path="users"}">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="{url path="users/logout"}">logout</a>
+				<a href="{url path="users/logout"}">logout</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			{else}
 				<a href="{url path="users/login"}">login</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="{url path="users/register"}">subscribe</a>
+				<a href="{url path="users/register"}">subscribe</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			{/if}
+			<a href="{url path="store/cart"}">cart ({cart_items})</a>
 		</div>
 
 		<div id="search"><form method="get" action="{url path="search"}" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="q" /></form></div>

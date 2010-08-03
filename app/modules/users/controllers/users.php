@@ -28,7 +28,7 @@ class Users extends Front_Controller {
 		$notice = $this->session->flashdata('notice');
 	
 		$this->smarty->assign('notice', $notice);
-		return $this->smarty->display('account_home.thtml');
+		return $this->smarty->display('account_templates/home.thtml');
 	}
 	
 	function profile () {
@@ -43,7 +43,7 @@ class Users extends Front_Controller {
 		$this->smarty->assign('custom_fields',$custom_fields);
 		$this->smarty->assign('values',$values);
 		$this->smarty->assign('validation_errors',$errors);
-		return $this->smarty->display('account_profile.thtml');
+		return $this->smarty->display('account_templates/profile.thtml');
 	}
 	
 	function post_profile () {
@@ -96,7 +96,7 @@ class Users extends Front_Controller {
 		$validation_errors = ($this->input->get('errors') == 'true') ? $this->session->flashdata('password_errors') : FALSE;
 	
 		$this->smarty->assign('validation_errors',$validation_errors);	
-		return $this->smarty->display('account_change_password.thtml');
+		return $this->smarty->display('account_templates/change_password.thtml');
 	}
 	
 	function post_password () {
@@ -126,7 +126,7 @@ class Users extends Front_Controller {
 		$error = ($this->input->get('error')) ? query_value_decode($this->input->get('error')) : '';
 	
 		$this->smarty->assign('error',$error);
-		return $this->smarty->display('account_forgot_password.thtml');
+		return $this->smarty->display('account_templates/forgot_password.thtml');
 	}
 	
 	function post_forgot_password () {
@@ -160,7 +160,7 @@ class Users extends Front_Controller {
 	}
 	
 	function password_reset () {
-		return $this->smarty->display('account_forgot_password_complete.thtml');
+		return $this->smarty->display('account_templates/forgot_password_complete.thtml');
 	}
 	
 	function register () {
@@ -188,7 +188,7 @@ class Users extends Front_Controller {
 		$this->smarty->assign('return', $return);
 		$this->smarty->assign('validation_errors', $validation_errors);
 		$this->smarty->assign('values',$values);
-		return $this->smarty->display('account_registration.thtml');
+		return $this->smarty->display('account_templates/registration.thtml');
 	}
 	
 	function post_registration () {
@@ -287,7 +287,7 @@ class Users extends Front_Controller {
 		$this->smarty->assign('return',$return);
 		$this->smarty->assign('username',$username);
 		$this->smarty->assign('validation_errors',$validation_errors);
-		return $this->smarty->display('account_login.thtml');
+		return $this->smarty->display('account_templates/login.thtml');
 	}
 	
 	function post_login () {

@@ -1,6 +1,6 @@
 [h2]Account Module[/h2]
 
-[h2]Important URL's[/h2]
+[h2]Important URLs[/h2]
 
 * [url]users/[/url] - Account Manager
 * [url]users/register[/url] - Registration Form

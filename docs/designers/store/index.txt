@@ -1,5 +1,10 @@
 [h1]Store Module[/h1]
 
+[h2]Important URLs[/h2]
+
+* [url]store/[/url] - Store frontpage
+* [url]store/cart[/url] - Shopping cart
+
 [h2]Displaying Products[/h2]
 
 Each product has the following tags available:
