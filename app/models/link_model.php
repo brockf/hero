@@ -13,8 +13,17 @@
 */
 
 class Link_model extends CI_Model {
+	// initialized in __construct()
+	// these routes can't be used as URL paths
+	var $protected_routes;
+
 	function __construct() {
 		parent::CI_Model();
+		
+		$this->protected_routes = array(
+										'checkout',
+										'subscriptions'
+									);
 	}
 	
 	/*
@@ -128,6 +137,11 @@ class Link_model extends CI_Model {
 	*/
 	function get_unique_url_path ($url_path) {
 		$url_path = $this->prep_url_path($url_path);
+		
+		// verify it doesn't conflict with protected routes
+		if (in_array($url_path, $this->protected_routes)) {
+			$url_path += '_1';
+		}
 	
 		$this->db->where('link_url_path',$url_path);
 		$this->db->select('link_id');

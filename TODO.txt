@@ -1,11 +1,18 @@
 - Roadmap:	
 	- Create "Subscriptions" listing at billing/subscriptions
 	- Free Checkout
+	- Coupons
+	- Shipping methods
+		- Have a setting where they select which countries they will ship to, and also the "global default shipping rate"
+		- Then have regional shipping rates
 	- No account option for non-subscriptions (just create an empty account, no password, just an email and then a first name/last name from the billing address?)
 	- Content/Form/Product Privileges
+	- Add in Hooks everywhere
+	- MailChimp integration
+		- Keep a list of users updated
+		- Send email when article is published
 	
 	- Verify cronjobs and API are accessible
-	- Coupons
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders

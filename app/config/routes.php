@@ -58,6 +58,7 @@ $route['admincp/([a-zA-Z_-]+)'] = "$1/admincp/index";
 // miscellaneous routes
 $route['checkout'] = 'billing/checkout';
 $route['checkout/([a-zA-Z_-]+)'] = 'billing/checkout/$1';
+$route['subscriptions'] = 'billing/subscriptions';
 
 if (file_exists(FCPATH . 'writeable/routes.php')) {
 	include(FCPATH . 'writeable/routes.php');

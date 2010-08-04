@@ -202,7 +202,7 @@ class Users extends Front_Controller {
 			$plans = $this->subscription_plan_model->get_plans();
 			
 			if (setting('show_subscriptions') == '1' and !empty($plans)) {
-				$return = site_url('billing/subscriptions');
+				$return = site_url('subscriptions');
 			}
 			else {
 				$return = setting('registration_redirect');
