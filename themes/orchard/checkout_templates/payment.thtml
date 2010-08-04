@@ -11,6 +11,12 @@
 				<label>Subtotal</label>
 				{setting name="currency_symbol"}{$totals.order_sub_total}
 			</li>
+			{if $totals.shipping}
+				<li>
+					<label>Shipping</label>
+					{setting name="currency_symbol"}{$totals.shipping} ({$shipping_method})
+				</li>
+			{/if}
 			<li>
 				<label>Tax</label>
 				{setting name="currency_symbol"}{$totals.order_tax}
