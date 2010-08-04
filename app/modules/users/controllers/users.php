@@ -281,12 +281,16 @@ class Users extends Front_Controller {
 		// do we have any errors?
 		$validation_errors = ($this->input->get('errors') == 'true') ? $this->session->flashdata('login_errors') : '';
 		
+		// do we have any notices?
+		$notices = ($this->session->flashdata('notices')) ? $this->session->flashdata('notices') : FALSE;
+		
 		// do we have a username?
 		$username = ($this->input->get('username')) ? $this->input->get('username') : '';
 			
 		$this->smarty->assign('return',$return);
 		$this->smarty->assign('username',$username);
 		$this->smarty->assign('validation_errors',$validation_errors);
+		$this->smarty->assign('notices', $notices);
 		return $this->smarty->display('account_templates/login.thtml');
 	}
 	
@@ -340,5 +344,25 @@ class Users extends Front_Controller {
 		$this->user_model->logout();
 		
 		return redirect('users');
+	}
+	
+	function validate ($key) {
+		// logout so that they go the login after validating
+		$this->user_model->logout();
+	
+		$this->db->select('user_id');
+		$this->db->where('user_validate_key', $key);
+		$result = $this->db->get('users');
+		
+		if ($result->num_rows() == 0) {
+			die(show_error('There was an error validating your account email.  Your email may have already been validated, or you need to copy and paste then entire URL from the email into your browser and try again.'));
+		}
+		else {
+			$this->db->update('users',array('user_validate_key' => ''), array('user_validate_key' => $key));
+		}
+		
+		$this->session->set_flashdata('notices','<p>Your account email has been validated successfully.</p>');
+		
+		return redirect('users/login');
 	}
 }

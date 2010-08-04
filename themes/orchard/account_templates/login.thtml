@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="title"}
-Account Login
+Account Login - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	{login_form return=$return username=$username}
@@ -11,6 +11,12 @@ Account Login
 			{if $validation_errors}
 				<div class="errors">
 					{$validation_errors}
+				</div>
+			{/if}
+			
+			{if $notices}
+				<div class="notices">
+					{$notices}
 				</div>
 			{/if}
 		

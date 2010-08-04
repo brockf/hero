@@ -557,6 +557,13 @@ ul.form li.indent {
 	padding-left: 150px;
 }
 
+ul.form li.indent label {
+	text-align: left;
+	display: inline;
+	width: auto;
+	float: none;
+}
+
 form.form label {
 	display: block;
 	float: left;
@@ -613,6 +620,7 @@ input.button {
 	font-family: lucida grande, helvetica, arial;
 	padding: 4px 6px;
 	text-shadow: 0 1px 1px #FFFFFF;
+	font-size: 14px;
 }
 
 input.button.hover {
@@ -694,4 +702,43 @@ div.store ul.collections a.name {
 div.store ul.collections div.description {
 	font-size: 9pt;
 	color: #555;
+}
+
+div.checkout_steps ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.checkout_steps ul li {
+	display: block;
+	float: left;
+	width: 22%;
+	padding: 2px 1%;
+	margin-right: 1%;
+	background-color: #f0f0f1;
+	color: #444;
+	font-weight: bold;
+	font-size: 8pt;
+	text-transform: uppercase;
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+div.checkout_steps ul li:last-child {
+	margin-right: 0%;
+	width: 23%;
+}
+
+div.checkout_steps ul li.active {
+	background-color: #000;
+	color: #fff;
+}
+
+div.checkout_address {
+	border: 1px solid #ccc;
+	background-color: #f0f0f0;
+	font-size: 8pt;
+	padding: 7px 15px;
+	width: 200px;
 }

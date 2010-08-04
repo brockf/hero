@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="title"}
-Account Manager
+Account Manager - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	<h1>Account Manager</h1>

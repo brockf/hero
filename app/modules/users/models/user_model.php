@@ -335,6 +335,36 @@ class User_model extends CI_Model
     		return isset($user['customer_id']) ? $user['customer_id'] : FALSE;
     	}
     }
+    
+    /**
+    * Set Charge ID
+    *
+    * After a successful order, we put this charge ID in the user database so that when the
+    * charge trigger is tripped, we'll process this user's cart
+    *
+    * @param int $user_id
+    * @param int $charge_id
+    *
+    * @return boolean TRUE
+    */
+    function set_charge_id ($user_id, $charge_id) {
+    	$this->db->update('users', array('user_pending_charge_id' => $charge_id), array('user_id' => $user_id));
+    	
+    	return TRUE;
+    }
+    
+    /**
+    * Remove Charge ID
+    * 
+    * @param int $user_id
+    *
+    * @return boolean TRUE
+    */
+    function remove_charge_id ($user_id) {
+    	$this->db->update('users', array('user_pending_charge_id' => ''), array('user_id' => $user_id));
+    	
+    	return TRUE;
+    }
 	
 	/*
 	* Validation
@@ -378,6 +408,56 @@ class User_model extends CI_Model
 		else {
 			return TRUE;
 		}
+	}
+	
+	/**
+	* Validate Billing Address
+	*
+	* @param int $user_id
+	*
+	* @return boolean TRUE if they have a valid billing address on file
+	*/
+	function validate_billing_address ($user_id) {
+		$address = $this->get_billing_address($user_id);
+		
+		$required = array(
+							'first_name',
+							'last_name',
+							'address_1',
+							'city',
+							'country',
+							'postal_code'
+						);
+						
+		foreach ($required as $item) {
+			if (empty($address[$item])) {
+				return FALSE;
+			}
+		}
+		
+		return TRUE;
+	}
+	
+	/**
+	* Get Billing Address
+	*
+	* @param int $user_id
+	*
+	* @return array Billing address
+	*/
+	function get_billing_address ($user_id) {
+		$customer_id = $this->get_customer_id($user_id);
+		
+		if (empty($customer_id)) {
+			return FALSE;
+		}
+		
+		$CI =& get_instance();
+		$CI->load->model('billing/customer_model');
+		
+		$address = $this->customer_model->GetCustomer($customer_id);
+		
+		return $address;
 	}
 	
 	/*
@@ -570,7 +650,13 @@ class User_model extends CI_Model
 		
 		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		
-		// trip the email
+		// trip the validation email?
+		if (!empty($validate_key)) {
+			$validation_link = site_url('users/validate/' . $validate_key);
+			TriggerTrip('validate_email', FALSE, FALSE, $customer_id, FALSE, array('validation_link' => $validation_link, 'validation_code' => $validate_key));
+		}
+		
+		// trip the new member email
 		TriggerTrip('new_member',FALSE,FALSE,$customer_id,FALSE,array('password' => $password));
 		
 		return $user_id;
@@ -615,6 +701,39 @@ class User_model extends CI_Model
 		
 		// update email in customers table
 		$this->db->update('customers',array('email' => $email),array('internal_id' => $user_id));
+		
+		// do any custom fields map to billing fields?
+		$user_custom_fields = $this->get_custom_fields();
+		
+		$customer = array();
+		if (is_array($user_custom_fields)) {
+			foreach ($user_custom_fields as $field) {
+				if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
+					$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+				}
+			}
+		}
+		
+		$customer_id = $this->get_customer_id($user_id);
+		
+		$this->db->update('customers', $customer, array('internal_id' => $user_id));
+		
+		return TRUE;
+	}
+	
+	/**
+	* Update Billing Address
+	*
+	* @param $address_fields New Address
+	*
+	* @return TRUE
+	*/
+	function update_billing_address ($user_id, $address_fields) {
+		$customer_id = $this->get_customer_id($user_id);
+		
+		$CI =& get_instance();
+		$CI->load->model('billing/customer_model');
+		$CI->customer_model->UpdateCustomer($customer_id, $address_fields);
 		
 		return TRUE;
 	}
@@ -809,7 +928,8 @@ class User_model extends CI_Model
 							'admin_link' => site_url('admincp/users/profile/' . $user['user_id']),
 							'remember_key' => $user['user_remember_key'],
 							'validate_key' => $user['user_validate_key'],
-							'cart' => (empty($user['user_cart'])) ? FALSE : unserialize($user['user_cart'])
+							'cart' => (empty($user['user_cart'])) ? FALSE : unserialize($user['user_cart']),
+							'pending_charge_id' => (!empty($user['user_pending_charge_id'])) ? $user['user_pending_charge_id'] : FALSE
 							);
 							
 			foreach ($custom_fields as $field) {

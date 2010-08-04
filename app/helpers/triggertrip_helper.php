@@ -81,6 +81,32 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     	}
     }
     
+    // if it's a recurring payment, we may need to add a taxes received line
+	// is this subscription plan taxable?
+	if ($trigger_type == 'recurring_charge' and !empty($plan_id)) {
+		$CI->load->model('billing/subscription_plan_model');
+    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
+    	
+    	if ($sub_plan['is_taxable']) {
+			$this->db->where('subscription_id', $subscription['id']);
+			$result = $this->db->get('taxes_received');
+			if ($result->num_rows() > 0) {
+				$row = $result->row_array();
+				
+				$insert_fields = array(
+									'tax_id' => $row['tax_id'],
+									'tax_received_amount' => $row['tax_received_amount'],
+									'tax_received_date' => date('Y-m-d H:i:s'),
+									'user_id' => $user['id'],
+									'order_details_id' => $row['order_details_id'],
+									'subscription_id' => $subscription['id']
+								);
+									
+				$this->db->insert('taxes_received', $insert_fields);
+			}
+		}
+	}
+    
     // build array of all possible variables, if they exist
 	$variables = (!empty($other_variables)) ? $other_variables : array();
 	
@@ -100,7 +126,7 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
 	
 	if (isset($charge) and is_array($charge)) {
 		$variables['amount'] = $charge['amount'];
-		$variables['date'] = date("Y-m-d h:i");
+		$variables['date'] = date("M j, Y \@ h:ia");
 		$variables['charge_id'] = $charge['id'];
 		$variables['card_last_four'] = $charge['card_last_four'];
 	}

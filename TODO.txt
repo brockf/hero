@@ -1,14 +1,17 @@
 - Roadmap:	
 	- Create "Subscriptions" listing at billing/subscriptions
-	- Checkout
+	- Free Checkout
+	- No account option for non-subscriptions (just create an empty account, no password, just an email and then a first name/last name from the billing address?)
 	- Content/Form/Product Privileges
 	
+	- Verify cronjobs and API are accessible
+	- Coupons
 	- Comments moderator (modeled after WordPress) and comments model/library
 	- Make store accessible only to certain usergroup(s) (Store Configuration)
 	- Add setting: require_account for orders
 	- Update Dataset to have sorting
 	- Allow multi-page articles with "Insert PageBreak"
-	- Add Affiliates Module (affiliate code already exists in subscriptions table)
+	- Affiliate integration with good simple affiliate software
 	- Video module: Add a video and give embed code for the video
 	- Template File Browser/Editor
 	- Flesh out product pages with image galleries and other data

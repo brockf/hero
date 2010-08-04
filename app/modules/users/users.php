@@ -122,6 +122,7 @@ class Users_module extends Module {
 								  `user_validate_key` varchar(32),
 								  `user_remember_key` varchar(32),
 								  `user_cart` text,
+								  `user_pending_charge_id` int(11),
 								  PRIMARY KEY  (`user_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;');
 		}

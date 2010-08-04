@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="title"}
-{if $title}{$title}{elseif $category}{$category.name}{/if}
+{if $title}{$title}{elseif $collection}{$collection.name}{/if} - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	<h1>Browse Our Store</h1>

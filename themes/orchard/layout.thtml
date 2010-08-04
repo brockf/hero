@@ -8,6 +8,8 @@
 <script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/box_layout.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/brock_bar.js"}"></script>
+{block name="head_includes"}
+{/block}
 </head>
 <body>
 <div id="notices"></div>

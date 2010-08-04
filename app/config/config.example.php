@@ -81,6 +81,9 @@ if (ini_get('post_max_size') != '' and (ini_get('post_max_size') < $config['uplo
 // not all servers allow 0777 folders/files, this may have to be 0755
 $config['write_mode'] = 0777;
 
+// how many times can a purchased download be downloaded?
+$config['maximum_downloads_per_purchase'] = 2;
+
 /*
 |--------------------------------------------------------------------------
 | Index File

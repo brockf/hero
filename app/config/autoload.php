@@ -63,13 +63,14 @@ else {
 */
 
 $autoload['helper'] = array('ioncube_license',
+							'url',
+							'ssl',
 							'triggertrip',
 							'date',
 							'local_time',
 							'time_since',
 							'money_format',
 							'xml_value_prep',
-							'url',
 							'branding/branded_include',
 							'branding/branded_view',
 							'setting',

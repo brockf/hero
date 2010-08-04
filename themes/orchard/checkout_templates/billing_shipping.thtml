@@ -1,0 +1,119 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Billing{if $requires_shipping == TRUE} &amp; Shipping{/if} - {$smarty.block.parent}{/block}
+{block name="step_header"}Billing{if $requires_shipping == TRUE} &amp; Shipping Addresses{else} Address{/if}{/block}
+{block name="billing_shipping_step"}class="active"{/block}
+{block name="checkout_content"}
+	<form class="form validate" method="post" action="{url path="checkout/post_billing_shipping"}">
+	<fieldset>
+		<legend>Billing Address</legend>
+		<ul class="form">
+			{if $valid_billing_address}
+				<li class="indent">
+					<input type="radio" name="billing_address" value="existing" id="use_existing" checked="checked" /> <label for="use_existing">Use my existing billing address</label>
+				</li>
+				<li class="indent">
+					<div class="checkout_address">{$formatted_billing_address}</div>
+				</li>
+			{/if}
+			<li class="indent">
+				<input type="radio" name="billing_address" value="new" id="use_new" {if !$valid_billing_address}checked="checked"{/if} /> <label for="use_new">Enter a new billing address</label>
+			</li>
+			<li class="new_billing">
+				<label for="first_name">First Name</label>
+				<input type="text" class="text" name="first_name" id="first_name" value="{$billing_values.first_name}" />
+			</li>
+			<li class="new_billing">
+				<label for="last_name">Last Name</label>
+				<input type="text" class="text" name="last_name" id="last_name" value="{$billing_values.last_name}" />
+			</li>
+			<li class="new_billing">
+				<label for="company">Company</label>
+				<input type="text" class="text" name="company" id="company" value="{$billing_values.company}" />
+			</li>
+			<li class="new_billing">
+				<label for="address_1">Address</label>
+				<input type="text" class="text" name="address_1" id="address_1" value="{$billing_values.address_1}" />
+			</li>
+			<li class="new_billing">
+				<label for="address_2">Address (Line 2)</label>
+				<input type="text" class="text" name="address_2" id="address_2" value="{$billing_values.address_2}" />
+			</li>
+			<li class="new_billing">
+				<label for="city">City</label>
+				<input type="text" class="text" name="city" id="city" value="{$billing_values.city}" />
+			</li>
+			<li class="new_billing">
+				<label for="Country">Country</label>
+				<select id="country" name="country"><option value=""></option>{foreach $countries as $country}<option value="{$country.iso2}" {if $billing_values.country == $country.iso2}selected="selected"{/if}>{$country.name}</option>{/foreach}</select>
+			</li>
+			<li class="new_billing">
+				<label for="state">State/Province</label>
+				<select id="state_select" name="state_select"><option value=""></option>{foreach $states as $state}<option value="{$state.code}" {if $billing_values.state == $state.code}selected="selected"{/if}>{$state.name}</option>{/foreach}</select> <input type="text" class="text" name="state" id="state" value="{$billing_values.state}" />
+			</li>
+			<li class="new_billing">
+				<label for="postal_code">Postal/Zip Code</label>
+				<input type="text" class="text" name="postal_code" id="postal_code" value="{$billing_values.postal_code}" />
+			</li>
+		</ul>
+	</fieldset>
+	
+	{if $requires_shipping == TRUE}
+		<fieldset>
+			<legend>Shipping Address</legend>
+			<ul class="form">
+				<li class="indent">
+					<input type="radio" name="shipping_address" value="same" id="shipping_use_existing" {if $valid_billing_address}checked="checked"{/if} /> <label for="shipping_use_existing">Same as billing address</label>
+				</li>
+				<li class="indent">
+					<input type="radio" name="shipping_address" value="new" id="shipping_use_new" {if !$valid_billing_address}checked="checked"{/if} /> <label for="shipping_use_new">Enter a new shipping address</label>
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_first_name">First Name</label>
+					<input type="text" class="text" name="shipping_first_name" id="shipping_first_name" value="{$shipping_values.first_name}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_last_name">Last Name</label>
+					<input type="text" class="text" name="shipping_last_name" id="shipping_last_name" value="{$shipping_values.last_name}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_company">Company</label>
+					<input type="text" class="text" name="shipping_company" id="shipping_company" value="{$shipping_values.company}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_address_1">Address</label>
+					<input type="text" class="text" name="shipping_address_1" id="shipping_address_1" value="{$shipping_values.address_1}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_address_2">Address (Line 2)</label>
+					<input type="text" class="text" name="shipping_address_2" id="shipping_address_2" value="{$shipping_values.address_2}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_city">City</label>
+					<input type="text" class="text" name="shipping_city" id="shipping_city" value="{$shipping_values.city}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_country">Country</label>
+					<select id="shipping_country" name="shipping_country"><option value=""></option>{foreach $countries as $country}<option value="{$country.iso2}" {if $billing_values.country == $country.iso2}selected="selected"{/if}>{$country.name}</option>{/foreach}</select>
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_state">State/Province</label>
+					<select id="shipping_state_select" name="shipping_state_select"><option value=""></option>{foreach $states as $state}<option value="{$state.code}" {if $billing_values.state == $state.code}selected="selected"{/if}>{$state.name}</option>{/foreach}</select> <input type="text" class="text" name="shipping_state" id="shipping_state" value="{$shipping_values.state}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_postal_code">Postal/Zip Code</label>
+					<input type="text" class="text" name="shipping_postal_code" id="shipping_postal_code" value="{$shipping_values.postal_code}" />
+				</li>
+			</ul>
+		</fieldset>
+	{/if}
+	
+	<fieldset>
+		<legend>Please confirm your address details</legend>
+		<ul class="form">
+			<li class="indent">
+				<input type="submit" name="continue" class="button submit" value="Continue with Checkout" />
+			</li>
+		</ul>
+	</fieldset>
+	</form>
+{/block}

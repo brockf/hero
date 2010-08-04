@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="title"}
-{$name}
+{$name} - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	<h1>{$name}</h1>
@@ -11,6 +11,7 @@
 		</div>
 		
 		<div class="cart_form">
+			{* don't show this form if we are tracking inventory and there are none left *}
 			<form method="post" action="{url path="store/add_to_cart"}">
 				<input type="hidden" name="product_id" value="{$id}" />
 				<input type="text" name="quantity" value="1" />

@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="title"}
-Edit Your Profile
+Edit Your Profile - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	<h1>Edit Your Profile</h1>

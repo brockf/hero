@@ -1,33 +1,23 @@
-{extends file="layout.thtml"}
-{block name="title"}
-Create an Account - {$smarty.block.parent}
-{/block}
-{block name="content"}
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Create an Account - {$smarty.block.parent}{/block}
+{block name="step_header"}Create an Account{/block}
+{block name="account_step"}class="active"{/block}
+{block name="checkout_content"}
 	{registration_form return=$return}
-		<h1>Create an Account</h1>
 		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
-		{if $setting.validate_emails == "1"}
-			<p>You will be required to validate your email address before your account is fully activated.</p>
-		{/if}
 		<form class="form validate" enctype="multipart/form-data" method="post" action="{block:$form_action}">
 			<input type="hidden" name="return" value="{block:$return}">
 			
-			{if $validation_errors}
-				<div class="errors">
-					{$validation_errors}
-				</div>
-			{/if}
-		
 			<fieldset>
 				<legend>Access Information</legend>
 				<ul class="form">
 					<li>
 						<label for="username">Username</label>
-						<input type="text" class="text required" id="username" name="username" value="{if $values.username}{$values.username}{/if}">
+						<input type="text" class="text required" id="username" name="username" value="">
 					</li>
 					<li>
 						<label for="email">Email</label>
-						<input type="email" class="text required" id="email" name="email" value="{if $values.email}{$values.email}{/if}" />
+						<input type="email" class="text required" id="email" name="email" value="{$email}" />
 					</li>
 					<li>
 						<div class="help">After registering, you will be able to login with either your username or your email.</div>
@@ -53,20 +43,20 @@ Create an Account - {$smarty.block.parent}
 						<label class="full" for="first_name">First Name</label>
 					</li>
 					<li>
-						<input type="text" class="text required" id="first_name" name="first_name" value="{if $values.first_name}{$values.first_name}{/if}">
+						<input type="text" class="text required" id="first_name" name="first_name" value="">
 					</li>
 					<li>
 						<label class="full" for="last_name">Last Name</label>
 					</li>
 					<li>
-						<input type="text" class="text required" id="last_name" name="last_name" value="{if $values.last_name}{$values.last_name}{/if}">
+						<input type="text" class="text required" id="last_name" name="last_name" value="">
 					</li>
 					{foreach $custom_fields as $field}
 					<li>
 						<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
 					</li>
 					<li>
-						{custom_field field=$field value=$values[$field['name']]}
+						{custom_field field=$field}
 					</li>
 					{if $field.help}
 					<li>
@@ -87,7 +77,7 @@ Create an Account - {$smarty.block.parent}
 			</fieldset>
 			{/if}
 			
-			<input type="submit" class="button" name="go" value="Create Account" />
+			<input type="submit" class="button" name="go" value="Create Account &amp; Continue with Checkout" />
 		</form>
 	{/registration_form}
 {/block}

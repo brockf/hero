@@ -52,9 +52,12 @@ $route['admincp/dataset/([a-zA-Z_-]+)'] = 'admincp/dataset/$1';
 $route['admincp/login'] = 'admincp/login';
 $route['admincp/login/go'] = 'admincp/login/go';
 $route['admincp/logout'] = 'admincp/login/logout';
-// pass to module's administration controller
 $route['admincp/([a-zA-Z_-]+)/(:any)'] = "$1/admincp/$2";
 $route['admincp/([a-zA-Z_-]+)'] = "$1/admincp/index";
+
+// miscellaneous routes
+$route['checkout'] = 'billing/checkout';
+$route['checkout/([a-zA-Z_-]+)'] = 'billing/checkout/$1';
 
 if (file_exists(FCPATH . 'writeable/routes.php')) {
 	include(FCPATH . 'writeable/routes.php');
