@@ -32,6 +32,15 @@ class Menu_manager extends Module {
 		$this->CI->navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
 	}
 	
+	/*
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/menu_manager/template_plugins/');
+	}
+	
 	function update ($db_version) {
 		if ($db_version < 1.01) {
 			$this->CI->db->query('DROP TABLE IF EXISTS `menus_links`');
@@ -46,8 +55,8 @@ class Menu_manager extends Module {
 								  `menu_link_text` varchar(150),
 								  `menu_link_special_type` varchar(50),
 								  `menu_link_external_url` varchar(250),
+								  `menu_link_class` varchar(50),
 								  `menu_link_privileges` varchar(255),
-								  `menu_link_require_active_parent` tinyint(1),
 								  `menu_link_order` int(5),
 								  PRIMARY KEY  (`menu_link_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');

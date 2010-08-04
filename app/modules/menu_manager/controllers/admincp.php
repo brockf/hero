@@ -96,7 +96,9 @@ class Admincp extends Admincp_Controller {
 								'control_panel' => 'Control Panel',
 								'my_account' => 'My Account',
 								'store' => 'Store',
-								'search' => 'Search'
+								'search' => 'Search',
+								'subscriptions' => 'Subscription Plans',
+								'cart' => 'Shopping Cart'
 							);
 							
 		foreach ($special_links as $special_link_code => $special_link_name) {
@@ -244,10 +246,11 @@ class Admincp extends Admincp_Controller {
 		$link_id = $this->input->post('link_id');
 		$text = $this->input->post('text');
 		$privileges = $this->input->post('privileges');
+		$class = $this->input->post('class');
 		
 		$this->load->model('menu_model');
 		
-		$this->menu_model->update_link($link_id, $text, $privileges, FALSE);
+		$this->menu_model->update_link($link_id, $text, $privileges, $class);
 		
 		echo 'Edit saved.';
 	}

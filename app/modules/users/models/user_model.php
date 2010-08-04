@@ -210,21 +210,34 @@ class User_model extends CI_Model
     * Is user in this group?
     *
     * @param int|array A group ID, or array of group ID's (they must be in one of the groups)
+    * @param int $user_id (Optional) Specify the user.  Default: Current User
     *
     * @return boolean TRUE if in the group
     */
-    function in_group ($group) {
+    function in_group ($group, $user_id = FALSE) {
+    	if ($user_id) {
+    		$user_array = $this->get_user($user_id);
+    	}
+    	else {
+    		$user_array = $this->active_user;
+    	}
+    	
+    	if (is_array($group) and in_array('0', $group)) {	
+    		// this is a "privileges" array and it's public so anyone can see it
+    		return TRUE;
+    	}
+    
     	if (is_array($group)) {
 			// are they in any of these groups?
     		foreach ($group as $one_group) {
-    			if (in_array($one_group, $this->active_user['usergroups'])) {
+    			if (in_array($one_group, $user_array['usergroups'])) {
     				return TRUE;
     			}
     		}
     	}
     	else {
     		// are they in this group?
-    		if (in_array($group, $this->active_user['usergroups'])) {
+    		if (in_array($group, $user_array['usergroups'])) {
     			return TRUE;
     		}
     	}
@@ -237,21 +250,29 @@ class User_model extends CI_Model
     * Is user NOT in this group?
     *
     * @param int|array A group ID, or array of group ID's (they must NOT be in any of the groups)
+    * @param int $user_id (Optional) Specify the user.  Default: Current User
     *
     * @return boolean TRUE if in the group
     */
-    function not_in_group ($group) {
+    function not_in_group ($group, $user_id = FALSE) {
+    	if ($user_id) {
+    		$user_array = $this->get_user($user_id);
+    	}
+    	else {
+    		$user_array = $this->active_user;
+    	}
+    	
     	if (is_array($group)) {
 			// are they in any of these groups?
     		foreach ($group as $one_group) {
-    			if (in_array($one_group, $this->active_user['usergroups'])) {
+    			if (in_array($one_group, $user_array['usergroups'])) {
     				return FALSE;
     			}
     		}
     	}
     	else {
     		// are they in this group?
-    		if (in_array($group, $this->active_user['usergroups'])) {
+    		if (in_array($group, $user_array['usergroups'])) {
     			return FALSE;
     		}
     	}
@@ -716,7 +737,9 @@ class User_model extends CI_Model
 		
 		$customer_id = $this->get_customer_id($user_id);
 		
-		$this->db->update('customers', $customer, array('internal_id' => $user_id));
+		if (!empty($customer)) {
+			$this->db->update('customers', $customer, array('internal_id' => $user_id));
+		}
 		
 		return TRUE;
 	}

@@ -55,11 +55,10 @@ class Menu_model extends CI_Model
 	* @param string $special_type If it's a "special" link, give it a name (e.g., "store", "account")
 	* @param string $external_url The full URL for external links
 	* @param array $privileges A serialized array of member groups who can see it
-	* @param boolean $require_active_parent If it's a child, does it require an active parent to be visible?
 	*
 	* @return int $menu_link_id
 	*/
-	function add_link ($menu_id, $parent_link = FALSE, $type, $link_id = FALSE, $text, $special_type = FALSE, $external_url = FALSE, $privileges = array(), $require_active_parent = FALSE) {
+	function add_link ($menu_id, $parent_link = FALSE, $type, $link_id = FALSE, $text, $special_type = FALSE, $external_url = FALSE, $privileges = array()) {
 		// get next order
 		$links = $this->get_links(array('menu' => $menu_id));
 		if (is_array($links)) {
@@ -80,8 +79,8 @@ class Menu_model extends CI_Model
 								'menu_link_special_type' => (!empty($special_type)) ? $special_type : '',
 								'menu_link_external_url' => (!empty($external_url)) ? $external_url : '',
 								'menu_link_privileges' => (!empty($privileges)) ? serialize($privileges) : '',
-								'menu_link_require_active_parent' => (!empty($require_active_parent)) ? '1' : '0',
-								'menu_link_order' => $order
+								'menu_link_order' => $order,
+								'menu_link_class' => ''
 							);
 							
 		$this->db->insert('menus_links', $insert_fields);
@@ -95,15 +94,15 @@ class Menu_model extends CI_Model
 	* @param int $menu_link_id The link ID to edit
 	* @param string $text The display text
 	* @param array $privileges A serialized array of member groups who can see it
-	* @param boolean $require_active_parent If it's a child, does it require an active parent to be visible?
+	* @param string $class The element CSS class
 	*
 	* @return int $menu_link_id
 	*/
-	function update_link ($menu_link_id, $text, $privileges = array(), $require_active_parent = FALSE) {
+	function update_link ($menu_link_id, $text, $privileges = array(), $class = FALSE) {
 		$update_fields = array(
 								'menu_link_text' => $text,
 								'menu_link_privileges' => (!empty($privileges)) ? serialize($privileges) : '',
-								'menu_link_require_active_parent' => (!empty($require_active_parent)) ? '1' : '0'
+								'menu_link_class' => $class
 							);
 							
 		$this->db->update('menus_links', $update_fields, array('menu_link_id' => $menu_link_id));
@@ -119,6 +118,16 @@ class Menu_model extends CI_Model
 	
 	function get_menu ($id) {
 		$menu = $this->get_menus(array('id' => $id));
+		
+		if (empty($menu)) {
+			return FALSE;
+		}
+		
+		return $menu[0];
+	}
+	
+	function get_menu_by_name ($name) {
+		$menu = $this->get_menus(array('name' => $name));
 		
 		if (empty($menu)) {
 			return FALSE;
@@ -193,6 +202,9 @@ class Menu_model extends CI_Model
 		}
 	
 		$this->db->order_by('menu_link_order');
+		
+		$this->db->join('links','links.link_id = menus_links.link_id','left');
+		
 		$result = $this->db->get('menus_links');
 		
 		if ($result->num_rows() == 0) {
@@ -212,12 +224,13 @@ class Menu_model extends CI_Model
 						'parent_menu_link_id' => $row['parent_menu_link_id'],
 						'text' => $row['menu_link_text'],
 						'type' => $row['menu_link_type'],
+						'class' => $row['menu_link_class'],
 						'link_id' => $row['link_id'],
 						'special_type' => (!empty($row['menu_link_special_type'])) ? $row['menu_link_special_type'] : FALSE,
 						'external_url' => (!empty($row['menu_link_external_url'])) ? $row['menu_link_external_url'] : FALSE,
 						'privileges' => (!empty($row['menu_link_privileges'])) ? unserialize($row['menu_link_privileges']) : FALSE,
-						'require_active_parent' => (!empty($row['menu_link_require_active_parent'])) ? TRUE : FALSE,
-						'order' => $row['menu_link_order']
+						'order' => $row['menu_link_order'],
+						'link_url_path' => $row['link_url_path']
 					);
 		}
 		

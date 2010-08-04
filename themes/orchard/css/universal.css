@@ -138,54 +138,54 @@ div#slogan {
 	border-top: 1px solid #f0f0f1;
 }
 
-#nav ul li a:hover, #nav ul li a.active {
+#nav ul li a:hover, #nav ul li.active a {
 	/*background-position: 17px -67px; /* sprites */
 	color: #0668bc;
 	font-weight: bold;
 }
 
-#nav ul li a.active {
+#nav ul li.active a {
 	font-weight: bold;
 }
 
-#nav ul li a.current {
+#nav ul li.current a {
 	border-top: 0px;
 	background-image: url(../images/nav_current.png);
 }
 
-#nav ul li a.contact {
+#nav ul li.contact a {
 	background-image: url(../images/nav_contact.png);
 }
 
-#nav ul li a.archives {
+#nav ul li.archives a {
 	background-image: url(../images/nav_archives.png);
 }
 
-#nav ul li a.events {
+#nav ul li.events a {
 	background-image: url(../images/nav_events.png);
 }
 
-#nav ul li a.favorites {
+#nav ul li.favorites a {
 	background-image: url(../images/nav_favorites.png);
 }
 
-#nav ul li a.jerry {
+#nav ul li.jerry a {
 	background-image: url(../images/nav_jerry.png);
 }
 
-#nav ul li a.subscribe {
+#nav ul li.subscribe a {
 	background-image: url(../images/nav_subscribe.png);
 }
 
-#nav ul li a.store {
+#nav ul li.store a {
 	background-image: url(../images/nav_store.png);
 }
 
-#nav ul li a.app {
+#nav ul li.app a {
 	background-image: url(../images/nav_app.png);
 }
 
-#nav ul li a.tipster {
+#nav ul li.tipster a {
 	background-image: url(../images/nav_tipster.png);
 }
 

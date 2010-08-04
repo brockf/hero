@@ -35,6 +35,7 @@
 <div id="box">
 	<div class="container">
 		<div id="nav">
+			{*
 			<ul>
 				<li><a class="active current" href="{url}">Frontpage</a></a></li>
 				<li><a class="jerry" href="{url path="about"}">About Jerry</a></li>
@@ -49,6 +50,8 @@
 				<li><a class="contact" href="{url path="contact"}">Contact Jerry</a></li>
 				<li><a class="tipster" href="#">Tipster</a></li>
 			</ul>
+			*}
+			{menu name="main" show_sub_menus="off"}
 		</div>
 		<div id="content">
 			{block name="content"}No content has been sent to this block{/block}

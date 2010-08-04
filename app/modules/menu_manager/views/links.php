@@ -37,6 +37,10 @@
 								<? } reset($groups); ?>
 							</select>
 						</td>
+						<td valign="top">
+							<label for="class">CSS Classes</label>
+							<input type="text" class="text" name="class" id="class" style="width: 97%" value="<?=$link['class'];?>" />
+						</td>
 					</tr>
 				</table>
 			</form>

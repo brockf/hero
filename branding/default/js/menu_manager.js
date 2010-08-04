@@ -121,6 +121,7 @@ function bind_link_editing () {
 			var this_link_id = $(this).parent().parent().attr('rel');
 			var this_text = $(this).parent().parent().find('input#text').val();
 			var this_privileges = $(this).parent().parent().find('select#privileges').val();
+			var this_class = $(this).parent().parent().find('input#class').val();
 			
 			// update text
 			$(this).parent().parent().children('span.text').html(this_text);
@@ -128,7 +129,7 @@ function bind_link_editing () {
 			// get rid of form
 			$(this).parent().parent().children('div.editing').slideUp();
 			
-			$.post(base_url + 'menu_manager/edit_link', { link_id : this_link_id, text : this_text, privileges : this_privileges } , function (data) {
+			$.post(base_url + 'menu_manager/edit_link', { link_id : this_link_id, text : this_text, privileges : this_privileges, class : this_class } , function (data) {
 		      	notice_ok('Link edited successfully.');
 		      });
 				
