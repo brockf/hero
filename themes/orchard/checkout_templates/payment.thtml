@@ -22,7 +22,7 @@
 			{if $totals.recurring_sub_total}
 				<li>
 					<label>Recurring Charge</label>
-					{setting name="currency_symbol"}{$totals.recurring_total} every {$totals.recurring_interval} days{if $totals.recurring_first_charge} beginning {$totals.recurring_first_charge}{/if}{if $totals.recurring_last_charge} until {$totals.recurring_last_charge}{/if}.
+					{setting name="currency_symbol"}{$totals.recurring_total} every {$totals.recurring_interval} days{if $totals.recurring_first_charge} beginning {$totals.recurring_first_charge}{/if}{if $totals.recurring_last_charge} until {$totals.recurring_last_charge}{/if}
 				</li>
 			{/if}
 		</ul>

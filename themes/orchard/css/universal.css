@@ -209,6 +209,14 @@ div#slogan {
 	clear: both;
 }
 
+#content h3 {
+	font-weight: bold;
+	margin: 0;
+	padding: 0;
+	color: #9C48BB;
+	font-size: 11pt;
+}
+
 div.byline {
 	position: relative;
 	width: 100%;
@@ -529,8 +537,8 @@ form.form fieldset {
 }
 
 form.form legend {
-	background-color: #333;
-	color: #fff;
+	background-color: #fbecff;
+	color: #333;
 	font-size: 8pt;
 	text-transform: uppercase;
 	padding: 7px 155px 7px 15px;
@@ -741,4 +749,16 @@ div.checkout_address {
 	font-size: 8pt;
 	padding: 7px 15px;
 	width: 200px;
+}
+
+ul.subscriptions {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	padding-left: 20px;
+}
+
+ul.subscriptions p {
+	margin: 0 0 5px;
+	padding: 0;
 }

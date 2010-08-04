@@ -1,0 +1,23 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Choose Your Subscription - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>Choose Your Subscription</h1>
+	
+	{if !$plans}
+		<p>There are no subscriptions available at this time.</p>
+	{else}
+	<ul class="subscriptions">
+		{foreach $plans as $plan}
+		<li>
+			<h3>{$plan.name}</h3>
+			{$plan.description}
+			<form method="get" action="{$plan.add_to_cart}">
+			<input type="submit" class="button" name="add_to_cart" value="Add Subscription to Cart" />
+			</form>
+		</li>
+		{/foreach}
+	</ul>
+	{/if}
+{/block}

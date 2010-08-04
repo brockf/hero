@@ -133,10 +133,10 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
 	
 	if (isset($subscription) and is_array($subscription)) {
 		$variables['subscription_id'] = $subscription['id'];
-		$variables['subscription_start_date'] = $subscription['start_date'];
-		$variables['subscription_end_date'] = $subscription['end_date'];
-		$variables['subscription_expiry_date'] = $subscription['end_date'];
-		$variables['subscription_next_charge_date'] = $subscription['next_charge_date'];
+		$variables['subscription_start_date'] = date('M j, Y',strtotime($subscription['start_date']));
+		$variables['subscription_end_date'] = date('M j, Y',strtotime($subscription['end_date']));
+		$variables['subscription_expiry_date'] = date('M j, Y',strtotime($subscription['end_date']));
+		$variables['subscription_next_charge_date'] = date('M j, Y',strtotime($subscription['next_charge_date']));
 		$variables['subscription_amount'] = $subscription['amount'];
 		
 		if (isset($plan) and is_array($plan)) {

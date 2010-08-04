@@ -40,10 +40,3 @@
 		<p>Enter your keyword(s) above to search {setting name="site_name"}.</p>
 	{/if}
 {/block}
-
-$this->smarty->assign('searching',$searching);
-		$this->smarty->assign('query',$query);
-		$this->smarty->assign('pagination',$pagination);
-		$this->smarty->assign('num_results',$num_results);
-		$this->smarty->assign('results',$results);
-		$this->smarty->assign('title',$title);
