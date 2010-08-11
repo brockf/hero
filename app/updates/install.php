@@ -534,7 +534,8 @@ INSERT INTO `states` (`state_id`, `name_long`, `name_short`) VALUES (1, 'Alabama
 (60, 'Prince Edward Island', 'PE'),
 (61, 'Quebec', 'QC'),
 (62, 'Saskatchewan', 'SK'),
-(63, 'Yukon', 'YT');
+(63, 'Yukon', 'YT'),
+(64, 'District of Columbia', 'DC');
 
 -- --------------------------------------------------------
 

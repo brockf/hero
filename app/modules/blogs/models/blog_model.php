@@ -280,11 +280,6 @@ class Blog_model extends CI_Model
 		return $links;
 	}
 	
-	/**
-	* Get Blog Pagination
-	*
-	* 
-	
 	/*
 	* Get Blog
 	*
