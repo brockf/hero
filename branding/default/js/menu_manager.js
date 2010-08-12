@@ -19,6 +19,7 @@ $(document).ready(function() {
 		  bind_remove_links();
 		  bind_link_sorting();
 		  bind_link_editing();
+		  bind_js_effects();
 	});
 	
 	// add item to menu
@@ -45,6 +46,7 @@ $(document).ready(function() {
 		  bind_remove_links();
 		  bind_link_sorting();
 		  bind_link_editing();
+		  bind_js_effects();
 		});
 		
 		$('#external_link').val('');
@@ -66,6 +68,7 @@ function bind_remove_links () {
 			  bind_remove_links();
 			  bind_link_sorting();
 			  bind_link_editing();
+			  bind_js_effects();
 			  
 			  $.post(base_url + 'menu_manager/show_possible_links', function(data) {
 				  $('div#link_creator_wrapper').html(data);
@@ -73,6 +76,12 @@ function bind_remove_links () {
 				  bind_add_link();
 				});
 			});
+	});
+}
+
+function bind_js_effects () {
+	$('ul.current_links li').hover(function () {
+		$(this).toggleClass('no_hover');
 	});
 }
 
@@ -87,6 +96,7 @@ function bind_add_link () {
 		  bind_remove_links();
 		  bind_link_sorting();
 		  bind_link_editing();
+		  bind_js_effects();
 		});
 		
 		// get rid of this row

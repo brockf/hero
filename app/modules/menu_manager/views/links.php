@@ -4,7 +4,7 @@
 
 <ul class="current_links">
 	<? foreach ($links as $link) { ?>
-	<li id="link_<?=$link['id'];?>" rel="<?=$link['id'];?>">
+	<li class="no_hover" id="link_<?=$link['id'];?>" rel="<?=$link['id'];?>">
 		<span class="handle"><img src="<?=branded_include('images/arrow.png');?>" alt="drag to move" title="drag to move" class="handle" /></span>
 		<span class="text"><?=$link['text'];?></span>
 		<span class="actions">

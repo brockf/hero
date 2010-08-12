@@ -54,7 +54,7 @@ class Admincp extends Admincp_Controller {
 								),
 							array(
 								'name' => 'Title',
-								'width' => '30%',
+								'width' => '25%',
 								'filter' => 'title',
 								'type' => 'text',
 								'sort_column' => 'content.title'
@@ -76,11 +76,16 @@ class Admincp extends Admincp_Controller {
 								),
 							array(
 								'name' => 'Type',
-								'width' => '15%',
+								'width' => '10%',
 								'type' => 'select',
 								'options' => $content_types,
 								'filter' => 'type',
 								'sort_column' => 'content_type.content_type_friendly_name'
+								),
+							array(
+								'name' => 'Hits',
+								'width' => '10%',
+								'sort_column' => 'content.content_hits'
 								),
 							array(
 								'name' => '',
@@ -125,7 +130,7 @@ class Admincp extends Admincp_Controller {
 									),
 								array(
 									'name' => 'Title',
-									'width' => '40%',
+									'width' => '30%',
 									'filter' => 'title',
 									'type' => 'text',
 									'sort_column' => 'content.title'
@@ -144,6 +149,11 @@ class Admincp extends Admincp_Controller {
 									'filter' => 'date',
 									'field_start_date' => 'start_date',
 									'field_end_date' => 'end_date'
+									),
+								array(
+									'name' => 'Hits',
+									'width' => '10%',
+									'sort_column' => 'content.content_hits'
 									),
 								array(
 									'name' => '',
@@ -199,7 +209,7 @@ class Admincp extends Admincp_Controller {
 					if (in_array($field['type'], array('text', 'radio', 'dropdown'))) {
 						$columns[] = array(
 											'name' => $field['friendly_name'],
-											'width' => '20%',
+											'width' => '13%',
 											'sort_column' => $type['system_name'] . '.' . $field['name']
 										);
 										
@@ -217,6 +227,12 @@ class Admincp extends Admincp_Controller {
 									'filter' => 'date',
 									'field_start_date' => 'start_date',
 									'field_end_date' => 'end_date'
+									);
+									
+				$columns[] = array(
+								'name' => 'Hits',
+								'width' => '10%',
+								'sort_column' => 'content.content_hits'
 									);
 				
 				$columns[] = array(

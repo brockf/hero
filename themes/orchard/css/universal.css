@@ -762,3 +762,34 @@ ul.subscriptions p {
 	margin: 0 0 5px;
 	padding: 0;
 }
+
+div#archive_toolbar {
+	float: left;
+	width: 150px;
+	background-color: #f0f0f0;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	padding: 5%;
+	margin: 0px 35px 15px 0px;
+	line-height: 0.8em;
+}
+
+div#archive_toolbar ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+div#archive_toolbar ul li {
+	padding: 0;
+	margin: 0 0 8px 0px;
+}
+
+div#archive_toolbar ul li.submit {
+	margin-top: 19px;
+}
+
+div#archive_toolbar h3 {
+	margin: 0 0 5px 0px;
+}

@@ -18,6 +18,7 @@ All content variables are available in this template as standard Smarty template
 * [span_code]{$type_name}[/span_code]
 * [span_code]{$url_path}[/span_code] (relative URL to the content)
 * [span_code]{$url}[/span_code] (absolute URL to the content)
+* [span_code]{$hits}[/span_code] (# of reads/hits/views)
 * [span_code]{$template}[/span_code] (template filename)
 
 [h2]Template Plugins[/h2]
@@ -33,6 +34,7 @@ Required parameters:
 
 Optional parameters:
 
+* [span_code]keyword[/span_code] - Perform a full text search on the database and return matching results.  With this parameter, the [span_code]{block:$relevance}[/span_code] becomes available.
 * [span_code]topic[/span_code] - One or more topic ID's to limit content retrieval (e.g., "5" or "5|10|15" for multiple topics).
 * [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
 * [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: DESC.
@@ -42,6 +44,13 @@ Optional parameters:
 Available block variables:
 
 * All content variables listed above under "Displaying Content" are available in the format of [span_code]{block:$variable_name}[/span_code].
+
+Additional variables available:
+
+After a [span_code]{content}[/span_code] template call, two additional variables are available in your templates related to the previous content call:
+
+* [span_code]{$content_count}[/span_code] - The number of content items returned between your tags.  This is useful to show a result if zero items are returned with something like, [span_code]{if $content_count == 0}No content items were displayed.{/if}[/span_code].
+* [span_code]{$content_total_count}[/span_code] - Ignoring your limit and sort parameters, how many possible items are there?  This is useful in generating pagination with the [devs/designers/template-plugins]([span_code]{pagination}[/span_code] template function).
 
 Example - retrieve the latest 10 items for a content type:
 
@@ -94,6 +103,7 @@ Available block variables:
 * [span_code]{block:$type_name}[/span_code]
 * [span_code]{block:$url_path}[/span_code] (relative URL to the content)
 * [span_code]{block:$url}[/span_code] (absolute URL to the content)
+* [span_code]{block:$hits}[/span_code] (# of reads/hits/views)
 * [span_code]{block:$template}[/span_code] (template filename)
 
 Example - retrieve the last 10 content items from a topic:
@@ -112,4 +122,41 @@ Example - retrieve the first 5 alphabetically-sorted items from multiple topics:
 {content_in_topic topic="1|3|4" limit="5" sort="content_title" sort_dir="ASC"}
 	<li><a href="{block:$url}">{block:$title}</a> (published {block:$date|date_format("Y-m-d")})</li>
 {/content_in_topic}
+[/code]
+
+[h3]topics (parameters: id, parent, sort, sort_dir, limit, offset)[/h3]
+
+Retrieve and display one or more site topics based on the given parameters.
+
+Optional parameters:
+
+* [span_code]id[/span_code] - To specify a specific topic to retrieve.
+* [span_code]parent[/span_code] - Retrieve all sub-topics of this parent topic (referenced by ID #).
+* [span_code]sort[/span_code] - The database field to sort topic retrieval by.  Default: "topic_name".
+* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: "ASC".
+* [span_code]limit[/span_code] - How many results would you like to retrieve?  Default: As many as possible.
+* [span_code]offset[/span_code] - At what point in the results would you like to start returning them?  (e.g., an offset of "5" with a limit of "5" will return results 6-10).
+
+Available block variables:
+
+* [span_code]{block:$id}[/span_code]
+* [span_code]{block:$name}[/span_code]
+* [span_code]{block:$description}[/span_code]
+
+Example - retrieve all site topics alphabetically:
+
+[code]
+<ul class="topics">
+{topics}
+	<li>{block:$name}</li>
+{/topics}
+[/code]
+
+Example - retrieve all sub-topics of topic #4, with description.
+
+[code]
+<ul class="topics">
+{topics parent="4"}
+	<li>{block:$name} - {block:$description}</li>
+{/topics}
 [/code]

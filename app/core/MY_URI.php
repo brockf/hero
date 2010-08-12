@@ -27,6 +27,7 @@ class MY_URI extends CI_URI {
 			// now let's replace the query_string
 			if (empty($query_string)) {
 				$_GET = array();
+				define('MY_QUERY_STRING','');
 			}
 			else {
 				$my_query_string = array();
@@ -35,6 +36,9 @@ class MY_URI extends CI_URI {
 			}
 			
 			return;
+		}
+		else {
+			define('MY_QUERY_STRING','');
 		}
 		
 		parent::_fetch_uri_string();

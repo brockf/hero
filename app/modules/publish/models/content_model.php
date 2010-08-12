@@ -71,7 +71,8 @@ class Content_model extends CI_Model
 							'content_date' => $publish_date,
 							'content_modified' => date('Y-m-d H:i:s'),
 							'user_id' => $user,
-							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : ''
+							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '',
+							'content_hits' => '0'
 						);
 						
 		$this->db->insert('content',$insert_fields);
@@ -206,6 +207,24 @@ class Content_model extends CI_Model
 	}
 	
 	/**
+	* Add Hit
+	*
+	* @param int $content_id
+	*
+	* @return # of hits
+	*/
+	function add_hit ($content_id) {
+		$return = $this->db->select('content_hits')->where('content_id',$content_id)->from('content')->get();
+		$hits = (int)$return->row()->content_hits;
+		
+		$new_hits = $hits + 1;
+		
+		$this->db->update('content',array('content_hits' => $new_hits),array('content_id' => $content_id));
+		
+		return $new_hits;
+	}
+	
+	/**
 	* Get Content ID
 	*
 	* Returns content ID from a URL_path
@@ -280,6 +299,11 @@ class Content_model extends CI_Model
 	function get_contents ($filters = array()) {
 		// do we need to get all content data?  i.e., does it make resource saving sense?
 		if (isset($filters['id']) or isset($filters['type'])) {
+			// add a hit to the content
+			if (isset($filters['id'])) {
+				$this->add_hit($filters['id']);
+			}
+		
 			// find out the table name
 			$this->db->select('content_type_id');
 			if (isset($filters['id'])) {
@@ -421,6 +445,7 @@ class Content_model extends CI_Model
 								'privileges' => (!empty($content['content_privileges'])) ? unserialize($content['content_privileges']) : FALSE,
 								'topics' => (!empty($content['content_topics'])) ? unserialize($content['content_topics']) : FALSE,
 								'template' => $content['content_type_template'],
+								'hits' => $content['content_hits'],
 								'relevance' => (isset($content['relevance'])) ? $content['relevance'] : FALSE
 							);
 							

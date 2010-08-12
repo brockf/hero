@@ -77,6 +77,7 @@ class Publish extends Module {
  								 `content_is_standard` tinyint(1) NOT NULL,
  								 `content_title` varchar(255),
  								 `content_privileges` varchar(255),
+ 								 `content_hits` int(11),
    								 PRIMARY KEY  (`content_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}

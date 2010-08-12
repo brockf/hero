@@ -147,7 +147,7 @@ div#external_form input.text {
 
 div#list_items_wrapper ul li {
 	display: block;
-	border: 1px solid #f0f0f1;
+	border: 1px solid #ccc;
 	padding: 5px;
 	clear: both;
 	margin-bottom: 5px;
@@ -189,6 +189,17 @@ div#link_creator h2 {
 
 ul.current_links li {
 	background-color: #fff;
+}
+
+ul.current_links li.no_hover input {
+	filter:alpha(opacity=50);
+	-moz-opacity:0.5;
+	-khtml-opacity: 0.5;
+	opacity: 0.5;
+}
+
+ul.current_links li.no_hover {
+	border-color: #f0f0f1 !important;
 }
 
 div.editing {

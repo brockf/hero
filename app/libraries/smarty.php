@@ -63,6 +63,15 @@ class CI_Smarty extends Smarty {
 	
 	// modify the display class
 	function display ($template, $cache_id = null, $compile_id = null, $parent = null) {
+		// make sure the $_GET array is accurate in case they are using {$smarty.get.X}
+		$my_query_string = unserialize(MY_QUERY_STRING);
+		if (is_array($my_query_string)) {
+			$_GET = $my_query_string;
+		}
+		else {
+			$_GET = array();
+		}
+	
 		// automatically add .thtml extension if it's not already there (and no extension is)
 		if (strpos($template,'.') === FALSE) {
 			$template .= '.thtml';
