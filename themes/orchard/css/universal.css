@@ -635,6 +635,23 @@ input.button.hover {
 	color: #0668BC;
 }
 
+/* table */
+table.table {
+	width: 100%;
+}
+
+table thead td {
+	background-color: #c6e4fd;
+	color: #222;
+	font-weight: bold;
+	text-shadow: 0px 1px #fff;
+	padding: 3px 10px;
+}
+
+table tbody td {
+	padding: 10px;
+}
+
 ul.login_form_links {
 	border-top: 1px solid #f0f0f1;
 	margin-top: 10px;
@@ -833,4 +850,68 @@ div.archive_date {
 div.archive_date div.month {
 	text-transform: uppercase;
 	font-size: 9pt;
+}
+
+div.product div.images {
+	width: 200px;
+	float: left;
+}
+
+div.product div.images ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.product div.images ul li {
+	display: block;
+	float: left;
+	margin-right: 5px;
+}
+
+div.product div.images img {
+	border: 1px solid #ccc;
+}
+
+div.product div.images a:hover img {
+	border: 1px solid #333;
+}
+
+div.product div.images a.feature_image {
+	display: block;
+	margin: 0 0 5px 0l
+}
+
+div.product div.description {
+	width: 460px;
+	float: left;
+}
+
+div.product div.description.full {
+	width: 660px;
+	float: none;
+}
+
+div.product div.cart_form {
+	float: right;
+	width: 115px;
+	margin: 0 0 15px 15px;
+	background-color: #c6e4fd;
+	padding: 10px 20px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+div.product div.cart_form input.button {
+	margin-top: 6px;
+}
+
+td.sub_total {
+	text-align: right;
+}
+
+td.sub_total_price {
+	font-weight: bold;
 }

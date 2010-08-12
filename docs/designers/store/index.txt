@@ -7,7 +7,7 @@
 
 [h2]Displaying Products[/h2]
 
-Each product has the following tags available:
+Each product has the following tags available in both product listings and the product page:
 
 * {$id}
 * {$url} (absolute URL to product page)
@@ -25,7 +25,24 @@ Each product has the following tags available:
 * {$is_download} (TRUE or FALSE)
 * {$download_name}
 * {$download_size}
-* {$feature_image}
+* {$feature_image} (full path to the file)
+* {$feature_image_url} (URL of the file)
+
+
+Within the product page, the [span_code]{$images}[/span_code] holds an array of all product images (or [span_code]FALSE[/span_code] if none exist).  It can be iterated through like this:
+
+[code]
+{if $images}
+	<div class="images">
+		<ul>
+			{foreach $images as $image}
+				{assign var="image_id" value=$image.id}
+				<li><a href="{$image.url}"><img src="{thumbnail path=$image.path height="50" width="50"}" alt="click to enlarge" title="click to enlarge" /></a>
+			{/foreach}
+		</ul>
+	</div>
+{/if}
+[/code]
 
 [h2]Template Plugins[/h2]
 

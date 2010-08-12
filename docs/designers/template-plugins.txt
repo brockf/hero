@@ -107,6 +107,23 @@ Returns to template:
 http://www.yourdomain.com/themes/yourtheme/images/theme_header.gif
 [/code]
 
+[h2]thumbnail (parameters: path, height, width)[/h2]
+
+Create a thumbnail of an image and return the URL to this cached thumbnail iamge.
+
+Usage:
+
+[code]
+{* This would occur within a product page *}
+<img src="{thumbnail path=$image.path width="80" height="80"}" alt="Image Thumbnail" />
+[/code]
+
+Returns to template:
+
+[code]
+<img src="http://www.example.com/writeable/image_thumbs/fsdf24r02j8paja3894dfkf8fj2a2.jpg" alt="Image Thumbnail" />
+[/code]
+
 [h2]url (parameters: path)[/h2]
 
 Retrieve an absolute URL relative to your site's base URL.  Will use HTTPS if necessary.
