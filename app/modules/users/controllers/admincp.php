@@ -742,6 +742,8 @@ class Admincp extends Admincp_Controller {
 																$this->input->post('width'),
 																$this->input->post('help'),
 																$this->input->post('billing_equiv'),
+																($this->input->post('admin_only') == '1') ? TRUE : FALSE,
+																($this->input->post('registration_form') == '1') ? TRUE : FALSE,
 																$required,
 																$validators
 															);
@@ -758,6 +760,8 @@ class Admincp extends Admincp_Controller {
 												$this->input->post('width'),
 												$this->input->post('help'),
 												$this->input->post('billing_equiv'),
+												($this->input->post('admin_only') == '1') ? TRUE : FALSE,
+												($this->input->post('registration_form') == '1') ? TRUE : FALSE,
 												$required,
 												$validators
 											);

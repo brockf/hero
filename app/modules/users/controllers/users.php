@@ -33,8 +33,7 @@ class Users extends Front_Controller {
 	
 	function profile () {
 		// get custom fields
-		$this->load->model('custom_fields_model');
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
 		
 		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : $this->user_model->get();
 		
@@ -54,9 +53,7 @@ class Users extends Front_Controller {
 		$values['first_name'] = $this->input->post('first_name');
 		$values['last_name'] = $this->input->post('last_name');
 		
-		$this->load->model('custom_fields_model');
-		
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
 		foreach ($custom_fields as $field) {
 			$values[$field['name']] = $_POST[$field['name']];
 		}
@@ -171,8 +168,7 @@ class Users extends Front_Controller {
 		$validation_errors = ($this->input->get('errors') == 'true') ? $this->session->flashdata('register_errors') : '';
 		
 		// get custom fields
-		$this->load->model('custom_fields_model');
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		$custom_fields = $this->user_model->get_custom_fields(array('registration_form' => TRUE, 'not_in_admin' => TRUE));
 		
 		// do we have values being passed?
 		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : array();
@@ -216,9 +212,7 @@ class Users extends Front_Controller {
 		$values['first_name'] = $this->input->post('first_name');
 		$values['last_name'] = $this->input->post('last_name');
 		
-		$this->load->model('custom_fields_model');
-		
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
 		foreach ($custom_fields as $field) {
 			$values[$field['name']] = $_POST[$field['name']];
 		}

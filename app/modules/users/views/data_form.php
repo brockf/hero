@@ -24,6 +24,12 @@
 									'postal_code' => 'Postal Code'
 								), (isset($field['billing_equiv'])) ? $field['billing_equiv'] : '');?>
 		</li>
+		<li>
+			<?=form_checkbox('admin_only', '1', (isset($field['admin_only']) and $field['admin_only'] == TRUE) ? TRUE : FALSE);?> <b>Admin-only?</b>  This data will only be editable or viewable in the control panel.
+		</li>
+		<li>
+			<?=form_checkbox('registration_form', '1', (isset($field['registration_form']) and $field['registration_form'] == FALSE) ? FALSE : TRUE);?> <b>Show in registration form?</b> Show this field in the registration form (by default)
+		</li>
 	</ul>
 </fieldset>
 <div class="submit">
