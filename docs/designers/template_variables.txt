@@ -59,7 +59,7 @@ Shortens the variable to the specified length (if it's longer than the length).
 Usage:
 
 [code]
-{block:$title|shorten(50)} {* Shortens the title to 50 characters *}
+{block:$title|shorten: "50"} {* Shortens the title to 50 characters *}
 [/code]
 
 [h3]date_format (argument: format)[/h3]
@@ -70,6 +70,6 @@ Usage:
 
 [code]
 {content id="43"}
-{block:$title} - Published {block:$data|date_format(Y-m-d H:ia)}
+{block:$title} - Published {block:$data|date_format: "Y-m-d H:ia"}
 {/content}
 [/code]

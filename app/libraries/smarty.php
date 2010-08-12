@@ -36,6 +36,9 @@ class CI_Smarty extends Smarty {
 		$settings = $this->CI->config->config;
 		$this->assign('setting', $settings);
 		
+		// assign current URL to variable
+		$this->assign('current_url',current_url());
+		
 		// are we loggedin
 		$this->assign('logged_in',($this->CI->user_model->logged_in() ? TRUE : FALSE));
 		
@@ -124,11 +127,12 @@ class CI_Smarty extends Smarty {
 			list($variable, $modifier) = explode('|',$variable);
 			
 			// does the modifier have arguments?
-			if (strpos($modifier,'(') !== FALSE) {
-				list($modifier,$mod_argument) = explode('(', $modifier);
+			if (strpos($modifier,':') !== FALSE) {
+				list($modifier,$mod_argument) = explode(': ', $modifier);
+				$mod_argument = trim($mod_argument);
 				
-				// remove trailing ")"
-				$mod_argument = substr_replace($mod_argument, '', -1, 1);
+				// remove quotes
+				$mod_argument = str_replace('"', '', $mod_argument);
 			}
 		}
 		else {

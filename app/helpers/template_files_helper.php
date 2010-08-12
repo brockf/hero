@@ -19,15 +19,15 @@ function template_files () {
 	return $filtered_files;
 }
 
-function parse_template_files_array ($files, $return = array()) {
-	foreach ($files as $file) {
+function parse_template_files_array ($files, $return = array(), $prefix = '') {
+	foreach ($files as $key => $file) {
 		$extension = (!is_array($file) and strpos($file, '.') !== FALSE) ? end(explode('.', $file)) : '';
 		
 		if (is_array($file)) {
-			$return = array_merge($return,parse_template_files_array($file, $return));
+			$return = array_merge($return,parse_template_files_array($file, $return, $prefix . $key . '/'));
 		}
 		elseif (strpos($file, '.') !== FALSE and ($extension == 'thtml' or $extension == 'txml')) {
-			$return[$file] = $file;
+			$return[$prefix . $file] = $prefix . $file;
 		}
 	}
 	

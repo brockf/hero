@@ -4,7 +4,7 @@
 	<h1>{block:$title}</h1>
 		<div class="byline">
 	
-			<span class="date">{block:$date|date_format(l, F j, Y)}</span>
+			<span class="date">{block:$date|date_format: "l, F j, Y"}</span>
 		</div>
 		<div class="article">
 			<span class="author">By {block:$author_first_name} {block:$author_last_name}</span>

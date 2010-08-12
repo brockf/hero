@@ -13,6 +13,8 @@
 * list
 [note][/note]
 
+- Parse [h2]'s as subheading and list as Table of Contents for each article
+
 - Files:
 
 - [devs/classes/admin_form](Administration Form Library) (Admin_form)
