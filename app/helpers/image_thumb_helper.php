@@ -17,6 +17,15 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 	$CI =& get_instance();
 	$CI->load->helper('file_extension');
 	
+	// take off "px" from $height and $width
+	if (strstr($height,'px')) {
+		$height = str_replace('px','',$height);
+	}
+	
+	if (strstr($width, 'px')) {
+		$width = str_replace('px','',$width);
+	}
+	
 	// generate image thumbnail filename from full path and dimensions
 	$file_name = md5($image_path . $height . $width) . '.' . file_extension($image_path);
 

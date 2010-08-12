@@ -10,15 +10,14 @@
 	</div>
 	<div class="article">
 		<span class="author">By {$author_first_name} {$author_last_name}</span>
-	
-		<img src="{$feature_image}" width="{$image_size}" alt="" />
+		<img src="{thumbnail path=$feature_image width=$image_size height=$image_size}" alt="" />
 		
 		{$body}
 		
 		<div class="brock_bar">
 			<div class="options">
 				<ul>
-					<li><a href="#">Email Jerry</a></li>
+					<li><a href="{url path="contact"}">Email Jerry</a></li>
 
 					<li><a id="sharing" href="#">Share This</a></li>
 					<li><a href="#">Discuss</a></li>

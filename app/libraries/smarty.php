@@ -118,7 +118,7 @@ class CI_Smarty extends Smarty {
 	*/
 	function parse_variable ($matches) {
 		$variable = $matches[1];
-		
+	
 		// get variables
 		$variables = $this->string_variables;
 		
@@ -144,7 +144,7 @@ class CI_Smarty extends Smarty {
 		
 		// manipulate?
 		
-		// modifier: shorten[length]
+		// modifier: shorten: "length"
 		
 		if ($modifier == "shorten") {
 			// we need one argument, string length
@@ -154,7 +154,7 @@ class CI_Smarty extends Smarty {
 			$data = shorten($data, $length);
 		}
 		
-		// modifier: date_format[format]
+		// modifier: date_format: "%Y-%m-%d" (for e.g.)
 		elseif ($modifier == "date_format") {
 			$format = $mod_argument;
 			
@@ -165,6 +165,15 @@ class CI_Smarty extends Smarty {
 			else {
 				$data = date($format, strtotime($data));
 			}
+		}
+		
+		// modifier: thumbnail: "widthxheight" (e.g. 150x150)
+		elseif ($modifier == "thumbnail") {
+			list($width,$height) = explode('x', $mod_argument);
+			
+			$this->CI->load->helper('image_thumb');
+			
+			$data = image_thumb($data, $height, $width);
 		}
 		
 		return $data;
