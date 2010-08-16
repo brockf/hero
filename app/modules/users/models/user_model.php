@@ -340,7 +340,7 @@ class User_model extends CI_Model
     function get_subscriptions ($user_id) {
     	$this->load->model('billing/subscription_model');
     	
-    	return $this->subscription_model->get_subscriptions(array('user_ud' => $user_id), TRUE);
+    	return $this->subscription_model->get_subscriptions(array('user_id' => $user_id), TRUE);
     }
     
     /*

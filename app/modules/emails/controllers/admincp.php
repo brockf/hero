@@ -274,10 +274,16 @@ class Admincp extends Admincp_Controller {
 		
 		$variables = $this->email_model->GetEmailVariables($trigger_id);
 		
-		$return = '<p><b>Available Variables for this Trigger Type</b>.  Note: Not all values are available
-				   for each individual email.  For example, "[[BILLING_ADDRESS_1]]" cannot be replaced if you have
-				   chosen to let users skip the billing address step of checkout.</p>
-				   <p><i>Usage Example: [[AMOUNT]] will be replaced by a value like "34.95" in the email.</i></p><ul>';
+		$return = '<p><b>Available Variables for this Trigger Type</b></p>
+				   <ul class="notes">
+				   		<li>Not all values are available for each event.  For example, <span class="var">[[CUSTOMER_ADDRESS_1]]</span> cannot be replaced if the customer
+				  	    does not have an address registered in the system.</li>
+				   		<li>Usage Example: <span class="var">[[AMOUNT]]</span> will be replaced by a value like "34.95" in the email.</li>
+				   		<li>To format dates, you can include a parameter in the variable such as, <span class="var">[[DATE|"M d, Y"]]</span> (output example: Aug 19, 2010).  You can
+				   		specify any date format using either of PHP\'s <a href="http://www.php.net/date">date()</a> and <a href="http://www.php.net/strftime">strftime()</a>
+				   		formatting styles.</li>
+				   </ul>
+				   <ul class="variables">';
 				   
 		// default variable added later
 		$return .= '<li>[[SITE_NAME]]</li>';

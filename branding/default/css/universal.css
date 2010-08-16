@@ -689,9 +689,28 @@ div.product_images span.featured {
 	font-size: 9pt;
 }
 
-#email_variables ul li {
+#email_variables ul.notes {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+#email_variables span.var {
+	font-family: courier;
+}
+
+#email_variables ul.notes li {
+	display: block;
+	background-color: #ffffe3;
+	border: 1px solid #f0f0f1;
+	padding: 8px 12px;
+	margin: 15px;
+}
+
+#email_variables ul.variables li {
 	display: block;
 	float: left;
+	font-family: courier;
 	clear: none;
 	width: 27%;
 	padding: 1%;
