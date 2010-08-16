@@ -242,6 +242,9 @@ class Admincp extends Admincp_Controller {
 			}
 			redirect(site_url('admincp/users/profile/' . $subscription['customer']['internal_id']));
 		}
+		elseif ($action == 'update_cc') {
+			redirect(site_url('admincp/billing/update_cc/' . $subscription['id']));
+		}
 		elseif ($action == 'change_plan') {
 			redirect(site_url('admincp/billing/change_plan/' . $subscription['id']));
 		}

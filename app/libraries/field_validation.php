@@ -44,7 +44,13 @@ class Field_validation
 		return preg_match("^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,3})$^", $email);
 	}
 	
-	function ValidateCreditCard($card_number, $gateway)
+	/**
+	* Validate Credit Card
+	*
+	* @param int $credit_card
+	* @param array $gateway (deprecated - we used to validate per gateway)
+	*/
+	function ValidateCreditCard($card_number, $gateway = FALSE)
 	{	
 		$patterns = array();
 		
@@ -52,25 +58,11 @@ class Field_validation
 			return 'dummy';
 		}
 		
-		if (isset($gateway['accept_amex']) and $gateway['accept_amex'] == 1) {
-			$patterns['amex'] = "/^([34|37]{2})([0-9]{13})$/";
-		}
-		
-		if (isset($gateway['accept_discover']) and $gateway['accept_discover'] == 1) {
-			$patterns['disc'] = "/^([6011]{4})([0-9]{12})$/";
-		}
-		
-		if (isset($gateway['accept_visa']) and $gateway['accept_visa'] == 1) {
-			$patterns['visa'] = "/^([4]{1})([0-9]{12,15})$/";
-		}
-		
-		if (isset($gateway['accept_mc']) and $gateway['accept_mc'] == 1) {
-			$patterns['mc'] = "/^([51|52|53|54|55]{2})([0-9]{14})$/";
-		}
-		
-		if (isset($gateway['accept_dc']) and $gateway['accept_dc'] == 1) {
-			$patterns['dc'] = "/^([30|36|38]{2})([0-9]{12})$/";
-		}
+		$patterns['amex'] = "/^(3[47][0-9]{13})*$/";
+		$patterns['disc'] = "/^([6011]{4})([0-9]{12})$/";
+		$patterns['visa'] = "/^([4]{1})([0-9]{12,15})$/";
+		$patterns['mc'] = "/^([51|52|53|54|55]{2})([0-9]{14})$/";
+		$patterns['dc'] = "/^([30|36|38]{2})([0-9]{12})$/";
 		
 		foreach($patterns as $key => $value) {
 			if(preg_match($value, $card_number)) {
@@ -79,7 +71,6 @@ class Field_validation
 		}
 
 		return FALSE;
-		
 	}
 	
 	function ValidateAmount($amount)

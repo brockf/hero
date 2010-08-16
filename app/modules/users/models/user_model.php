@@ -338,11 +338,9 @@ class User_model extends CI_Model
     */
     
     function get_subscriptions ($user_id) {
-    	$this->load->model('billing/recurring_model');
+    	$this->load->model('billing/subscription_model');
     	
-    	$customer_id = $this->get_customer_id($user_id);
-    	
-    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id), TRUE);
+    	return $this->subscription_model->get_subscriptions(array('user_ud' => $user_id), TRUE);
     }
     
     /*

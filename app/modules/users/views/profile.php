@@ -30,21 +30,24 @@
 		<tbody>
 <? if (is_array($subscriptions)) { ?>
 	<? foreach($subscriptions as $subscription) { ?>
-		<tr class="<?=$subscription['status'];?>">
+		<tr class="<? if ($subscription['active'] == TRUE) { ?>active<? } else { ?>inactive<? } ?>">
 			<td><?=$subscription['id'];?></td>
 			<td><?=$subscription['plan']['name'];?></td>
 			<td><?=setting('currency_symbol');?><?=$subscription['amount'];?></td>
-			<td><?=$subscription['next_charge_date'];?></td>
-			<td><?=$subscription['start_date'];?></td>
-			<td><? if ($subscription['status'] == 'inactive') { ?><?=$subscription['cancel_date'];?><? } else { ?><?=$subscription['end_date'];?><? } ?></td>
-			<td><?=$subscription['status'];?></td>
+			<td><? if ($subscription['next_charge_date']) { ?><?=date('d-M-Y',strtotime($subscription['next_charge_date']));?><? } ?></td>
+			<td><?=date('d-M-Y',strtotime($subscription['start_date']));?></td>
+			<td><? if ($subscription['active'] == FALSE) { ?><?=date('d-M-Y',strtotime($subscription['cancel_date']));?><? } else { ?><?=date('d-M-Y',strtotime($subscription['end_date']));?><? } ?></td>
+			<td><? if ($subscription['active'] == TRUE) { ?>active<? } else { ?>inactive<? } ?></td>
 			<td>
 				<form method="post" action="<?=site_url('admincp/users/profile_actions/');?>" />
 				<input type="hidden" name="subscription_id" value="<?=$subscription['id'];?>" />
 				<select name="action">
 					<option value="0" selected="selected"></option>
-					<? if ($subscription['status'] == 'active') { ?>
+					<? if ($subscription['active'] == TRUE) { ?>
 					<option value="cancel">cancel subscription</option>
+						<? if (!empty($subscription['card_last_four'])) { ?>
+						<option value="update_cc">update credit card</option
+						<? } ?>
 					<? if ((int)$subscription['amount'] != 0) { ?><option value="change_price">change recurring amount</option><? } ?>
 					<option value="change_plan">change plan</option>
 					<? } ?>
