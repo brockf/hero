@@ -65,7 +65,7 @@ function ShowHide () {
 	}
 	else {
 		$('#transaction_gateway').show();
-		if ($('#gateway :selected').hasClass('external')) {
+		if ($('#gateway :selected').hasClass('external') || $('#gateway :selected').hasClass('no_credit_card')) {
 			$('#transaction_cc').hide();
 			$('#transaction_cc input').removeClass('required');
 		}
