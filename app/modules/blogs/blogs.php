@@ -52,7 +52,7 @@ class Blogs extends Module {
  								 `blog_sort_field` varchar(100) NOT NULL,
  								 `blog_sort_dir` varchar(5) NOT NULL,
  								 `blog_auto_trim` tinyint(1) NOT NULL,
- 								 `blog_privileges` varhcar(255) NOT NULL,
+ 								 `blog_privileges` varchar(255) NOT NULL,
  								 `blog_template` varchar(255) NOT NULL,
  								 `blog_per_page` int(11) NOT NULL,
    								 PRIMARY KEY  (`blog_id`)
