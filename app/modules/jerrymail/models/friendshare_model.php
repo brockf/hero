@@ -53,12 +53,24 @@ class Friendshare_model extends CI_Model
 			$CI->email->message($body);
 			
 			$CI->email->send();
-			
-			die($CI->email->print_debugger());
 		}
 		else {
 			// send trimmed email
+			$body = $CI->load->view('jerrymail/share_snippet', $content, TRUE);
+			
+			$CI->load->library('email');
+			$CI->email->initialize(array('mailtype' => 'html'));
+
+			$CI->email->from(setting('site_email'), setting('email_name'));
+			$CI->email->to($email);
+			
+			$CI->email->subject('Recommended Reading: ' . $content['title']);
+			$CI->email->message($body);
+			
+			$CI->email->send();
 		}	
+		
+		$this->track_share($content['id'], $email);
 	}
 	
 	/**
@@ -70,7 +82,7 @@ class Friendshare_model extends CI_Model
 	* @return $friendshare_id
 	*/
 	function track_share ($content_id, $email) {
-		$this->db->insert('friendshare',array('content_id' => $content, 'friendshare_email' => $email, 'friendshare_date' => date('Y-m-d H:i:s')));
+		$this->db->insert('friendshare',array('content_id' => $content_id, 'friendshare_email' => $email, 'friendshare_date' => date('Y-m-d H:i:s')));
 		
 		return $this->db->insert_id();
 	}
