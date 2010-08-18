@@ -14,7 +14,7 @@ function template_files () {
 	$filtered_files = array();
 	$filtered_files = parse_template_files_array($files, $filtered_files);
 	
-	unset($CI);
+	asort($filtered_files);
 	
 	return $filtered_files;
 }

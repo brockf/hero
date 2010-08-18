@@ -38,8 +38,6 @@ class Rss extends Module {
 		}
 	
 		if ($db_version < 1.03) {
-			$this->CI->db->query('DROP TABLE IF EXISTS `rss_feeds`');
-			
 			$this->CI->db->query('CREATE TABLE `rss_feeds` (
  								 `rss_id` int(11) NOT NULL auto_increment,
  								 `link_id` int(11) NOT NULL,

@@ -63,24 +63,26 @@ class Publish extends Module {
 	* @return int The current software version, to update the database
 	*/
 	function update ($db_version) {
-		if ($db_version < 1.09) {
-			$this->CI->db->query('DROP TABLE IF EXISTS `content`');
-			
-			$this->CI->db->query('CREATE TABLE `content` (
- 								 `content_id` int(11) NOT NULL auto_increment,
- 								 `link_id` int(11) NOT NULL,
- 								 `content_type_id` int(11) NOT NULL,
- 								 `user_id` int(11) NOT NULL,
- 								 `content_date` DATETIME NOT NULL,
- 								 `content_modified` DATETIME NOT NULL,
- 								 `content_topics` VARCHAR(255) NOT NULL,
- 								 `content_is_standard` tinyint(1) NOT NULL,
- 								 `content_title` varchar(255),
- 								 `content_privileges` varchar(255),
- 								 `content_hits` int(11),
-   								 PRIMARY KEY  (`content_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		if ($db_version < 1.0) {								 
+			$this->CI->settings_model->make_writeable_folder(setting('path_editor_uploads'));
 		}
+		
+		if ($db_version < 1.02) {	
+			$this->CI->db->query('DROP TABLE IF EXISTS `content_types`');
+										 
+			$this->CI->db->query('CREATE TABLE `content_types` (
+ 								 `content_type_id` int(11) NOT NULL auto_increment,
+ 								 `content_type_is_module` tinyint(1) NOT NULL,
+ 								 `content_type_is_standard` tinyint(1) NOT NULL,
+ 								 `content_type_is_privileged` tinyint(1) NOT NULL,
+ 								 `custom_field_group_id` int(11) NOT NULL,
+ 								 `content_type_friendly_name` varchar(100) NOT NULL,
+ 								 `content_type_system_name` varchar(50) NOT NULL,
+ 								 `content_type_template` varchar(255) NOT NULL,
+ 								 PRIMARY KEY  (`content_type_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+		
 		if ($db_version < 1.03) {
 			$this->CI->db->query('CREATE TABLE `topic_maps` (
  								 `topic_map_id` int(11) NOT NULL auto_increment,
@@ -98,25 +100,24 @@ class Publish extends Module {
    								 PRIMARY KEY  (`topic_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
-								 
-		if ($db_version < 1.02) {	
-			$this->CI->db->query('DROP TABLE IF EXISTS `content_types`');
-										 
-			$this->CI->db->query('CREATE TABLE `content_types` (
- 								 `content_type_id` int(11) NOT NULL auto_increment,
- 								 `content_type_is_module` tinyint(1) NOT NULL,
- 								 `content_type_is_standard` tinyint(1) NOT NULL,
- 								 `content_type_is_privileged` tinyint(1) NOT NULL,
- 								 `custom_field_group_id` int(11) NOT NULL,
- 								 `content_type_friendly_name` varchar(100) NOT NULL,
- 								 `content_type_system_name` varchar(50) NOT NULL,
- 								 `content_type_template` varchar(255) NOT NULL,
- 								 PRIMARY KEY  (`content_type_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
-		}
 		
-		if ($db_version < 1.0) {								 
-			$this->CI->settings_model->make_writeable_folder(setting('path_editor_uploads'));
+		if ($db_version < 1.09) {
+			$this->CI->db->query('DROP TABLE IF EXISTS `content`');
+			
+			$this->CI->db->query('CREATE TABLE `content` (
+ 								 `content_id` int(11) NOT NULL auto_increment,
+ 								 `link_id` int(11) NOT NULL,
+ 								 `content_type_id` int(11) NOT NULL,
+ 								 `user_id` int(11) NOT NULL,
+ 								 `content_date` DATETIME NOT NULL,
+ 								 `content_modified` DATETIME NOT NULL,
+ 								 `content_topics` VARCHAR(255) NOT NULL,
+ 								 `content_is_standard` tinyint(1) NOT NULL,
+ 								 `content_title` varchar(255),
+ 								 `content_privileges` varchar(255),
+ 								 `content_hits` int(11),
+   								 PRIMARY KEY  (`content_id`)
+								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 	
 		return $this->version;

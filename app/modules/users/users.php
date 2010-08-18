@@ -52,42 +52,6 @@ class Users_module extends Module {
 	* @return int The current software version, to update the database
 	*/
 	function update ($db_version) {
-		if ($db_version < 1.05) {
-			$this->CI->settings_model->new_setting(3, 'registration_redirect', 'users/', 'Redirect to this address after a user registers.  Can be an absolute or relative URL.', 'text', '');
-			$this->CI->settings_model->new_setting(3, 'show_subscriptions', '1', 'After a registration, should we redirect to subscription packages (if they exist)?  If this redirect doesn\'t happen, the "registration_redirect" setting will be used.', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
-		}
-	
-		if ($db_version < 1.04) {
-			$this->CI->db->query('CREATE TABLE `user_logins` (
-								  `user_login_id` int(11) NOT NULL auto_increment,
-								  `user_id` int(11) NOT NULL,
-								  `user_login_date` DATETIME NOT NULL,
-								  `user_login_ip` varchar(50) NOT NULL,
-								  `user_login_browser` varchar(255) NOT NULL,
-								  PRIMARY KEY  (`user_login_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
-		}
-		
-		if ($db_version < 1.03) {
-			$this->CI->settings_model->new_setting(3, 'validate_emails', '1', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
-		}
-		
-		if ($db_version < 1.02) {
-			$this->CI->settings_model->new_setting(3, 'require_tos', '0', 'Require registering users to agree to your site\'s Terms of Service?', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
-			$this->CI->settings_model->new_setting(3, 'terms_of_service', 'Enter your terms of service here.', 'If "require_tos" is On, users will be forced to accept these Terms prior to registering.', 'textarea');
-		}
-	
-		if ($db_version < 1.01) {
-			$this->CI->db->query('CREATE TABLE `user_fields` (
-								  `user_field_id` int(11) NOT NULL auto_increment,
-								  `custom_field_id` int(11) NOT NULL,
-								  `subscription_plans` varchar(150) NOT NULL,
-								  `products` varchar(150) NOT NULL,
-								  `user_field_billing_equiv` varchar(250) NOT NULL,
-								  PRIMARY KEY  (`user_field_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
-		}
-	
 		if ($db_version < 1.0) {
 			// initial install
 			$this->CI->db->query('CREATE TABLE `usergroups` (
@@ -125,6 +89,42 @@ class Users_module extends Module {
 								  `user_pending_charge_id` int(11),
 								  PRIMARY KEY  (`user_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;');
+		}
+		
+		if ($db_version < 1.01) {
+			$this->CI->db->query('CREATE TABLE `user_fields` (
+								  `user_field_id` int(11) NOT NULL auto_increment,
+								  `custom_field_id` int(11) NOT NULL,
+								  `subscription_plans` varchar(150) NOT NULL,
+								  `products` varchar(150) NOT NULL,
+								  `user_field_billing_equiv` varchar(250) NOT NULL,
+								  PRIMARY KEY  (`user_field_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+		
+		if ($db_version < 1.02) {
+			$this->CI->settings_model->new_setting(3, 'require_tos', '0', 'Require registering users to agree to your site\'s Terms of Service?', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+			$this->CI->settings_model->new_setting(3, 'terms_of_service', 'Enter your terms of service here.', 'If "require_tos" is On, users will be forced to accept these Terms prior to registering.', 'textarea');
+		}
+		
+		if ($db_version < 1.03) {
+			$this->CI->settings_model->new_setting(3, 'validate_emails', '1', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+		}
+		
+		if ($db_version < 1.04) {
+			$this->CI->db->query('CREATE TABLE `user_logins` (
+								  `user_login_id` int(11) NOT NULL auto_increment,
+								  `user_id` int(11) NOT NULL,
+								  `user_login_date` DATETIME NOT NULL,
+								  `user_login_ip` varchar(50) NOT NULL,
+								  `user_login_browser` varchar(255) NOT NULL,
+								  PRIMARY KEY  (`user_login_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
+		}
+		
+		if ($db_version < 1.05) {
+			$this->CI->settings_model->new_setting(3, 'registration_redirect', 'users/', 'Redirect to this address after a user registers.  Can be an absolute or relative URL.', 'text', '');
+			$this->CI->settings_model->new_setting(3, 'show_subscriptions', '1', 'After a registration, should we redirect to subscription packages (if they exist)?  If this redirect doesn\'t happen, the "registration_redirect" setting will be used.', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
 		}
 		
 		// return current version

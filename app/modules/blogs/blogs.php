@@ -33,6 +33,10 @@ class Blogs extends Module {
 	}
 	
 	function update ($db_version) {
+		if ($db_version < 1.0) {
+			$this->CI->settings_model->new_setting(4, 'blog_summary_length', '800', 'How many characters would you like to trim each blog post summary to?  Note: words will not be split in two - we use an intelligent content shortening algorithm.', 'text', '');
+		}
+		
 		if ($db_version < 1.02) {
 			$this->CI->db->query('DROP TABLE IF EXISTS `blogs`');
 		
@@ -53,10 +57,6 @@ class Blogs extends Module {
  								 `blog_per_page` int(11) NOT NULL,
    								 PRIMARY KEY  (`blog_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
-		}
-		
-		if ($db_version < 1.0) {
-			$this->CI->settings_model->new_setting(4, 'blog_summary_length', '800', 'How many characters would you like to trim each blog post summary to?  Note: words will not be split in two - we use an intelligent content shortening algorithm.', 'text', '');
 		}
 		
 		return $this->version;

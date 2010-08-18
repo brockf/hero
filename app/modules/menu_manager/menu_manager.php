@@ -43,9 +43,6 @@ class Menu_manager extends Module {
 	
 	function update ($db_version) {
 		if ($db_version < 1.01) {
-			$this->CI->db->query('DROP TABLE IF EXISTS `menus_links`');
-			$this->CI->db->query('DROP TABLE IF EXISTS `menus`');
-		
 			$this->CI->db->query('CREATE TABLE `menus_links` (
 								  `menu_link_id` int(11) NOT NULL auto_increment,
 								  `menu_id` int(11) NOT NULL,

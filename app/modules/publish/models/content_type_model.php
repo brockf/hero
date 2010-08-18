@@ -161,7 +161,9 @@ class Content_type_model extends CI_Model
 		
 		$search_fields = array();
 		foreach ($custom_fields as $field) {
-			$search_fields[] = '`' . $field['name'] . '`';
+			if ($field['type'] != 'date') {
+				$search_fields[] = '`' . $field['name'] . '`';
+			}
 		}
 		
 		$search_fields = implode(', ', $search_fields);

@@ -915,3 +915,30 @@ td.sub_total {
 td.sub_total_price {
 	font-weight: bold;
 }
+
+div.conference_bar {
+	float: right;
+	width: 115px;
+	margin: 0 0 15px 15px;
+	background-color: #c6e4fd;
+	padding: 10px 20px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	border-radius: 10px;
+	text-align: center;
+}
+
+div.conference_bar span.price {
+	font-weight: bold;
+	font-size: 14pt;
+}
+
+div.conference_bar span.per_ticket {
+	font-size: 8pt;
+	text-transform: uppercase;
+	display: block;
+}
+
+div.conference_bar input.button {
+	margin-top: 6px;
+}
