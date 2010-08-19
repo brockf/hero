@@ -33,7 +33,7 @@
 		<div class="links">
 			<ul class="links">
 				<li><a href="<?=site_url();?>">Visit site</a></li>
-				<li><a href="<?=site_url('user/forgot_password');?>">Reset your password</a></li>
+				<li><a href="<?=site_url('users/forgot_password');?>">Reset your password</a></li>
 				<li><a href="<?=setting('app_support');?>"><?=setting('app_name');?> Support</a></li>
 			</ul>
 		</div>
