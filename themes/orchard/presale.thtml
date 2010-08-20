@@ -1,0 +1,18 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Presale Signup - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>Inside Music Media will soon be a subscription website</h1>
+	<p>We are moving to a subscription model blah blah.</p>
+	<h3>Subscribe now to lock in an annual fee of $99 for as long as you remain a subscriber!</h3>
+	<p>Jerry's new site will launch on September 14, 2010.  If you subscribe now, you'll not only receive
+	a <b>guaranteed rate of $99 per year</b> but you'll also have full access to all members-only content
+	from launch day!
+	
+	<form method="get" action="{url path="billing/subscriptions/add_to_cart/3"}">
+	<input type="submit" class="button" name="add_to_cart" value="Purchase a Subscription to the new Inside Music Media" />
+
+	</form>
+
+{/block}

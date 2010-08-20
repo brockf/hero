@@ -22,8 +22,10 @@
 				<a href="{url path="users"}">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="{url path="users/logout"}">logout</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			{else}
+				{presale_only}
 				<a href="{url path="users/login"}">login</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="{url path="users/register"}">subscribe</a>&nbsp;&nbsp;&nbsp;&nbsp;
+				{/presale_only}
 			{/if}
 			<a href="{url path="store/cart"}">cart ({cart_items})</a>
 		</div>
@@ -61,6 +63,7 @@
 </div>
 <div id="boxbot"></div>
 
+{presale_only}
 <div class="boxes">
 	<div class="boxestop">
 
@@ -79,11 +82,11 @@
 					the January conference here</a>.</p>
 
 				</div>
-				<div class="box">
+				{* <div class="box">
 					<h4 style="color: #13a9a0">Latest Video</h4>
 					<p>Watch Jerry interview a celebrity.</p>
 					<p style="text-align:center"><img src="images/video.gif" alt="Play the Video" /></p>
-				</div>
+				</div> *}
 				<div class="box">
 					<h4 style="color: #26a12c">Latest Posts</h4>
 
@@ -102,6 +105,7 @@
 	
 	</div>
 </div>
+{/presale_only}
 
 <div class="container footer">
 	Copyright &copy; 2007-2010, Jerry Del Colliano LLC.  All Rights Reserved.  Designed and developed by <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.

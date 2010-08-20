@@ -174,7 +174,7 @@ class Users extends Front_Controller {
 		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : array();
 		
 		// to stop PHP notices, we'll populate empty values for custom fields if we didn't get any values
-		if (empty($values)) {
+		if (empty($values) and is_array($custom_fields)) {
 			foreach ($custom_fields as $field) {
 				$values[$field['name']] = '';
 			}
@@ -214,7 +214,15 @@ class Users extends Front_Controller {
 		
 		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
 		foreach ($custom_fields as $field) {
-			$values[$field['name']] = $_POST[$field['name']];
+			if ($this->input->post($field['name']) !== FALSE) {
+				$values[$field['name']] = $this->input->post($field['name']);
+			}
+			elseif (!empty($field['default'])) {
+				$values[$field['name']] = $field['default'];
+			}
+			else {
+				$values[$field['name']] = '';
+			}
 		}
 		
 		$values = query_value_encode(serialize($values));
@@ -236,7 +244,7 @@ class Users extends Front_Controller {
 		}
 		
 		// we validated!  let's create the account
-		$custom_fields = $this->custom_fields_model->post_to_array('1');
+		$custom_fields = $this->custom_fields_model->post_to_array('1', TRUE);
 			
 		$user_id = $this->user_model->new_user(
 												$this->input->post('email'),

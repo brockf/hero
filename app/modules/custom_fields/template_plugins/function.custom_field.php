@@ -149,7 +149,8 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		$return = form_checkbox(array(
 									'name' => $field['name'],
 									'id' => 'field_' . $field['name'],
-									'value' => '1'
+									'value' => '1',
+									'checked' => (!empty($value)) ? TRUE : FALSE
 								));
 								
 		return $return;

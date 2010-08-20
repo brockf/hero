@@ -14,7 +14,7 @@
 			<span class="per_ticket">per attendee</span>
 			
 			<form method="get" action="{block:$url}">
-			<input type="submit" class="button" value="Buy Tickets" />
+			<input type="submit" class="button" value="Register" />
 			</form>
 		</div>
 		

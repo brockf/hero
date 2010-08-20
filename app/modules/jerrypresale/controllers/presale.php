@@ -17,4 +17,8 @@ class Presale extends Front_Controller {
 	function index () {
 		return $this->smarty->display('presale.thtml');
 	}
+	
+	function thanks () {
+		return $this->smarty->display('presale_thanks.thtml');
+	}
 }

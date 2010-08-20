@@ -1,14 +1,12 @@
 {extends file="layout.thtml"}
 {block name="title"}
-Create an Account - {$smarty.block.parent}
+Subscribe to the Newsletter - {$smarty.block.parent}
 {/block}
 {block name="content"}
 	{registration_form return=$return}
-		<h1>Create an Account</h1>
-		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
-		{if $setting.validate_emails == "1"}
-			<p>You will be required to validate your email address before your account is fully activated.</p>
-		{/if}
+		<h1>Subscribe to the Newsletter</h1>
+		<p>Receive Jerry's articles in your email every morning!  No spam, no advertisements.</p>
+		<p>You can unsubscribe, upgrade your account, or delete your account at anytime.</p>
 		<form class="form validate" enctype="multipart/form-data" method="post" action="{block:$form_action}">
 			<input type="hidden" name="return" value="{block:$return}">
 			
@@ -61,21 +59,6 @@ Create an Account - {$smarty.block.parent}
 					<li>
 						<input type="text" class="text required" id="last_name" name="last_name" value="{if $values.last_name}{$values.last_name}{/if}">
 					</li>
-					{foreach $custom_fields as $field}
-						{if $field.name}
-							<li>
-								<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
-							</li>
-							<li>
-								{custom_field field=$field value=$values[$field['name']]}
-							</li>
-							{if $field.help}
-							<li>
-								<div class="help flush">{$field.help}</div>
-							</li>
-							{/if}
-						{/if}
-					{/foreach}
 				</ul>
 			</fieldset>
 			
@@ -89,7 +72,7 @@ Create an Account - {$smarty.block.parent}
 			</fieldset>
 			{/if}
 			
-			<input type="submit" class="button" name="go" value="Create Account" />
+			<input type="submit" class="button" name="go" value="Complete My Signup" />
 		</form>
 	{/registration_form}
 {/block}

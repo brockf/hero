@@ -141,10 +141,11 @@ class Custom_fields_model extends CI_Model {
 	* Convert all custom field data for a field group from POST into an array
 	*
 	* @param int $field_group_id
+	* @param boolean $populate_with_defaults If the field isn't in the POST,should we use the default values?  (i.e., for user registrations)
 	*
 	* @return array Field data
 	*/
-	function post_to_array($field_group_id) {
+	function post_to_array($field_group_id, $populate_with_defaults = FALSE) {
 		if (empty($field_group_id)) {
 			return array();
 		}
@@ -153,6 +154,14 @@ class Custom_fields_model extends CI_Model {
 		
 		$array = array();
 		foreach ($fields as $field) {
+			// if this doesn't exist in POST, should we replace it with its default value?
+			if ($populate_with_defaults == TRUE and $this->input->post($field['name']) === FALSE) {
+				// yes
+				if (!empty($field['default'])) {
+					$_POST[$field['name']] = $field['default'];
+				}
+			}
+		
 			if ($field['type'] == 'multiselect') {
 				$array[$field['name']] = serialize($this->input->post($field['name']));
 			}
@@ -191,6 +200,9 @@ class Custom_fields_model extends CI_Model {
 			elseif ($field['type'] == 'date' and $this->input->post($field['name'] . '_day')) {
 				// we are getting the 3 individual date fields
 				$array[$field['name']] = $this->input->post($field['name'] . '_year') . '-' . $this->input->post($field['name'] . '_month') . '-' . $this->input->post($field['name'] . '_day');
+			}
+			elseif ($field['type'] == 'checkbox') {
+				$array[$field['name']] = ($this->input->post($field['name'])) ? '1' : '0';
 			}
 			else {
 				$array[$field['name']] = $this->input->post($field['name']);

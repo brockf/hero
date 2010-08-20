@@ -55,7 +55,7 @@
 				</select>
 			</li>
 			<li class="submit">
-				<input type="submit" class="button" value="Apply Filters" />
+				<input type="submit" class="button" value="Find" />
 			</li>
 			<li class="submit">
 				<a href="{$url}">Clear Filters</a>

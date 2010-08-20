@@ -33,6 +33,7 @@
 				{if $track_inventory and !$inventory_allow_oversell and $inventory < 1}
 					<p>Unfortunately, this product is sold out.  Please check back again later.</p>
 				{else}
+					{setting name="currency_symbol"}{$price}
 					<form method="post" action="{url path="store/add_to_cart"}">
 						<input type="hidden" name="product_id" value="{$id}" />
 						Quantity: <input type="text" style="width: 40px" name="quantity" value="1" />

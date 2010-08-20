@@ -12,7 +12,7 @@
 */
 
 class Jerrymail_module extends Module {
-	var $version = '1.0';
+	var $version = '1.02';
 	var $name = 'jerrymail';
 
 	function __construct () {
@@ -59,7 +59,17 @@ class Jerrymail_module extends Module {
  								 PRIMARY KEY  (`friendshare_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
-								
+		
+		if ($db_version < '1.01') {
+			$this->CI->load->model('link_model');
+			$this->CI->link_model->new_link('newsletter', FALSE, 'Subscribe to the Newsletter', 'Newsletter', 'jerrymail', 'newsletter', 'index');
+		}
+		
+		if ($db_version < '1.02') {
+			$this->CI->load->model('link_model');
+			$this->CI->link_model->new_link('newsletter_thanks', FALSE, 'Newsletter Thanks', 'Newsletter', 'jerrymail', 'newsletter', 'thanks');
+		}
+										
 		// return current version
 		return $this->version;
 	}

@@ -1,0 +1,10 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Thank you! - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>Thank you for purchasing a subscription!</h1>
+	<p>You have successfully purchased a subscription to the <b>new</b> Inside Music Media!</p>
+	<p>When the site is launched, you'll receive an email!</p>
+	<p>Thanks again!</p>
+{/block}

@@ -1,0 +1,9 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Thank you! - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>You are now a subscriber!</h1>
+	
+	<p>You have now subscribed to Jerry's free newsletter.  <a href="{url path=""}">Continue browsing {setting name="site_name"}</a>.</p>
+{/block}

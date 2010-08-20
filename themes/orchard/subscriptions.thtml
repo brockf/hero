@@ -10,6 +10,7 @@ Choose Your Subscription - {$smarty.block.parent}
 	{else}
 	<ul class="subscriptions">
 		{foreach $plans as $plan}
+		{if $plan.id != 3}
 		<li>
 			<h3>{$plan.name}</h3>
 			{$plan.description}
@@ -17,7 +18,12 @@ Choose Your Subscription - {$smarty.block.parent}
 			<input type="submit" class="button" name="add_to_cart" value="Add Subscription to Cart" />
 			</form>
 		</li>
+		{/if}
 		{/foreach}
 	</ul>
 	{/if}
+	
+	<div class="newsletter_recruit">
+		Not ready to purchase a membership?<br /><a href="{url path="newsletter"}">Click here to subscribe to Jerry's newsletter for <b>FREE</b></b>!
+	</div>
 {/block}
