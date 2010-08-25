@@ -84,7 +84,7 @@ class Content_model extends CI_Model
 		if (is_array($topics)) {
 			foreach ($topics as $topic) {
 				if ($topic != '0') {
-					$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content['id']));
+					$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content_id));
 				}
 			}
 		}
