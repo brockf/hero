@@ -213,15 +213,17 @@ class Users extends Front_Controller {
 		$values['last_name'] = $this->input->post('last_name');
 		
 		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
-		foreach ($custom_fields as $field) {
-			if ($this->input->post($field['name']) !== FALSE) {
-				$values[$field['name']] = $this->input->post($field['name']);
-			}
-			elseif (!empty($field['default'])) {
-				$values[$field['name']] = $field['default'];
-			}
-			else {
-				$values[$field['name']] = '';
+		if (is_array($custom_fields)) {
+			foreach ($custom_fields as $field) {
+				if ($this->input->post($field['name']) !== FALSE) {
+					$values[$field['name']] = $this->input->post($field['name']);
+				}
+				elseif (!empty($field['default'])) {
+					$values[$field['name']] = $field['default'];
+				}
+				else {
+					$values[$field['name']] = '';
+				}
 			}
 		}
 		

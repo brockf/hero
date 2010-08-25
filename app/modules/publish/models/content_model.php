@@ -39,15 +39,17 @@ class Content_model extends CI_Model
 			return FALSE;
 		}
 		
-		$this->load->helper('clean_string');
-		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
-		
-		// get a global link ID
-		// make sure URL is unique
-		$this->load->model('link_model');
-		$url_path = $this->link_model->get_unique_url_path($url_path);
-		
-		$link_id = $this->link_model->new_link($url_path, $topics, $title, $type['singular_name'], 'publish', 'content', 'view');
+		if (!empty($title)) {
+			$this->load->helper('clean_string');
+			$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+			
+			// get a global link ID
+			// make sure URL is unique
+			$this->load->model('link_model');
+			$url_path = $this->link_model->get_unique_url_path($url_path);
+			
+			$link_id = $this->link_model->new_link($url_path, $topics, $title, $type['singular_name'], 'publish', 'content', 'view');
+		}
 		
 		// prep the date
 		if (empty($publish_date)) {
@@ -79,9 +81,11 @@ class Content_model extends CI_Model
 		$content_id = $this->db->insert_id();
 						
 		// map to topics
-		foreach ($topics as $topic) {
-			if ($topic != '0') {
-				$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content_id));
+		if (is_array($topics)) {
+			foreach ($topics as $topic) {
+				if ($topic != '0') {
+					$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content['id']));
+				}
 			}
 		}
 		
@@ -120,19 +124,21 @@ class Content_model extends CI_Model
 		$this->load->model('publish/content_type_model');
 		$type = $this->content_type_model->get_content_type($content['type_id']);
 		
-		if (empty($url_path)) {
-			$this->load->helper('clean_string');
-			$url_path = clean_string($title);
+		if (!empty($title)) {
+			if (empty($url_path)) {
+				$this->load->helper('clean_string');
+				$url_path = clean_string($title);
+			}
+			
+			// make sure URL is unique (unless it hasn't changed, of course)
+			$this->load->model('link_model');
+			if ($content['url_path'] != $url_path) {
+				$url_path = $this->link_model->get_unique_url_path($url_path);
+				$this->link_model->update_url($content['link_id'], $url_path);
+			}
+			$this->link_model->update_title($content['link_id'], $title);
+			$this->link_model->update_topics($content['link_id'], $topics);
 		}
-		
-		// make sure URL is unique (unless it hasn't changed, of course)
-		$this->load->model('link_model');
-		if ($content['url_path'] != $url_path) {
-			$url_path = $this->link_model->get_unique_url_path($url_path);
-			$this->link_model->update_url($content['link_id'], $url_path);
-		}
-		$this->link_model->update_title($content['link_id'], $title);
-		$this->link_model->update_topics($content['link_id'], $topics);
 		
 		// prep the date
 		if (empty($publish_date) or date('Y-m-d',strtotime($publish_date)) == date('Y-m-d',strtotime($content['date']))) {
@@ -160,9 +166,11 @@ class Content_model extends CI_Model
 		$this->db->delete('topic_maps',array('content_id' => $content['id']));
 						
 		// map to topics
-		foreach ($topics as $topic) {
-			if ($topic != '0') {
-				$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content['id']));
+		if (is_array($topics)) {
+			foreach ($topics as $topic) {
+				if ($topic != '0') {
+					$this->db->insert('topic_maps',array('topic_id' => $topic, 'content_id' => $content['id']));
+				}
 			}
 		}
 		

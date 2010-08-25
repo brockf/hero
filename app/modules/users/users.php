@@ -98,6 +98,8 @@ class Users_module extends Module {
 								  `subscription_plans` varchar(150) NOT NULL,
 								  `products` varchar(150) NOT NULL,
 								  `user_field_billing_equiv` varchar(250) NOT NULL,
+								  `user_field_admin_only` tinyint(1) NOT NULL,
+								  `user_field_registration_form` tinyint(1) NOT NULL,
 								  PRIMARY KEY  (`user_field_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
