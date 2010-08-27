@@ -408,7 +408,15 @@ class Admin_form {
 				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, FALSE, $field['required'], $field['help'], FALSE, $field['id']);
 			}
 			elseif ($field['type'] == 'multiselect') {
-				$value = (isset($values[$field['name']]) and is_array($values[$field['name']])) ? $values[$field['name']] : array();
+				if (isset($values[$field['name']]) and is_array($values[$field['name']])) {
+					$value = $values[$field['name']];
+				}
+				elseif (isset($values[$field['name']]) and @is_array(unserialize($values[$field['name']]))) {
+					$value = unserialize($values[$field['name']]);
+				}
+				else {
+					$value = array();
+				}
 				
 				if (empty($value) and $no_defaults == FALSE) {
 					$value = array($field['default']);
