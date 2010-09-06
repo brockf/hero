@@ -26,6 +26,14 @@
 		
 		{/product}
 		
-		{include file="brock_bar.thtml" share_content_id=$id}
+		<div class="brock_bar">
+			<div class="options">
+				<ul>
+					<li><a style="width: 50%" href="{url path="contact"}">Email Jerry</a></li>
+					<li><a style="width: 50%" href="{product id=$product_id}{block:$url}{/product}">Register for Conference</a></li>
+				</ul>
+				<div style="clear:both"></div>
+			</div>
+		</div>
 	</div>
 {/block}

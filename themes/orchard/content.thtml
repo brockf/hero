@@ -10,6 +10,7 @@
 	</div>
 	<div class="article">
 		<span class="author">By {$author_first_name} {$author_last_name}</span>
+
 		<img src="{thumbnail path=$feature_image width=$image_size height=$image_size}" alt="" />
 		
 		{$body}

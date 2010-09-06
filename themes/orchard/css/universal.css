@@ -844,17 +844,37 @@ div.archive_date {
 	background-color: #0b4b77;
 	padding: 5px 10px;
 	color: #fff;
-	width: 30px;
+	width: 50px;
+	height: 30px;
 	float: left;
 	margin-right: 10px;
 	line-height: 1.1em;
 	font-weight: bold;
 	text-align: center;
+	position: relative;
 }
 
 div.archive_date div.month {
 	text-transform: uppercase;
 	font-size: 9pt;
+	position: absolute;
+	left: 10px;
+	top: 5px;
+}
+
+div.archive_date div.day {
+	position: absolute;
+	right: 10px;
+	top: 5px;
+}
+
+div.archive_date div.year {
+	position: absolute;
+	top: 20px;
+	left: 10px;
+	width: 50px;
+	text-align: center;
+	color: #ccc;
 }
 
 div.product div.images {

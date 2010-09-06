@@ -19,7 +19,7 @@ class Cron extends Front_Controller {
 		// do we have a post today?
 		$this->load->model('publish/content_model');
 		$contents = $this->content_model->get_contents(array(
-									'start_date' => date('Y-m-d'),
+									'start_date' => date('Y-m-d H:i:s', strtotime('24 hours ago')),
 									'type' => '1'
 								));
 								

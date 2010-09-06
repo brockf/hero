@@ -22,6 +22,7 @@ function smarty_function_friendshare ($params, $smarty, $template) {
 		
 		if ($smarty->CI->form_validation->run() !== FALSE) {
 			$smarty->CI->friendshare_model->send($smarty->CI->input->post('content_id'), $smarty->CI->input->post('email'));
+			return '<div>Thank you for sharing this article with a friend!</div>';
 		}
 	}
 }

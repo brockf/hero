@@ -1,4 +1,4 @@
-{friendshare}<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
 <title>{block name="title"}{setting name="site_name"}{/block}</title>
@@ -12,7 +12,7 @@
 {/block}
 </head>
 <body>
-<div id="notices"></div>
+<div id="notices">{friendshare}</div>
 
 <div class="container">
 	<div id="header">
@@ -72,16 +72,12 @@
 	<div class="boxes">
 		<div class="boxes2">
 			<div class="container">
+				{content type="7"}
 				<div class="box">
-					<h4>Conference Update!</h4>
-					<p>This is a major update about the conference.
-					It will hopefully drive traffic and registrations.
-					It's down here below the content, hoping to catch
-					the reader's eye after they have read the content.
-					Interesting, eh?  <a href="#">Sign up for
-					the January conference here</a>.</p>
-
-				</div>
+					<h4 style="color: #{block:$header_colour}">{block:$header}</h4>
+					{block:$content}
+				</div>	
+				{/content}
 				{* <div class="box">
 					<h4 style="color: #13a9a0">Latest Video</h4>
 					<p>Watch Jerry interview a celebrity.</p>

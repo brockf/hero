@@ -65,7 +65,7 @@ class Content_model extends CI_Model
 		
 		// insert it into standard content table first
 		$insert_fields = array(
-							'link_id' => $link_id,
+							'link_id' => (isset($link_id)) ? $link_id : 0,
 							'content_type_id' => $type['id'],
 							'content_is_standard' => (empty($title)) ? '0' : '1',
 							'content_title' => $title,

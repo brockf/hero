@@ -80,6 +80,7 @@
 				<div class="archive_date">
 					<div class="month">{block:$date|date_format: "M"}</div>
 					<div class="day">{block:$date|date_format: "d"}</div>
+					<div class="year">{block:$date|date_format: "Y"}</div>
 				</div>
 				
 				<a class="title" href="{block:$url}">{block:$title}</a>
