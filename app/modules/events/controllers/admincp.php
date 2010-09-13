@@ -58,21 +58,21 @@ class Admincp extends Admincp_Controller {
 					);
 						
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('rss_model','get_feeds');
-		$this->dataset->base_url(site_url('admincp/rss'));
+		$this->dataset->datasource('events_model','get_events');
+		$this->dataset->base_url(site_url('admincp/events'));
 		
 		// initialize the dataset
 		$this->dataset->initialize();
 
 		// add actions
-		$this->dataset->action('Delete','admincp/rss/delete');
+		$this->dataset->action('Delete','admincp/events/delete');
 		
 		$this->load->view('rss_feeds');
 	}
 	
 	function delete ($feeds, $return_url) {
 		$this->load->library('asciihex');
-		$this->load->model('rss_model');
+		$this->load->model('events_model');
 		
 		$feeds = unserialize(base64_decode($this->asciihex->HexToAscii($feeds)));
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
