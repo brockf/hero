@@ -1,5 +1,5 @@
 <?=$this->load->view(branded_view('cp/header'));?>
-<h1>Manage RSS Feeds</h1>
+<h1>Manage Events</h1>
 <?=$this->dataset->table_head();?>
 <?
 if (!empty($this->dataset->data)) {
