@@ -54,7 +54,7 @@ class Admincp_Controller extends MY_Controller {
 		session_start();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = FALSE;
-		$_SESSION['KCFINDER']['uploadURL'] = str_replace(FCPATH,'','/writeable/editor_uploads');
+		$_SESSION['KCFINDER']['uploadURL'] = str_replace(FCPATH,'',setting('path_editor_uploads'));
 		$_SESSION['KCFINDER']['uploadDir'] = rtrim(setting('path_editor_uploads'),'/');
 	}
 }
