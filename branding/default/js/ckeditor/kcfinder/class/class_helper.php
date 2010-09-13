@@ -111,6 +111,8 @@ class helper {
     }
 
     static function resolveRelativeUrl($url) {
+    	return $url;
+    	
         if (substr($url, 0, 1) == "/") return $url;
         $dir = self::transformWindowsPath(getcwd());
 
