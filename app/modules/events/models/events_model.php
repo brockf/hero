@@ -102,11 +102,29 @@ class Events_model extends CI_Model
 		
 		return TRUE;
 	}
+	
+	/*
+	* Delete Event
+	*
+	* @param int $event_id
+	*
+	* @return boolean TRUE
+	*/
+	function delete_event ($event_id) {
+		$event = $this->get_event($event_id);
+	
+		$this->db->delete('events',array('event_id' => $event_id));
 		
+		$this->load->model('link_model');
+		$this->link_model->delete_link($event['link_id']);
+		
+		return TRUE;
+	}
+			
 	/*
 	* Get RSS Feed
 	*
-	* @param int $feed_id
+	* @param int $event_id
 	*
 	* @return array
 	*/
