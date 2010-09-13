@@ -50,13 +50,13 @@ if (!isset($event)) {
 			<label class="full" for="location">Location</label>
 		</li>
 		<li>
-			<input type="text" class="required full text" id="location" name="location" value="<?=$event['location'];?>" />
+			<input type="text" class="text" id="location" name="location" value="<?=$event['location'];?>" />
 		</li>
 		<li>
 			<label class="full" for="max_attendees">Maximum Attendees</label>
 		</li>
 		<li>
-			<input type="text" class="required full text" id="max_attendees" name="max_attendees" value="<?=$event['max_attendees'];?>" />
+			<input type="text" class="text" id="max_attendees" name="max_attendees" value="<?=$event['max_attendees'];?>" />
 		</li>		
 		<li>
 			<label class="full" for="price">Price</label>
@@ -70,7 +70,7 @@ if (!isset($event)) {
 
 <?=$privileges;?>
 
-<?=$form;?>
+<?=$dates;?>
 
 <div class="submit">
 	<input type="submit" class="button" name="form_event" value="Save Event" />
