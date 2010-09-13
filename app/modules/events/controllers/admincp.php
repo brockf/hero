@@ -96,16 +96,16 @@ class Admincp extends Admincp_Controller {
 		$privilege_form = $privileges->display();
 		
 		// start & end dates
-		$form = new Admin_form;
+		$dates = new Admin_form;
 		
-		$form->fieldset('Dates');
-		$form->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->fieldset('Dates');
+		$dates->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
 		
-		$form->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
 				
 		$data = array(
 					'form_title' => 'Create New Event',
-					'form' => $form->display(),
+					'dates' => $dates->display(),
 					'privileges' => $privileges->display(),
 					'form_action' => site_url('admincp/events/post/new')
 				);
@@ -192,9 +192,9 @@ class Admincp extends Admincp_Controller {
 										$this->input->post('location'),
 										$this->input->post('max_attendees'),
 										$this->input->post('price'),
-										$this->input->post('start_time'),
-										$this->input->post('end_time'),
-										$this->input->post('subscription')
+										$this->input->post('start_date'),
+										$this->input->post('end_date'),
+										$this->input->post('privileges')
 									);
 										
 			$this->notices->SetNotice('Event added successfully.');
@@ -208,9 +208,9 @@ class Admincp extends Admincp_Controller {
 									$this->input->post('location'),
 									$this->input->post('max_attendees'),
 									$this->input->post('price'),
-									$this->input->post('start_time'),
-									$this->input->post('end_time'),
-									$this->input->post('subscription')
+									$this->input->post('start_date'),
+									$this->input->post('end_date'),
+									$this->input->post('privileges')
 								);
 										
 			$this->notices->SetNotice('Event edited successfully.');
