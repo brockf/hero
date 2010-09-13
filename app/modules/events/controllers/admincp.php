@@ -20,7 +20,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function index () {	
-		$this->navigation->module_link('New Event',site_url('admincp/event/add'));
+		$this->navigation->module_link('New Event',site_url('admincp/events/add'));
 	
 		$this->load->library('dataset');
 		
