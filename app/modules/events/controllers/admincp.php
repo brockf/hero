@@ -76,17 +76,40 @@ class Admincp extends Admincp_Controller {
 	
 	function add () {
 		$this->load->helper('form');
-	
-		// template
-		$this->load->library('Admin_form');
+		$this->load->library('Admin_form');	
+		
+		// privileges form
+		$this->load->model('users/usergroup_model');
+		$groups = $this->usergroup_model->get_usergroups();
+		
+		$privileges = new Admin_form;
+		$privileges->fieldset('Member Group Access');
+		
+		$options = array();
+		$options[0] = 'Public / Any Member Group';
+		foreach ($groups as $group) {
+			$options[$group['id']] = $group['name'];
+		}
+		
+		$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
+		
+		$privilege_form = $privileges->display();
+		
+		// start & end dates
 		$form = new Admin_form;
 		
+		$form->fieldset('Dates');
+		$form->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		
+		$form->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+				
 		$data = array(
-					'form' => $form->display(),
 					'form_title' => 'Create New Event',
+					'form' => $form->display(),
+					'privileges' => $privileges->display(),
 					'form_action' => site_url('admincp/events/post/new')
 				);
-		
+
 		$this->load->view('event_form', $data);
 	}
 	
