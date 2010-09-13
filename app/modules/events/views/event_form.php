@@ -14,7 +14,7 @@ if (!isset($event)) {
 }
 
 ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.rss_feed.js') . '"></script>'));?>
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_rss" method="post" action="<?=$form_action;?>">
 <fieldset>
@@ -31,7 +31,7 @@ if (!isset($event)) {
 			<input type="text" class="text mark_empty" id="url_path" rel="e.g, events/my_event" style="width:500px" name="url_path" value="<?=$event['url_path'];?>" />
 		</li>
 		<li>
-			<div class="help">If you leave this blank, it will be auto-generated from the Feed Name above.</div>
+			<div class="help">If you leave this blank, it will be auto-generated from the Event Name above.</div>
 		</li>
 		<li>
 			<label class="full" for="description">Event Description</label>
