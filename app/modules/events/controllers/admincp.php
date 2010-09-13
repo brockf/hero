@@ -134,7 +134,7 @@ class Admincp extends Admincp_Controller {
 					'form_action' => site_url('admincp/events/post/new')
 				);
 		
-		$this->load->view('feed_form', $data);
+		$this->load->view('event_form', $data);
 	}
 	
 	function edit ($id) {
