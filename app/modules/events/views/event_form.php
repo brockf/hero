@@ -9,9 +9,9 @@ if (!isset($event)) {
 				'location' => '',
 				'max_attendees' => '',
 				'price' => '',
-				'start_time' => '',
-				'end_time' => '',
-				'subscription' => ''
+				'start_date' => '',
+				'end_date' => '',
+				'privileges' => ''
 			);
 }
 
@@ -64,27 +64,11 @@ if (!isset($event)) {
 		<li>
 			<input type="text" class="number text" id="price" name="price" value="<?=$event['price'];?>" />
 		</li>
-		
-		<li>
-			<label class="full" for="v">Subscription</label>
-		</li>
-		<li>
-			<input type="text" class="number text" id="subscription" name="subscription" value="<?=$event['subscription'];?>" />
-		</li>	
-		<li>
-			<label class="full" for="v">Start Time</label>
-		</li>
-		<li>
-			<input type="text" class="text" id="start_time" name="start_time" value="<?=$event['start_time'];?>" />
-		</li>
-		<li>
-			<label class="full" for="v">End Time</label>
-		</li>
-		<li>
-			<input type="text" class="text" id="end_time" name="end_time" value="<?=$event['end_time'];?>" />
-		</li>		
+
 	</ul>
 </fieldset>
+
+<?=$privileges;?>
 
 <?=$form;?>
 
