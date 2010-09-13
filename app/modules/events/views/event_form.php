@@ -23,7 +23,7 @@ if (!isset($feed)) {
 	<legend>RSS Feed Details</legend>
 	<ul class="form">
 		<li>
-			<label class="full" for="title">Feed Name</label>
+			<label class="full" for="title">Event Name</label>
 		</li>
 		<li>
 			<input type="text" class="required full text" id="title" name="title" value="<?=$feed['title'];?>" />
