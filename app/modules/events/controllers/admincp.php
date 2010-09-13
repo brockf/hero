@@ -127,18 +127,11 @@ class Admincp extends Admincp_Controller {
 	
 	function edit ($id) {
 		$this->load->helper('form');
-		$this->load->model('rss_model');
+		$this->load->library('Admin_form');	
+		$this->load->model('events_model');
 		
-		$feed = $this->rss_model->get_feed($id);
+		$event = $this->events_model->get_event($id);
 	
-		// get content types
-		$this->load->model('publish/content_type_model');
-		$types = $this->content_type_model->get_content_types(array('is_standard' => '1'));
-		$type_options = array();
-		foreach ($types as $type) {
-			$type_options[$type['id']] = $type['name'];
-		}
-		
 		// get users
 		$users = $this->user_model->get_users(array('is_admin' => '1'));
 		$user_options = array();
@@ -147,50 +140,40 @@ class Admincp extends Admincp_Controller {
 			$user_options[$user['id']] = $user['username'] . ' (' . $user['first_name'] . ' ' . $user['last_name'] . ')';
 		}
 		
-		// get topics
-		$this->load->model('publish/topic_model');
-		$topics = $this->topic_model->get_tiered_topics();
-		$topic_options = array();
-		$topic_options[0] = 'Any Topic';
-		foreach ($topics as $topic) {
-			$topic_options[$topic['id']] = $topic['name'];
+		// privileges form
+		$this->load->model('users/usergroup_model');
+		$groups = $this->usergroup_model->get_usergroups();
+		
+		$privileges = new Admin_form;
+		$privileges->fieldset('Member Group Access');
+		
+		$options = array();
+		$options[0] = 'Public / Any Member Group';
+		foreach ($groups as $group) {
+			$options[$group['id']] = $group['name'];
 		}
 		
-		// get field options
-		$type = $this->content_type_model->get_content_type($feed['type']);
+		$privileges->dropdown('Access Requires Membership to Group','privileges',$options,array(0), TRUE, FALSE, 'Select multiple member groups by holding the CTRL or CMD button and selecting multiple options.');
 		
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
-		$field_options = array();
-		$field_options['0'] = 'Do not include a summary for each item in the RSS feed.';
-		$field_options['content_title'] = 'Title';
-		$field_options['content_date'] = 'Date Created';
-		$field_options['content_modified'] = 'Date Modified';
-		$field_options['link_url_path'] = 'URL Path';
-		foreach ($custom_fields as $field) {
-			$field_options[$field['name']] = $field['friendly_name'];
-		}
+		$privilege_form = $privileges->display();
 		
-		// template
-		$this->load->library('Admin_form');
-		$form = new Admin_form;
+		// start & end dates
+		$dates = new Admin_form;
 		
-		$form->fieldset('Design');
-		$this->load->helper('template_files');
-		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, $feed['template'], FALSE, TRUE, 'This template in your theme directory will be used to display this RSS feed.');
+		$dates->fieldset('Dates');
+		$dates->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
 		
+		$dates->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+				
 		$data = array(
-					'types' => $type_options,
-					'users' => $user_options,
-					'topics' => $topic_options,
-					'field_options' => $field_options,
-					'feed' => $feed,
-					'form' => $form->display(),
-					'form_title' => 'Edit RSS Feed',
-					'form_action' => site_url('admincp/rss/post/edit/' . $feed['id'])
+					'form_title' => 'Edit Event',
+					'event' => $event,
+					'dates' => $dates->display(),
+					'privileges' => $privileges->display(),
+					'form_action' => site_url('admincp/events/post/edit/' . $event['id'])
 				);
 		
-		$this->load->view('feed_form', $data);
+		$this->load->view('event_form', $data);
 	}
 	
 	function post ($action = 'new', $id = FALSE) {
