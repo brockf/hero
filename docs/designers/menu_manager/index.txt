@@ -16,7 +16,7 @@ Designers can use multiple CSS "class" and "id" attribute options to style the a
 
 [h2]Template Plugins[/h2]
 
-[h3]menu (parameters: name, show_sub_menus)[/h3]
+[h3]menu (parameters: name, show_sub_menus, class, id)[/h3]
 
 Displays a menu in formatted HTML.  Menus exist as one [span_code]<ul>[/span_code] with any possible sub-menus as [span_code]<ul class="children">[/span_code] elements within their parent link's [span_code]<li>[/span_code] element.  The active menu element is labelled with the "active" class.
 
@@ -27,7 +27,8 @@ Required parameters:
 Optional parameters:
 
 * [span_code]show_sub_menus[/span_code] - Enter either "yes", "no", or "active".  If "active", only the sub-menu of the active menu item will be shown.  "yes" shows all sub menus and "no" shows none.
-* [span_code]show_sub
+* [span_code]class[/span_code] - Specify the "class" attribute of the [span_code]ul[/span_code] HTML element used to display the menu.
+* [span_code]id[/span_code] - Specify the "id" attribute of the [span_code]ul[/span_code] HTML element used to display the menu.
 
 Usage:
 

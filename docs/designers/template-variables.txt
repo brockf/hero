@@ -12,7 +12,7 @@ Published: {$date}
 The following variables are accessible in any template:
 
 * [span_code]{$setting.setting_name}[/span_code] (where setting_name is the name of the setting you are trying to access)
-* [span_code]{$logged_in}[/span_code] (TRUE if the user is logged in, FALSE if not)
+* [span_code]{$logged_in}[/span_code] (TRUE if the user is logged in, FALSE if not).  With it, you can use [span_code]{if $logged_in}[/span_code] and [span_code]{if !$logged_in}[/span_code] statements.
 
 If we have a logged in, active user, the following variables are available:
 

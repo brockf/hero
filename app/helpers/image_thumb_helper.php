@@ -3,7 +3,7 @@
 /*
 * Image Thumb
 * 
-* Generates an image thumbnail for a local image
+* Generates an image thumbnail for a local image.  Caches thumbnails for 2 minutes before re-generating.
 *
 * @param string $image_path Local path to image
 * @param int $height Maximum image height
@@ -34,6 +34,7 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 	
 	$modified_time = file_exists($image_thumb) ? filemtime($image_thumb) : FALSE;
 	
+	// if the cache is over 2 minutes old, we re-generate!
 	if (!file_exists($image_thumb) or ($modified_time and (time() - $modified_time > 120)))
 	{
 		// load library

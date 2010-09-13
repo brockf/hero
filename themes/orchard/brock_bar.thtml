@@ -1,11 +1,10 @@
 	<div class="brock_bar">
 		<div class="options">
 			<ul>
-				<li><a href="{url path="contact"}">Email Jerry</a></li>
-
+				<li><a href="subscriptions">Subscribe</a></li>
 				<li><a id="sharing" href="#">Share This</a></li>
-				<li><a href="#">Discuss</a></li>
-				<li><a href="newsletter">Newsletter</a></li>
+				<li><a href="#">Discuss on Facebook</a></li>
+				<li><a href="{url path="contact"}">Email Jerry</a></li>
 			</ul>
 			<div style="clear:both"></div>
 		</div>

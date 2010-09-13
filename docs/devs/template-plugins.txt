@@ -2,7 +2,19 @@
 
 [APPNAME] offers a variety of template plugins that can be used throughout your template files to do things like retrieve content, access setting values, and generate proper URL's.
 
-Developers can create their own template plugin functions or blocks and include them in their modules (or add them to the standard template plugin folder).
+Developers can create their own template plugin functions or blocks and include them in their modules (or add them to the standard template plugin folder) at [filename]app/modules/yourmodule/template_plugins[/filename] (or similar folder).  Developers must specify this folder location as a local for template plugins in the front_preload() of their [devs/modules](module definition file) like so:
+
+[code]
+class Modulename extends Module {
+	// ... all other module code ...
+	
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/yourmodule/template_plugins/');
+	}
+}
+[/code]
+
+Designers can also write/include template plugins directly in their theme package.  If the theme folder at [filename]themes/yourtheme[/filename] includes a folder called [filename]plugins[/filename], it will be scanned and used as a template plugin folder automatically.
 
 [h2]Function Plugins vs. Block Plugins[/h2]
 

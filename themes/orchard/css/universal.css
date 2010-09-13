@@ -193,7 +193,7 @@ div#slogan {
 	float: left;
 	width: 660px;
 	padding: 18px 45px;
-	line-height: 1.9em;
+	line-height: 1.5em;
 }
 
 #content h1 {
@@ -232,7 +232,7 @@ span.author {
 }
 
 div.article {
-	line-height: 1.9em;
+	line-height: 1.5em;
 	font-size: 11pt;
 	color: #555;
 }
@@ -415,7 +415,7 @@ div.box h4 {
 	padding: 0;
 	margin: 0;
 	color: #9c48bb;
-	font-size: 10pt;
+	font-size: 12pt;
 	font-weight: bold;
 	text-shadow: 0px 1px #fff;
 }

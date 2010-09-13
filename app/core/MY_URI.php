@@ -20,7 +20,18 @@ class MY_URI extends CI_URI {
 	function _fetch_uri_string () {
 		// strip out the real query_string
 		if (isset($_SERVER['REQUEST_URI']) and strpos($_SERVER["REQUEST_URI"],'?') !== FALSE) {
-			list($path,$query_string) = explode('?', $_SERVER["REQUEST_URI"]);
+			$url = parse_url($_SERVER["REQUEST_URI"]);
+			$query_string = $url['query'];
+			$path = $url['path'];
+			
+			// we need to remove the path of the URL that's part of the subfolder Caribou may be installed in
+			$sub_folder = parse_url($this->config->item('base_url'));
+			$sub_folder = $sub_folder['path'];
+			
+			// isolate path from sub_folder, unless the sub_folder is just a "/"!
+			if ($sub_folder != "/" and !empty($sub_folder)) {
+				$path = str_replace($sub_folder,'',$path);
+			}
 			
 			$this->uri_string = trim($path, '/');
 			

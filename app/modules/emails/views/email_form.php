@@ -5,7 +5,7 @@
 if (!isset($form)) {
 	$form = array(
 				'trigger' => '',
-				'to_address' => 'customer',
+				'to_address' => 'user',
 				'bcc_address' => '',
 				'email_subject' => '',
 				'email_body' => '',
@@ -18,7 +18,7 @@ if (!isset($form)) {
 <script type="text/javascript" src="' . branded_include('js/ckeditor/ckeditor.js') . '"></script> 
 <script type="text/javascript" src="' . branded_include('js/ckeditor/adapters/jquery.js') . '"></script>'));?>
 <h1><?=$form_title;?></h1>
-<form class="form validate" id="form_email" method="post" action="<?=site_url($form_action);?>">
+<form class="form validate" id="form_email" method="post" action="<?=$form_action;?>">
 <fieldset>
 	<legend>System Information</legend>
 	<ul class="form">

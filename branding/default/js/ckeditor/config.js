@@ -19,6 +19,9 @@ CKEDITOR.editorConfig = function( config )
 	config.filebrowserBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=files';
     config.filebrowserImageBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=images';
     config.filebrowserFlashBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
+    
+    // force plain text
+    config.forcePasteAsPlainText = true;
    
     // remove upload tab
     config.filebrowserUploadUrl = null;

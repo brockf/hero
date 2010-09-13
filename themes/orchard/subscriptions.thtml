@@ -12,10 +12,10 @@ Choose Your Subscription - {$smarty.block.parent}
 		{foreach $plans as $plan}
 		{if $plan.id != 3}
 		<li>
-			<h3>{$plan.name}</h3>
+			<h3>{$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</h3>
 			{$plan.description}
-			<form method="get" action="{$plan.add_to_cart}">
-			<input type="submit" class="button" name="add_to_cart" value="Add Subscription to Cart" />
+			<form method="get" action="{* this is the normal method {$plan.add_to_cart} *}jerrysubpurchase/jerrysubpurchase/index/{$plan.id}">
+			<input type="submit" class="button" name="add_to_cart" value="Subscribe Now" />
 			</form>
 		</li>
 		{/if}

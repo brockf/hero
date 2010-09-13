@@ -626,7 +626,7 @@ class Admin_form {
 					}
 					
 					if ($field['full'] != TRUE) {
-						$return .= '<div style="float:left">';
+						$return .= '<div style="float:left;width:' . ((int)$field['width'] + 20) . 'px">';
 					}
 					
 					$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';

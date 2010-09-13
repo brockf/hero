@@ -8,8 +8,8 @@
 		</div>
 		<div class="article">
 			<span class="author">By {block:$author_first_name} {block:$author_last_name}</span>
-		
-			<img src="{block:$feature_image|thumbnail: "210x300"}" alt="" />
+			
+			<img src="{jerry_thumbnail}" alt="" />
 			
 			{block:$summary}
 			

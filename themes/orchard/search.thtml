@@ -35,7 +35,6 @@
 			
 			{$pagination}
 		{/if}
-	</div>
 	{else}
 		<p>Enter your keyword(s) above to search {setting name="site_name"}.</p>
 	{/if}
