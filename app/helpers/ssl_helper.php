@@ -3,11 +3,11 @@
 $CI =& get_instance();
 
 if ($CI->config->item('ssl_active') == TRUE) {
-	if (($CI->uri->segment(1) == 'users' or $CI->uri->segment(1) == 'checkout') and $_SERVER["SERVER_PORT"] != "443") {
+	if (($CI->uri->segment(1) == 'users' or $CI->uri->segment(1) == 'checkout') and ($_SERVER["SERVER_PORT"] != "443" or $_SERVER['HTTPS'] != 'on')) {
 		header("Location: " . secure(current_url()));
 		die();
 	}
-	elseif ($_SERVER["SERVER_PORT"] == "443" and ($CI->uri->segment(1) != 'users' and $CI->uri->segment(1) != 'checkout')) {
+	elseif (($_SERVER["SERVER_PORT"] == "443" or $_SERVER['HTTPS'] == 'on') and ($CI->uri->segment(1) != 'users' and $CI->uri->segment(1) != 'checkout')) {
 		header('Location: ' . unsecure(current_url()));
 		die();
 	}		

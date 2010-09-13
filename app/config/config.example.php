@@ -28,7 +28,7 @@ $config['recurring_charge_failures_allowed'] = 1;
 $config['cron_key'] = '0000000000000000';
 
 // rewrite base URL to SSL if accessed via SSL
-if ($_SERVER["SERVER_PORT"] == "443") {
+if ($_SERVER["SERVER_PORT"] == "443" or $_SERVER['HTTPS'] == 'on') {
 	$config['base_url'] = str_replace('http://','https://',$config['base_url']);
 }
 
