@@ -29,7 +29,7 @@ class Events extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('publish',40,'Events',site_url('admincp/events'));
+		$this->CI->navigation->child_link('publish',43,'Events',site_url('admincp/events'));
 	}
 	
 	function update ($db_version) {
