@@ -1,8 +1,8 @@
 <?php
 
 // default values
-if (!isset($feed)) {
-	$feed = array(
+if (!isset($event)) {
+	$event = array(
 				'title' => '',
 				'url_path' => '',
 				'description' => '',
@@ -20,26 +20,26 @@ if (!isset($feed)) {
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_rss" method="post" action="<?=$form_action;?>">
 <fieldset>
-	<legend>RSS Feed Details</legend>
+	<legend>Event Details</legend>
 	<ul class="form">
 		<li>
 			<label class="full" for="title">Event Name</label>
 		</li>
 		<li>
-			<input type="text" class="required full text" id="title" name="title" value="<?=$feed['title'];?>" />
+			<input type="text" class="required full text" id="title" name="title" value="<?=$event['title'];?>" />
 		</li>
 		<li>
 			<label for="url_path">URL Path</label>
-			<input type="text" class="text mark_empty" id="url_path" rel="e.g, feeds/my_feed.rss" style="width:500px" name="url_path" value="<?=$feed['url_path'];?>" />
+			<input type="text" class="text mark_empty" id="url_path" rel="e.g, events/my_event" style="width:500px" name="url_path" value="<?=$event['url_path'];?>" />
 		</li>
 		<li>
 			<div class="help">If you leave this blank, it will be auto-generated from the Feed Name above.</div>
 		</li>
 		<li>
-			<label class="full" for="description">Feed Description</label>
+			<label class="full" for="description">Event Description</label>
 		</li>
 		<li>
-			<input type="text" class="required full text" id="description" name="description" value="<?=$feed['description'];?>" />
+			<input type="text" class="required full text" id="description" name="description" value="<?=$event['description'];?>" />
 		</li>
 	</ul>
 </fieldset>
@@ -48,15 +48,15 @@ if (!isset($feed)) {
 	<ul class="form">
 		<li>
 			<label for="type">Content Type</label>
-			<?=form_dropdown('type',$types,$feed['type'],'id="content_type"');?>
+			<?=form_dropdown('type',$types,$event['type'],'id="content_type"');?>
 		</li>
 		<li>
 			<label for="authors">Author(s)</label>
-			<?=form_multiselect('authors[]',$users,$feed['filter_authors']);?>
+			<?=form_multiselect('authors[]',$users,$event['filter_authors']);?>
 		</li>
 		<li>
 			<label for="topics">Topic(s)</label>
-			<?=form_multiselect('topics[]',$topics,$feed['filter_topics']);?>
+			<?=form_multiselect('topics[]',$topics,$event['filter_topics']);?>
 		</li>
 	</ul>
 </fieldset>
@@ -67,7 +67,7 @@ if (!isset($feed)) {
 			<label for="summary_field">Summary Field</label>
 			<? if (isset($field_options)) { ?>
 				<? // we are editing and must have a field_options array which we can select from ?>
-				<?=form_dropdown('summary_field',$field_options,$feed['summary_field'],'id="summary_field" class="editing populate_fields"');?>
+				<?=form_dropdown('summary_field',$field_options,$event['summary_field'],'id="summary_field" class="editing populate_fields"');?>
 			<? } else { ?>
 				<?=form_dropdown('summary_field',array('' => 'Loading...'),'','id="summary_field" class="populate_fields"');?>
 			<? } ?>
@@ -81,12 +81,12 @@ if (!isset($feed)) {
 			<? if (isset($field_options)) { ?>
 			<? reset($field_options); ?>
 				<? // we are editing and must have a field_options array which we can select from ?>
-				<?=form_dropdown('sort_field',$field_options,$feed['sort_field'],'id="sort_field" class="populate_fields editing"');?>
+				<?=form_dropdown('sort_field',$field_options,$event['sort_field'],'id="sort_field" class="populate_fields editing"');?>
 			<? } else { ?>
 				<?=form_dropdown('sort_field',array('' => 'Loading...'),'','id="sort_field" class="populate_fields"');?>
 			<? } ?>
 			&nbsp;&nbsp;
-			<?=form_dropdown('sort_dir',array('ASC' => 'Ascending (First to Last, Oldest to Newest)', 'DESC' => 'Descending (Last to First, Newest to Oldest'), $feed['sort_dir']);?>
+			<?=form_dropdown('sort_dir',array('ASC' => 'Ascending (First to Last, Oldest to Newest)', 'DESC' => 'Descending (Last to First, Newest to Oldest'), $event['sort_dir']);?>
 		</li>
 	</ul>
 </fieldset>
