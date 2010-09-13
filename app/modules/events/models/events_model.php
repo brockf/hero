@@ -42,24 +42,20 @@ class Events_model extends CI_Model
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
-							'content_type_id' => $content_type_id,
-							'rss_title' => $title,
-							'rss_description' => $description,
-							'rss_filter_author' => (is_array($filter_author) and !empty($filter_author)) ? serialize($filter_author) : '',
-							'rss_filter_topic' => (is_array($filter_topic) and !empty($filter_topic)) ? serialize($filter_topic) : '',
-							'rss_summary_field' => (!empty($summary_field)) ? $summary_field : '',
-							'rss_sort_field' => (!empty($sort_field)) ? $sort_field : '',
-							'rss_sort_dir' => (!empty($sort_dir)) ? $sort_dir : '',
-							'rss_template' => $template
+							'event_title' => $title,
+							'event_description' => $description,
+							'event_location' => $location,
+							'event_max_attendees' => $max_attendees,
+							'event_price' => $price,
+							'event_start_date' => $start_date,
+							'event_end_date' => $end_date,
+							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : ''
 							);
 							
-		$this->db->insert('rss_feeds',$insert_fields);
+		$this->db->insert('events',$insert_fields);
 		
 		return $this->db->insert_id();
 	}
-
-
-	
 
 	function get_events () {
 
