@@ -130,7 +130,7 @@ class Admincp extends Admincp_Controller {
 					'users' => $user_options,
 					'topics' => $topic_options,
 					'form' => $form->display(),
-					'form_title' => 'Create New RSS Feed',
+					'form_title' => 'Create New Event',
 					'form_action' => site_url('admincp/rss/post/new')
 				);
 		
