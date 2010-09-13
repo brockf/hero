@@ -18,7 +18,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="5">No RSS feeds available.</td>
+	<td colspan="5">No events available.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>
