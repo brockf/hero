@@ -9,8 +9,9 @@ if (!empty($this->dataset->data)) {
 			<td><input type="checkbox" name="check_<?=$row['id'];?>" value="1" class="action_items" /></td>
 			<td><?=$row['id'];?></td>
 			<td><a href="<?=site_url('admincp/events/edit/' . $row['id']);?>"><?=$row['title'];?></a></td>
-			<td><?=$row['type_name'];?></td>
-			<td class="options"><a href="<?=site_url('admincp/events/edit/' . $row['id']);?>">edit</a> | <a href="<?=$row['url'];?>">view</a></td>
+			<td><?=$row['location'];?></td>
+			<td><?=$row['price'];?></td>
+			<td class="options"><a href="<?=site_url('admincp/events/edit/' . $row['id']);?>">edit</a></td>
 		</tr>
 	<?
 	}
