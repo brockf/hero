@@ -33,10 +33,22 @@ class Admincp extends Admincp_Controller {
 							),
 						array(
 							'name' => 'Title',
-							'width' => '55%',
+							'width' => '25%',
 							'filter' => 'title',
 							'type' => 'text'
 							),
+						array(
+							'name' => 'Location',
+							'width' => '25%',
+							'filter' => 'location',
+							'type' => 'text'
+							),
+						array(
+							'name' => 'Price',
+							'width' => '25%',
+							'filter' => 'price',
+							'type' => 'text'
+							),		
 						array(
 							'name' => '',
 							'width' => '20%'
