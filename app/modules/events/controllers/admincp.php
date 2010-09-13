@@ -91,44 +91,11 @@ class Admincp extends Admincp_Controller {
 	function add () {
 		$this->load->helper('form');
 	
-		// get content types
-		$this->load->model('publish/content_type_model');
-		$types = $this->content_type_model->get_content_types(array('is_standard' => '1'));
-		$type_options = array();
-		foreach ($types as $type) {
-			$type_options[$type['id']] = $type['name'];
-		}
-		
-		// get users
-		$users = $this->user_model->get_users(array('is_admin' => '1'));
-		$user_options = array();
-		$user_options[0] = 'Any Author';
-		foreach ($users as $user) {
-			$user_options[$user['id']] = $user['username'] . ' (' . $user['first_name'] . ' ' . $user['last_name'] . ')';
-		}
-		
-		// get topics
-		$this->load->model('publish/topic_model');
-		$topics = $this->topic_model->get_tiered_topics();
-		$topic_options = array();
-		$topic_options[0] = 'Any Topic';
-		foreach ($topics as $topic) {
-			$topic_options[$topic['id']] = $topic['name'];
-		}
-		
 		// template
 		$this->load->library('Admin_form');
 		$form = new Admin_form;
 		
-		$form->fieldset('Design');
-		$this->load->helper('template_files');
-		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, 'rss_feed.txml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/archive page.');
-		
 		$data = array(
-					'types' => $type_options,
-					'users' => $user_options,
-					'topics' => $topic_options,
 					'form' => $form->display(),
 					'form_title' => 'Create New Event',
 					'form_action' => site_url('admincp/events/post/new')
