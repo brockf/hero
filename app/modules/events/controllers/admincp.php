@@ -67,7 +67,7 @@ class Admincp extends Admincp_Controller {
 		// add actions
 		$this->dataset->action('Delete','admincp/events/delete');
 		
-		$this->load->view('rss_feeds');
+		$this->load->view('events');
 	}
 	
 	function delete ($feeds, $return_url) {
