@@ -1,6 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
 <html>
 <head>
+<base href="{url}" />
 <title>{block name="title"}{setting name="site_name"}{/block}</title>
 <link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="{url path="themes/_common/jquery-1.4.2.min.js"}"></script>
