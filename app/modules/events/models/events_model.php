@@ -18,5 +18,16 @@ class Events_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	/*
+	* Get RSS Feed
+	*
+	* @param int $feed_id
+	*
+	* @return array
+	*/
+	function get_events () {
+
+	}
+	
 
 }
