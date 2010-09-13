@@ -59,7 +59,7 @@ class Events_model extends CI_Model
 	}
 
 	/*
-	* Update RSS Feed
+	* Update Event
 	*
 	* @param string $event_id Event ID
  	* @param string $title Event title
