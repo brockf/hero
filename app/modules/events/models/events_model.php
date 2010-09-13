@@ -57,8 +57,45 @@ class Events_model extends CI_Model
 		return $this->db->insert_id();
 	}
 
-	function get_events () {
-
+	/*
+	* Get Events
+	* @param int $filters['id']
+	* @param string $filters['title']
+	*
+	*/
+	function get_events ($filters = array()) {
+		if (isset($filters['id'])) {
+			$this->db->where('event_id',$filters['id']);
+		}
+		if (isset($filters['title'])) {
+			$this->db->like('event_title',$filters['title']);
+		}
+	
+		$this->db->order_by('event_title');
+		$this->db->join('links','links.link_id = events.link_id','left');
+		$result = $this->db->get('events');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$events = array();
+		foreach ($result->result_array() as $row) {
+			$events[] = array(
+						'id' => $row['event_id'],
+						'link_id' => $row['link_id'],
+						'title' => $row['event_title'],
+						'description' => $row['event_description'],
+						'location' => $row['event_location'],
+						'max_attendees' => $row['event_max_attendees'],
+						'price' => $row['event_price'],
+						'start_date' => $row['event_start_date'],
+						'end_date' => $row['event_end_date'],
+						'privileges' => (!empty($content['event_privileges'])) ? unserialize($content['event_privileges']) : FALSE
+					);
+		}
+		
+		return $events;
 	}
 	
 
