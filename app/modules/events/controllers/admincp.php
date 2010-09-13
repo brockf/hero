@@ -173,43 +173,41 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function post ($action = 'new', $id = FALSE) {
-		$this->load->model('rss_model');
+		$this->load->model('events_model');
 		
 		if ($action == 'new') {
-			$rss_id = $this->rss_model->new_feed(
-										$this->input->post('type'),
+			$event_id = $this->events_model->new_event(
 										$this->input->post('title'),
 										$this->input->post('url_path'),
 										$this->input->post('description'),
-										(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
-										(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-										$this->input->post('summary_field'),
-										$this->input->post('sort_field'),
-										$this->input->post('sort_dir'),
-										$this->input->post('template')
+										$this->input->post('location'),
+										$this->input->post('max_attendees'),
+										$this->input->post('price'),
+										$this->input->post('start_time'),
+										$this->input->post('end_time'),
+										$this->input->post('subscription')
 									);
 										
-			$this->notices->SetNotice('RSS Feed added successfully.');
+			$this->notices->SetNotice('Event added successfully.');
 		}
 		elseif ($action == 'edit') {
-			$this->rss_model->update_feed(
+			$this->events_model->update_event(
 									$id,
-									$this->input->post('type'),
 									$this->input->post('title'),
 									$this->input->post('url_path'),
 									$this->input->post('description'),
-									(!in_array('0',$this->input->post('authors'))) ? $this->input->post('authors') : FALSE,
-									(!in_array('0',$this->input->post('topics'))) ? $this->input->post('topics') : FALSE,
-									$this->input->post('summary_field'),
-									$this->input->post('sort_field'),
-									$this->input->post('sort_dir'),
-									$this->input->post('template')
+									$this->input->post('location'),
+									$this->input->post('max_attendees'),
+									$this->input->post('price'),
+									$this->input->post('start_time'),
+									$this->input->post('end_time'),
+									$this->input->post('subscription')
 								);
 										
-			$this->notices->SetNotice('RSS Feed edited successfully.');
+			$this->notices->SetNotice('Event edited successfully.');
 		}
 		
-		redirect('admincp/rss');
+		redirect('admincp/events');
 	}
 	
 	function get_fields ($type_id) {
