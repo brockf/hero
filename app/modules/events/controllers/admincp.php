@@ -131,7 +131,7 @@ class Admincp extends Admincp_Controller {
 					'topics' => $topic_options,
 					'form' => $form->display(),
 					'form_title' => 'Create New Event',
-					'form_action' => site_url('admincp/rss/post/new')
+					'form_action' => site_url('admincp/events/post/new')
 				);
 		
 		$this->load->view('feed_form', $data);
