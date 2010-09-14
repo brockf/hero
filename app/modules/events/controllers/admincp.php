@@ -90,6 +90,14 @@ class Admincp extends Admincp_Controller {
 		$this->load->helper('form');
 		$this->load->library('Admin_form');	
 		
+		// get users
+		$users = $this->user_model->get_users(array('is_admin' => '1'));
+		$user_options = array();
+		$user_options[0] = 'Any Author';
+		foreach ($users as $user) {
+			$user_options[$user['id']] = $user['username'] . ' (' . $user['first_name'] . ' ' . $user['last_name'] . ')';
+		}
+		
 		// privileges form
 		$this->load->model('users/usergroup_model');
 		$groups = $this->usergroup_model->get_usergroups();
@@ -117,6 +125,7 @@ class Admincp extends Admincp_Controller {
 				
 		$data = array(
 					'form_title' => 'Create New Event',
+					'users' => $user_options,
 					'dates' => $dates->display(),
 					'privileges' => $privileges->display(),
 					'form_action' => site_url('admincp/events/post/new')

@@ -30,26 +30,38 @@ class Events_model extends CI_Model
  	* @param string $start_date Event start date
  	* @param string $end_date Event end date
 	* @param string Standard privileges array of member group ID's
+	* @param int $user The ID of the submitting user
  	*
  	* @return $feed_id
  	*/
-	function new_event ($title, $url_path, $description, $location, $max_attendees, $price, $start_date, $end_date, $privileges = array()) {
+	function new_event ($title, $url_path, $description, $location, $max_attendees, $price, $start_date, $end_date, $privileges = array(), $user) {
 		$this->load->helper('clean_string');
 		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+
+		if (!empty($title)) {
+			$this->load->helper('clean_string');
+			$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+			
+			// get a global link ID
+			// make sure URL is unique
+			$this->load->model('link_model');
+			$url_path = $this->link_model->get_unique_url_path($url_path);
+			
+			$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Event', 'events', 'events', 'view');
+		}
 		
-		$this->load->model('link_model');
-		$url_path = $this->link_model->get_unique_url_path($url_path);
-		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Event', 'events', 'events', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
 							'event_title' => $title,
+							'event_url_path' => $url_path,
 							'event_description' => $description,
 							'event_location' => $location,
 							'event_max_attendees' => $max_attendees,
 							'event_price' => $price,
 							'event_start_date' => $start_date,
 							'event_end_date' => $end_date,
+							'user_id' => $user,
 							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : ''
 							);
 							
@@ -89,6 +101,7 @@ class Events_model extends CI_Model
 	
 		$update_fields = array(
 							'event_title' => $title,
+							'event_url_path' => $url_path,
 							'event_description' => $description,
 							'event_location' => $location,
 							'event_max_attendees' => $max_attendees,
@@ -122,7 +135,7 @@ class Events_model extends CI_Model
 	}
 			
 	/*
-	* Get RSS Feed
+	* Get Event
 	*
 	* @param int $event_id
 	*
@@ -134,7 +147,7 @@ class Events_model extends CI_Model
 		if (empty($event)) {
 			return FALSE;
 		}
-		
+
 		return $event[0];
 	}
 	
@@ -151,7 +164,7 @@ class Events_model extends CI_Model
 		if (isset($filters['title'])) {
 			$this->db->like('event_title',$filters['title']);
 		}
-	
+		
 		$this->db->order_by('event_title');
 		$this->db->join('links','links.link_id = events.link_id','left');
 		$result = $this->db->get('events');
