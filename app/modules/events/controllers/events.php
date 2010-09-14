@@ -15,7 +15,14 @@ class Events extends Front_Controller {
 	function __construct() {
 		parent::__construct();
 	}
+
+	function index () {
+		$notice = $this->session->flashdata('notice');
 	
+		$this->smarty->assign('notice', $notice);
+		return $this->smarty->display('events.thtml');
+	}
+		
 	function view ($url_path) {
 		$this->load->model('publish/content_model');
 		
