@@ -11,7 +11,7 @@
 *
 */
 
-class Events extends Module {
+class Events_module extends Module {
 	var $version = '1.0';
 	var $name = 'events';
 
