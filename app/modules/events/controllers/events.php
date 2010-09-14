@@ -18,8 +18,14 @@ class Events extends Front_Controller {
 
 	function index () {
 		$notice = $this->session->flashdata('notice');
-	
-		$this->smarty->assign('notice', $notice);
+		
+		// get all events
+		$this->load->model('events/events_model');
+		$events = $this->events_model->get_events();
+			
+		$this->smarty->assign('title','Events');
+		$this->smarty->assign('events',$events);
+		
 		return $this->smarty->display('events.thtml');
 	}
 		

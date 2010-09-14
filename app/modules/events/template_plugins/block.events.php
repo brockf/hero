@@ -73,7 +73,7 @@ function smarty_block_content ($params, $tagdata, $smarty, $repeat) {
 			
 			// make content request
 			$smarty->CI->load->model('events/events_model');
-			$content = $smarty->CI->content_model->get_contents($filters);
+			$content = $smarty->CI->events_model->get_events($filters);
 			
 			$return = '';
 			
