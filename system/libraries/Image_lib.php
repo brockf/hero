@@ -1153,7 +1153,9 @@ class CI_Image_lib {
 							$this->set_error(array('imglib_unsupported_imagecreate', 'imglib_jpg_not_supported'));
 							return FALSE;
 						}
-
+	
+						echo memory_get_usage();
+						
 						return imagecreatefromjpeg($path);
 				break;
 			case 3 :

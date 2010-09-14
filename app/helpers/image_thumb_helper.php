@@ -35,21 +35,23 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 	$modified_time = file_exists($image_thumb) ? filemtime($image_thumb) : FALSE;
 	
 	// if the cache is over 2 minutes old, we re-generate!
-	if (!file_exists($image_thumb) or ($modified_time and (time() - $modified_time > 120)))
+	if ($modified_time === FALSE or (time() - $modified_time > 120))
 	{
 		// load library
 		$CI->load->library('image_lib');
-
+		$CI->load->helper('get_available_image_library');
+		
 		// configuration
-		$config['image_library']	= 'gd2';
+		$config['image_library']	= get_available_image_library();
+		$config['library_path'] = $CI->config->item('image_library_path');
 		$config['source_image']		= $image_path;
 		$config['new_image']		= $image_thumb;
 		$config['maintain_ratio']	= TRUE;
 		if ($height) {
-			$config['height']			= $height;
+			$config['height'] = $height;
 		}
 		if ($width) {
-			$config['width']			= $width;
+			$config['width'] = $width;
 		}
 		
 		$CI->image_lib->initialize($config);

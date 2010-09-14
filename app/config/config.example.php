@@ -84,6 +84,13 @@ $config['write_mode'] = 0777;
 // how many times can a purchased download be downloaded?
 $config['maximum_downloads_per_purchase'] = 2;
 
+// specify an image library to use.  leave blank to autodetect.
+// options: GD, GD2, ImageMagick
+$config['image_library'] = '';
+
+// if you specified ImageMagick or NetPBM, you must specify the path
+$config['image_library_path'] = '';
+
 /*
 |--------------------------------------------------------------------------
 | Index File
