@@ -31,7 +31,16 @@ class Events extends Module {
 	{
 		$this->CI->navigation->child_link('publish',43,'Events',site_url('admincp/events'));
 	}
-	
+
+	/*
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/events/template_plugins/');
+	}
+		
 	function update ($db_version) {
 		if ($db_version < 1.0) {
 			//$this->CI->settings_model->new_setting(4, 'feed_items_count', '25', 'How many items would you to show in an RSS feed?', 'text');
