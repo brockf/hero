@@ -11,7 +11,7 @@
 *
 */
 
-class Content extends Front_Controller {
+class Events extends Front_Controller {
 	function __construct() {
 		parent::__construct();
 	}
