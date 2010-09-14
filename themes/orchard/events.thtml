@@ -2,26 +2,19 @@
 {block name="title"}
 {$title} - {$smarty.block.parent}
 {/block}
-{block name="events"}
+{block name="content"}
 	<h1>{$title}</h1>
-	<div class="byline">
-
-		<span class="date">{$date|date_format:"%A, %B %e, %Y"}</span>
-	</div>
-	<div class="article">
-		<span class="author">By {$author_first_name} {$author_last_name}</span>
-		
-		{jerry_thumbnail id=$id img_src="true"}
-		
-		{$body}
-		
-		{include file="brock_bar.thtml" share_content_id=$id}
-	</div>
 	
-	{content type="2" limit="1" date_format="l, F j, Y"}
-	<h1 class="secondary">{block:$title}</h1>
-	<div class="article">
-		{block:$body}
-	</div>
-	{/content}
+	{if $events}
+		<ul class="events">
+			{foreach $events as $event}
+				<li>	
+					<a class="name" href="{$event.url_path}">{$event.title}</a>
+					{if $event.description}<div class="description">{$event.description}</div>{/if}
+				</li>
+			{/foreach}
+		<ul>	
+	{/if}
+	
+
 {/block}
