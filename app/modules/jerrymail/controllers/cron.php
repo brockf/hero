@@ -15,7 +15,11 @@ class Cron extends Front_Controller {
 		parent::__construct();
 	}
 	
-	function index () {
+	function update ($key = '') {
+		if ($key != $this->config->item('cron_key')) {
+			die('invalid key');
+		}
+	
 		// do we have a post today?
 		$this->load->model('publish/content_model');
 		$contents = $this->content_model->get_contents(array(

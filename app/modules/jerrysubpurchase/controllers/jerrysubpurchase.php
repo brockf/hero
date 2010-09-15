@@ -14,7 +14,12 @@ class Jerrysubpurchase extends Front_Controller {
 		parent::__construct();
 	}
 	
-	function index ($plan_id) {
+	function index ($plan_id = FALSE) {
+	
+		if ($plan_id === FALSE) {
+			$plan_id = $this->input->post('plan_id');
+		}
+		
 		$this->load->model('store/cart_model');
 		$this->cart_model->add_subscription_to_cart($plan_id);
 		

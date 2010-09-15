@@ -5,6 +5,7 @@ Choose Your Subscription - {$smarty.block.parent}
 {block name="content"}
 	<h1>Choose Your Subscription</h1>
 	
+	<form method="post" style="margin-top:15px" action="{* this is the normal method {$plan.add_to_cart} *}jerrysubpurchase/jerrysubpurchase/index">
 	{if !$plans}
 		<p>There are no subscriptions available at this time.</p>
 	{else}
@@ -12,18 +13,19 @@ Choose Your Subscription - {$smarty.block.parent}
 		{foreach $plans as $plan}
 		{if $plan.id != 3}
 		<li>
-			<h3>{$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</h3>
-			{$plan.description}
-			<form method="get" action="{* this is the normal method {$plan.add_to_cart} *}jerrysubpurchase/jerrysubpurchase/index/{$plan.id}">
-			<input type="submit" class="button" name="add_to_cart" value="Subscribe Now" />
-			</form>
+			<b><input type="radio" name="plan_id" value="{$plan.id}" /> {$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</b>
 		</li>
 		{/if}
 		{/foreach}
+		<li>
+			<input type="submit" class="button" name="add_to_cart" value="Subscribe Now" />
+		</li>
 	</ul>
 	{/if}
 	
+	</form>
+	
 	<div class="newsletter_recruit">
-		Not ready to purchase a membership?<br /><a href="{url path="newsletter"}">Click here to subscribe to Jerry's newsletter for <b>FREE</b></b>!
+		No, thanks.  <a href="{url path="newsletter"}">Just send me the first few paragraphs of Jerry's column daily</a>.
 	</div>
 {/block}

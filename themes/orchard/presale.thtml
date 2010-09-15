@@ -10,7 +10,7 @@ Presale Signup - {$smarty.block.parent}
 	a <b>guaranteed rate of $99 per year</b> but you'll also have full access to all members-only content
 	from launch day!
 	
-	<form method="get" action="{url path="billing/subscriptions/add_to_cart/3"}">
+	<form method="get" action="{url path="jerrysubpurchase/jerrysubpurchase/index/3"}">
 	<input type="submit" class="button" name="add_to_cart" value="Purchase a Subscription to the new Inside Music Media" />
 
 	</form>

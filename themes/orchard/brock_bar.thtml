@@ -3,7 +3,7 @@
 			<ul>
 				<li><a href="subscriptions">Subscribe</a></li>
 				<li><a id="sharing" href="#">Share This</a></li>
-				<li><a href="#">Discuss on Facebook</a></li>
+				<li><a href="http://www.facebook.com/JerryDelColliano">Discuss on Facebook</a></li>
 				<li><a href="{url path="contact"}">Email Jerry</a></li>
 			</ul>
 			<div style="clear:both"></div>

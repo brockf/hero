@@ -7,9 +7,10 @@
 	<a href="<?=$url;?>">Click here to read the article at Inside Music Media</a>.
 </div>
 <h1 style="font-size: 19pt; font-weight: bold; letter-spacing: -1px; font-family: lucida grande, helvetica, arial, sans-serif; color: #000"><?=$title;?></h1>
-<div style="color: #666; padding: 5px 0px; margin-bottom: 10px; border-bottom: 1px solid #f0f0f1"><?=date('l, F j, Y', strtotime($date));?></div>
+<div style="color: #666; padding: 5px 0px; margin-bottom: 10px"><?=date('l, F j, Y', strtotime($date));?></div>
 
 <? if (!empty($feature_image)) { ?>
+	<?=$this->load->helper('image_thumb');?>
 	<img style="float: left; margin-right: 15px; margin-bottom: 15px; margin-top: 7px" src="<?=image_thumb($feature_image,$image_size,$image_size);?>" alt="" />
 <? } ?>
 
