@@ -128,7 +128,7 @@ class CI_Smarty extends Smarty {
 			
 			// does the modifier have arguments?
 			if (strpos($modifier,':') !== FALSE) {
-				list($modifier,$mod_argument) = explode(': ', $modifier);
+				list($modifier,$mod_argument) = explode(':', $modifier);
 				$mod_argument = trim($mod_argument);
 				
 				// remove quotes
