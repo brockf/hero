@@ -68,18 +68,18 @@ class Admincp extends Admincp_Controller {
 		$this->load->view('events');
 	}
 	
-	function delete ($feeds, $return_url) {
+	function delete ($events, $return_url) {
 		$this->load->library('asciihex');
 		$this->load->model('events_model');
 		
-		$feeds = unserialize(base64_decode($this->asciihex->HexToAscii($feeds)));
+		$events = unserialize(base64_decode($this->asciihex->HexToAscii($events)));
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
 		
-		foreach ($feeds as $feed) {
-			$this->rss_model->delete_feed($feed);
+		foreach ($events as $event) {
+			$this->events_model->delete_event($event);
 		}
 		
-		$this->notices->SetNotice('Feed(s) deleted successfully.');
+		$this->notices->SetNotice('Event(s) deleted successfully.');
 		
 		redirect($return_url);
 		
@@ -221,26 +221,5 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		redirect('admincp/events');
-	}
-	
-	function get_fields ($type_id) {
-		$this->load->model('custom_fields_model');
-		$this->load->model('publish/content_type_model');
-		$this->load->helper('array_to_json');
-		
-		$type = $this->content_type_model->get_content_type($type_id);
-		
-		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
-		$options = array();
-		$options['0'] = 'Do not include a summary for each item in the RSS feed.';
-		$options['content_title'] = 'Title';
-		$options['content_date'] = 'Date Created';
-		$options['content_modified'] = 'Date Modified';
-		$options['link_url_path'] = 'URL Path';
-		foreach ($custom_fields as $field) {
-			$options[$field['name']] = $field['friendly_name'];
-		}
-		
-		echo array_to_json($options);
 	}
 }
