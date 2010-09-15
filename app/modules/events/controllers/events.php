@@ -1,9 +1,9 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /*
-* Content Module
+* Event Module
 *
-* Displays single content item
+* Displays event list or single event
 *
 * @author Electric Function, Inc.
 * @copyright Electric Function, Inc.
