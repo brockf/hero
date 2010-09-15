@@ -170,15 +170,17 @@ class Admincp extends Admincp_Controller {
 		$dates = new Admin_form;
 		
 		$dates->fieldset('Dates');
-		$dates->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->date('Start Date', 'start_date', $event['start_date'], 'Date the event starts.', TRUE, FALSE, FALSE, '85px');
 		
-		$dates->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->date('End Date', 'end_date', $event['end_date'], 'Date the event ends.', TRUE, FALSE, FALSE, '85px');
+		
+		$dates_form = $dates->display();
 				
 		$data = array(
 					'form_title' => 'Edit Event',
 					'event' => $event,
-					'dates' => $dates->display(),
-					'privileges' => $privileges->display(),
+					'dates' => $dates_form,
+					'privileges' => $privilege_form,
 					'form_action' => site_url('admincp/events/post/edit/' . $event['id'])
 				);
 		
