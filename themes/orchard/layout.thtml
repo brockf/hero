@@ -13,7 +13,7 @@
 {/block}
 </head>
 <body>
-<div id="notices">{friendshare}</div>
+<div id="notices"></div>
 
 <div class="container">
 	<div id="header">

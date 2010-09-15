@@ -961,3 +961,17 @@ ul.inner_nav {
 	font-size: 14pt;
 	line-height: 1.5em;
 }
+
+span.code {
+	font-family: courier;
+	font-size: 10pt;
+}
+
+pre.code {
+	font-family: courier;
+	border: 1px solid #ccc;
+	background-color: #f0f0f1;
+	margin: 10px 20px;
+	padding: 15px;
+	width: 700px;
+}

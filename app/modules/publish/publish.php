@@ -38,7 +38,7 @@ class Publish extends Module {
 		$this->CI->db->order_by('content_type_friendly_name','ASC');
 		$result = $this->CI->db->get('content_types');
 		foreach ($result->result_array() as $type) {
-			$this->CI->navigation->child_link('publish',$weight,'Manage ' . $type['content_type_friendly_name'],site_url('admincp/publish/manage/' . $type['content_type_id']));
+			$this->CI->navigation->child_link('publish',$weight,'&#149; Manage ' . $type['content_type_friendly_name'],site_url('admincp/publish/manage/' . $type['content_type_id']));
 			$weight++;
 		}
 		

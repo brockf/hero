@@ -39,6 +39,9 @@ Required variables:
 
 If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).
 
+Note that, while most of the examples below show the parameters passed as integers or pipe-delimited strings, you can also pass arrays such as the standard
+[privileges](privileges array) used in many [APPNAME] modules.
+
 Basic usage:
 
 [code]
@@ -61,6 +64,33 @@ User must be in a group but not in another group:
 {restricted in_group="5" not_in_group="3"}
 Content is only shown if user is in group #5 but no in group #3.
 {/restricted}
+[/code]
+
+Example with a content privileges array:
+
+[code]
+{restricted in_group=$privileges}
+	You are in this group.  I'll show you the full article:
+	
+	{$title}
+	Published on {$date}.
+	
+	{$body}
+{/restricted}
+
+{restricted not_in_group=$privileges}
+	You are not in the group.  Sorry.
+{/restricted}
+[/code]
+
+[h2]shorten (parameters: length, string)[/h2]
+
+Shorten a string of text to a specific length and attached "..." to the end of it.
+
+The [span_code]length[/span_code] parameter is an integer, representing the number of characters to shorten the text to.
+
+[code]
+{shorten length="250" string=$body}
 [/code]
 
 [h2]setting (parameters: path)[/h2]

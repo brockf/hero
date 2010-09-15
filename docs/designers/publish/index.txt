@@ -20,6 +20,7 @@ All content variables are available in this template as standard Smarty template
 * [span_code]{$url}[/span_code] (absolute URL to the content)
 * [span_code]{$hits}[/span_code] (# of reads/hits/views)
 * [span_code]{$template}[/span_code] (template filename)
+* [span_code]{$privileges}[/span_code] (standard [privileges](privileges array) of usergroups who can access it)
 
 [h2]Template Plugins[/h2]
 

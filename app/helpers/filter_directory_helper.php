@@ -10,13 +10,15 @@
 function filter_directory ($directory, $filters = array()) {
 	$directory_map = array();
 	
-	foreach ($directory as $key => $file) {
-		if (is_array($file)) {
-			$file = filter_directory($file);
-			$directory_map[] = $file;
-		}
-		elseif (!in_array($file, $filters)) {
-			$directory_map[] = $file;
+	if (is_array($directory)) {
+		foreach ($directory as $key => $file) {
+			if (is_array($file)) {
+				$file = filter_directory($file);
+				$directory_map[] = $file;
+			}
+			elseif (!in_array($file, $filters)) {
+				$directory_map[] = $file;
+			}
 		}
 	}
 	

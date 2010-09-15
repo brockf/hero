@@ -30,8 +30,16 @@ class Content extends Front_Controller {
 		
 		$content = $this->content_model->get_content($content_id, $allow_future);
 		
+		// does this content exist?
 		if (empty($content)) {
 			return show_404($url_path);
+		}
+		
+		// do they have permissions to see content?
+		if (!$this->user_model->in_group($content['privileges'])) {
+			$this->load->helper('paywall/paywall');
+			paywall($content, 'content');
+			die();
 		}
 		
 		// show content

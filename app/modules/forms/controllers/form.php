@@ -28,6 +28,17 @@ class Form extends Front_Controller {
 		// get the form
 		$form = $this->form_model->get_form($form_id);
 		
+		if (empty($form)) {
+			die(show_404($url_path));
+		}
+		
+		// do they have permissions?
+		if (!$this->user_model->in_group($form['privileges'])) {
+			$this->load->helper('paywall/paywall');
+			paywall($form, 'form');
+			die();
+		}
+		
 		// do we have passed values?
 		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : array();
 		
@@ -62,6 +73,11 @@ class Form extends Front_Controller {
 		
 		if (empty($form)) {
 			die(show_error('This form is invalid.'));
+		}
+		
+		// do they have permissions?
+		if (!in_group($content['privileges'])) {
+			die(show_error('Invalid permissions'));
 		}
 		
 		// form validation
