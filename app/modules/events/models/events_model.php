@@ -99,6 +99,9 @@ class Events_model extends CI_Model
 		}
 		$this->link_model->update_title($event['link_id'], $title);
 	
+		$start_date = date('Y-m-d',strtotime($start_date)) . ' 00:00:00';
+		$end_date = date('Y-m-d',strtotime($end_date)) . ' 00:00:00';
+	
 		$update_fields = array(
 							'event_title' => $title,
 							'event_url_path' => $url_path,
