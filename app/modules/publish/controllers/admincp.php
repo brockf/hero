@@ -406,7 +406,7 @@ class Admincp extends Admincp_Controller {
 	
 	function edit ($id) {
 		$this->load->model('content_model');
-		$content = $this->content_model->get_content($id);
+		$content = $this->content_model->get_content($id, TRUE);
 	
 		$this->load->model('content_type_model');
 		$type = $this->content_type_model->get_content_type($content['type_id']);
