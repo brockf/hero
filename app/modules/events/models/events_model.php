@@ -62,7 +62,8 @@ class Events_model extends CI_Model
 							'event_start_date' => $start_date,
 							'event_end_date' => $end_date,
 							'user_id' => $user,
-							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : ''
+							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
+							'user_id' => $user
 							);
 							
 		$this->db->insert('events',$insert_fields);
@@ -111,7 +112,8 @@ class Events_model extends CI_Model
 							'event_price' => $price,
 							'event_start_date' => $start_date,
 							'event_end_date' => $end_date,
-							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : ''
+							'event_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
+							'user_id' => $user
 							);
 							
 		$this->db->update('events',$update_fields,array('event_id' => $event_id));
