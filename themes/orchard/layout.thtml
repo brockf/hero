@@ -23,10 +23,8 @@
 				<a href="{url path="users"}">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="{url path="users/logout"}">logout</a>&nbsp;&nbsp;&nbsp;&nbsp;
 			{else}
-				{presale_only}
 				<a href="{url path="users/login"}">login</a>&nbsp;&nbsp;&nbsp;&nbsp;
 				<a href="{url path="users/register"}">subscribe</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				{/presale_only}
 			{/if}
 			<a href="{url path="store/cart"}">cart ({cart_items})</a>
 		</div>
@@ -64,7 +62,6 @@
 </div>
 <div id="boxbot"></div>
 
-{presale_only}
 <div class="boxes">
 	<div class="boxestop">
 
@@ -102,7 +99,6 @@
 	
 	</div>
 </div>
-{/presale_only}
 
 <div class="container footer">
 	Copyright &copy; 2007-2010, Jerry Del Colliano LLC.  All Rights Reserved.  Designed and developed by <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.
