@@ -18,7 +18,7 @@
 			</form>
 		</div>
 		
-		<img style="float: left; margin-right: 20px; margin-bottom: 20px" src="{block:$feature_image_url}" />
+		<img style="float: left; margin-right: 20px; margin-bottom: 20px" src="{block:$feature_image|thumbnail:"200x200"}" />
 		{$content_narrative}
 		
 		<h3 style="clear:both">Highlights &amp; Events</h3>
