@@ -32,7 +32,7 @@ class Events_model extends CI_Model
 	* @param string Standard privileges array of member group ID's
 	* @param int $user The ID of the submitting user
  	*
- 	* @return $feed_id
+ 	* @return $event_id
  	*/
 	function new_event ($title, $url_path, $description, $location, $max_attendees, $price, $start_date, $end_date, $privileges = array(), $user) {
 		$this->load->helper('clean_string');
