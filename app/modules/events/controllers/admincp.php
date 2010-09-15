@@ -119,9 +119,9 @@ class Admincp extends Admincp_Controller {
 		$dates = new Admin_form;
 		
 		$dates->fieldset('Dates');
-		$dates->date('Start Date', 'start_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->date('Start Date', 'start_date', '', 'Date the event starts.', TRUE, FALSE, FALSE, '85px');
 		
-		$dates->date('End Date', 'end_date', date('Y-m-d'), 'If set to a future date, content will be hidden from public view until this date (unless you\'re an administrator).', FALSE, FALSE, FALSE, '85px');
+		$dates->date('End Date', 'end_date', '', 'Date the event ends.', TRUE, FALSE, FALSE, '85px');
 				
 		$data = array(
 					'form_title' => 'Create New Event',
@@ -200,7 +200,9 @@ class Admincp extends Admincp_Controller {
 										$this->input->post('price'),
 										$this->input->post('start_date'),
 										$this->input->post('end_date'),
-										$this->input->post('privileges')
+										$this->input->post('privileges'),
+										$this->input->post('user')
+										
 									);
 										
 			$this->notices->SetNotice('Event added successfully.');
@@ -216,7 +218,8 @@ class Admincp extends Admincp_Controller {
 									$this->input->post('price'),
 									$this->input->post('start_date'),
 									$this->input->post('end_date'),
-									$this->input->post('privileges')
+									$this->input->post('privileges'),
+									$this->input->post('user')
 								);
 										
 			$this->notices->SetNotice('Event edited successfully.');
