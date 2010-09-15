@@ -215,6 +215,10 @@ class User_model extends CI_Model
     * @return boolean TRUE if in the group
     */
     function in_group ($group, $user_id = FALSE) {
+    	if (empty($group)) {
+    		return TRUE;
+    	}
+    
     	if ($user_id) {
     		$user_array = $this->get_user($user_id);
     	}
@@ -258,9 +262,13 @@ class User_model extends CI_Model
     * @param int|array A group ID, or array of group ID's (they must NOT be in any of the groups)
     * @param int $user_id (Optional) Specify the user.  Default: Current User
     *
-    * @return boolean TRUE if in the group
+    * @return boolean TRUE if not in the group
     */
     function not_in_group ($group, $user_id = FALSE) {
+    	if (empty($group)) {
+    		return FALSE;
+    	}
+    
     	if ($user_id) {
     		$user_array = $this->get_user($user_id);
     	}
