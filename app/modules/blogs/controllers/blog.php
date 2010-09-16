@@ -31,7 +31,7 @@ class Blog extends Front_Controller {
 		$content = $this->blog_model->get_blog_content($blog_id, $this->input->get('page'));
 
 		// do they have permissions?
-		if (!$this->user_model->in_group($content['privileges'])) {
+		if (!$this->user_model->in_group($blog['privileges'])) {
 			$this->load->helper('paywall/paywall');
 			paywall($blog, 'blog');
 			die();
