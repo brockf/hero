@@ -86,7 +86,7 @@ $field['width'] = (isset($field['width'])) ? $field['width'] : '250px';
 	<div class="help" style="margin-left: 0">Enter the default text to be displayed.</div>
 </li>
 <li class="field_default_checkbox">
-	<div class="help" style="margin-left: 0">Enter "Yes" to check this box by default.</div>
+	<div class="help" style="margin-left: 0">Enter "Yes" to check this box by default.  Leave blank to leave it unchecked.</div>
 </li>
 <li class="field_width">
 	<label for="width" class="full">Width</label>
