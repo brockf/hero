@@ -32,7 +32,7 @@
 							<label for="privileges">Visibility</label><br />
 							<select name="privileges" id="privileges" multiple="multiple" style="height: 50px">
 								<option value="0" <? if ($link['privileges'] == FALSE or in_array(0,$link['privileges'])) { ?>selected="selected"<? } ?>>Public / All Member Groups</option>
-								<option value="-1" <? if ($link['privileges'] == FALSE or in_array('-1',$link['privileges'])) { ?>selected="selected"<? } ?>>Logged Out Visitors Only</option>
+								<option value="-1" <? if (in_array('-1',$link['privileges'])) { ?>selected="selected"<? } ?>>Logged Out Visitors Only</option>
 								<? foreach ($groups as $group) { ?>
 									<option value="<?=$group['id'];?>" <? if ($link['privileges'] != FALSE and in_array($group['id'], $link['privileges'])) { ?>selected="selected"<? } ?>><?=$group['name'];?></option>
 								<? } reset($groups); ?>
