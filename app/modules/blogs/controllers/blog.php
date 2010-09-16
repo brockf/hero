@@ -29,11 +29,6 @@ class Blog extends Front_Controller {
 		
 		// get blog
 		$content = $this->blog_model->get_blog_content($blog_id, $this->input->get('page'));
-		
-		// does blog exist?
-		if (empty($content)) {
-			return show_404($url_path);
-		}
 
 		// do they have permissions?
 		if (!$this->user_model->in_group($content['privileges'])) {
