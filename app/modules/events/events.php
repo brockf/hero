@@ -43,24 +43,22 @@ class Events_module extends Module {
 		
 	function update ($db_version) {
 		if ($db_version < 1.0) {
-			//$this->CI->settings_model->new_setting(4, 'feed_items_count', '25', 'How many items would you to show in an RSS feed?', 'text');
-		}
-	
-		if ($db_version < 1.03) {
-//			$this->CI->db->query('CREATE TABLE `rss_feeds` (
-// 								 `rss_id` int(11) NOT NULL auto_increment,
-// 								 `link_id` int(11) NOT NULL,
-// 								 `content_type_id` int(11) NOT NULL,
-//								 `rss_title` varchar(255) NOT NULL,
-//								 `rss_description` text NOT NULL,
-// 								 `rss_filter_author` varchar(250) NOT NULL,
-// 								 `rss_filter_topic` varchar(250) NOT NULL,
-// 								 `rss_summary_field` VARCHAR(255) NOT NULL,
-// 								 `rss_sort_field` varchar(100) NOT NULL,
-// 								 `rss_sort_dir` varchar(5) NOT NULL,
-// 								 `rss_template` varchar(150) NOT NULL,
-//   								 PRIMARY KEY  (`rss_id`)
-//								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+			$this->CI->db->query('CREATE TABLE `events` (
+									`event_id` int(11) NOT NULL auto_increment,
+									`link_id` int(11) NOT NULL,
+									`event_title` varchar(255) NOT NULL,
+									`event_url_path` varchar(250) NOT NULL,
+									`event_description` text NOT NULL,
+									`event_filter_author` varchar(250) default NULL,
+									`event_location` varchar(100) NOT NULL,
+									`event_max_attendees` int(11) default NULL,
+									`event_price` varchar(15) default NULL,
+									`event_start_date` datetime default NULL,
+									`event_end_date` datetime default NULL,
+									`event_privileges` varchar(255) NOT NULL,
+									`user_id` int(11) default NULL,
+									PRIMARY KEY  (`event_id`)
+									) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;');
 		}
 		
 		return $this->version;
