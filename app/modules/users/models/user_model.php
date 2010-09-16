@@ -209,6 +209,9 @@ class User_model extends CI_Model
     /*
     * Is user in this group?
     *
+    * Returns TRUE if the user is in the usergroup(s) or the privileges are open to all (i.e., array is empty or contains "0"). 
+    * To check if the user is logged out, send "-1" by itself or in an array.  It's return TRUE if the user is logged out.
+    *
     * @param int|array A group ID, or array of group ID's (they must be in one of the groups)
     * @param int $user_id (Optional) Specify the user.  Default: Current User
     *
@@ -218,6 +221,16 @@ class User_model extends CI_Model
     	if (empty($group)) {
     		return TRUE;
     	}
+    	
+    	// sometimes, we only want to show something if the user is logged out
+    	if ($group == '-1' or (is_array($group) and in_array('-1', $group))) {
+    		if ($this->logged_in() === FALSE) {
+	    		return TRUE;
+	    	}
+	    	else {
+	    		return FALSE;
+	    	}
+	    }
     
     	if ($user_id) {
     		$user_array = $this->get_user($user_id);
