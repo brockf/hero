@@ -26,7 +26,7 @@ Required parameters:
 
 Optional parameters:
 
-* [span_code]show_sub_menus[/span_code] - Enter either "yes", "no", or "active".  If "active", only the sub-menu of the active menu item will be shown.  "yes" shows all sub menus and "no" shows none.
+* [span_code]show_sub_menus[/span_code] - Enter either "yes", "no", or "active".  If "active", only the sub-menu of the active menu item will be shown.  "yes" shows all sub menus and "no" shows none.  (Default: "yes").
 * [span_code]class[/span_code] - Specify the "class" attribute of the [span_code]ul[/span_code] HTML element used to display the menu.
 * [span_code]id[/span_code] - Specify the "id" attribute of the [span_code]ul[/span_code] HTML element used to display the menu.
 

@@ -26,6 +26,11 @@ function smarty_function_menu ($params, $smarty, $template) {
 		return 'The "name" parameter you passed to {menu} (' . $params['name'] . ') is not associated with a menu.  Menu load failed.';
 	}
 	
+	// set default parameter for show_sub_menus
+	if (!isset($params['show_sub_menus'])) {
+		$params['show_sub_menus'] = 'yes';
+	}
+	
 	// we have the menu
 	// get root level menu items
 	$links = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => '0'));
@@ -39,7 +44,7 @@ function smarty_function_menu ($params, $smarty, $template) {
 	$menu_children = array();
 	
 	// parse parent links, which will in turn call child links if necessary
-	parse_links($menu_items, $menu_children, $links, $menu, $smarty);
+	parse_links($menu_items, $menu_children, $links, $menu, $smarty, $params);
 	
 	// sort through menu items and display the menu
 	$params['class'] = (isset($params['class'])) ? $params['class'] : '';
@@ -51,20 +56,26 @@ function smarty_function_menu ($params, $smarty, $template) {
 		// do we have children?
 		$children_items = array();
 		
-		if (isset($menu_children[$id])) {
-			foreach ($menu_children[$id] as $key) {
-				$item_child = $menu_items[$key];
-				
-				// set parent active if it's child is active
-				if ($item_child['active'] == TRUE) {
-					$item['active'] = TRUE;
+		if ($item['is_child'] == FALSE) {
+			if (isset($menu_children[$id])) {
+				foreach ($menu_children[$id] as $key) {
+					$item_child = $menu_items[$key];
+					
+					// set parent active if it's child is active
+					if ($item_child['active'] == TRUE) {
+						$item['active'] = TRUE;
+					}
+					
+					$children_items[] = li_html($item_child);
 				}
-				
-				$children_items[] = li_html($item_child);
 			}
 		}
 		
-		$return .= li_html($item, $children_items);
+		if ($item['is_child'] == FALSE) {
+			$classes = (!empty($children_items)) ? array('parent') : array();
+			
+			$return .= li_html($item, $children_items, $classes);
+		}
 	}
 	
 	$return .= '</ul>';
@@ -72,9 +83,7 @@ function smarty_function_menu ($params, $smarty, $template) {
 	return $return;
 }
 
-function li_html ($item, $children_items = FALSE) {
-	$classes = array();
-	
+function li_html ($item, $children_items = FALSE, $classes = array()) {
 	if (!empty($item['class'])) {
 		if (strpos($item['class'], ' ')) {
 			// they gave multiple classes separated by a space
@@ -111,7 +120,7 @@ function li_html ($item, $children_items = FALSE) {
 	return $return;
 }
 	
-function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
+function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $params) {
 	if (empty($links)) {
 		return FALSE;
 	}
@@ -154,7 +163,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => $url,
 												'active' => $active,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 			}
 			else {
@@ -164,7 +174,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url(),
 												'active' => ($smarty->CI->uri->segment(1) == FALSE) ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 				elseif ($link['special_type'] == 'control_panel') {
@@ -172,7 +183,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('admincp'),
 												'active' => ($smarty->CI->uri->segment(1) == 'admincp') ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 				elseif ($link['special_type'] == 'my_account') {
@@ -180,10 +192,11 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('users'),
 												'active' => ($smarty->CI->uri->segment(1) == 'users') ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 					
-					if ($link['parent'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
+					if ($link['parent_menu_link_id'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
 						// add children						
 						$menu_children[$link['id']][] = 'profile';
 						$menu_children[$link['id']][] = 'password';
@@ -193,21 +206,24 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 													'text' => 'Update Profile',
 													'url' => site_url('users/profile'),
 													'active' => ($smarty->CI->uri->segment(1) == 'users' and $smarty->CI->uri->segment(2) == 'profile') ? TRUE : FALSE,
-													'class' => 'account_profile'
+													'class' => 'account_profile',
+													'is_child' => TRUE
 												);
 												
 						$menu_items['password'] = array(
 													'text' => 'Change Password',
 													'url' => site_url('users/password'),
 													'active' => ($smarty->CI->uri->segment(1) == 'users' and $smarty->CI->uri->segment(2) == 'password') ? TRUE : FALSE,
-													'class' => 'account_password'
+													'class' => 'account_password',
+													'is_child' => TRUE
 												);
 												
 						$menu_items['logout'] = array(
 													'text' => 'Logout',
 													'url' => site_url('users/logout'),
 													'active' => ($smarty->CI->uri->segment(1) == 'users' and $smarty->CI->uri->segment(2) == 'logout') ? TRUE : FALSE,
-													'class' => 'account_logout'
+													'class' => 'account_logout',
+													'is_child' => TRUE
 												);
 					}
 				}
@@ -216,7 +232,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('store'),
 												'active' => ($smarty->CI->uri->segment(1) == 'store' or ($smarty->CI->uri->segment(1) == 'checkout')) ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 				elseif ($link['special_type'] == 'search') {
@@ -224,7 +241,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('search'),
 												'active' => ($smarty->CI->uri->segment(1) == 'search') ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 				elseif ($link['special_type'] == 'subscriptions') {
@@ -232,7 +250,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('subscriptions'),
 												'active' => ($smarty->CI->uri->segment(1) == 'subscriptions') ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 				elseif ($link['special_type'] == 'cart') {
@@ -240,23 +259,26 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty) {
 												'text' => $link['text'],
 												'url' => site_url('users'),
 												'active' => ($smarty->CI->uri->segment(1) == 'cart') ? TRUE : FALSE,
-												'class' => $link['class']
+												'class' => $link['class'],
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
 			}
 										
 			// should we load children?
 			// only if show_sub_menus parameter says so, and this isn't already a child link
-			if ($link['parent'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
+			if ($link['parent_menu_link_id'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
 				// load children
-				$links = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => $link['id']));
+				$links_children = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => $link['id']));
 				
-				// track children
-				foreach ($links as $link_child) {
-					$menu_children[$link['id']][] = $link_child['id'];
+				if (is_array($links_children)) {
+					// track children
+					foreach ($links_children as $link_child) {
+						$menu_children[$link['id']][] = $link_child['id'];
+					}
+				
+					parse_links($menu_items, $menu_children, $links_children, $menu, $smarty, $params);
 				}
-				
-				parse_links($menu_items, $menu_children, $links, $menu, $smarty);
 			}
 		}
 	}

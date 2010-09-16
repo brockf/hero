@@ -760,7 +760,7 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Design');
 		$this->load->helper('template_files');
 		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, 'content.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.');
+		$form->dropdown('Output Template', 'template', $template_files, 'content.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.  (Ignore this field if it\'s not applicable.)');
 		
 		$data = array(
 					'form' => $form->display(),
@@ -792,7 +792,7 @@ class Admincp extends Admincp_Controller {
 		$form->fieldset('Design');
 		$this->load->helper('template_files');
 		$template_files = template_files();
-		$form->dropdown('Output Template', 'template', $template_files, $type['template'], FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.');
+		$form->dropdown('Output Template', 'template', $template_files, $type['template'], FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.  (Ignore this field if it\'s not applicable.)');
 		
 		$data = array(
 					'form' => $form->display(),
