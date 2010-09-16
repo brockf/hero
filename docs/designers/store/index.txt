@@ -46,19 +46,23 @@ Within the product page, the [span_code]{$images}[/span_code] holds an array of 
 
 [h2]Template Plugins[/h2]
 
-[h3]cart[/h3]
+[h3]cart (parameters: var)[/h3]
 
 Display items from the current shopping cart.
 
+Required parameters:
+
+* [span_code]var[/span_code] - The name of the variable for each returned item array
+
 Available block variables:
 
-* [span_code]{block:$rowid}[/span_code] - Unique ID identifying this product and its specific options (so that 2 red T-shirts with different options don't conflict).
-* [span_code]{block:$id}[/span_code] - The product ID
-* [span_code]{block:$name}[/span_code] - The product name
-* [span_code]{block:$price}[/span_code] - The per-item price
-* [span_code]{block:$subtotal}[/span_code] - The total item price (per-item price * quantity)
-* [span_code]{block:$qty}[/span_code] - Item quantity
-* [span_code]{block:$remove_link}[/span_code] - The URL for a link that will remove the product from the cart
+* [span_code]{$var.rowid}[/span_code] - Unique ID identifying this product and its specific options (so that 2 red T-shirts with different options don't conflict).
+* [span_code]{$var.id}[/span_code] - The product ID
+* [span_code]{$var.name}[/span_code] - The product name
+* [span_code]{$var.price}[/span_code] - The per-item price
+* [span_code]{$var.subtotal}[/span_code] - The total item price (per-item price * quantity)
+* [span_code]{$var.qty}[/span_code] - Item quantity
+* [span_code]{$var.remove_link}[/span_code] - The URL for a link that will remove the product from the cart
 
 Usage:
 
@@ -66,8 +70,8 @@ Usage:
 You have the following items in your cart:
 
 <ul class="cart">
-{cart}
-<li>{block:$name} ({setting name="currency_symbol"}{block:$price} each) - {setting name="currency_symbol"}{block:$subtotal}</li>
+{cart var="item"}
+<li>{$item.name} ({setting name="currency_symbol"}{$item.$price} each) - {setting name="currency_symbol"}{$item.$subtotal}</li>
 {/cart}
 </ul>
 [/code]
@@ -92,21 +96,35 @@ Usage:
 You have {cart_items} items in your <a href="{url path="store/cart"}">shopping cart</a>.
 [/code]
 
-[h3]product (parameters: id)[/h3]
+[h3]products (parameters: var, id, collection, sort, sort_dir, limit, offset)[/h3]
 
-Display a product referenced by product ID.  All of the product's data is available in variables.
+Display product(s) specified by parameters.  All of the product's data is available in variables.
 
 Required parameters:
 
-* [span_code]id[/span_code] - The product ID for the product you want to display.
+* [span_code]var[/span_code] - The name of the variable for each returned item array.
 
-All product data listed above under Displaying Products is available in standard block variable format (e.g., [span_code]{block:$name}[/span_code]).
+Optional parameters:
+
+* [span_code]id[/span_code] - A product ID for a specific product you want to display.
+* [span_code]keyword[/span_code] - Perform a full text search on the database and return matching results.  With this parameter, the [span_code]{$var.relevance}[/span_code] becomes available.
+* [span_code]collection[/span_code] - A collection ID to specify products in a certain collection.
+* [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "product_name", "product_price").  Default: "product_name".
+* [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: "ASC".
+* [span_code]limit[/span_code] - How many results would you like to retrieve?  Default: As many as possible.
+* [span_code]offset[/span_code] - At what point in the results would you like to start returning them?  (e.g., an offset of "5" with a limit of "5" will return results 6-10).
+
+All product data listed above under Displaying Products are available in standard block variable format (e.g., [span_code]{$var.data_name}[/span_code]).
 
 Usage:
 
 [code]
 <div>
-	Our feature product today is {product id="4343"}{block:$name}{/product}
+	Our 5 cheapest products in the Women's collection:
+	<ul>
+		{products var="prod" collection="5" sort="product_price" sort_dir="ASC"}
+		<li>{$prod.name} - {$prod.price}</li>
+		{/products}
+	</ul>
 </div>
 [/code]
-

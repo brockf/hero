@@ -18,10 +18,10 @@
 		{include file="brock_bar.thtml" share_content_id=$id}
 	</div>
 	
-	{content type="2" limit="1" date_format="l, F j, Y"}
-	<h1 class="secondary">{block:$title}</h1>
+	{content var="article" type="2" limit="1" date_format="l, F j, Y"}
+	<h1 class="secondary">{$article.title}</h1>
 	<div class="article">
-		{block:$body}
+		{$article.body}
 	</div>
 	{/content}
 {/block}

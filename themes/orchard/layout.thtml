@@ -62,44 +62,6 @@
 </div>
 <div id="boxbot"></div>
 
-<div class="boxes">
-	<div class="boxestop">
-
-	
-	</div>
-	<div class="boxes">
-		<div class="boxes2">
-			<div class="container">
-				{content type="7"}
-				<div class="box">
-					<h4 style="color: #{block:$header_colour}">{block:$header}</h4>
-					{block:$content}
-				</div>	
-				{/content}
-				{* <div class="box">
-					<h4 style="color: #13a9a0">Latest Video</h4>
-					<p>Watch Jerry interview a celebrity.</p>
-					<p style="text-align:center"><img src="images/video.gif" alt="Play the Video" /></p>
-				</div> *}
-				<div class="box">
-					<h4 style="color: #26a12c">Latest Posts</h4>
-
-					<ol>
-						{content type="1" limit="7"}
-						<li><a href="{block:$url}">{block:$title|shorten(32)}</a></li>
-						{/content}
-					</ol>
-				</div>
-				<div style="clear:both"></div>
-			</div>
-		</div>
-	</div>
-
-	<div class="boxesbot">
-	
-	</div>
-</div>
-
 <div class="container footer">
 	Copyright &copy; 2007-2010, Jerry Del Colliano LLC.  All Rights Reserved.  Designed and developed by <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.
 </div>

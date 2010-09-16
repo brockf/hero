@@ -11,6 +11,7 @@ require_once(APPPATH.'libraries/smarty/Smarty.class.php');
 
 class CI_Smarty extends Smarty {
 	var $CI;
+	var $perpetual_data; // holds data from looping block plugins
 
 	function __construct() {
 		parent::__construct();
@@ -44,24 +45,6 @@ class CI_Smarty extends Smarty {
 		
 		// user data
 		$this->assign('member', $this->CI->user_model->get());
-		
-		// register output variable which manipulates templates prior to Smarty parsing
-		$this->loadFilter('pre','pre_smarty_parse');
-	}
-	
-	/**
-	* Pre Smarty Parsing
-	*
-	* This function is executed on all templates prior to Smarty parsing them
-	*
-	* @param string $template The template source
-	*
-	* @return string $template The modified template
-	*/
-	function pre_smarty_parse ($template) {
-		$template = preg_replace('/\{block\:(.*?)\}/i','[[$1]]',$template);
-		
-		return $template;
 	}
 	
 	// modify the display class
@@ -84,98 +67,96 @@ class CI_Smarty extends Smarty {
 	}
 	
 	/**
-	* Parse Variables within String
+	* Block Loop
 	*
-	* Called by block functions to parse variables as if they were being parsed by Smarty
-	* Because of $this->pre_smarty_parse(), all block data tags are now like [$title] (previously {$block:title}
+	* Loops through a block plugin intelligently from a content array
 	*
-	* @param string $tagdata The Smarty/HTML code between two {block}test{/block} tags
-	* @param array $variables An array of variables to substitute
+	* @param string $data_name An identifiable system name for this dataset
+	* @param array $content Either send the initial data array, or FALSE if you've already called it
+	* @param string $var_name
+	* @param boolean $repeat
 	*
-	* @return string HTML, parsed for variables
+	* @return string $tagdata or NULL
 	*/
-	function parse_string ($tagdata, $variables = array()) {
-		// save current block's variables
-		$this->string_variables = $variables;
 	
-		// variable replacement, with modifier support thanks to callback
-		$tagdata = preg_replace_callback('/\[\[\$(.*?)\]\]/i', array($this, 'parse_variable'), $tagdata);
+	function block_loop($data_name, $content = FALSE, $var_name, &$repeat) {
+		if (!$this->loop_data($data_name)) {
+			if (empty($content)) {
+				$repeat = FALSE;
+				return;
+			}
+			
+			// set loop data
+			$this->loop_data($data_name, $content);
+			$index = 0;
+			$this->loop_data($data_name . '_index', $index);
+		}
+		else {
+			$content = $this->loop_data($data_name);
+			$index = $this->loop_data($data_name . '_index');
+		}
 		
-		return $tagdata;
+		$this->assign($var_name, $content[$index]);
+		
+		// continue looping?
+		if (isset($content[($index)])) {
+			$this->loop_data($data_name . '_index', ($index + 1));
+			$repeat = TRUE;
+		}
+		else {
+			$this->unset_loop_data($data_name);
+			
+			$repeat = FALSE;
+		}
 	}
 	
 	/**
-	* Parse a Variable
+	* Unset Loop Data
+	* 
+	* @param string$data_name
 	*
-	* Replaces a variable with variable data, optional uses simple modifiers/manipulation
-	*
-	* @param string $matches The variable is in key 1 of this array, can have modifier
-	*                        like "{block:$test|trim}" or with param like "{block:$test|shorten(150)}"
-	*						 or multiple arguments like "{block:$test|fake(1,sbc,2)}"
-	*
-	*
-	* @return string $data
+	* @return boolean TRUE
 	*/
-	function parse_variable ($matches) {
-		$variable = $matches[1];
-	
-		// get variables
-		$variables = $this->string_variables;
+	function unset_loop_data ($data_name) {
+		unset($this->perpetual_data[$data_name]);
 		
-		// do we have a modifier
-		if (strpos($variable,'|') !== FALSE) {
-			list($variable, $modifier) = explode('|',$variable);
-			
-			// does the modifier have arguments?
-			if (strpos($modifier,':') !== FALSE) {
-				list($modifier,$mod_argument) = explode(':', $modifier);
-				$mod_argument = trim($mod_argument);
-				
-				// remove quotes
-				$mod_argument = str_replace('"', '', $mod_argument);
-			}
+		return TRUE;
+	}
+	
+	/**
+	* Create Loop Data Key from $filters
+	*
+	* @param array $array
+	*
+	* @return string MD5 of array
+	*/
+	function loop_data_key ($array) {
+		$string = '';
+		
+		foreach ($array as $k => $v) {
+			$string = $k . '=' . $v;	
+		}
+		
+		return md5($string);
+	}
+	
+	/**
+	* Store Loop Data
+	*
+	* Stores/retrieves a variable used in a looping block plugin
+	*
+	* @param string $key
+	* @param array|object $data
+	*
+	* @return boolean|array Data, or FALSE
+	*/
+	function loop_data ($key, $data = FALSE) {
+		if ($data === FALSE) {
+			return (isset($this->perpetual_data[$key])) ? $this->perpetual_data[$key] : FALSE;
 		}
 		else {
-			$modifier = '';
+			$this->perpetual_data[$key] = $data;
+			return;
 		}
-		
-		// get data from vars
-		$data = $variables[$variable];
-		
-		// manipulate?
-		
-		// modifier: shorten: "length"
-		
-		if ($modifier == "shorten") {
-			// we need one argument, string length
-			$length = $mod_argument;
-			
-			$this->CI->load->helper('shorten');
-			$data = shorten($data, $length);
-		}
-		
-		// modifier: date_format: "%Y-%m-%d" (for e.g.)
-		elseif ($modifier == "date_format") {
-			$format = $mod_argument;
-			
-			// we'll take strftime or date formatting:
-			if (strpos($format, '%') !== FALSE) {				
-				$data = strftime($format, strtotime($data));
-			}
-			else {
-				$data = date($format, strtotime($data));
-			}
-		}
-		
-		// modifier: thumbnail: "widthxheight" (e.g. 150x150)
-		elseif ($modifier == "thumbnail") {
-			list($width,$height) = explode('x', $mod_argument);
-			
-			$this->CI->load->helper('image_thumb');
-			
-			$data = image_thumb($data, $height, $width);
-		}
-		
-		return $data;
 	}
 }

@@ -10,7 +10,7 @@ You can customize this template file to have your own marketing text or a custom
 will likely keep it as is.
 
 Alternatively, you can turn off the Auto-Paywall and deal with content permissions manually.  For more information on that, see how to use the
-[privileges](privileges array) return in most content's template variables.
+[designers/privileges](privileges array) return in most content's template variables.
 
 [h2]Showing Partial Content in the Auto-Paywall Template[/h2]
 

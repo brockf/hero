@@ -43,7 +43,7 @@
 				<h4>Topic</h4>
 				<select name="topic">
 					<option value="" {if !$filter_topic}selected="selected"{/if}>All Topics</option>
-					{topics}<option value="{block:$id}">{block:$name}</option>{/topics}
+					{topics var="topic"}<option value="{$topic.id}">{$topic.name}</option>{/topics}
 				</select>
 			</li>
 			<li>
@@ -75,13 +75,13 @@
 		{/if}
 		{* end compute offset *}
 		
-		{content type="1" limit="25" offset=$offset keyword=$filter_keyword topic=$filter_topic sort=$filter_sort sort_dir=$filter_sort_dir}
+		{content var="article" type="1" limit="25" offset=$offset keyword=$filter_keyword topic=$filter_topic sort=$filter_sort sort_dir=$filter_sort_dir}
 			<li>
 				<div class="archive_date">
-					{block:$date|date_format: "M\.d\.Y"}
+					{$article.date|date_format: "%b\.%d\.%Y"}
 				</div>
 				
-				<a class="title" href="{block:$url}">{block:$title}</a>
+				<a class="title" href="{$article.url}">{$article.title}</a>
 			</li>
 		{/content}
 		

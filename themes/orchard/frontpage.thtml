@@ -1,25 +1,6 @@
 {extends file="layout.thtml"}
 {block name="content"}
-	{content type="1" limit="1"}
-	<h1>{block:$title}</h1>
-		<div class="byline">
-	
-			<span class="date">{block:$date|date_format: "l, F j, Y"}</span>
-		</div>
-		<div class="article">
-			<span class="author">By {block:$author_first_name} {block:$author_last_name}</span>
-			
-			<img src="{jerry_thumbnail}" alt="" />
-			
-			{block:$summary}
-			
-			<p><a href="{block:$url}">Read more</a></p>
-		</div>
-	{/content}
-	{content type="2" limit="1"}
-	<h1 class="secondary">{block:$title}</h1>
-	<div class="article">
-		{block:$body}
-	</div>
-	{/content}
+	{products var="var"}
+		{$var.name}<br />
+	{/products}
 {/block}

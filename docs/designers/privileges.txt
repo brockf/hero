@@ -4,7 +4,7 @@ All modules containing content such as the Publish module, Form module, and Blog
 as part of their template files.  This array contains the member group ID numbers of each member group that can access the content.  It may also contain
 the ID "0", or be empty, in which case the content is public.
 
-This array is important because it can be used to manually restrict access to content, if not using the [paywall](Auto-Paywall).
+This array is important because it can be used to manually restrict access to content, if not using the [designers/paywall](Auto-Paywall).
 
 The template plugin, [span_code]{restricted}[/span_code], is used to verify if the current logged in user has the permissions to view the content
 based on the [span_code]$privileges[/span_code] array.  For example:
@@ -26,4 +26,4 @@ based on the [span_code]$privileges[/span_code] array.  For example:
 
 As you can see, we also the used [span_code]not_in_group[/span_code] parameter of this template plugin to see if the user was denied access to the content.  This is helpful
 in showing an error message or login form.  It is highly recommended to show a login form and registration link when a user is denied access so that
-they can remedy the situation.  The [paywall](Auto-Paywall) does this automatically, but it doesn't give you as much control as you may need.
+they can remedy the situation.  The [designers/paywall](Auto-Paywall) does this automatically, but it doesn't give you as much control as you may need.

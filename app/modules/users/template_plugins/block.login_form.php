@@ -9,8 +9,11 @@
 * @param string $username Username value
 */
 
-function smarty_block_login_form ($params, $tagdata, $smarty, $repeat){
-	if (!$repeat) {	
+function smarty_block_login_form ($params, $tagdata, &$smarty, &$repeat){
+	if (!isset($params['var'])) {
+		$smarty->trigger_error('You must specify a "var" parameter for template {login_form} calls.  This parameter specifies the variable name for the returned array.');
+	}
+	else {
 		$variables = array();
 		
 		// get return URL
@@ -27,8 +30,8 @@ function smarty_block_login_form ($params, $tagdata, $smarty, $repeat){
 		// username
 		$variables['username'] = isset($params['username']) ? $params['username'] : '';
 						
-		$return .= $smarty->parse_string($tagdata, $variables);
+		$smarty->assign($params['var'], $variables);
 				
-		return $return;
+		echo $tagdata;
 	}
 }

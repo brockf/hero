@@ -8,8 +8,11 @@
 * @param string $return The relative or absolute URL to return to after registering
 */
 
-function smarty_block_registration_form ($params, $tagdata, $smarty, $repeat){
-	if (!$repeat) {	
+function smarty_block_registration_form ($params, $tagdata, &$smarty, &$repeat){
+	if (!isset($params['var'])) {
+		$smarty->trigger_error('You must specify a "var" parameter for template {registration_form} calls.  This parameter specifies the variable name for the returned array.');
+	}
+	else {
 		$variables = array();
 		
 		// get return URL
@@ -37,8 +40,8 @@ function smarty_block_registration_form ($params, $tagdata, $smarty, $repeat){
 			}
 		}
 						
-		$return .= $smarty->parse_string($tagdata, $variables);
-				
-		return $return;
+		$smarty->assign($params['var'], $variables);
+			
+		echo $tagdata;
 	}
 }

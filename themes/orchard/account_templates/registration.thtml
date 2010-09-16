@@ -3,14 +3,14 @@
 Create an Account - {$smarty.block.parent}
 {/block}
 {block name="content"}
-	{registration_form return=$return}
+	{registration_form var="form" return=$return}
 		<h1>Create an Account</h1>
 		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
 		{if $setting.validate_emails == "1"}
 			<p>You will be required to validate your email address before your account is fully activated.</p>
 		{/if}
-		<form class="form validate" enctype="multipart/form-data" method="post" action="{block:$form_action}">
-			<input type="hidden" name="return" value="{block:$return}">
+		<form class="form validate" enctype="multipart/form-data" method="post" action="{$form.form_action}">
+			<input type="hidden" name="return" value="{$form.return}">
 			
 			{if $validation_errors}
 				<div class="errors">
@@ -63,12 +63,18 @@ Create an Account - {$smarty.block.parent}
 					</li>
 					{foreach $custom_fields as $field}
 						{if $field.name}
-							<li>
-								<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
-							</li>
-							<li>
-								{custom_field field=$field value=$values[$field['name']]}
-							</li>
+							{if $field.type != 'checkbox'}
+								<li>
+									<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
+								</li>
+								<li>
+									{custom_field field=$field}
+								</li>
+							{else}
+								<li>
+									{custom_field field=$field} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+								</li>
+							{/if}
 							{if $field.help}
 							<li>
 								<div class="help flush">{$field.help}</div>

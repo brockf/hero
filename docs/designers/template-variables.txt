@@ -13,6 +13,7 @@ The following variables are accessible in any template:
 
 * [span_code]{$setting.setting_name}[/span_code] (where setting_name is the name of the setting you are trying to access)
 * [span_code]{$logged_in}[/span_code] (TRUE if the user is logged in, FALSE if not).  With it, you can use [span_code]{if $logged_in}[/span_code] and [span_code]{if !$logged_in}[/span_code] statements.
+* [span_code]{$current_url}[/span_code]
 
 If we have a logged in, active user, the following variables are available:
 
@@ -34,42 +35,19 @@ Many variables can be displayed without modification (e.g, the title tag just ne
 
 These are all standard Smarty modifiers and information is available at the [http://www.smarty.net](Smarty documentation).
 
-[h2]Block Variables[/h2]
+[h2]Variables within Block Plugins[/h2]
 
-When using a block template plugin to retrieve content with their own variables (e.g., the [designers/publish/index]({get_content} tag)), the variables are handled differently than standard Smarty variables.
+Block plugins that return variables, such as [designers/publish](the [span_code]content[/span_code] plugin), return variables in an array by a name you specify, often as the [span_code]var[/span_code] parameter of the function.
 
-For example, we will load the last 10 content items from content type ID #1 in a list:
+Example:
 
 [code]
-<ul class="content_listing">
-{content type="1" limit="10"}
-<li><a href="{block:$url}">{block:$title}</a></li>
+{content type="4" var="article"}
+	Title: {$article.title}
 {/content}
-</ul>
-[/code]
 
-As you can see, block variables include [span_code]{block:[/span_code] before the variable name.
-
-Important to note: Standard Smarty modifiers are not available with block variables.  However, there are some modifiers still available:
-
-[h3]shorten (argument: length)[/h3]
-
-Shortens the variable to the specified length (if it's longer than the length).
-
-Usage:
-
-[code]
-{block:$title|shorten: "50"} {* Shortens the title to 50 characters *}
-[/code]
-
-[h3]date_format (argument: format)[/h3]
-
-Formats the given date to display as you would like.  You can pass [span_code]format[/span_code] as either a [http://www.php.net/strftime](strftime)-formatted string (e.g., "%A, %B %e, %Y") or [http://www.php.net/date](date)-formatted string (e.g., "Y-m-d H:ia").
-
-Usage:
-
-[code]
-{content id="43"}
-{block:$title} - Published {block:$data|date_format: "Y-m-d H:ia"}
+{content id="343" var="my_other_content"}
+	Summary: {$my_other_content.summary}
+	Body: {$my_other_content.body}
 {/content}
 [/code]

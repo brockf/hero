@@ -12,7 +12,7 @@
 * @return string $content Content between {restricted}{/restricted} tags
 */
 
-function smarty_block_restricted ($params, $tagdata, $smarty, $repeat){
+function smarty_block_restricted ($params, $tagdata, &$smarty, &$repeat){
 	if (!$repeat) {		
 		// by default, content is hidden
 		$show_content = FALSE;

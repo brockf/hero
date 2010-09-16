@@ -8,7 +8,7 @@
 * @param string $privileges A standard privileges array containing usergroup ID's
 */
 
-function smarty_block_not_in_group ($params, $tagdata, $smarty, $repeat){
+function smarty_block_not_in_group ($params, $tagdata, &$smarty, &$repeat){
 	if (!$repeat) {	
 		if ($smary->CI->user_model->not_in_group($params['privileges'])) {
 			return $tagdata;

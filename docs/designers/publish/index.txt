@@ -24,18 +24,18 @@ All content variables are available in this template as standard Smarty template
 
 [h2]Template Plugins[/h2]
 
-[h3]content (parameters: type, topic, sort, sort_dir, limit, offset)[/h3]
+[h3]content (parameters: var, type, topic, sort, sort_dir, limit, offset)[/h3]
 
 Retrieve content of a specific type and display it in the format you specify between the tags.  This function makes all of the content's data available as variables.
 
 Required parameters:
 
-* Either [span_code]type[/span_code] - The content type ID for the content you would like to retrieve.
-* or [span_code]id[/span_code] - The content ID number.
+* Either [span_code]type[/span_code] (content type ID for the content you would like to retrieve) or [span_code]id[/span_code] (content ID number).
+* [span_code]var[/span_code] - The name of the variable for each returned item array
 
 Optional parameters:
 
-* [span_code]keyword[/span_code] - Perform a full text search on the database and return matching results.  With this parameter, the [span_code]{block:$relevance}[/span_code] becomes available.
+* [span_code]keyword[/span_code] - Perform a full text search on the database and return matching results.  With this parameter, the [span_code]{$var.relevance}[/span_code] becomes available.
 * [span_code]topic[/span_code] - One or more topic ID's to limit content retrieval (e.g., "5" or "5|10|15" for multiple topics).
 * [span_code]sort[/span_code] - The database field to sort topic retrieval by (e.g., "content_title", "custom_field_name").  Default: "date".
 * [span_code]sort_dir[/span_code] - The direction to sort results by, when sorting by [span_code]sort[/span_code].  Default: DESC.
@@ -44,7 +44,7 @@ Optional parameters:
 
 Available block variables:
 
-* All content variables listed above under "Displaying Content" are available in the format of [span_code]{block:$variable_name}[/span_code].
+* All content variables listed above under "Displaying Content" are available in the format of [span_code]{$var.variable_name}[/span_code].
 
 Additional variables available:
 
@@ -56,32 +56,33 @@ After a [span_code]{content}[/span_code] template call, two additional variables
 Example - retrieve the latest 10 items for a content type:
 
 [code]
-{content type="3" limit="10"}
-<p>{block:$title}<br />{block:$summary}</p>
+{content type="3" var="article" limit="10"}
+<p>{$article.title}<br />{$article.summary}</p>
 {/content}
 [/code]
 
 Example - retrieve one piece of content in its entirety:
 
 [code]
-{content id="431"}
-<h1>{block:$title}</h1>
-Custom Field: {block:$custom_field}
-Publish Date: [span_code]{block:$
+{content id="431" var="post"}
+<h1>{$post.title}</h1>
+Custom Field: {$post.custom_field}
+Publish Date: {$post.date|date_format: "%b %e, %Y"}
 
 Body:
 
-{block:$body}
+{$post.body}
 {/content}
 [/code]
 
-[h3]content_in_topic (parameters: topic, sort, sort_dir, limit, offset)[/h3]
+[h3]content_in_topic (parameters: var, topic, sort, sort_dir, limit, offset)[/h3]
 
 Retrieve all content of a specific topic (or set of topics).  Because we are accessing multiple content types but want to make the most use of server resources, we have a limited set of data available in variables.
 
 Required parameters:
 
 * [span_code]topic[/span_code] - The ID of the topic, or a set of topics separated by pipes (e.g., "3|6|2").
+* [span_code]var[/span_code] - The name of the variable for each returned item array
 
 Optional parameters:
 
@@ -92,27 +93,14 @@ Optional parameters:
 
 Available block variables:
 
-* [span_code]{block:$title}[/span_code]
-* [span_code]{block:$date}[/span_code]
-* [span_code]{block:$modified_date}[/span_code]
-* [span_code]{block:$author_id}[/span_code]
-* [span_code]{block:$author_username}[/span_code]
-* [span_code]{block:$author_first_name}[/span_code]
-* [span_code]{block:$author_last_name}[/span_code]
-* [span_code]{block:$author_email}[/span_code]
-* [span_code]{block:$type_id}[/span_code]
-* [span_code]{block:$type_name}[/span_code]
-* [span_code]{block:$url_path}[/span_code] (relative URL to the content)
-* [span_code]{block:$url}[/span_code] (absolute URL to the content)
-* [span_code]{block:$hits}[/span_code] (# of reads/hits/views)
-* [span_code]{block:$template}[/span_code] (template filename)
+* All content variables listed above under "Displaying Content" are available in the format of [span_code]{$var.variable_name}[/span_code].
 
 Example - retrieve the last 10 content items from a topic:
 
 [code]
 <ul class="topic_list">
-{content_in_topic topic="4" limit="10"}
-	<li><a href="{block:$url}">{block:$title}</a> (published {block:$date|date_format("Y-m-d")})</li>
+{content_in_topic var="item" topic="4" limit="10"}
+	<li><a href="{$item.url}">{$item.title}</a> (published {$item.date|date_format})</li>
 {/content_in_topic}
 [/code]
 
@@ -120,14 +108,18 @@ Example - retrieve the first 5 alphabetically-sorted items from multiple topics:
 
 [code]
 <ul class="topic_list">
-{content_in_topic topic="1|3|4" limit="5" sort="content_title" sort_dir="ASC"}
-	<li><a href="{block:$url}">{block:$title}</a> (published {block:$date|date_format("Y-m-d")})</li>
+{content_in_topic var="article" topic="1|3|4" limit="5" sort="content_title" sort_dir="ASC"}
+	<li><a href="{$article.url}">{$article.title}</a> (published {$article.date|date_format})</li>
 {/content_in_topic}
 [/code]
 
-[h3]topics (parameters: id, parent, sort, sort_dir, limit, offset)[/h3]
+[h3]topics (parameters: var, id, parent, sort, sort_dir, limit, offset)[/h3]
 
 Retrieve and display one or more site topics based on the given parameters.
+
+Required parameters:
+
+* [span_code]var[/span_code] - The name of the variable for each returned item array.
 
 Optional parameters:
 
@@ -140,16 +132,16 @@ Optional parameters:
 
 Available block variables:
 
-* [span_code]{block:$id}[/span_code]
-* [span_code]{block:$name}[/span_code]
-* [span_code]{block:$description}[/span_code]
+* [span_code]{$var.id}[/span_code]
+* [span_code]{$var.name}[/span_code]
+* [span_code]{$var.description}[/span_code]
 
 Example - retrieve all site topics alphabetically:
 
 [code]
 <ul class="topics">
-{topics}
-	<li>{block:$name}</li>
+{topics var="topic"}
+	<li>{$topic.name}</li>
 {/topics}
 [/code]
 
@@ -157,7 +149,7 @@ Example - retrieve all sub-topics of topic #4, with description.
 
 [code]
 <ul class="topics">
-{topics parent="4"}
-	<li>{block:$name} - {block:$description}</li>
+{topics parent="4" var="topic"}
+	<li>{$topic.name} - {$topic.description}</li>
 {/topics}
 [/code]

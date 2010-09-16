@@ -3,10 +3,10 @@
 {block name="step_header"}Create an Account{/block}
 {block name="account_step"}class="active"{/block}
 {block name="checkout_content"}
-	{registration_form return=$return}
+	{registration_form var="form" return=$return}
 		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
-		<form class="form validate" enctype="multipart/form-data" method="post" action="{block:$form_action}">
-			<input type="hidden" name="return" value="{block:$return}">
+		<form class="form validate" enctype="multipart/form-data" method="post" action="{$form.form_action}">
+			<input type="hidden" name="return" value="{$form.return}">
 			
 			<fieldset>
 				<legend>Access Information</legend>
