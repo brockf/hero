@@ -157,9 +157,12 @@ class Content_model extends CI_Model
 							'content_title' => $title,
 							'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'content_modified' => date('Y-m-d H:i:s'),
-							'content_date' => $publish_date,
 							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : ''
 						);
+						
+		if ($publish_date !== FALSE) {
+			$update_fields['content_date'] = $publish_date;
+		}
 						
 		$this->db->update('content',$update_fields,array('content_id' => $content['id']));
 						
