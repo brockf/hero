@@ -108,7 +108,12 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		return $return;
 	}
 	elseif ($field['type'] == 'select') {
-		$return = form_dropdown($field['name'], $field['options'], $value);
+		$options = array();
+		foreach ($field['options'] as $option) {
+			$options[$option['value']] = $option['name'];
+		}
+		
+		$return = form_dropdown($field['name'], $options, $value);
 								
 		$classes = array();
 		
@@ -121,7 +126,12 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		return $return;
 	}
 	elseif ($field['type'] == 'multiselect') {
-		$return = form_dropdown($field['name'] . '[]', $field['options'], $value);
+		$options = array();
+		foreach ($field['options'] as $option) {
+			$options[$option['value']] = $option['name'];
+		}
+		
+		$return = form_multiselect($field['name'] . '[]', $options, $value);
 								
 		$classes = array();
 		
@@ -129,7 +139,15 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 			$classes[] = 'required';
 		}
 		
-		$return = str_replace('<select','<select id="field_' . $field['name'] . '" class="' . implode(' ', $classes) . '"', $return);
+		// calculate height
+		if (count($options) > 5) {
+			$size = '5';
+		}
+		else {
+			$size = count($options);
+		}
+		
+		$return = str_replace('<select','<select size="' . $size . '" id="field_' . $field['name'] . '" class="' . implode(' ', $classes) . '"', $return);
 		
 		return $return;
 	}
