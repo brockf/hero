@@ -149,7 +149,7 @@ class Link_model extends CI_Model {
 		$count = 1;
 		while ($result->num_rows() > 0) {
 			// strip final numbers
-			$url_path = preg_replace('/(.*?)\_([0-9]*)$/i','$1',$url_path);
+			$url_path = preg_replace('/(.*?)\_\-([0-9]*)$/i','$1',$url_path);
 			
 			// try with a new appended number
 			$url_path = $url_path . '_' . $count;

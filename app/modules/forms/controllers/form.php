@@ -76,7 +76,7 @@ class Form extends Front_Controller {
 		}
 		
 		// do they have permissions?
-		if (!in_group($content['privileges'])) {
+		if (!$this->user_model->in_group($form['privileges'])) {
 			die(show_error('Invalid permissions'));
 		}
 		
