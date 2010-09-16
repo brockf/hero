@@ -119,7 +119,7 @@ class Content_model extends CI_Model
 	* @return $content_id
 	*/
 	function update_content ($content_id, $title = '', $url_path = '', $topics = array(), $privileges = array(), $publish_date = FALSE, $custom_fields = array()) {
-		$content = $this->get_content($content_id);
+		$content = $this->get_content($content_id, TRUE);
 	
 		$this->load->model('publish/content_type_model');
 		$type = $this->content_type_model->get_content_type($content['type_id']);
