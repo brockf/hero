@@ -250,20 +250,12 @@ class User_model extends CI_Model
     		return FALSE;
     	}
     
-    	if (is_array($group)) {
-			// are they in any of these groups?
-    		foreach ($group as $one_group) {
-    			if (in_array($one_group, $user_array['usergroups'])) {
-    				return TRUE;
-    			}
-    		}
-    	}
-    	else {
-    		// are they in this group?
-    		if (in_array($group, $user_array['usergroups'])) {
-    			return TRUE;
-    		}
-    	}
+		// are they in (one of) the group(s)?
+		foreach ((array)$group as $group_ind) {
+			if (in_array($group_ind, $user_array['usergroups'])) {
+				return TRUE;
+			}
+		}
     	
     	// nope
     	return FALSE;
@@ -295,20 +287,12 @@ class User_model extends CI_Model
     		return TRUE;
     	}
     	
-    	if (is_array($group)) {
-			// are they in any of these groups?
-    		foreach ($group as $one_group) {
-    			if (in_array($one_group, $user_array['usergroups'])) {
-    				return FALSE;
-    			}
-    		}
-    	}
-    	else {
-    		// are they in this group?
-    		if (in_array($group, $user_array['usergroups'])) {
-    			return FALSE;
-    		}
-    	}
+		// are they on one of these groups?
+		foreach ((array)$group as $one_group) {
+			if (in_array($one_group, $user_array['usergroups'])) {
+				return FALSE;
+			}
+		}
     	
     	// nope, they aren't in any of them
     	return TRUE;

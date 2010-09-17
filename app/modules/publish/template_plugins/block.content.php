@@ -88,8 +88,8 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			if (isset($filters['limit'])) { unset($filters['limit']); }
 			if (isset($filters['offset'])) { unset($filters['offset']); }	
 			
-			$total_content = $smarty->CI->content_model->get_contents($filters);
-			$smarty->assign('content_total_count', (!empty($total_content)) ? count($total_content) : 0);
+			$total_content = $smarty->CI->content_model->count_content($filters);
+			$smarty->assign('content_total_count', $total_content);
 		}
 		else {
 			$content = FALSE;

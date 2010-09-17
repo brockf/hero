@@ -227,6 +227,11 @@ class Content_model extends CI_Model
 	*/
 	function add_hit ($content_id) {
 		$return = $this->db->select('content_hits')->where('content_id',$content_id)->from('content')->get();
+		
+		if (!is_object($return)) {
+			return;
+		}
+		
 		$hits = (int)$return->row()->content_hits;
 		
 		$new_hits = $hits + 1;
@@ -258,6 +263,19 @@ class Content_model extends CI_Model
 		$content = $result->row_array();
 		
 		return $content['content_id'];
+	}
+	
+	/**
+	* Count Content
+	*
+	* A query optimized to count the number of items returned
+	*
+	* Same parameters as get_contents()
+	*
+	* @return int $count
+	*/
+	function count_content ($filters = array()) {
+		return $this->get_contents($filters, TRUE);
 	}
 	
 	/*
@@ -305,10 +323,11 @@ class Content_model extends CI_Model
 	* @param string $sort_dir
 	* @param int $limit
 	* @param int $offset
+	* @param boolean $counting Set to TRUE to simplify the query and receive a result suitable for counting total records
 	*
 	* @return array|boolean Array of content, or FALSE
 	*/
-	function get_contents ($filters = array()) {
+	function get_contents ($filters = array(), $counting = FALSE) {
 		// do we need to get all content data?  i.e., does it make resource saving sense?
 		if (isset($filters['id']) or isset($filters['type'])) {
 			// add a hit to the content
@@ -340,8 +359,8 @@ class Content_model extends CI_Model
 				$this->load->model('custom_fields_model');
 				$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 				
-				// join this table into the mix
-				$this->db->join($type['system_name'], 'content.content_id = ' . $type['system_name'] . '.content_id','left');
+				// join this table into the mix, later
+				$content_table_join = $type['system_name'];
 				
 				// are we doing a fulltext search?
 				if (isset($filters['keyword'])) {
@@ -359,6 +378,10 @@ class Content_model extends CI_Model
 					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
 				}
 			}
+		}
+		else {
+			// don't join a content type table
+			$content_table_join = FALSE;
 		}
 	
 		if (isset($filters['start_date'])) {
@@ -422,13 +445,29 @@ class Content_model extends CI_Model
 			$this->db->limit($filters['limit'], $offset);
 		}
 		
+		$this->db->from('content');
+		
+		if ($counting == FALSE) {
+			// get the query we've been building for the embedded select, then clear the active record
+			// query being built
+			$embedded_from_query = $this->db->_compile_select();
+			$this->db->_reset_select();
+		}
+		else {
+			$this->db->select('content_id');
+			return $this->db->get()->num_rows();
+		}
+		
 		$this->db->join('users','users.user_id = content.user_id','left');
 		$this->db->join('content_types','content_types.content_type_id = content.content_type_id','left');
 		$this->db->join('links','links.link_id = content.link_id','left');
+		if ($content_table_join !== FALSE) {
+			$this->db->join($content_table_join, 'content.content_id = ' . $content_table_join . '.content_id','left');
+		}
 		
-		$this->db->group_by('content.content_id');
+		$this->db->select('* FROM (' . $embedded_from_query . ') AS `content`',FALSE);
 		
-		$result = $this->db->get('content');
+		$result = $this->db->get();
 		
 		if ($result->num_rows() == 0) {
 			return FALSE;
