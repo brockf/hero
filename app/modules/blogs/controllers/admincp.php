@@ -59,7 +59,7 @@ class Admincp extends Admincp_Controller {
 						
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('blog_model','get_blogs');
-		$this->dataset->base_url(site_url('admincp/blog'));
+		$this->dataset->base_url(site_url('admincp/blogs'));
 		
 		// initialize the dataset
 		$this->dataset->initialize();
