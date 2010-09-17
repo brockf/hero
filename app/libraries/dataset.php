@@ -287,7 +287,7 @@ class Dataset {
     	}
     	
     	// initialize pagination
-		$config['base_url'] = $this->base_url . '?filters=' . $this->get_encoded_filters() . '&limit=' . $this->offset;
+		$config['base_url'] = $this->base_url . '?filters=' . $this->get_encoded_filters() . '&limit=' . $this->limit;
 		$config['total_rows'] = $this->total_rows;
 		$config['per_page'] = $this->rows_per_page;
 		$config['num_links'] = '10';
