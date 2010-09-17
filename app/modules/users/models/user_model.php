@@ -250,12 +250,20 @@ class User_model extends CI_Model
     		return FALSE;
     	}
     
-		// are they in (one of) the group(s)?
-		foreach ((array)$group as $group_ind) {
-			if (in_array($group_ind, $user_array['usergroups'])) {
-				return TRUE;
-			}
-		}
+    	if (is_array($group)) {
+			// are they in any of these groups?
+    		foreach ($group as $one_group) {
+    			if (in_array($one_group, $user_array['usergroups'])) {
+    				return TRUE;
+    			}
+    		}
+    	}
+    	else {
+    		// are they in this group?
+    		if (in_array($group, $user_array['usergroups'])) {
+    			return TRUE;
+    		}
+    	}
     	
     	// nope
     	return FALSE;
@@ -287,12 +295,20 @@ class User_model extends CI_Model
     		return TRUE;
     	}
     	
-		// are they on one of these groups?
-		foreach ((array)$group as $one_group) {
-			if (in_array($one_group, $user_array['usergroups'])) {
-				return FALSE;
-			}
-		}
+    	if (is_array($group)) {
+			// are they in any of these groups?
+    		foreach ($group as $one_group) {
+    			if (in_array($one_group, $user_array['usergroups'])) {
+    				return FALSE;
+    			}
+    		}
+    	}
+    	else {
+    		// are they in this group?
+    		if (in_array($group, $user_array['usergroups'])) {
+    			return FALSE;
+    		}
+    	}
     	
     	// nope, they aren't in any of them
     	return TRUE;
@@ -908,6 +924,9 @@ class User_model extends CI_Model
 		}
 		if (isset($filters['email'])) {
 			$this->db->like('user_email',$filters['email']);
+		}
+		if (isset($filters['username'])) {
+			$this->db->like('user_username',$filters['username']);
 		}
 		if (isset($filters['name'])) {
 			$this->db->like('user_first_name',$filters['name']);

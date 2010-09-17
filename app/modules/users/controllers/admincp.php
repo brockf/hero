@@ -90,6 +90,15 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->datasource('user_model','get_users');
 		$this->dataset->base_url(site_url('admincp/users/index'));
 		
+		// if we aren't filtering, we'll as a total_rows count
+		$has_filters = $this->dataset->has_filters();
+		
+		if ($has_filters === FALSE) {
+			// get total users
+			$count = $this->db->where('user_deleted','0')->get('users')->num_rows();
+			$this->dataset->total_rows($count);
+		}
+		
 		// initialize the dataset
 		$this->dataset->initialize();
 

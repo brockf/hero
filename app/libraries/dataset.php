@@ -19,6 +19,7 @@ class Dataset {
 	var $filters;
 	var $filter_values;
 	var $rows_per_page;
+	var $total_rows;
 	var $offset;
 	var $data;
 	var $actions;
@@ -42,7 +43,7 @@ class Dataset {
     	
     	$CI->load->library('asciihex');
     	
-    	$has_filters = ($CI->uri->segment(5) != '' or (strlen($CI->uri->segment(4)) > 10)) ? '1' : '0';
+    	$has_filters = ($this->has_filters() === TRUE) ? '1' : '0';
     	
     	// get filter values
 		$this->filter_values = ($has_filters) ? unserialize(base64_decode($CI->asciihex->HexToAscii($CI->uri->segment(4)))) : false;
@@ -58,6 +59,8 @@ class Dataset {
     	$this->offset = (empty($this->offset)) ? '0' : $this->offset;
     	
     	$params['offset'] = $this->offset;
+    	
+    	$filter_params = array();
     	
     	if ($this->filters == true) {
     		foreach ($this->columns as $column) {
@@ -85,7 +88,7 @@ class Dataset {
 	    $params_no_limits = (!empty($filter_params)) ? $filter_params : $params_no_limits;
 	    
 	    // add in the default parameters
-	    $params_no_limits = array_merge($params, $this->default_data_filters);
+	    $params_no_limits = array_merge($params_no_limits, $this->default_data_filters);
     	
     	// get data
     	$CI->load->model($this->data_model,'data_model');
@@ -136,6 +139,19 @@ class Dataset {
 		$CI->pagination->initialize($config);
 		
 		return TRUE; 
+    }
+    
+    /**
+    * Has Filters
+    *
+    * Do we have active filters?
+    *
+    * @return boolean
+    */
+    function has_filters () {
+    	$CI =& get_instance();
+    	
+    	return ($CI->uri->segment(5) != '' or (strlen($CI->uri->segment(4)) > 10)) ? TRUE : FALSE;
     }
     
     /*

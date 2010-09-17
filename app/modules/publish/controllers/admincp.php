@@ -95,7 +95,7 @@ class Admincp extends Admincp_Controller {
 							
 			$this->dataset->columns($columns);
 			$this->dataset->datasource('content_model','get_contents', array('allow_future' => TRUE));
-			$this->dataset->base_url(site_url('admincp/publish'));
+			$this->dataset->base_url(site_url('admincp/publish/index'));
 			
 			// initialize the dataset
 			$this->dataset->initialize();
