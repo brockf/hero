@@ -359,8 +359,21 @@ class Content_model extends CI_Model
 				$this->load->model('custom_fields_model');
 				$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 				
-				// join this table into the mix, later
-				$content_table_join = $type['system_name'];
+				// if we are running a keyword search, we need to join the articles table now, unfortunately
+				if (isset($filters['keyword'])) {
+					// take care of the select for this specific content type, being careful not to duplicate content_id
+					foreach ($custom_fields as $field) {
+						$this->db->select($type['system_name'] . '.' . $field['name']);
+					}
+					reset($custom_fields);
+					
+					$this->db->join($type['system_name'], 'content.content_id = ' . $type['system_name'] . '.content_id','left');
+					$content_table_join = FALSE;
+				}
+				else {
+					// join this table into the mix, later
+					$content_table_join = $type['system_name'];
+				}
 				
 				// are we doing a fulltext search?
 				if (isset($filters['keyword'])) {
@@ -374,7 +387,6 @@ class Content_model extends CI_Model
 					
 					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . $filters['keyword'] . '%\')', NULL, FALSE);  
 					
-					$this->db->select('*');
 					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
 				}
 			}
@@ -445,6 +457,11 @@ class Content_model extends CI_Model
 			$this->db->limit($filters['limit'], $offset);
 		}
 		
+		// we want to select everything from the content database
+		$this->db->select('content.*');
+		// if we are dipping into the specific content db (e.g., `articles), we're taking
+		// care of that select above
+		
 		$this->db->from('content');
 		
 		if ($counting == FALSE) {
@@ -454,7 +471,6 @@ class Content_model extends CI_Model
 			$this->db->_reset_select();
 		}
 		else {
-			$this->db->select('content_id');
 			return $this->db->get()->num_rows();
 		}
 		

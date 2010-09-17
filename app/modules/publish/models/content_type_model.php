@@ -70,6 +70,9 @@ class Content_type_model extends CI_Model
 			
 			// create table
 			$this->dbforge->create_table($system_name);
+			
+			// add the content_id index to VASTLY speed up queries
+			$this->db->query('ALTER TABLE `' . $system_name . '` ADD INDEX ( `content_id` )');
 		}
 		
 		return $content_type_id;
@@ -122,7 +125,7 @@ class Content_type_model extends CI_Model
 		// delete content from content database
 		$this->load->model('content_model');
 		$content = $this->content_model->get_contents(array('type' => $type['id']));
-		foreach ($content as $item) {
+		foreach ((array)$content as $item) {
 			$this->content_model->delete_content($item['id']);
 		}
 		
