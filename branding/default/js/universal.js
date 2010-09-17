@@ -24,6 +24,8 @@ $(document).ready(function() {
 		}
 	});
 	
+	/* DATASET LIBRARY ACCOMPANYING JAVASCRIPT */
+	
 	// delete confirmations
 	$('input[value="Delete"]').click(function() { 
 		var confirmed = confirm('Are you sure you want to do this?');
@@ -81,78 +83,103 @@ $(document).ready(function() {
 		}
 	});
 	
-	// filters
-	
-	$('input#reset_filters').click(function () {
-		window.location.href = $('#base_url').html()+$('#class').html()+'/'+$('#method').html()+'/'+$('#page').html();
-	});
-	
-	$('#dataset_form tr.filters input.text').not('.datepick').each(function () {
+	// mark empty fields with the mark_empty script
+	$('form#dataset_form tr.filters input.text').not('.datepick').each(function () {
 		$(this).addClass('mark_empty');
 		$(this).attr('rel','filter results');
 	});
+	
+	// filters
 	
 	if (typeof $.fn.datePicker == 'function') {
 		Date.format = 'yyyy-mm-dd';
 		// general datepick fields
 		$('input.datepick').datePicker({clickInput:true,startDate:'2009-01-01'});
 		
-		$('#dataset_form input.date_start').datePicker({clickInput:true,startDate:'2009-01-01'});
-		$('#dataset_form input.date_end').datePicker({clickInput:true,startDate:'2009-01-01'});
+		$('form#dataset_form input.date_start').datePicker({clickInput:true,startDate:'2009-01-01'});
+		$('form#dataset_form input.date_end').datePicker({clickInput:true,startDate:'2009-01-01'});
 		
-		$('#dataset_form input.date_start').bind(
+		$('form#dataset_form input.date_start').bind(
 			'dpClosed',
 			function(e, selectedDates)
 			{
 				var d = selectedDates[0];
 				if (d) {
 					d = new Date(d);
-					$('#dataset_form input.date_end').dpSetStartDate(d.addDays(1).asString());
+					$('form#dataset_form input.date_end').dpSetStartDate(d.addDays(1).asString());
 				}
 			}
 			
 		);
-		$('#dataset_form input.date_end').bind(
+		$('form#dataset_form input.date_end').bind(
 			'dpClosed',
 			function(e, selectedDates)
 			{
 				var d = selectedDates[0];
 				if (d) {
 					d = new Date(d);
-					$('#dataset_form input.date_start').dpSetEndDate(d.addDays(-1).asString());
+					$('form#dataset_form input.date_start').dpSetEndDate(d.addDays(-1).asString());
 				}
 			}
 		);
 	}
 	
-	$('#dataset_form').submit(function () {
+	// what happens when we click reset?
+	$('input#reset_filters').click(function () {
+		window.location.href = $(this).parents('form#dataset_form').attr('rel');
+	});
+	
+	$('form#dataset_form').submit(function () {
+		if ($('input#submit_ready').val() == 'true') {
+			return true;
+		}
+		
 		if ($(this).attr('rel') != $(this).attr('action')) {
 			// we have customized the form action, likely with an embedded options drop down
 			// none of this applies
 			return true;
 		}
 	
-		var serialized_filters = $('#dataset_form tr.filters input.text, tr.filters select').serialize();
+		var serialized_filters = $(this).find('tr.filters input.text, tr.filters select').serialize();
+		
+		// set form object
+		var this_form = $(this);
 		
 		$.post($('#base_url').html()+'dataset/prep_filters', { filters: serialized_filters },
 		  function(data){
-		    window.location.href = $('#base_url').html()+$('#class').html()+'/'+$('#method').html()+'/'+data+'/'+$('#page').html();
+		  	// set "filters" input as the serialized filters
+		  	this_form.find('input#filters').val(data);
+		  	this_form.find('input#submit_ready').val('true');
+		  	// now we submit!
+		  	this_form.submit();
 		  });
 		return false;
 	});
 	
-	$('#dataset_export_button').click(function () {
-		var serialized_filters = $('#dataset_form tr.filters input.text, tr.filters select').serialize();
+	$('input#dataset_export_button').click(function () {
+		if ($('input#submit_ready').val() == 'true') {
+			return true;
+		}
+		
+		// set form object
+		var this_form = $(this).parents('form#dataset_form');
+		
+		var serialized_filters = this_form.find('tr.filters input.text, tr.filters select').serialize();
 		
 		$.post($('#base_url').html()+'dataset/prep_filters', { filters: serialized_filters },
 		  function(data){
-		    window.location.href = $('#base_url').html()+$('#class').html()+'/'+$('#method').html()+'/'+data+'/'+$('#page').html()+'/export';
+		    this_form.find('input#filters').val(data);
+		    this_form.find('input#export').val('csv');
+		    this_form.find('input#submit_ready').val('true');
+		    
+		    // no we submit!
+		    this_form.submit();
 		  });
 		return false;
 	});
 	
 	$('input.action_button').click(function () {
-		var serialized_items = $('#dataset_form input.action_items').serialize();
+		var serialized_items = $('form#dataset_form input.action_items').serialize();
 		
 		if (serialized_items != '') {	
 			var link = $(this).attr('rel');

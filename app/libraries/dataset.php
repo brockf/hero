@@ -14,222 +14,30 @@
 
 */
 class Dataset {
-	var $columns;
-	var $base_url;
-	var $filters;
-	var $filter_values;
-	var $rows_per_page;
-	var $total_rows;
-	var $offset;
-	var $data;
-	var $actions;
-	var $params;
-	var $data_model;
-	var $data_function;
-
+	var $CI; // CodeIgniter super object
+	var $columns; // column data
+	var $rows_per_page; // how many rows of data to show per page?
+	var $available_filters; // do we have possible filters?
+	var $set_filters; // filters set by user
+	var $params; // parameters for the data call
+	var $params_filters; // data model parameters set by the user's filters
+	var $offset; // database offset
+	var $data; // data array
+	var $actions; // available actions on the dataset
+	var $data_model; // model to retrieve data from
+	var $data_function; // method to retrieve data from within the model
+	var $total_rows; // these are how many rows are in the total dataset, either calculated automatically or given by total_rows()
+	var $base_url; // the base URL of the dataset, the basis of all URL strings
+	var $pagination; // stores the HTML for pagination links
+	
     function __construct() {
+    	$this->CI =& get_instance();
+    	$this->CI->load->library('asciihex');
+    	$this->CI->load->helper('url');
+    	
+    	// set defaults
+    	$this->base_url = current_url();
         $this->rows_per_page = 50;
-    }
-    
-    /**
-    * Initialize Dataset
-    *
-    * Initializes the dataset with previously set data configuration, column specs
-    *
-    * @return bool True upon successful initialization
-    */
-    function initialize () {
-    	$CI =& get_instance();
-    	
-    	$CI->load->library('asciihex');
-    	
-    	$has_filters = ($this->has_filters() === TRUE) ? '1' : '0';
-    	
-    	// get filter values
-		$this->filter_values = ($has_filters) ? unserialize(base64_decode($CI->asciihex->HexToAscii($CI->uri->segment(4)))) : false;
-		
-		// get data
-    	$params = array();
-    	
-    	// limit to the rows_per_page configuration
-    	$params['limit'] = $this->rows_per_page;
-    	
-    	// calculate offset
-    	$this->offset = ($has_filters) ? $CI->uri->segment(5) : $CI->uri->segment(4);
-    	$this->offset = (empty($this->offset)) ? '0' : $this->offset;
-    	
-    	$params['offset'] = $this->offset;
-    	
-    	$filter_params = array();
-    	
-    	if ($this->filters == true) {
-    		foreach ($this->columns as $column) {
-    			if ($column['filters'] == true) {
-    				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->filter_values[$column['filter_name']])) {
-    					$filter_params[$column['filter_name']] = $this->filter_values[$column['filter_name']];
-    				}
-    				elseif ($column['type'] == 'date' and (isset($this->filter_values[$column['filter_name'] . '_start']) or isset($this->filter_values[$column['filter_name'] . '_end']))) {
-    					$filter_params[$column['field_start_date']] = (empty($this->filter_values[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->filter_values[$column['filter_name'] . '_start'];
-    					$filter_params[$column['field_end_date']] = (empty($this->filter_values[$column['filter_name'] . '_end'])) ? '2020-12-31' : $this->filter_values[$column['filter_name'] . '_end'];
-    				}
-    			}
-    		}
-    		reset($this->columns);
-    	}
-    	
-    	$params = (!empty($filter_params)) ? array_merge($params, $filter_params) : $params;
-    	
-    	// if we have default parameters to pass to the method, we'll add them here
-    	// they are set with the $this->data_source() method
-    	$params = array_merge($params, $this->default_data_filters);
-    	
-    	// calculate parameters without limits
-    	$params_no_limits = array();
-	    $params_no_limits = (!empty($filter_params)) ? $filter_params : $params_no_limits;
-	    
-	    // add in the default parameters
-	    $params_no_limits = array_merge($params_no_limits, $this->default_data_filters);
-    	
-    	// get data
-    	$CI->load->model($this->data_model,'data_model');
-    	$data_function = $this->data_function;
-    	
-    	// do an XML export?
-    	if ($CI->uri->segment(6) == 'export') {
-    		// get data without limits
-    		$this->data = $CI->data_model->$data_function($params_no_limits);
-    		
-    		// convert to CSV
-			$CI->load->library('array_to_csv');
-			$CI->array_to_csv->input($this->data);
-			
-			header("Content-type: application/vnd.ms-excel");
-  			header("Content-disposition: attachment; filename=export-" . $this->data_function . '-' . date("Y-m-d") . ".csv");
-			echo $CI->array_to_csv->output();
-			die();
-    	}
-    	else {
-    		// get with limits
-    		$this->data = $CI->data_model->$data_function($params);
-    	}
-    	
-    	// calculate total rows if they weren't passed
-    	if (empty($this->total_rows)) {
-    		// they didn't pass the total_rows via total_rows()
-	    	$total_rows = count($CI->data_model->$data_function($params_no_limits));
-	    	
-	    	// save total rows
-    		$this->total_rows = $total_rows;
-    	}
-    	
-    	// store in a public variable
-		$this->params = $params;
-		
-    	// set $url_filters if they exist
-    	$url_filters = (!empty($this->filter_values)) ? '/' . $CI->asciihex->AsciiToHex(base64_encode(serialize($this->filter_values))) . '/' : '';
-		
-		// build pagination
-		$config['base_url'] = $this->base_url;
-		$config['total_rows'] = $this->total_rows;
-		$config['per_page'] = $this->rows_per_page;
-		$config['uri_segment'] = ($has_filters) ? 5 : 4;
-		$config['num_links'] = '10';
-		
-		$CI->load->library('pagination');
-		$CI->pagination->initialize($config);
-		
-		return TRUE; 
-    }
-    
-    /**
-    * Has Filters
-    *
-    * Do we have active filters?
-    *
-    * @return boolean
-    */
-    function has_filters () {
-    	$CI =& get_instance();
-    	
-    	return ($CI->uri->segment(5) != '' or (strlen($CI->uri->segment(4)) > 10)) ? TRUE : FALSE;
-    }
-    
-    /*
-    * Set Rows Per Page
-    *
-    * How many rows to show per page?
-    *
-    * @param int $rows_per_page
-    *
-    * @return boolean TRUE;
-    */
-    function rows_per_page ($rows_per_page) {
-    	$this->rows_per_page = $rows_per_page;
-    }
-    
-    /*
-    * Sets the base URL
-    *
-    * This URL is used to post all dataset actions to
-    *
-    * @param string $base_url The URL
-    *
-    * @return boolean TRUE
-    */
-    function base_url ($base_url) {
-    	$this->base_url = $base_url;
-    	
-    	return TRUE;
-    }
-    
-    /*
-    * Define visible Dataset columns
-    *
-    * Defines the columns with width, sort, filtering, name
-    *
-    * @param array $columns The columns
-    *
-    * @return boolean TRUE
-    */
-    function columns ($columns = array()) {
-    	// prep columns
-    	// possible types: "id", "date", "select", "text"
-	    foreach ($columns as $column) {
-	    	$this->columns[] = array(
-	    					'name' => $column['name'],
-	    					'sort_column' => isset($column['sort_column']) ? $column['sort_column'] : false,
-	    					'width' => isset($column['width']) ? $column['width'] : false,
-	    					'type' => isset($column['type']) ? $column['type'] : false,
-	    					'filters' => (!isset($column['filter'])) ? false : true,
-	    					'filter_name' => (!isset($column['filter'])) ? false : $column['filter'],
-	    					'field_start_date' => isset($column['field_start_date']) ? $column['field_start_date'] : '',
-	    					'field_end_date' => isset($column['field_end_date']) ? $column['field_end_date'] : '',
-	    					'options' => isset($column['options']) ? $column['options'] : array(),
-	    				);
-	    			
-	    	// error checking			
-	    	if (isset($column['type']) and $column['type'] == 'date' and isset($column['filter']) and (!isset($column['field_start_date']) or !isset($column['field_end_date']))) {
-	    		die(show_error('Unable to create a "date" filter without field_start_date and field_end_date.'));
-	    	}
-	    	elseif (isset($column['type']) and $column['type'] == 'select' and !isset($column['options'])) {
-	    		die(show_error('Unable to create a "select" filter without options.'));
-	    	}
-	    	
-	    	if (isset($column['type']) and $column['type'] == 'date') {
-	    		// this is necessary so we know to include the datepicker JS
-				if (!defined('INCLUDE_DATEPICKER')) {
-					define('INCLUDE_DATEPICKER','TRUE');
-				}
-	    	}
-	    	
-	    	// so do we have filters?			
-	    	if (isset($column['filter'])) {
-	    		$this->filters = true;
-	    	}	
-    	}
-    	reset($this->columns);
-    	
-    	return TRUE;
     }
     
     /*
@@ -245,7 +53,7 @@ class Dataset {
     function datasource ($data_model, $data_function, $data_filters = array()) {
     	$this->data_model = $data_model;
     	$this->data_function = $data_function;
-    	$this->default_data_filters = $data_filters;
+    	$this->params_default = $data_filters;
     	
     	return TRUE;
     }
@@ -280,7 +88,303 @@ class Dataset {
     							'link' => $link
     						);
     						
-    	return true;
+    	return TRUE;
+    }
+    
+    /*
+    * Set Rows Per Page
+    *
+    * How many rows to show per page?
+    *
+    * @param int $rows_per_page
+    *
+    * @return boolean TRUE;
+    */
+    function rows_per_page ($rows_per_page) {
+    	$this->rows_per_page = $rows_per_page;
+    }
+    
+    /*
+    * Sets the base URL
+    *
+    * This URL is used to post all dataset actions to
+    *
+    * @param string $base_url The URL
+    *
+    * @return boolean TRUE
+    */
+    function base_url ($base_url) {
+    	$this->base_url = $base_url;
+    	
+    	return TRUE;
+    }
+    
+    /**
+    * Get Filter Array
+    *
+    * Return the filter URL segment as an array of filters
+    *
+    * @return array or FALSE if it doesn't exist
+    */
+    function get_filter_array() {
+    	// are we resetting filters?
+    	if ($this->CI->input->post('reset_filters')) {
+			$this->set_filters = FALSE;
+    	}
+    	elseif ($this->CI->input->get('filters') and $this->CI->input->get('filters') != '') {
+    		$this->set_filters = unserialize(base64_decode($this->CI->asciihex->HexToAscii($this->CI->input->get('filters'))));
+    	}
+    	else {
+    		$this->set_filters = FALSE;
+    	}
+		
+		return $this->set_filters;
+    }
+    
+    /**
+    * Get Encoded Filters
+    *
+    * Gets a encoded version of the filters
+    *
+    * @return string $encoded_filters
+    */
+    function get_encoded_filters() {
+    	return $this->CI->asciihex->AsciiToHex(base64_encode(serialize($this->set_filters)));
+    }
+    
+    /**
+    * Get Limit
+    *
+    * Get the database limit
+    *
+    * @return int Limit
+    */
+    function get_limit () {
+    	if ($this->CI->input->get('limit') and $this->CI->input->get('limit') != '') {
+    		$this->limit = $this->CI->input->get('limit');
+    	}
+    	else {
+    		$this->limit = $this->rows_per_page;	
+    	}
+    	
+    	return $this->limit;
+    }
+    
+    /**
+    * Get Offset
+    *
+    * Are we browsing a page other than page #1?  If so, we have an offset.
+    *
+    * @return int Offset
+    */
+    function get_offset() {
+    	if ($this->CI->input->get('offset')) {
+    		$this->offset = (int)$this->CI->input->get('offset');
+    	}
+    	else {
+    		$this->offset = 0;
+    	}
+    	
+    	return $this->offset;
+    }
+    
+    /**
+    * Get Unlimited Params
+    *
+    * Returns the current parameters without any database limits
+    *
+    * @return array
+    */
+    function get_unlimited_parameters () {
+    	$params = $this->params;
+    	
+    	if (isset($params['limit'])) {
+    		unset($params['limit']);
+    	}
+    	
+    	if (isset($params['offset'])) {
+    		unset($params['offset']);
+    	}
+    	
+    	return $params;
+    }
+    
+    /**
+    * Initialize Dataset
+    *
+    * Initializes the dataset with previously set data configuration, column specs
+    *
+    * @return bool True upon successful initialization
+    */
+    function initialize () {
+    	// get filter values
+		$this->get_filter_array();
+		
+		// begin data getting process with an empty parameters array for the model's get_X() method
+    	$this->params = array();
+    	
+    	// limit to the rows_per_page configuration
+    	$this->get_limit();
+    	$this->params['limit'] = $this->limit;
+    	
+    	// calculate offset
+    	$this->get_offset();
+    	$this->params['offset'] = $this->offset;
+    	
+    	$this->params_filters = array();
+    	
+    	if ($this->available_filters == TRUE) {
+    		foreach ($this->columns as $column) {
+    			if ($column['filters'] == TRUE) {
+    				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->set_filters[$column['filter_name']])) {
+    					$this->params_filters[$column['filter_name']] = $this->set_filters[$column['filter_name']];
+    				}
+    				elseif ($column['type'] == 'date' and (isset($this->set_filters[$column['filter_name'] . '_start']) or isset($this->set_filters[$column['filter_name'] . '_end']))) {
+    					$this->params_filters[$column['field_start_date']] = (empty($this->set_filters[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->set_filters[$column['filter_name'] . '_start'];
+    					$this->params_filters[$column['field_end_date']] = (empty($this->set_filters[$column['filter_name'] . '_end'])) ? '2020-12-31' : $this->set_filters[$column['filter_name'] . '_end'];
+    				}
+    			}
+    		}
+    		reset($this->columns);
+    	}
+    	
+    	// for the major data call, we need to combine database parameters, default parameters, and parameters
+    	// created by the filters
+    	$this->params = array_merge($this->params, $this->params_filters, $this->params_default);
+    	
+    	// get data with our $this->params
+    	$this->CI->load->model($this->data_model,'data_model');
+    	$data_function = $this->data_function;
+    	
+    	// do an XML export?
+    	if ($this->CI->input->get('export') == 'csv') {
+    		// get data without limits
+    		$unlimited_params = $this->get_unlimited_parameters();
+    		$this->data = $this->CI->data_model->$data_function($unlimited_params);
+    		
+    		// convert to CSV
+			$this->CI->load->library('array_to_csv');
+			$this->CI->array_to_csv->input($this->data);
+			
+			header("Content-type: application/vnd.ms-excel");
+  			header("Content-disposition: attachment; filename=export-" . $this->data_function . '-' . date("Y-m-d") . ".csv");
+			echo $this->CI->array_to_csv->output();
+			die();
+    	}
+    	
+		// get data with our parameters
+		$this->data = $this->CI->data_model->$data_function($this->params);
+    	
+    	// if we weren't told how many rows are in the dataset yet, we will
+    	// calculate them automatically with an unlimited data call
+    	if (empty($this->total_rows)) {
+    		// they didn't pass the total_rows via total_rows()
+    		$unlimited_params = $this->get_unlimited_parameters();
+	    	$total_rows = count($this->CI->data_model->$data_function($unlimited_params));
+	    	
+	    	// save total rows
+    		$this->total_rows = $total_rows;
+    	}
+    	
+    	// initialize pagination
+		$config['base_url'] = $this->base_url . '?filters=' . $this->get_encoded_filters() . '&limit=' . $this->offset;
+		$config['total_rows'] = $this->total_rows;
+		$config['per_page'] = $this->rows_per_page;
+		$config['num_links'] = '10';
+		$config['page_query_string'] = TRUE;
+		$config['query_string_segment'] = 'offset';
+		
+		$this->CI->load->library('pagination');
+		$this->CI->pagination->initialize($config);
+		
+		// build the pagination links
+		$this->get_pagination();
+		
+		return TRUE; 
+    }
+    
+    /**
+    * Get Pagination
+    *
+    * Returns the modified pagination links
+    *
+    * @return string $pagination
+    */
+    function get_pagination () {
+    	$links = $this->CI->pagination->create_links();
+		
+		// we may have cases of ?& because of CodeIgniter thinking we have universally enabled query strings
+		$links = str_replace('?&amp;','?', $links);
+		
+		$this->pagination = $links;
+		
+		return $links;
+    }
+    
+    /**
+    * Has Filters
+    *
+    * Do we have active filters?
+    *
+    * @return boolean
+    */
+    function has_filters () {
+    	if ($this->get_filter_array() !== FALSE) {
+    		return TRUE;
+    	}
+    	else {
+    		return FALSE;
+    	}
+    }
+        
+    /*
+    * Define visible Dataset columns
+    *
+    * Defines the columns with width, sort, filtering, name
+    *
+    * @param array $columns The columns
+    *
+    * @return void
+    */
+    function columns ($columns = array()) {
+    	// prep columns
+    	// possible types: "id", "date", "select", "text"
+	    foreach ($columns as $column) {
+	    	$this->columns[] = array(
+	    					'name' => $column['name'],
+	    					'sort_column' => isset($column['sort_column']) ? $column['sort_column'] : FALSE,
+	    					'width' => isset($column['width']) ? $column['width'] : FALSE,
+	    					'type' => isset($column['type']) ? $column['type'] : FALSE,
+	    					'filters' => (!isset($column['filter'])) ? FALSE : TRUE,
+	    					'filter_name' => (!isset($column['filter'])) ? FALSE : $column['filter'],
+	    					'field_start_date' => isset($column['field_start_date']) ? $column['field_start_date'] : '',
+	    					'field_end_date' => isset($column['field_end_date']) ? $column['field_end_date'] : '',
+	    					'options' => isset($column['options']) ? $column['options'] : array(),
+	    				);
+	    			
+	    	// error checking			
+	    	if (isset($column['type']) and $column['type'] == 'date' and isset($column['filter']) and (!isset($column['field_start_date']) or !isset($column['field_end_date']))) {
+	    		die(show_error('Unable to create a "date" filter without field_start_date and field_end_date.'));
+	    	}
+	    	elseif (isset($column['type']) and $column['type'] == 'select' and !isset($column['options'])) {
+	    		die(show_error('Unable to create a "select" filter without options.'));
+	    	}
+	    	
+	    	if (isset($column['type']) and $column['type'] == 'date') {
+	    		// this is necessary so we know to include the datepicker JS
+				if (!defined('INCLUDE_DATEPICKER')) {
+					define('INCLUDE_DATEPICKER','TRUE');
+				}
+	    	}
+	    	
+	    	// so do we have filters?			
+	    	if (isset($column['filter'])) {
+	    		$this->available_filters = TRUE;
+	    	}	
+    	}
+    	reset($this->columns);
+    	
+    	return;
     }
     
     /**
@@ -291,13 +395,15 @@ class Dataset {
     * @return string HTML output
     */
     function table_head () {
-    	$CI =& get_instance();
-    	
     	$output = '';
     	
     	$output .= '<form id="dataset_form" method="get" action="' . $this->base_url . '" rel="' . $this->base_url . '">
+    				<input type="hidden" id="submit_ready" name="submit_ready" value="" />
+    				<input type="hidden" name="limit" value="' . $this->limit . '" />
+    				<input type="hidden" id="filters" name="filters" value="' . $this->get_encoded_filters() . '" />
+    				<input type="hidden" id="export" name="export" value="" />
     				<div class="pagination">';
-    	$output .= $CI->pagination->create_links();
+    	$output .= $this->pagination;
     	
     	$actions = '';
     	$i = 1;
@@ -313,8 +419,8 @@ class Dataset {
     		$output .= '<div class="dataset_actions">' . $actions . '</div>';
     	}
     	
-    	if ($this->filters == true) {
-    		$output .= '<div class="apply_filters"><input type="submit" class="button" name="" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="" class="button" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" class="button" value="Export" /></div>';
+    	if ($this->available_filters === TRUE) {
+    		$output .= '<div class="apply_filters"><input type="submit" class="button" name="filter_dataset" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="reset_filters" class="button" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" class="button" value="Export" /></div>';
     	}
     	
     	$output .= '</div>
@@ -334,7 +440,7 @@ class Dataset {
     	
     	$output .= '</tr></thead><tbody>';
     	
-    	if ($this->filters == true) {
+    	if ($this->available_filters == TRUE) {
     		$output .= '<tr class="filters">';
     		
     		// add check_all/uncheck_all checkbox
@@ -343,29 +449,29 @@ class Dataset {
 	    	}
     		
     		while (list(,$column) = each($this->columns)) {
-				if ($column['filters'] == true) {
+				if ($column['filters'] == TRUE) {
 					$output .= '<td class="filter">';
 					
 					if ($column['type'] == 'text') {
-						$value = (isset($this->filter_values[$column['filter_name']])) ? $this->filter_values[$column['filter_name']] : '';
+						$value = (isset($this->set_filters[$column['filter_name']])) ? $this->set_filters[$column['filter_name']] : '';
 						$output .= '<input type="text" class="text" name="' . $column['filter_name'] . '" value="' . $value . '" />';
 					}
 					elseif ($column['type'] == 'id') {
-						$value = (isset($this->filter_values[$column['filter_name']])) ? $this->filter_values[$column['filter_name']] : '';
+						$value = (isset($this->set_filters[$column['filter_name']])) ? $this->set_filters[$column['filter_name']] : '';
 						$output .= '<input type="text" class="text id" name="' . $column['filter_name'] . '" value="' . $value . '" />';
 					}
 					elseif ($column['type'] == 'date') {
-						$value = (isset($this->filter_values[$column['filter_name'] . '_start'])) ? $this->filter_values[$column['filter_name'] . '_start'] : '';
+						$value = (isset($this->set_filters[$column['filter_name'] . '_start'])) ? $this->set_filters[$column['filter_name'] . '_start'] : '';
 						$output .= '<input type="text" class="text date_start datepick" name="' . $column['filter_name'] . '_start" value="' . $value . '" />';
 						
-						$value = (isset($this->filter_values[$column['filter_name'] . '_end'])) ? $this->filter_values[$column['filter_name'] . '_end'] : '';
+						$value = (isset($this->set_filters[$column['filter_name'] . '_end'])) ? $this->set_filters[$column['filter_name'] . '_end'] : '';
 						$output .= '<input type="text" class="text date_end datepick" name="' . $column['filter_name'] . '_end" value="' . $value . '" />';
 					}
 					elseif ($column['type'] == 'select') {
 						$output .= '<select name="' . $column['filter_name'] . '"><option value=""></option>';
 						
 						foreach ($column['options'] as $value => $name) {
-							$selected = (isset($this->filter_values[$column['filter_name']]) and $this->filter_values[$column['filter_name']] == $value) ? ' selected="selected"' : '';
+							$selected = (isset($this->set_filters[$column['filter_name']]) and $this->set_filters[$column['filter_name']] == $value) ? ' selected="selected"' : '';
 							$output .= '<option value="' . $value . '"' . $selected . '>' . $name . '</option>';
 						}
 						
@@ -393,15 +499,13 @@ class Dataset {
     * @return string HTML output
     */
     function table_close () {
-    	$CI =& get_instance();
-    	
     	$output = '</table>';
     	
     	$output .= '<div class="pagination">';
-    	$output .= $CI->pagination->create_links();
+    	$output .= $this->pagination;
     	$output .= '</div></form>
-			    	<div class="hidden" id="class">' . $CI->uri->segment(2) . '</div>
-					<div class="hidden" id="method">' . $CI->router->fetch_method() . '</div>
+			    	<div class="hidden" id="class">' . $this->CI->uri->segment(2) . '</div>
+					<div class="hidden" id="method">' . $this->CI->router->fetch_method() . '</div>
 					<div class="hidden" id="page">' . $this->offset . '</div>';
     	
     	return $output;

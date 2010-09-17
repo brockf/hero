@@ -313,6 +313,7 @@ class Content_model extends CI_Model
 	* @param date $filters['end_date'] Only content before this date
 	* @param string $filters['author_like'] Only content created by this user (by username, text search)
 	* @param int $filters['type'] Only content of this type
+	* @param string $filters['title']
 	* @param int $filters['id']
 	* @param int|array $filters['topic'] Single topic ID or array of multiple topics
 	* @param int|array $filters['author'] Single author ID or array of multiple authors
@@ -406,10 +407,6 @@ class Content_model extends CI_Model
 			$this->db->where('content.content_date <=', $end_date);
 		}
 		
-		if (isset($filters['author_like'])) {
-			$this->db->like('users.user_username',$filters['author_like']);
-		}
-		
 		if (isset($filters['type'])) {
 			$this->db->where('content.content_type_id',$filters['type']);
 		}
@@ -420,6 +417,10 @@ class Content_model extends CI_Model
 		
 		if (isset($filters['is_standard'])) {
 			$this->db->where('content.content_is_standard',$filters['is_standard']);
+		}
+		
+		if (isset($filters['title'])) {
+			$this->db->like('content.content_title',$filters['title']);
 		}
 		
 		if (isset($filters['author'])) {
@@ -472,6 +473,11 @@ class Content_model extends CI_Model
 		}
 		else {
 			return $this->db->get()->num_rows();
+		}
+		
+		// this filter has to be applied late, because the users table needs to be joined
+		if (isset($filters['author_like'])) {
+			$this->db->like('users.user_username',$filters['author_like']);
 		}
 		
 		$this->db->join('users','users.user_id = content.user_id','left');
