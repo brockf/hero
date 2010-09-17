@@ -55,7 +55,7 @@ class Users extends Front_Controller {
 		
 		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
 		foreach ($custom_fields as $field) {
-			$values[$field['name']] = $_POST[$field['name']];
+			$values[$field['name']] = isset($_POST[$field['name']]) ? $_POST[$field['name']] : FALSE;
 		}
 		
 		$values = query_value_encode(serialize($values));
