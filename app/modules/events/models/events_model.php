@@ -179,7 +179,7 @@ class Events_model extends CI_Model
 						'id' => $row['event_id'],
 						'link_id' => $row['link_id'],
 						'title' => $row['event_title'],
-						'url_path' => $row['event_url_path'],
+						'url_path' => $row['link_url_path'],
 						'description' => $row['event_description'],
 						'location' => $row['event_location'],
 						'max_attendees' => $row['event_max_attendees'],
