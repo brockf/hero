@@ -21,7 +21,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="7">No content available.</td>
+	<td colspan="8">No content available.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>

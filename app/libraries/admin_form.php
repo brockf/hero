@@ -52,6 +52,20 @@ class Admin_form {
 											);
 	}
 	
+	/**
+	* Add Hidden Field
+	*
+	* @param string $name
+	* @param string $value
+	*/
+	function hidden ($name, $value) {
+		$this->fields[$this->fieldset][] = array(
+												'type' => 'hidden',
+												'name' => $name,
+												'value' => $value
+											);
+	}
+	
 	/*
 	* Add Text Field
 	*
@@ -494,219 +508,224 @@ class Admin_form {
 			$return .= '<ul class="' . implode(' ',$classes) . '">';
 			
 			foreach ($this->fields[$i] as $field) {
-				$field['li_id'] = (isset($field['li_id'])) ? $field['li_id'] : $field['name'];
-			
-				$return .= '<li id="row_' . $field['li_id'] . '">';
-				
-				// label
-				$classes = array();
-				if (isset($field['full']) and $field['full'] == TRUE) {
-					$classes[] = 'full';
+				if ($field['type'] == 'hidden') {
+					$return .= '<input type="hidden" id="' . $field['name'] . '" name="' . $field['name'] . '" value="' . $field['value'] . '" />';
 				}
-				$class = implode(' ',$classes);
+				else {
+					$field['li_id'] = (isset($field['li_id'])) ? $field['li_id'] : $field['name'];
 				
-				// names fields don't have names
-				if ($field['type'] == 'names') {
-					$field['name'] = 'first_name';
-				}
-				
-				$return .= '<label class="' . $class . '" for="' . $field['name'] . '">' . $field['label'] . '</label>';
-				
-				// create new line?
-				if (isset($field['full']) and $field['full'] == TRUE) {
-					$return .= '</li><li>';
-				}
-				
-				// text fields
-				if ($field['type'] == 'text') {
-					$classes = array('text');
-					$rel = '';
+					$return .= '<li id="row_' . $field['li_id'] . '">';
 					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
-					}
-					
-					if ($field['full'] == TRUE) {
-						$classes[] = 'full';
-						$field['width'] = '100%';
-					}
-					
-					if ($field['mark_empty'] != FALSE) {
-						$classes[] = 'mark_empty';
-						$rel = $field['mark_empty'];
-					}
-					
-					if (is_array($field['classes'])) {
-						$classes = array_merge($classes,$field['classes']);
-					}
-					
-					$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
-				}
-				// password fields
-				elseif ($field['type'] == 'password') {
-					$classes = array('text');
-					$rel = '';
-					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
-					}
-					
-					if ($field['full'] == TRUE) {
-						$classes[] = 'full';
-						$field['width'] = '100%';
-					}
-					
-					$return .= '<input type="password" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="' . $rel . '" name="' . $field['name'] . '" id="' . $field['name'] . '" value="" />';
-				}
-				// dropdowns
-				elseif ($field['type'] == 'dropdown') {
+					// label
 					$classes = array();
-					$rel = '';
-					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
-					}
-					
-					if ($field['full'] == TRUE) {
+					if (isset($field['full']) and $field['full'] == TRUE) {
 						$classes[] = 'full';
 					}
+					$class = implode(' ',$classes);
 					
-					$multiple = ($field['multiselect'] == TRUE) ? ' multiple="multiple"' : '';
-					
-					$return .= '<select name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" ' . $multiple . '>';
-					
-					foreach ($field['options'] as $value => $option) {
-						$selected = '';
-						if ($multiple == TRUE and in_array($value, $field['value'])) {
-							$selected = ' selected="selected"';
-						}
-						elseif ($multiple == FALSE and $value == $field['value']) {
-							$selected = ' selected="selected"';
-						}
-					
-						$return .= '<option value="' . $value . '"' . $selected. '>' . $option . '</option>';
+					// names fields don't have names
+					if ($field['type'] == 'names') {
+						$field['name'] = 'first_name';
 					}
 					
-					$return .= '</select>';
-				}
-				// names
-				elseif ($field['type'] == 'names') {
-					$classes = array();
-					$rel = '';
+					$return .= '<label class="' . $class . '" for="' . $field['name'] . '">' . $field['label'] . '</label>';
 					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
+					// create new line?
+					if (isset($field['full']) and $field['full'] == TRUE) {
+						$return .= '</li><li>';
 					}
 					
-					$classes[] = 'mark_empty';
-					
-					$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="First Name" id="first_name" name="first_name" value="' . $field['first_value'] . '" />&nbsp;&nbsp;<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="Last Name" id="last_name" name="last_name" value="' . $field['last_value'] . '" />';
-				}
-				// textarea fields
-				elseif ($field['type'] == 'textarea') {
-					$classes = array('text');
-					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
-					}
-					
-					if ($field['full'] == TRUE) {
-						$classes[] = 'full';
-						$field['width'] = '100%';
+					// text fields
+					if ($field['type'] == 'text') {
+						$classes = array('text');
+						$rel = '';
 						
-					}
-					
-					if ($field['wysiwyg'] != FALSE) {
-						$classes[] = 'wysiwyg';
-						$classes[] = $field['wysiwyg']; // the toolbar set
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
 						
-						if (!defined('INCLUDE_CKEDITOR')) {
-							define('INCLUDE_CKEDITOR','TRUE');
+						if ($field['full'] == TRUE) {
+							$classes[] = 'full';
+							$field['width'] = '100%';
 						}
-					}
-					
-					if ($field['full'] != TRUE) {
-						$return .= '<div style="float:left;width:' . ((int)$field['width'] + 20) . 'px">';
-					}
-					
-					$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';
-					
-					if ($field['full'] != TRUE) {
-						$return .= '</div>';
-					}
-				}
-				// radio
-				elseif ($field['type'] == 'radio') {
-					$classes = array();
-					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
-					}
-					
-					foreach ($field['options'] as $value => $option) {
-						$selected = '';
-						if ($value == $field['value']) {
-							$selected = ' checked="checked"';
+						
+						if ($field['mark_empty'] != FALSE) {
+							$classes[] = 'mark_empty';
+							$rel = $field['mark_empty'];
 						}
-					
-						$return .= '<input type="radio" id="' . $field['name'] . '" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $value . '"' . $selected. ' />&nbsp;' . $option . '&nbsp;&nbsp;&nbsp;';
+						
+						if (is_array($field['classes'])) {
+							$classes = array_merge($classes,$field['classes']);
+						}
+						
+						$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
 					}
-				}
-				// checkbox
-				elseif ($field['type'] == 'checkbox') {
-					$classes = array();
-					
-					$checked = ($field['checked'] == TRUE) ? ' checked="checked"' : '';
-				
-					$return .= '<input type="checkbox" id="' . $field['name'] . '" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $field['value'] . '"' . $checked. ' />';
-				}
-				// file
-				elseif ($field['type'] == 'file') {
-					$return .= '<input type="file" id="' . $field['name'] . '" name="' . $field['name'] . '" />';
-				}
-				// date
-				elseif ($field['type'] == 'date') {
-					if (!defined('INCLUDE_DATEPICKER')) {
-						define('INCLUDE_DATEPICKER','TRUE');
+					// password fields
+					elseif ($field['type'] == 'password') {
+						$classes = array('text');
+						$rel = '';
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
+						if ($field['full'] == TRUE) {
+							$classes[] = 'full';
+							$field['width'] = '100%';
+						}
+						
+						$return .= '<input type="password" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="' . $rel . '" name="' . $field['name'] . '" id="' . $field['name'] . '" value="" />';
 					}
-					
-					$classes = array('text','datepick');
-					$rel = '';
-					
-					if ($field['required'] == TRUE) {
-						$classes[] = 'required';
+					// dropdowns
+					elseif ($field['type'] == 'dropdown') {
+						$classes = array();
+						$rel = '';
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
+						if ($field['full'] == TRUE) {
+							$classes[] = 'full';
+						}
+						
+						$multiple = ($field['multiselect'] == TRUE) ? ' multiple="multiple"' : '';
+						
+						$return .= '<select name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" ' . $multiple . '>';
+						
+						foreach ($field['options'] as $value => $option) {
+							$selected = '';
+							if ($multiple == TRUE and in_array($value, $field['value'])) {
+								$selected = ' selected="selected"';
+							}
+							elseif ($multiple == FALSE and $value == $field['value']) {
+								$selected = ' selected="selected"';
+							}
+						
+							$return .= '<option value="' . $value . '"' . $selected. '>' . $option . '</option>';
+						}
+						
+						$return .= '</select>';
 					}
-					
-					if ($field['full'] == TRUE) {
-						$classes[] = 'full';
-						$field['width'] = '100%';
-					}
-					
-					if ($field['mark_empty'] != FALSE) {
+					// names
+					elseif ($field['type'] == 'names') {
+						$classes = array();
+						$rel = '';
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
 						$classes[] = 'mark_empty';
-						$rel = $field['mark_empty'];
+						
+						$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="First Name" id="first_name" name="first_name" value="' . $field['first_value'] . '" />&nbsp;&nbsp;<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" rel="Last Name" id="last_name" name="last_name" value="' . $field['last_value'] . '" />';
+					}
+					// textarea fields
+					elseif ($field['type'] == 'textarea') {
+						$classes = array('text');
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
+						if ($field['full'] == TRUE) {
+							$classes[] = 'full';
+							$field['width'] = '100%';
+							
+						}
+						
+						if ($field['wysiwyg'] != FALSE) {
+							$classes[] = 'wysiwyg';
+							$classes[] = $field['wysiwyg']; // the toolbar set
+							
+							if (!defined('INCLUDE_CKEDITOR')) {
+								define('INCLUDE_CKEDITOR','TRUE');
+							}
+						}
+						
+						if ($field['full'] != TRUE) {
+							$return .= '<div style="float:left;width:' . ((int)$field['width'] + 20) . 'px">';
+						}
+						
+						$return .= '<textarea class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" id="' . $field['name'] . '">' . $field['value'] . '</textarea>';
+						
+						if ($field['full'] != TRUE) {
+							$return .= '</div>';
+						}
+					}
+					// radio
+					elseif ($field['type'] == 'radio') {
+						$classes = array();
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
+						foreach ($field['options'] as $value => $option) {
+							$selected = '';
+							if ($value == $field['value']) {
+								$selected = ' checked="checked"';
+							}
+						
+							$return .= '<input type="radio" id="' . $field['name'] . '" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $value . '"' . $selected. ' />&nbsp;' . $option . '&nbsp;&nbsp;&nbsp;';
+						}
+					}
+					// checkbox
+					elseif ($field['type'] == 'checkbox') {
+						$classes = array();
+						
+						$checked = ($field['checked'] == TRUE) ? ' checked="checked"' : '';
+					
+						$return .= '<input type="checkbox" id="' . $field['name'] . '" name="' . $field['name'] . '" class="' . implode(' ',$classes) . '" value="' . $field['value'] . '"' . $checked. ' />';
+					}
+					// file
+					elseif ($field['type'] == 'file') {
+						$return .= '<input type="file" id="' . $field['name'] . '" name="' . $field['name'] . '" />';
+					}
+					// date
+					elseif ($field['type'] == 'date') {
+						if (!defined('INCLUDE_DATEPICKER')) {
+							define('INCLUDE_DATEPICKER','TRUE');
+						}
+						
+						$classes = array('text','datepick');
+						$rel = '';
+						
+						if ($field['required'] == TRUE) {
+							$classes[] = 'required';
+						}
+						
+						if ($field['full'] == TRUE) {
+							$classes[] = 'full';
+							$field['width'] = '100%';
+						}
+						
+						if ($field['mark_empty'] != FALSE) {
+							$classes[] = 'mark_empty';
+							$rel = $field['mark_empty'];
+						}
+						
+						if (is_array($field['classes'])) {
+							$classes = array_merge($classes,$field['classes']);
+						}
+						
+						$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
+					}
+					elseif ($field['type'] == 'value_row') {
+						$return .= $field['value'];
 					}
 					
-					if (is_array($field['classes'])) {
-						$classes = array_merge($classes,$field['classes']);
-					}
+					$return .= '</li>';
 					
-					$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
-				}
-				elseif ($field['type'] == 'value_row') {
-					$return .= $field['value'];
-				}
-				
-				$return .= '</li>';
-				
-				// help
-				if (!empty($field['help'])) {
-					$style = ($field['full'] == TRUE) ? 'style="margin-left:0"' : '';
-				
-					$return .= '</li>
-								<li>
-									<div class="help" ' . $style. '>' . $field['help'] . '</div>
-								</li>';
+					// help
+					if (!empty($field['help'])) {
+						$style = ($field['full'] == TRUE) ? 'style="margin-left:0"' : '';
+					
+						$return .= '</li>
+									<li>
+										<div class="help" ' . $style. '>' . $field['help'] . '</div>
+									</li>';
+					}
 				}
 			}
 			

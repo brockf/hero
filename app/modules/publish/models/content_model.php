@@ -41,12 +41,11 @@ class Content_model extends CI_Model
 		
 		if (!empty($title)) {
 			$this->load->helper('clean_string');
-			$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+			$url_path = (empty($url_path)) ? clean_string($title) : $url_path;
 			
 			// get a global link ID
 			// make sure URL is unique
 			$this->load->model('link_model');
-			$url_path = $this->link_model->get_unique_url_path($url_path);
 			
 			$link_id = $this->link_model->new_link($url_path, $topics, $title, $type['singular_name'], 'publish', 'content', 'view');
 		}
@@ -132,7 +131,8 @@ class Content_model extends CI_Model
 			
 			// make sure URL is unique (unless it hasn't changed, of course)
 			$this->load->model('link_model');
-			if ($content['url_path'] != $url_path) {
+			if ($content['url_path'] != $url_path) {	
+				$url_path = $this->link_model->prep_url_path($url_path);
 				$url_path = $this->link_model->get_unique_url_path($url_path);
 				$this->link_model->update_url($content['link_id'], $url_path);
 			}
@@ -187,7 +187,9 @@ class Content_model extends CI_Model
 			}
 		}
 		
-		$this->db->update($type['system_name'], $update_fields, array('content_id' => $content['id']));
+		if (!empty($update_fields)) {
+			$this->db->update($type['system_name'], $update_fields, array('content_id' => $content['id']));
+		}
 		
 		return TRUE;
 	}

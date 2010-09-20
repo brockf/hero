@@ -35,10 +35,9 @@ class Rss_model extends CI_Model
  	*/
 	function new_feed ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = '', $sort_dir = '', $template = 'rss_feed.txml') {
 		$this->load->helper('clean_string');
-		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+		$url_path = (empty($url_path)) ? clean_string($title) : $url_path;
 		
 		$this->load->model('link_model');
-		$url_path = $this->link_model->get_unique_url_path($url_path);
 		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'RSS Feed', 'rss', 'feed', 'view');
 		
 		$insert_fields = array(
@@ -80,10 +79,17 @@ class Rss_model extends CI_Model
 		$feed = $this->get_feed($feed_id);
 		
 		$this->load->model('link_model');
+		
+		if (empty($url_path)) {
+			$this->load->helper('clean_string');
+			$url_path = clean_string($title);
+		}
+		
 		if ($url_path != $feed['url_path']) {
 			$this->load->helper('clean_string');
 			$url_path = clean_string($url_path);
 			
+			$url_path = $this->link_model->prep_url_path($url_path);
 			$url_path = $this->link_model->get_unique_url_path($url_path);
 			$this->link_model->update_url($feed['link_id'], $url_path);
 		}

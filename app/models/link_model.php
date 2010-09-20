@@ -41,6 +41,7 @@ class Link_model extends CI_Model {
 	*/
 	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method) {
 		$url_path = $this->prep_url_path($url_path);
+		$url_path = $this->get_unique_url_path($url_path);
 	
 		$insert_fields = array(
 								'link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '',
@@ -121,6 +122,11 @@ class Link_model extends CI_Model {
 		if (substr($url_path, -1, 1) == '/') {
 			$url_path = substr_replace($url_path, '', -1, 1);
 		}
+		
+		// regex the bad stuff out
+		$url_path = preg_replace('/<(.*?)>/','',$url_path);
+		$url_path = preg_replace('/\/{2,10}/','',$url_path);
+		$url_path = preg_replace('/[^a-z0-9\/\-\._]/i','',$url_path);
 		
 		return $url_path;
 	}

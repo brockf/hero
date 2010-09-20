@@ -27,10 +27,15 @@ class Content_type_model extends CI_Model
 	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown?
 	* @param boolean $is_module Should this be treated as an automatic content type?  Or is there another admin module which will manage this content type?
 	* @param string $template The filename of the template in the theme directory to use for output
+	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url.
 	*
 	* @return int $content_type_id
 	*/
-	function new_content_type ($name, $is_standard = TRUE, $is_privileged = FALSE, $is_module = FALSE, $template = 'content.thtml') {
+	function new_content_type ($name, $is_standard = TRUE, $is_privileged = FALSE, $is_module = FALSE, $template = 'content.thtml', $base_url = '') {
+		// prep base url
+		$base_url = rtrim($base_url, '/');
+		$base_url = (!empty($base_url)) ? $base_url . '/' : '';
+		
 		// get system name
 		$this->load->helper('clean_string');
 		$system_name = clean_string($name);
@@ -51,6 +56,7 @@ class Content_type_model extends CI_Model
 							'content_type_is_standard' => ($is_standard == TRUE) ? '1' : '0',
 							'content_type_is_privileged' => ($is_privileged == TRUE) ? '1' : '0',
 							'content_type_template' => $template,
+							'content_type_base_url' => $base_url,
 							'custom_field_group_id' => $custom_field_group_id
 						);
 						
@@ -88,15 +94,21 @@ class Content_type_model extends CI_Model
 	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown?
 	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown?
 	* @param string $template The filename of the template in the theme directory to use for output
+	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url.
 	*
 	* @return boolean TRUE
 	*/
-	function update_content_type ($content_type_id, $name, $is_standard = TRUE, $is_privileged = FALSE, $template = 'content.thtml') {
+	function update_content_type ($content_type_id, $name, $is_standard = TRUE, $is_privileged = FALSE, $template = 'content.thtml', $base_url) {
+		// prep base url
+		$base_url = rtrim($base_url, '/');
+		$base_url = (!empty($base_url)) ? $base_url . '/' : '';
+		
 		$update_fields = array(
 							'content_type_friendly_name' => $name,
 							'content_type_is_standard' => ($is_standard == TRUE) ? '1' : '0',
 							'content_type_is_privileged' => ($is_privileged == TRUE) ? '1' : '0',
-							'content_type_template' => $template
+							'content_type_template' => $template,
+							'content_type_base_url' => $base_url
 						);
 						
 		$this->db->update('content_types', $update_fields, array('content_type_id' => $content_type_id));
@@ -248,7 +260,8 @@ class Content_type_model extends CI_Model
 						'is_privileged' => ($row['content_type_is_privileged'] == '1') ? TRUE : FALSE,
 						'is_standard' => ($row['content_type_is_standard'] == '1') ? TRUE : FALSE,
 						'template' => $row['content_type_template'],
-						'custom_field_group_id' => $row['custom_field_group_id']
+						'custom_field_group_id' => $row['custom_field_group_id'],
+						'base_url' => $row['content_type_base_url']
 					);
 		}
 		

@@ -335,7 +335,8 @@ class Admincp extends Admincp_Controller {
 			$standard = new Admin_form;
 			$standard->fieldset('Standard Page Elements');
 			$standard->text('Title','title','',FALSE,TRUE,FALSE,TRUE);
-			$standard->text('URL Path','url_path','','If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
+			$standard->hidden('base_url',$type['base_url']);
+			$standard->text('URL Path','url_path',$type['base_url'],'If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
 			
 			$this->load->model('topic_model');
 			$topics = $this->topic_model->get_tiered_topics();
@@ -761,6 +762,7 @@ class Admincp extends Admincp_Controller {
 		$this->load->helper('template_files');
 		$template_files = template_files();
 		$form->dropdown('Output Template', 'template', $template_files, 'content.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.  (Ignore this field if it\'s not applicable.)');
+		$form->text('Base URL Path','base_url','','(Optional) If this value is set, the URL Path box where you create the URL for each piece of content will be pre-loaded with a folder that will unify all content of this type.  For example, setting this to "articles/" will help you make all URL\'s for content of this type like "articles/my_article", "articles/my_other_article", etc.');
 		
 		$data = array(
 					'form' => $form->display(),
@@ -793,6 +795,7 @@ class Admincp extends Admincp_Controller {
 		$this->load->helper('template_files');
 		$template_files = template_files();
 		$form->dropdown('Output Template', 'template', $template_files, $type['template'], FALSE, TRUE, 'This template in your theme directory will be used to display content of this type.  (Ignore this field if it\'s not applicable.)');
+		$form->text('Base URL Path','base_url',$type['base_url'],'(Optional) If this value is set, the URL Path box where you create the URL for each piece of content will be pre-loaded with a folder that will unify all content of this type.  For example, setting this to "articles/" will help you make all URL\'s for content of this type like "articles/my_article", "articles/my_other_article", etc.');
 		
 		$data = array(
 					'form' => $form->display(),
@@ -833,7 +836,8 @@ class Admincp extends Admincp_Controller {
 																($this->input->post('is_standard') == '1') ? TRUE : FALSE,
 																($this->input->post('is_privileged') == '1') ? TRUE : FALSE,
 																FALSE,
-																$this->input->post('template')
+																$this->input->post('template'),
+																$this->input->post('base_url')
 															);
 															
 			$this->notices->SetNotice('Content type added successfully.');
@@ -846,7 +850,8 @@ class Admincp extends Admincp_Controller {
 													$this->input->post('name'),
 													($this->input->post('is_standard') == '1') ? TRUE : FALSE,
 													($this->input->post('is_privileged') == '1') ? TRUE : FALSE,
-													$this->input->post('template')
+													$this->input->post('template'),
+													$this->input->post('base_url')
 												);
 												
 			$this->notices->SetNotice('Content type updated successfully.');

@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.09';
+	var $version = '1.10';
 	var $name = 'publish';
 
 	function __construct () {
@@ -118,6 +118,10 @@ class Publish extends Module {
  								 `content_hits` int(11),
    								 PRIMARY KEY  (`content_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+		
+		if ($db_version < 1.10) {
+			$this->CI->db->query('ALTER TABLE `content_types` ADD COLUMN `content_type_base_url` VARCHAR(100) NOT NULL AFTER `content_type_template`');
 		}
 	
 		return $this->version;

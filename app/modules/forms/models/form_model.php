@@ -36,15 +36,14 @@ class Form_model extends CI_Model
 		$this->load->helper('clean_string');
 		$table_name = clean_string($title);
 		
-		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
+		$url_path = (empty($url_path)) ? clean_string($title) : $url_path;
 		
 		// make sure table doesn't already exist
 		if ($this->db->table_exists($table_name)) {
-			die(show_error('There is already a table in the database by the name of ' . $table_name . '.  You should retitle your form to avoid a conflict.'));
+			die(show_error('There is already a table in the database by the name of ' . $table_name . '.  You should re-title your form to avoid a conflict.'));
 		}
 		
 		$this->load->model('link_model');
-		$url_path = $this->link_model->get_unique_url_path($url_path);
 		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Form', 'forms', 'form', 'view');
 		
 		// create custom field group
@@ -101,10 +100,17 @@ class Form_model extends CI_Model
 		$form = $this->get_form($form_id);
 		
 		$this->load->model('link_model');
+		
+		if (empty($url_path)) {
+			$this->load->helper('clean_string');
+			$url_path = clean_string($title);
+		}
+		
 		if ($url_path != $form['url_path']) {
 			$this->load->helper('clean_string');
 			$url_path = clean_string($url_path);
 			
+			$url_path = $this->link_model->prep_url_path($url_path);
 			$url_path = $this->link_model->get_unique_url_path($url_path);
 			$this->link_model->update_url($form['link_id'], $url_path);
 		}

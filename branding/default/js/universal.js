@@ -24,6 +24,43 @@ $(document).ready(function() {
 		}
 	});
 	
+	// auto-complete URL paths
+	// set this data to track whether we should still be automating the URL path or not
+	$('input#url_path').data('automate','1');
+	
+	// turn off auto URL path building if we have touched the URL path even once
+	$('input#url_path').click(function () {
+		$('input#url_path').data('automate','0');
+	});
+	
+	// automate the URL when we are typing a title
+	if ($('input#url_path').length > 0 && $('input#title').length > 0) {
+		$('input#title').keyup(function () {
+			var url_path_field = $('input#url_path');
+			if (url_path_field.data('automate') == '1') {
+			   if ($('input#base_url').length > 0) {
+			   	  // we have a base URL
+			   	  var url = $('input#base_url').val();
+			   }
+			   else {
+				  var url = '';
+		       }
+			   
+			   url += $('input#title').val().toLowerCase();
+			   
+			   url = url.replace(/<(.*?)>/g, '');
+			   url = url.replace(/\/{2,10}/g,'');
+			   url = url.replace(/[^a-z0-9\/\-_\.]/ig,'');
+			   
+			   if (url.length > 0) {
+				   // remove mark_empty class if it's there
+				   url_path_field.removeClass('highlight_empty');
+				   url_path_field.val(url);
+			   }
+			}
+		});
+	}
+	
 	/* DATASET LIBRARY ACCOMPANYING JAVASCRIPT */
 	
 	// delete confirmations

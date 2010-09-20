@@ -36,25 +36,17 @@ class Events_model extends CI_Model
  	*/
 	function new_event ($title, $url_path, $description, $location, $max_attendees, $price, $start_date, $end_date, $privileges = array(), $user) {
 		$this->load->helper('clean_string');
-		$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
 
-		if (!empty($title)) {
-			$this->load->helper('clean_string');
-			$url_path = (empty($url_path)) ? clean_string($title) : clean_string($url_path);
-			
-			// get a global link ID
-			// make sure URL is unique
-			$this->load->model('link_model');
-			$url_path = $this->link_model->get_unique_url_path($url_path);
-			
-			$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Event', 'events', 'events', 'view');
-		}
+		$url_path = (empty($url_path)) ? clean_string($title) : $url_path;
 		
+		// get a global link ID
+		// make sure URL is unique
+		$this->load->model('link_model');
+		$link_id = $this->link_model->new_link($url_path, FALSE, $title, 'Event', 'events', 'events', 'view');
 		
 		$insert_fields = array(
 							'link_id' => $link_id,
 							'event_title' => $title,
-							'event_url_path' => $url_path,
 							'event_description' => $description,
 							'event_location' => $location,
 							'event_max_attendees' => $max_attendees,
@@ -91,10 +83,13 @@ class Events_model extends CI_Model
 		$event = $this->get_event($event_id);
 		
 		$this->load->model('link_model');
-		if ($url_path != $event['url_path']) {
+		if (empty($url_path)) {
 			$this->load->helper('clean_string');
-			$url_path = clean_string($url_path);
-			
+			$url_path = clean_string($title);
+		}
+		
+		if ($url_path != $event['url_path']) {
+			$url_path = $this->link_model->prep_url_path($url_path);
 			$url_path = $this->link_model->get_unique_url_path($url_path);
 			$this->link_model->update_url($event['link_id'], $url_path);
 		}

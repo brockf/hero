@@ -12,7 +12,7 @@
 */
 
 class Events_module extends Module {
-	var $version = '1.0';
+	var $version = '1.01';
 	var $name = 'events';
 
 	function __construct () {
@@ -59,6 +59,10 @@ class Events_module extends Module {
 									`user_id` int(11) default NULL,
 									PRIMARY KEY  (`event_id`)
 									) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8;');
+		}
+		
+		if ($db_version < 1.01) {
+			$this->CI->db->query('ALTER TABLE `events` DROP COLUMN `event_url_path`');
 		}
 		
 		return $this->version;
