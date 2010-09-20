@@ -38,7 +38,7 @@ class Blog extends Front_Controller {
 		}
 				
 		// get pagination
-		$pagination = $this->blog_model->get_blog_pagination($blog_id, site_url($blog['url_path']), $this->input->get('page'));
+		$pagination = $this->blog_model->get_blog_pagination($blog_id, site_url($blog['url_path']) . '?', $this->input->get('page'));
 		
 		// show content
 		$this->smarty->assign('content',$content);
