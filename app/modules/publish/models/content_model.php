@@ -331,6 +331,13 @@ class Content_model extends CI_Model
 	* @return array|boolean Array of content, or FALSE
 	*/
 	function get_contents ($filters = array(), $counting = FALSE) {
+		// if we are going to do a content search, let's get the total content items so that we can decide
+		// if this is a LIKE or a FULLTEXT search
+		if (isset($filters['keyword']) and isset($filters['type'])) {
+			$content_count = $this->db->query('SELECT COUNT(content_id) AS `content_count` FROM `content` WHERE `content_type_id`=\'' . $filters['type'] . '\'');
+			$content_count = $content_count->row()->content_count;
+		}
+	
 		// do we need to get all content data?  i.e., does it make resource saving sense?
 		if (isset($filters['id']) or isset($filters['type'])) {
 			// add a hit to the content
@@ -379,7 +386,8 @@ class Content_model extends CI_Model
 				}
 				
 				// are we doing a fulltext search?
-				if (isset($filters['keyword'])) {
+				// either a LIKE or FULLTEXT
+				if (isset($filters['keyword']) and $content_count > 10) {
 					$search_fields = array();
 					foreach ($custom_fields as $field) {
 						$search_fields[] = '`' . $field['name'] . '`';
@@ -391,6 +399,20 @@ class Content_model extends CI_Model
 					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . $filters['keyword'] . '%\')', NULL, FALSE);  
 					
 					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
+				}
+				elseif ($content_count <= 10) {
+					// we aren't doing a fulltext search, let's get rid of their relevance order
+					if ($filters['sort'] == 'relevance') {
+						unset($filters['sort']);
+					}
+					
+					$search_fields = array();
+					$method = 'like';
+					foreach ($custom_fields as $field) {
+						$this->db->$method($field['name'],$filters['keyword']);
+						$method = 'or_like';
+					}
+					reset($custom_fields);
 				}
 			}
 		}
