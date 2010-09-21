@@ -400,7 +400,7 @@ class Content_model extends CI_Model
 					
 					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
 				}
-				elseif ($content_count <= 10) {
+				elseif (isset($filters['keyword']) and $content_count <= 10) {
 					// we aren't doing a fulltext search, let's get rid of their relevance order
 					if ($filters['sort'] == 'relevance') {
 						unset($filters['sort']);
