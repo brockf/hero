@@ -124,6 +124,7 @@ class Link_model extends CI_Model {
 		}
 		
 		// regex the bad stuff out
+		$url_path = preg_replace('/\s+/','_',$url_path);
 		$url_path = preg_replace('/<(.*?)>/','',$url_path);
 		$url_path = preg_replace('/\/{2,10}/','',$url_path);
 		$url_path = preg_replace('/[^a-z0-9\/\-\._]/i','',$url_path);

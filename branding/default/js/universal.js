@@ -48,6 +48,7 @@ $(document).ready(function() {
 			   
 			   url += $('input#title').val().toLowerCase();
 			   
+			   url = url.replace(/\s+/g,'_');
 			   url = url.replace(/<(.*?)>/g, '');
 			   url = url.replace(/\/{2,10}/g,'');
 			   url = url.replace(/[^a-z0-9\/\-_\.]/ig,'');
