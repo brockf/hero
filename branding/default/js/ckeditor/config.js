@@ -13,13 +13,13 @@ CKEDITOR.editorConfig = function( config )
 	config.extraPlugins = 'MediaEmbed';
 	
 	// get the base URL
-	config.base_url = $('#base_url').html();
+	config.base_url = $('#site_url').html();
 	
 	// integrate KCFinder
-	config.filebrowserBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=files';
-    config.filebrowserImageBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=images';
-    config.filebrowserFlashBrowseUrl = config.base_url + '../branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
-    
+	config.filebrowserBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=files';
+    config.filebrowserImageBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=images';
+    config.filebrowserFlashBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
+        
     // force plain text
     config.forcePasteAsPlainText = true;
    

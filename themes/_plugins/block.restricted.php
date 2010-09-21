@@ -26,7 +26,7 @@ function smarty_block_restricted ($params, $tagdata, &$smarty, &$repeat){
 				$groups = $params['in_group'];
 			}
 			
-			if ($smarty->user_model->in_group($groups)) {
+			if ($smarty->CI->user_model->in_group($groups)) {
 				// do we have a not_in_group, though?
 				
 				if (isset($params['not_in_group'])) {
@@ -38,7 +38,7 @@ function smarty_block_restricted ($params, $tagdata, &$smarty, &$repeat){
 						$groups = $params['not_in_group'];
 					}
 					
-					if ($smarty->user_model->not_in_group($groups)) {
+					if ($smarty->CI->user_model->not_in_group($groups)) {
 						$show_content = TRUE;
 					}
 				}
@@ -57,7 +57,7 @@ function smarty_block_restricted ($params, $tagdata, &$smarty, &$repeat){
 				$groups = $params['not_in_group'];
 			}
 			
-			if ($smarty->user_model->not_in_group($groups)) {
+			if ($smarty->CI->user_model->not_in_group($groups)) {
 				$show_content = TRUE;
 			}
 		}

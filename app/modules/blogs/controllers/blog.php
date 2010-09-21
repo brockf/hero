@@ -33,8 +33,9 @@ class Blog extends Front_Controller {
 		// do they have permissions?
 		if (!$this->user_model->in_group($blog['privileges'])) {
 			$this->load->helper('paywall/paywall');
-			paywall($blog, 'blog');
-			die();
+			if (paywall($content, 'content') !== FALSE) {
+				die();
+			}
 		}
 				
 		// get pagination

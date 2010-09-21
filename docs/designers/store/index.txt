@@ -11,6 +11,8 @@ Each product has the following tags available in both product listings and the p
 
 * {$id}
 * {$url} (absolute URL to product page)
+* {$url_path} (relative URL)
+* {$quick_add_to_cart_url} (a URL which adds this product to the user's cart)
 * {$collections} (array of collection ID's)
 * {$name}
 * {$description}

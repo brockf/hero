@@ -50,11 +50,22 @@ class Admincp_Controller extends MY_Controller {
 			MY_Loader::define_module($module . '/');
 		}
 		
-		// define WYSIWYG session variables
+		// define WYSIWYG session variables for file uploading
 		session_start();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = FALSE;
-		$_SESSION['KCFINDER']['uploadURL'] = str_replace(FCPATH,'',setting('path_editor_uploads'));
+		
+		// Safari base_href fix
+		$url = parse_url(base_url());
+		$this->load->library('user_agent');
+		// if they are using Safari and don't have Caribou installed in a sub-folder, this prefix "/" fixes the problem
+		if (stripos($this->agent->browser(),'safari') !== FALSE and trim($url['path'], '/') == '') {
+			$prefix = '/';
+		}
+		else {
+			$prefix = '';
+		}
+		$_SESSION['KCFINDER']['uploadURL'] = $prefix . str_replace(FCPATH,'',setting('path_editor_uploads'));
 		$_SESSION['KCFINDER']['uploadDir'] = rtrim(setting('path_editor_uploads'),'/');
 	}
 }

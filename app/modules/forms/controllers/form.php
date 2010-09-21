@@ -35,8 +35,9 @@ class Form extends Front_Controller {
 		// do they have permissions?
 		if (!$this->user_model->in_group($form['privileges'])) {
 			$this->load->helper('paywall/paywall');
-			paywall($form, 'form');
-			die();
+			if (paywall($content, 'content') !== FALSE) {
+				die();
+			}
 		}
 		
 		// do we have passed values?

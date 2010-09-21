@@ -38,8 +38,9 @@ class Content extends Front_Controller {
 		// do they have permissions to see content?
 		if (!$this->user_model->in_group($content['privileges'])) {
 			$this->load->helper('paywall/paywall');
-			paywall($content, 'content');
-			die();
+			if (paywall($content, 'content') !== FALSE) {
+				die();
+			}
 		}
 		
 		// show content
