@@ -9,7 +9,7 @@
 		<ul class="events">
 			{foreach $events as $event}
 				<li>	
-					<a class="name" href="{$event.url_path}">{$event.title}</a>
+					<a class="name" href="/events/{$event.url_path}">{$event.title}</a>
 					{if $event.description}<div class="description">{$event.description}</div>{/if}
 				</li>
 			{/foreach}
