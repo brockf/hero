@@ -163,8 +163,7 @@ browser.selectAll = function() {
 };
 
 browser.returnFile = function(file) {
-
-    var fileURL = file.substr
+	var fileURL = file.substr
         ? file : browser.uploadURL + '/' + browser.dir + '/' + file.data('name');
     fileURL = _.escapeDirs(fileURL);
 

@@ -20,6 +20,8 @@ class path {
     * @return string */
 
     static function rel2abs_url($path) {
+    	return $path;
+    	
         if (substr($path, 0, 1) == "/") return $path;
         $dir = @getcwd();
 
