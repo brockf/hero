@@ -68,42 +68,46 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     	}
     }
     
-    if (($trigger_type == 'subscription_expire' or $trigger_type == 'subscription_cancel') and !empty($plan_id) and isset($user)) {
-    	$CI->load->model('billing/subscription_plan_model');
-    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
-    	
-    	if (!empty($sub_plan['promotion'])) {
-    		$CI->user_model->remove_group($user['id'], $sub_plan['promotion']);
-    	}
-    	
-    	if (!empty($sub_plan['demotion'])) {
-    		$CI->user_model->add_group($user['id'], $sub_plan['promotion']);
-    	}
+    if (($trigger_type == 'subscription_expire') and !empty($plan_id) and isset($user)) {
+    	// let's make sure that there isn't an updating or renewing subscription, here
+		$CI->load->model('billing/subscription_model');
+		$subscription = $CI->subscription_model->get_subscription($subscription['id']);
+		
+		$move_user_groups = TRUE;
+		if (!empty($subscription['renewing_subscription_id']) or !empty($subscription['updating_subscription_id'])) {
+			$check_sub_id = (!empty($subscription['renewing_subscription_id'])) ? $subscription['renewing_subscription_id'] : $subscription['updating_subscription_id'];
+			
+			$check_sub = $CI->subscription_model->get_subscription($check_sub_id);
+			
+			if ($check_sub['active']) {
+				$move_user_groups = FALSE;
+				
+				// let's end this - we won't even send an email
+				return FALSE;
+			}
+		}
+		
+		if ($move_user_groups === TRUE) {
+	    	$CI->load->model('billing/subscription_plan_model');
+	    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
+	    	
+	    	if (!empty($sub_plan['promotion'])) {
+	    		$CI->user_model->remove_group($user['id'], $sub_plan['promotion']);
+	    	}
+	    	
+	    	if (!empty($sub_plan['demotion'])) {
+	    		$CI->user_model->add_group($user['id'], $sub_plan['demotion']);
+	    	}
+	    }
     }
     
     // if it's a recurring payment, we may need to add a taxes received line
 	// is this subscription plan taxable?
-	if ($trigger_type == 'recurring_charge' and !empty($plan_id)) {
-		$CI->load->model('billing/subscription_plan_model');
-    	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
-    	
-    	if ($sub_plan['is_taxable']) {
-			$this->db->where('subscription_id', $subscription['id']);
-			$result = $this->db->get('taxes_received');
-			if ($result->num_rows() > 0) {
-				$row = $result->row_array();
-				
-				$insert_fields = array(
-									'tax_id' => $row['tax_id'],
-									'tax_received_amount' => $row['tax_received_amount'],
-									'tax_received_date' => date('Y-m-d H:i:s'),
-									'user_id' => $user['id'],
-									'order_details_id' => $row['order_details_id'],
-									'subscription_id' => $subscription['id']
-								);
-									
-				$this->db->insert('taxes_received', $insert_fields);
-			}
+	if ($trigger_type == 'subscription_charge') {
+		// see if there is a subscription tax at play
+		$CI->load->model('store/taxes_model');
+		if ($tax = $CI->taxes_model->get_tax_for_subscription($subscription['id'])) {
+			$CI->taxes_model->record_tax($tax['tax_id'], $charge_id, 0, $tax['tax_amount']);
 		}
 	}
     

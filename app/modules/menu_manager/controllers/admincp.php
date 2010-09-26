@@ -119,7 +119,7 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('link_model');
 		$links = $this->link_model->get_links();
 		
-		foreach ($links as $link) {
+		foreach ((array)$links as $link) {
 			if (!$this->universal_link_in_array($current_links, $link['id'])) {
 				$possible_links[] = array(
 										'text' => $link['title'],

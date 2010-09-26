@@ -71,7 +71,11 @@ function shipping_address () {
 }
 
 function show_gateway_info () {
-	if ($('select#method :selected').hasClass('external')) {
+	if ($('select#method :selected').hasClass('no_credit_card')) {
+		$('li.no_credit_card').show();
+		$('li.credit_card').hide();
+	}
+	else if ($('select#method :selected').hasClass('external')) {
 		$('li.external').show();
 		$('li.credit_card').hide();
 	}

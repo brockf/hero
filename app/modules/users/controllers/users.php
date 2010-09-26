@@ -369,4 +369,80 @@ class Users extends Front_Controller {
 		
 		return redirect('users/login');
 	}
+	
+	function invoices ($subscription_id = FALSE) {
+		$this->load->model('billing/invoice_model');
+		
+		$filters = array('user_id' => $this->user_model->get('id'));
+		
+		if ($subscription_id !== FALSE) {
+			$filters['subscription_id'] = (int)$subscription_id;
+		}
+		
+		$invoices = $this->invoice_model->get_invoices($filters);
+		
+		if ($subscription_id == FALSE) {
+			$this->smarty->assign('for_subscription',FALSE);
+		}
+		else {
+			$this->smarty->assign('for_subscription',$subscription_id);
+		}
+
+		$this->smarty->assign('invoices', $invoices);
+		return $this->smarty->display('account_templates/invoices');		
+	}
+	
+	function invoice ($invoice_id) {
+		$this->load->model('billing/invoice_model');
+		$invoice = $this->invoice_model->get_invoice($invoice_id);
+		
+		if (empty($invoice_id) or empty($invoice)) {
+			die(show_error('Unable to find an invoice by that ID.'));
+		}
+		
+		// get invoice lines
+		$lines = $this->invoice_model->invoice_lines($invoice['id']);
+		
+		// format address
+		$this->load->helper('format_street_address');
+		$formatted_address = format_street_address($invoice['billing_address']);
+		// remove <br />'s
+		$formatted_address = strip_tags($formatted_address);
+		
+		$this->smarty->assign('invoice',$invoice);
+		$this->smarty->assign('lines', $lines);
+		$this->smarty->assign('formatted_address', $formatted_address);
+		
+		return $this->smarty->display('account_templates/invoice');
+	}
+	
+	function cancel ($subscription_id) {
+		$this->load->model('billing/subscription_model');
+		$subscription = $this->subscription_model->get_subscription($subscription_id);
+		
+		if (empty($subscription) or $subscription['user_id'] != $this->user_model->get('id')) {
+			die(show_error('The subscription your attempting to cancel is invalid.'));
+		}
+		
+		if ($this->input->post('confirm')) {
+			// do the cancellation
+			$this->subscription_model->cancel_subscription($subscription_id);
+			
+			$this->smarty->assign('cancelled',TRUE);
+		}
+		else {
+			$this->smarty->assign('cancelled',FALSE);
+		}
+		
+		$this->smarty->assign('subscription',$subscription);
+		$this->smarty->display('account_templates/cancel_subscription');
+	}
+	
+	function update_cc ($subscription_id) {
+		$this->load->model('billing/subscription_model');
+		$subscription = $this->subscription_model->get_subscription($subscription_id);
+		
+		header('Location: ' . $subscription['renew_link']);
+		die();
+	}
 }

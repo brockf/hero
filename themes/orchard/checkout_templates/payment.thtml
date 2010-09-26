@@ -22,7 +22,7 @@
 				{setting name="currency_symbol"}{$totals.order_tax}
 			</li>
 			<li>
-				<label>Total</label>
+				<label>Today's Total</label>
 				{setting name="currency_symbol"}{$totals.order_total}
 			</li>
 			{if $totals.recurring_sub_total}
@@ -40,7 +40,7 @@
 				<label for="method">Payment Method</label>
 				<select id="method" name="method">
 					{foreach $gateways as $gateway}
-						<option value="{$gateway.id}" class="{if $gateway.external}external{/if}" {if $setting.default_gateway == $gateway.id}selected="selected"{/if}>{$gateway.gateway}</option>
+						<option value="{$gateway.id}" class="{if $gateway.external}external{/if} {if $gateway.no_credit_card}no_credit_card{/if}" {if $setting.default_gateway == $gateway.id}selected="selected"{/if}>{$gateway.gateway}</option>
 					{/foreach}
 				</select>
 			</li>

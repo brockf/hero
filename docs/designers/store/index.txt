@@ -9,26 +9,26 @@
 
 Each product has the following tags available in both product listings and the product page:
 
-* {$id}
-* {$url} (absolute URL to product page)
-* {$url_path} (relative URL)
-* {$quick_add_to_cart_url} (a URL which adds this product to the user's cart)
-* {$collections} (array of collection ID's)
-* {$name}
-* {$description}
-* {$price}
-* {$weight}
-* {$requires_shipping} (TRUE or FALSE)
-* {$track_inventory} (TRUE or FALSE)
-* {$inventory} (# of inventory in stock)
-* {$inventory_allow_oversell} (do we allow overselling?)
-* {$sku} (SKU #)
-* {$is_taxable} (TRUE or FALSE)
-* {$is_download} (TRUE or FALSE)
-* {$download_name}
-* {$download_size}
-* {$feature_image} (full path to the file)
-* {$feature_image_url} (URL of the file)
+* [span_code]{$id}[/span_code]
+* [span_code]{$url}[/span_code] (absolute URL to product page)
+* [span_code]{$url_path}[/span_code] (relative URL)
+* [span_code]{$quick_add_to_cart_url}[/span_code] (a URL which adds this product to the user's cart)
+* [span_code]{$collections}[/span_code] (array of collection ID's)
+* [span_code]{$name}[/span_code]
+* [span_code]{$description}[/span_code]
+* [span_code]{$price}[/span_code]
+* [span_code]{$weight}[/span_code]
+* [span_code]{$requires_shipping}[/span_code] (TRUE or FALSE)
+* [span_code]{$track_inventory}[/span_code] (TRUE or FALSE)
+* [span_code]{$inventory}[/span_code] (# of inventory in stock)
+* [span_code]{$inventory_allow_oversell}[/span_code] (do we allow overselling?)
+* [span_code]{$sku}[/span_code] (SKU #)
+* [span_code]{$is_taxable}[/span_code] (TRUE or FALSE)
+* [span_code]{$is_download}[/span_code] (TRUE or FALSE)
+* [span_code]{$download_name}[/span_code]
+* [span_code]{$download_size}[/span_code]
+* [span_code]{$feature_image}[/span_code] (full path to the file)
+* [span_code]{$feature_image_url}[/span_code] (URL of the file)
 
 
 Within the product page, the [span_code]{$images}[/span_code] holds an array of all product images (or [span_code]FALSE[/span_code] if none exist).  It can be iterated through like this:
@@ -96,6 +96,18 @@ Usage:
 
 [code]
 You have {cart_items} items in your <a href="{url path="store/cart"}">shopping cart</a>.
+[/code]
+
+[h3]has_cart[/h3]
+
+Only show the content between the tags if the user has 1+ items in their cart.
+
+Usage:
+
+[code]
+{has_cart}
+<a href="{url path="store/cart"}">You have {cart_items} in your cart.</a>
+{/has_cart}
 [/code]
 
 [h3]products (parameters: var, id, collection, sort, sort_dir, limit, offset)[/h3]

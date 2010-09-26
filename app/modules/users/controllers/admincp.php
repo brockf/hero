@@ -239,17 +239,17 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// get subscription
-		$this->load->model('billing/recurring_model');
-		$subscription = $this->recurring_model->GetRecurring($subscription_id);
+		$this->load->model('billing/subscription_model');
+		$subscription = $this->subscription_model->get_subscription($subscription_id);
 		
 		if ($action == 'cancel') {
-			if ($this->recurring_model->CancelRecurring($subscription['id'])) {
+			if ($this->subscription_model->cancel_subscription($subscription['id'])) {
 				$this->notices->SetNotice('Subscription cancelled successfully.');
 			}
 			else {
 				$this->notices->SetError('There was an error cancelling this subscription.');
 			}
-			redirect(site_url('admincp/users/profile/' . $subscription['customer']['internal_id']));
+			redirect(site_url('admincp/users/profile/' . $subscription['user_id']));
 		}
 		elseif ($action == 'update_cc') {
 			redirect(site_url('admincp/billing/update_cc/' . $subscription['id']));

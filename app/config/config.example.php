@@ -22,7 +22,7 @@ $config['base_url']	= "http://www.example.com/";
 |--------------------------------------------------------------------------
 |
 */
-$config['max_recurring_days_from_today'] = 730;
+$config['max_recurring_days_from_today'] = 1095;
 $config['query_result_default_limit'] = 100;
 $config['recurring_charge_failures_allowed'] = 1;
 $config['cron_key'] = '0000000000000000';

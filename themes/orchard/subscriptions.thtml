@@ -5,25 +5,20 @@ Choose Your Subscription - {$smarty.block.parent}
 {block name="content"}
 	<h1>Choose Your Subscription</h1>
 	
-	<form method="post" style="margin-top:15px" action="{* this is the normal method {$plan.add_to_cart} *}jerrysubpurchase/jerrysubpurchase/index">
 	{if !$plans}
 		<p>There are no subscriptions available at this time.</p>
 	{else}
 	<ul class="subscriptions">
 		{foreach $plans as $plan}
-		{if $plan.id != 3}
 		<li>
-			<b><input type="radio" name="plan_id" value="{$plan.id}" /> {$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</b>
-		</li>
-		{/if}
-		{/foreach}
-		<li>
+			<form method="get" style="margin-top:15px" action="{$plan.add_to_cart}">
+			<b>{$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</b>
 			<input type="submit" class="button" name="add_to_cart" value="Subscribe Now" />
+			</form>
 		</li>
+		{/foreach}
 	</ul>
 	{/if}
-	
-	</form>
 	
 	<div class="newsletter_recruit">
 		No, thanks.  <a href="{url path="newsletter"}">Just send me the first few paragraphs of Jerry's column daily</a>.
