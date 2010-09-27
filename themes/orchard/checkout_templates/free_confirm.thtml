@@ -16,7 +16,7 @@
 				{setting name="currency_symbol"}{$totals.order_tax}
 			</li>
 			<li>
-				<label>Total</label>
+				<label>Today's Total</label>
 				{setting name="currency_symbol"}{$totals.order_total}
 			</li>
 			{if $totals.recurring_sub_total}
