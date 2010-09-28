@@ -17,6 +17,11 @@ class Feed extends Front_Controller {
 	}
 	
 	function view ($url_path) {
+		// we may have a URL with "/" in it, so let's combine all the arguments into a URL string
+		$args = func_get_args();
+		$url_path = implode('/',$args);
+		// end URL from arguments code
+		
 		$this->load->model('rss/rss_model');
 		
 		$feed_id = $this->rss_model->get_feed_id($url_path);

@@ -17,6 +17,11 @@ class Form extends Front_Controller {
 	}
 	
 	function view ($url_path) {
+		// we may have a URL with "/" in it, so let's combine all the arguments into a URL string
+		$args = func_get_args();
+		$url_path = implode('/',$args);
+		// end URL from arguments code
+		
 		$this->load->model('forms/form_model');
 		
 		$form_id = $this->form_model->get_form_id($url_path);

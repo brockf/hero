@@ -152,10 +152,10 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 				
 				// is it active?
 				$active = FALSE;
-				if ($link['external_url'] and (current_url() == $url)) {
+				if ($link['external_url'] == TRUE and (current_url() == $url)) {
 					$active = TRUE;
 				}
-				elseif ($smarty->CI->uri->segment(1) == $link['link_url_path']) {
+				elseif ($link['external_url'] == FALSE and $smarty->CI->uri->segment(1) == $link['link_url_path']) {
 					$active = TRUE;
 				}
 				
