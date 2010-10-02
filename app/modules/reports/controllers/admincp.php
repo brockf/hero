@@ -677,5 +677,71 @@ class Admincp extends Admincp_Controller {
 		
 		return TRUE;
 	}
+	
+	function popular () {
+		$this->load->library('dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'Content ID #',
+							'sort_column' => 'id',
+							'type' => 'id',
+							'width' => '10%',
+							'filter' => 'id'),
+						array(
+							'name' => 'Title',
+							'sort_column' => 'content.content_title',
+							'type' => 'text',
+							'width' => '30%',
+							'filter' => 'title'),
+						array(
+							'name' => 'Type',
+							'sort_column' => 'content.content_type_id',
+							'type' => 'text',
+							'width' => '15%',
+							'filter' => 'type'),
+						array(
+							'name' => 'Hits',
+							'sort_column' => 'contents.content_hits',
+							'type' => 'text',
+							'width' => '7%',
+							'filter' => 'hits'),
+						array(
+							'name' => 'Publish Date',
+							'sort_column' => 'content.content_date',
+							'type' => 'date',
+							'width' => '20%',
+							'filter' => 'date',
+							'field_start_date' => 'start_date',
+							'field_end_date' => 'end_date'
+							),
+						array(
+							'name' => '',
+							'width' => '18%'
+							)
+					);
+		
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('publish/content_model','get_contents', array('sort' => 'content.content_hits', 'sort_dir' => 'DESC'));
+		$this->dataset->base_url(site_url('admincp/reports/popular'));
+		$this->dataset->Initialize();
+		
+		$this->load->view('popular');
+	}
+	
+	function content_actions ($action, $id) {
+		$this->load->model('publish/content_model');
+		$content = $this->user_model->get_content($id, TRUE);
+		
+		if ($action == 'edit') {
+			redirect('admincp/publish/edit/' . $content['id']);
+		}
+		if ($action == 'view') {
+			header('Location: ' . $content['url']);
+		}
+		
+		return TRUE;
+	}
+	
 
 }
