@@ -237,7 +237,7 @@ class Dataset {
     		foreach ($this->columns as $column) {
     			if ($column['filters'] == TRUE) {
     				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->set_filters[$column['filter_name']])) {
-    					$this->params_filters[$column['filter_name']] = $this->set_filters[$column['filter_name']];
+    					$this->params_filters[$column['filter_name']] = urldecode($this->set_filters[$column['filter_name']]);
     				}
     				elseif ($column['type'] == 'date' and (isset($this->set_filters[$column['filter_name'] . '_start']) or isset($this->set_filters[$column['filter_name'] . '_end']))) {
     					$this->params_filters[$column['field_start_date']] = (empty($this->set_filters[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->set_filters[$column['filter_name'] . '_start'];
