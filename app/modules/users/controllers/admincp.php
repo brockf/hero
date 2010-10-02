@@ -187,7 +187,11 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// navigation
+		$this->navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
+		
 		$this->navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
+		
+		$this->navigation->module_link('Edit Profile',site_url('admincp/users/edit/' . $user['id']));
 		
 		if ($user['suspended'] != TRUE) {
 			$this->navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
@@ -249,21 +253,21 @@ class Admincp extends Admincp_Controller {
 			else {
 				$this->notices->SetError('There was an error cancelling this subscription.');
 			}
-			redirect(site_url('admincp/users/profile/' . $subscription['user_id']));
+			redirect('admincp/users/profile/' . $subscription['user_id']);
 		}
 		elseif ($action == 'update_cc') {
-			redirect(site_url('admincp/billing/update_cc/' . $subscription['id']));
+			redirect('admincp/billing/update_cc/' . $subscription['id']);
 		}
 		elseif ($action == 'change_plan') {
-			redirect(site_url('admincp/billing/change_plan/' . $subscription['id']));
+			redirect('admincp/billing/change_plan/' . $subscription['id']);
 		}
 		elseif ($action == 'change_price') {
-			redirect(site_url('admincp/billing/change_price/' . $subscription['id']));
+			redirect('admincp/billing/change_price/' . $subscription['id']);
 		}
 		elseif ($action == 'view_all') {
 			$this->load->helper('admincp/dataset_link');
-			$url = dataset_link('admincp/billing/charges', array('recurring_id' => $subscription_id));
-			redirect($url);
+			$url = dataset_link('admincp/reports/invoices', array('subscription_id' => $subscription_id));
+			header('Location: ' . $url);
 		}
 		
 		return TRUE;

@@ -7,7 +7,7 @@ function dataset_link ($url, $filters = array()) {
 	
 	$filters = $CI->asciihex->AsciiToHex(base64_encode(serialize($filters)));
 	
-	$url = site_url($url) . '/' .$filters . '/0';
+	$url = site_url($url) . '?filters=' . $filters;
 	
 	return $url;
 }

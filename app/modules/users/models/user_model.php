@@ -507,7 +507,19 @@ class User_model extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('billing/customer_model');
 		
-		$address = $this->customer_model->GetCustomer($customer_id);
+		$customer = $this->customer_model->GetCustomer($customer_id);
+		
+		$address = array(
+						'first_name' => $customer['first_name'],
+						'last_name' => $customer['last_name'],
+						'company' => $customer['company'],
+						'address_1' => $customer['address_1'],
+						'address_2' => $customer['address_2'],
+						'city' => $customer['city'],
+						'country' => $customer['country'],
+						'postal_code' => $customer['postal_code'],
+						'state' => $customer['state']
+					);
 		
 		return $address;
 	}
@@ -916,24 +928,53 @@ class User_model extends CI_Model
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
 		}
+		
 		if (isset($filters['group'])) {
 			$this->db->where('(user_groups LIKE \'%|' . $filters['group'] . '|%\' or user_groups = \'|' . $filters['group'] . '|\')');
 		}
+		
 		if (isset($filters['suspended'])) {
 			$this->db->where('user_suspended',$filters['suspended']);
 		}
+		
 		if (isset($filters['email'])) {
 			$this->db->like('user_email',$filters['email']);
 		}
+		
 		if (isset($filters['username'])) {
 			$this->db->like('user_username',$filters['username']);
 		}
+		
 		if (isset($filters['name'])) {
-			$this->db->like('user_first_name',$filters['name']);
-			$this->db->or_like('user_last_name',$filters['name']);
+			if (is_numeric($filters['name'])) {
+				// we are passed a member id
+				$this->db->where('users.user_id',$filters['name']);
+			} else {
+				$this->db->like('user_first_name',$filters['name']);
+				$this->db->or_like('user_last_name',$filters['name']);
+			}
 		}
+		
+		if (isset($filters['first_name'])) {
+			$this->db->like('user_first_name',$filters['first_name']);
+		}
+		
+		if (isset($filters['last_name'])) {
+			$this->db->like('user_last_name',$filters['last_name']);
+		}
+		
 		if (isset($filters['is_admin'])) {
 			$this->db->where('users.user_is_admin',$filters['is_admin']);
+		}
+		
+		if (isset($filters['signup_date_start'])) {
+			$date = date('Y-m-d H:i:s', strtotime($filters['signup_date_start']));
+			$this->db->where('users.user_signup_date >=', $date);
+		}
+		
+		if (isset($filters['signup_date_end'])) {
+			$date = date('Y-m-d H:i:s', strtotime($filters['signup_date_end']));
+			$this->db->where('users.user_signup_date <=', $date);
 		}
 		
 		$this->db->where('user_deleted','0');

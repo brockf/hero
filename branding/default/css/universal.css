@@ -364,15 +364,16 @@ ul.module_links a:hover {
 	color: #777;
 }
 
-p.warning {
+p.warning, div.warning {
 	padding-left: 84px;
 	background-image: url(../images/warning64.png);
 	background-repeat: no-repeat;
 	background-position: 0px 5px;
 	min-height: 64px;
+	margin: 15px 0;
 }
 
-p.warning span {
+p.warning span, div.warning span {
 	display: block;
 	border-radius: 10px;
 	-moz-border-radius: 10px;
@@ -388,8 +389,16 @@ table.dataset {
 	width: 100%;
 }
 
+table.dataset.spaced {
+	margin: 15px 0;
+}
+
 table.dataset td {
 	padding: 6px;
+}
+
+table.dataset tr.highlight td {
+	font-weight: bold;
 }
 
 table.dataset thead td{

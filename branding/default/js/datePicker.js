@@ -255,6 +255,7 @@
 								'dateSelected',
 								function(e, selectedDate, $td)
 								{
+									$(this).removeClass('highlight_empty');
 									this.value = selectedDate.asString();
 								}
 							).bind(

@@ -137,6 +137,12 @@ class Dataset {
     	else {
     		$this->set_filters = FALSE;
     	}
+    	
+		if (is_array($this->set_filters)) {
+			foreach ($this->set_filters as $key => $value) {
+				$this->set_filters[$key] = urldecode($value);
+			}
+		}
 		
 		return $this->set_filters;
     }
@@ -237,7 +243,7 @@ class Dataset {
     		foreach ($this->columns as $column) {
     			if ($column['filters'] == TRUE) {
     				if (($column['type'] == 'select' or $column['type'] == 'text' or $column['type'] == 'id') and isset($this->set_filters[$column['filter_name']])) {
-    					$this->params_filters[$column['filter_name']] = urldecode($this->set_filters[$column['filter_name']]);
+    					$this->params_filters[$column['filter_name']] = $this->set_filters[$column['filter_name']];
     				}
     				elseif ($column['type'] == 'date' and (isset($this->set_filters[$column['filter_name'] . '_start']) or isset($this->set_filters[$column['filter_name'] . '_end']))) {
     					$this->params_filters[$column['field_start_date']] = (empty($this->set_filters[$column['filter_name'] . '_start'])) ? '2009-01-01' : $this->set_filters[$column['filter_name'] . '_start'];
@@ -462,10 +468,18 @@ class Dataset {
 					}
 					elseif ($column['type'] == 'date') {
 						$value = (isset($this->set_filters[$column['filter_name'] . '_start'])) ? $this->set_filters[$column['filter_name'] . '_start'] : '';
-						$output .= '<input type="text" class="text date_start datepick" name="' . $column['filter_name'] . '_start" value="' . $value . '" />';
+						
+						if (empty($value)) {
+							$classes = ' mark_empty ';
+						}
+						else {
+							$classes = '';
+						}
+						
+						$output .= '<input type="text" rel="start date" class="' . $classes . 'text date_start datepick" name="' . $column['filter_name'] . '_start" value="' . $value . '" />';
 						
 						$value = (isset($this->set_filters[$column['filter_name'] . '_end'])) ? $this->set_filters[$column['filter_name'] . '_end'] : '';
-						$output .= '<input type="text" class="text date_end datepick" name="' . $column['filter_name'] . '_end" value="' . $value . '" />';
+						$output .= '<input type="text" rel="end date" class="' . $classes . 'text date_end datepick" name="' . $column['filter_name'] . '_end" value="' . $value . '" />';
 					}
 					elseif ($column['type'] == 'select') {
 						$output .= '<select name="' . $column['filter_name'] . '"><option value=""></option>';

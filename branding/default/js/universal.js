@@ -121,6 +121,24 @@ $(document).ready(function() {
 		}
 	});
 	
+	// we may have an embedded drop-down...
+	/*
+		example:
+		
+		<select name="action"><!-- options here --></select>
+		<input type="hidden" name="action_id" value="" />
+		<input type="submit" class="action button" value="Go" />
+	*/
+	$('form#dataset_form input.action').click(function () {
+		var id = $(this).siblings('input[name="action_id"]').val();
+		var action = $(this).siblings('select[name="action"]').val();
+		
+		var form_url = $('#site_url').html() + $(this).attr('rel') + '/' + action + '/' + id;
+		
+		$('form#dataset_form').attr("ACTION",form_url);
+		$('form#dataset_form').submit();
+	});
+	
 	// mark empty fields with the mark_empty script
 	$('form#dataset_form tr.filters input.text').not('.datepick').each(function () {
 		$(this).addClass('mark_empty');
@@ -177,6 +195,13 @@ $(document).ready(function() {
 			// none of this applies
 			return true;
 		}
+		
+		// clear "start date" and "end date" from date fields if empty
+		$(this).find('input.text').each(function() {
+			if ($(this).hasClass('highlight_empty')) {
+				$(this).val('');
+			}
+		});
 	
 		var serialized_filters = $(this).find('tr.filters input.text, tr.filters select').serialize();
 		
