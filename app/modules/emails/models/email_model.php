@@ -19,6 +19,35 @@ class Email_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	/**
+	* Update Layout
+	*
+	* Updates the main email_layout.thtml template.  It will be created if it doesn't exist,
+	*
+	* @param string $html
+	*/
+	function update_layout ($html) {
+		$this->load->helper('file');
+		
+		$filename = setting('path_email_templates') . '/email_layout.thtml';
+		
+		// create file if it doesn't exist
+		if (!file_exists($filename)) {
+			write_file($filename, '');
+		}
+		
+		// update file with $html
+		if (write_file($filename, $html)) {
+			return TRUE;
+		}
+		else {
+			if (!is_writeable($filename)) {
+				die(show_error('email_layout.thtml is not writeable.  Please make sure ' . setting('path_email_templates') . ' and all its file are writeable.'));
+			}
+			return FALSE;
+		}
+	}
+	
 	function new_email ($hook, $parameters = array(), $to = array(), $bcc = array(), $subject, $body, $is_html = TRUE) {
 		$insert_fields = array(
 							'hook_name' => $hook,
@@ -42,8 +71,16 @@ class Email_model extends CI_Model
 		
 		// create template files
 		$this->load->helper('file');
-		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject);
-		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body);
+		if (!write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject)) {
+			if (!is_writeable(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml')) {
+				die(show_error(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml is not writeable.  Please make sure ' . setting('path_email_templates') . ' and all its file are writeable.'));
+			}
+		}
+		if (!write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body)) {
+			if (!is_writeable(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml')) {
+				die(show_error(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml is not writeable.  Please make sure ' . setting('path_email_templates') . ' and all its file are writeable.'));
+			}
+		}
 		
 		// update record
 		$update_fields = array(
@@ -70,9 +107,17 @@ class Email_model extends CI_Model
 		
 		// create template files
 		$this->load->helper('file');
-		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject);
-		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body);
-				
+		if (!write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject)) {
+			if (!is_writeable(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml')) {
+				die(show_error(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml is not writeable.  Please make sure ' . setting('path_email_templates') . ' and all its file are writeable.'));
+			}
+		}
+		if (!write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body)) {
+			if (!is_writeable(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml')) {
+				die(show_error(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml is not writeable.  Please make sure ' . setting('path_email_templates') . ' and all its file are writeable.'));
+			}
+		}
+						
 		return TRUE;
 	}
 	

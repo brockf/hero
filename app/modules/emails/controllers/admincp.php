@@ -19,6 +19,7 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->parent_active('configuration');
 		
 		$this->navigation->module_link('New Email',site_url('admincp/emails/new_email'));
+		$this->navigation->module_link('Edit Global Email Layout',site_url('admincp/emails/email_layout'));
 	}
 	
 	/**
@@ -279,6 +280,46 @@ class Admincp extends Admincp_Controller {
 					);
 				
 		$this->load->view('email_form',$data);
+	}
+	
+	/**
+	* Email layout
+	*/
+	function email_layout () {
+		$this->load->helper('file');
+
+		$layout = read_file(setting('path_email_templates') . '/email_layout.thtml');
+		
+		if ($layout === FALSE) {
+			die(show_error('email_layout.thtml does not exist at ' . setting('path_email_templates') . '.  Please create it and make sure that
+			it is writeable.'));
+		}
+		
+		$this->load->library('admin_form');
+		$form = new Admin_form;
+		
+		$form->fieldset('Email Layout');
+		$form->textarea('Global Email Layout Template','html', htmlspecialchars($layout), 'This layout is used in all other email templates by default.  It uses Smarty markup.', TRUE, FALSE, TRUE, '100%', '300px');
+
+		$data = array(
+					'form' => $form->display(),
+					'form_action' => site_url('admincp/emails/post_email_layout')
+				);
+				
+		$this->load->view('email_layout', $data);
+	}
+	
+	/**
+	* Post Email Layout
+	*/
+	function post_email_layout () {
+		$this->load->model('emails/email_model');
+		
+		$this->email_model->update_layout($this->input->post('html'));
+		
+		$this->notices->SetNotice('Email layout updated successfully.');
+		
+		redirect('admincp/emails/email_layout');
 	}
 	
 	/**
