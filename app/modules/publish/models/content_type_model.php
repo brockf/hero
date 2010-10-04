@@ -12,6 +12,8 @@
 
 class Content_type_model extends CI_Model
 {
+	private $cache;
+	
 	function __construct()
 	{
 		parent::CI_Model();
@@ -211,14 +213,18 @@ class Content_type_model extends CI_Model
 	* @return array $content_type
 	*/
 	function get_content_type ($id) {
+		if (isset($this->cache[$id])) {
+			return $this->cache[$id];
+		}
+		
 		$type = $this->get_content_types(array('id' => $id));
 		
 		if (empty($type)) {
 			return FALSE;
 		}
-		else {
-			return $type[0];
-		}
+		
+		$this->cache[$id] = $type[0];
+		return $type[0];
 	}
 	
 	/*

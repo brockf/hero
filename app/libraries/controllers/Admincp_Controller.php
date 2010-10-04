@@ -70,5 +70,10 @@ class Admincp_Controller extends MY_Controller {
 		}
 		$_SESSION['KCFINDER']['uploadURL'] = $prefix . str_replace(FCPATH,'',setting('path_editor_uploads'));
 		$_SESSION['KCFINDER']['uploadDir'] = rtrim(setting('path_editor_uploads'),'/');
+		
+		// check cronjob is active!
+		if (setting('cron_last_update') == FALSE or ((time() - strtotime(setting('cron_last_update'))) > (60*60*24))) {
+			$this->notices->SetError('WARNING!  Your cronjob is not running properly.  <a href="' . site_url('admincp/reports/cronjob') . '">Click here for details</a>');
+		}
 	}
 }

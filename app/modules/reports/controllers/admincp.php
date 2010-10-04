@@ -19,6 +19,12 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->parent_active('reports');
 	}
 	
+	function cronjob () {
+		$this->navigation->parent_active('configuration');
+		
+		return $this->load->view('cronjob');
+	}
+	
 	function invoices () {
 		$this->load->library('dataset');
 		

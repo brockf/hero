@@ -65,7 +65,6 @@ else {
 $autoload['helper'] = array('ioncube_license',
 							'url',
 							'ssl',
-							'triggertrip',
 							'date',
 							'local_time',
 							'time_since',

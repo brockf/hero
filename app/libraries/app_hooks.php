@@ -1,9 +1,23 @@
 <?php
 
+/**
+* App Hooks Class
+*
+* Handles all email hooks and code hooks ("binds")
+*
+* Important methods:
+*	- register() creates a new potential hook.  it's only run once, as hooks are stored in the DB.
+*	- trigger($name, [$params...]) triggers an active hook.  this may involve sending emails or triggering code via binds.
+* 	- data($type, $id) passes data for emails.  e.g., data('member', $user_id) makes member data available.
+*	- data_var($name, $value) passes non-standard data for emails.  e.g., data_var('download_link', $download_link);
+*	- bind($class, $method) binds code to a hook.  this class:method() will be called with whatever parameters are available.
+*/
+
 class App_hooks {
 	public $CI;
 	public $registered_hooks;
 	public $hooks;
+	public $binds;
 	public $email_data_options;
 	
 	// email data storage
@@ -59,6 +73,19 @@ class App_hooks {
 								'other_email_data' => (!empty($hook['hook_other_email_data'])) ? unserialize($hook['hook_other_email_data']) : ''
 							);
 		}
+		
+		// load binds from database
+		$result = $this->CI->db->get('binds');
+		
+		foreach ($result->result_array() as $bind) {
+			$this->binds[$bind['hook_name']][] = array(
+												'id' => $bind['bind_id'],
+												'hook_name' => $bind['hook_name'],
+												'class' => $bind['bind_class'],
+												'method' => $bind['bind_method'],
+												'filename' => $bind['bind_filename']
+											); 
+		}
 	}
 	
 	function assign_defaults () {
@@ -67,6 +94,44 @@ class App_hooks {
 		$this->CI->smarty_email->assign('setting', $settings);
 		$this->CI->smarty_email->assign('settings', $settings);
 		$this->CI->smarty_email->assign('site_name', setting('site_name'));
+	}
+	
+	/**
+	* Bind
+	*
+	* Binds a method/function a hook
+	*
+	* @param string $hook
+	* @param string $class Set to FALSE for no class
+	* @param string $method
+	* @param string $filename Full path to file, in case it's not already been loaded
+	*
+	* @return int $bind_id
+	*/
+	function bind ($hook, $class = FALSE, $method, $filename) {
+		if (!isset($this->hooks[$hook])) {
+			die(show_error('Attempting to bind to a non-existant hook, "' . $hook . '"'));
+		}
+	
+		$insert_fields = array(
+							'hook_name' => $hook,
+							'bind_class' => (!empty($class)) ? $class : '',
+							'bind_method' => $method,
+							'bind_filename' => $filename,
+							'bind_created' => date('Y-m-d H:i:s')
+						);
+						
+		$bind_id = $this->CI->db->insert('binds', $insert_fields);
+		
+		$this->binds[$hook][] = array(
+								'id' => $bind_id,
+								'hook_name' => $hook,
+								'class' => $class,
+								'method' => $method,
+								'filename' => $filename
+							); 
+		
+		return $bind_id;
 	}
 	
 	/**
@@ -117,8 +182,8 @@ class App_hooks {
 								'id' => $hook_id,
 								'name' => $name,
 								'description' => $description,
-								'email_data' => (empty($email_data)) ? '' : serialize((array)$email_data),
-								'other_email_data' => (empty($other_email_data)) ? '' : serialize((array)$other_email_data),
+								'email_data' => (empty($email_data)) ? '' : (array)$email_data,
+								'other_email_data' => (empty($other_email_data)) ? '' : (array)$other_email_data
 							);
 							
 		return $hook_id;
@@ -303,6 +368,7 @@ class App_hooks {
 	* Other parameters can be passed and they will be sent to latches in their order.
 	*
 	* @param string $name
+	* @params [...$optional_params...]
 	*/
 	function trigger ($name) {
 		// check that hook exists
@@ -330,8 +396,64 @@ class App_hooks {
 			}
 		}
 		
+		// get arguments from parameter, everything after the $name
+		$args = func_get_args();
+		if (count($args) == 1) {
+			// we only have the $name parameter, no additional optional arguments
+			$args = array();
+		}
+		elseif (count($args) > 0) {
+			unset($args[0]);
+			
+			// we have additional arguments, now in the $args parameter
+			// these will be passed to any method/function bind calls
+		}
+		else {
+			$args = array();
+		}
+		
 		// execute code latched to hook
-		// TODO
+		if (isset($this->binds[$hook['name']]) and !empty($this->binds[$hook['name']])) {
+			// we have binds
+			
+			foreach ($this->binds[$hook['name']] as $bind) {
+				$class = $bind['class'];
+				$method = $bind['method'];
+				$lower_class = strtolower($class);
+				
+				if (!empty($class)) {
+					if (isset($this->CI->$lower_class) and is_object($this->CI->$lower_class)) {
+						// it's in the CI superobject
+						
+						call_user_func_array(array($this->CI->$lower_class, $method), $args);
+					}
+					elseif (class_exists($class)) {
+						// the class exists, but no in the CI superobject
+						$bind_class = new $class;
+						call_user_func_array(array($bind_class,$method),$args);
+					}
+					else {
+						// the class isn't loaded, we'll call the file and load it
+						
+						include(FCPATH . $bind['filename']);
+						$bind_class = new $class;
+						call_user_func_array(array($bind_class,$method), $args);
+					}
+				}
+				else {
+					// it's a non-class-bound function
+					if (function_exists($method)) {
+						// the function exists, call it
+						call_user_func_array($method, $args);
+					}
+					else {
+						// file hasn't been loaded, load and call it
+						include(FCPATH . $bind['filename']);
+						call_user_func_array($method, $args);
+					}
+				}
+			}
+		}
 		
 		// send emails based on hook
 		$this->CI->load->model('emails/email_model');
@@ -369,12 +491,6 @@ class App_hooks {
 				}
 			}
 		}
-			
-		// if HTML, we should run nl2br() on all variables
-		
-		// allow parameters by any $this->member, $this->product, etc.
-		
-		// if email_data includes member, the member email is available
 	}
 	
 	/**
@@ -415,7 +531,7 @@ class App_hooks {
 		// To: 
 		$to = array();
 		foreach ($email['recipients'] as $recipient) {
-			if ($recipient == 'member') {
+			if ($recipient == 'member' and $this->member != FALSE) {
 				$to[] = $this->data['member']['email'];
 			}
 			elseif ($recipient == 'admin') {
@@ -446,10 +562,6 @@ class App_hooks {
 			}
 		}
 		
-		if (!empty($bcc)) {
-			$this->CI->email->bcc($bcc);
-		}
-		
 		// From: 
 		$this->CI->email->from(setting('site_email'), setting('email_name'));
 		
@@ -477,6 +589,17 @@ class App_hooks {
 		
 		// Send!
 		$this->CI->email->send();
+		$this->CI->email->clear();
+		
+		// Send BCC
+		if (!empty($bcc)) {
+			$this->CI->email->to($bcc);
+			$this->CI->email->from(setting('site_email'), setting('email_name'));
+			$this->CI->email->subject($subject);
+			$this->CI->email->message($body);
+			$this->CI->email->send();
+			$this->CI->email->clear();
+		}
 		
 		return TRUE;
 	}

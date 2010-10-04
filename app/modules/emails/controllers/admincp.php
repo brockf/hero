@@ -101,7 +101,7 @@ class Admincp extends Admincp_Controller {
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
 		
 		foreach ($emails as $email) {
-			$this->email_model->DeleteEmail($email);
+			$this->email_model->delete_email($email);
 		}
 		
 		$this->notices->SetNotice('Email deleted successfully.');

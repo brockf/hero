@@ -38,5 +38,7 @@ class Reports_module extends Module {
 		$this->CI->navigation->child_link('reports',60,'Taxes Received',site_url('admincp/reports/taxes'));
 		$this->CI->navigation->child_link('reports',70,'Registrations',site_url('admincp/reports/registrations'));
 		$this->CI->navigation->child_link('reports',80,'Popular Content',site_url('admincp/reports/popular'));
+		
+		$this->CI->navigation->child_link('configuration',100,'Cronjob',site_url('admincp/reports/cronjob'));
 	}
 }

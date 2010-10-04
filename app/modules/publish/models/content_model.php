@@ -12,6 +12,8 @@
 
 class Content_model extends CI_Model
 {
+	private $cache;
+	
 	function __construct()
 	{
 		parent::CI_Model();
@@ -290,6 +292,12 @@ class Content_model extends CI_Model
 	* @return array $content
 	*/
 	function get_content ($content_id, $allow_future = FALSE) {
+		$cache_id = $content_id;
+		$cache_id .= ($allow_future == FALSE) ? '_0' : '_1';
+		if (isset($this->cache[$cache_id])) {
+			return $this->cache[$cache_id];
+		}
+	
 		$filters = array('id' => $content_id);
 		
 		if ($allow_future == TRUE) {
@@ -302,6 +310,7 @@ class Content_model extends CI_Model
 			return FALSE;
 		}
 		
+		$this->cache[$cache_id] = $content[0];
 		return $content[0];
 	}
 	
