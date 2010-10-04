@@ -326,7 +326,7 @@ class Admincp extends Admincp_Controller {
 							'name' => 'Status',
 							'width' => '12%',
 							'type' => 'select',
-							'options' => array('recurring' => 'Recurring', 'will_expire' => 'Will Expire', 'expired' => 'Expire', 'renewed' => 'Renewed', 'updated' => 'Updated CC'),
+							'options' => array('recurring' => 'Recurring', 'will_expire' => 'Will Expire', 'expired' => 'Expired', 'renewed' => 'Renewed', 'updated' => 'Updated CC'),
 							'filter' => 'status'
 							),
 						array(
@@ -656,7 +656,7 @@ class Admincp extends Admincp_Controller {
 					);
 		
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('users/user_model','get_users');
+		$this->dataset->datasource('users/user_model','get_users', array('sort' => 'users.user_signup_date', 'sort_dir' => 'DESC'));
 		$this->dataset->base_url(site_url('admincp/reports/registrations'));
 		$this->dataset->Initialize();
 		
