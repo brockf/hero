@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.02';
+	var $version = '1.04';
 	var $name = 'emails';
 
 	function __construct () {
@@ -55,28 +55,67 @@ class Emails extends Module {
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
-		if ($db_version < 1.02) {
+		if ($db_version < 1.04) {
+			// initial import of template files
+			
 			$this->CI->load->helper('file');
+			$layout_file = read_file(APPPATH . 'modules/emails/template_import/email_layout.thtml');
+			write_file(setting('path_email_templates') . '/email_layout.thtml', $layout_file);
 			
-			$body = '<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
-<head>
-<style>
-h1 { background-color: #e6f2f8; color: #0b5679; font-size: 18pt; font-weight: normal; font-family: helvetica, arial, sans-serif; margin: 0 0 10px 0; padding: 7px 10px }
-div.body { padding: 10px; font-size: 10pt; font-family: helvetica, arial, sans-serif; color: #111; }
-</head>
-<body>
-<div class="body">
-	{block name="body"}
-	
-	{/block}
-</div>
-</body>
-</html>';
-			
-			write_file(setting('path_email_templates') . '/email_layout.thtml', $body);
+			$import = array(
+						'member_register' => array('subject' => '{$site_name}: Account Details', 'to' => array('member')),
+						'member_forgot_password' => array('subject' => 'Your new password', 'to' => array('member')),
+						'member_validate_email' => array('subject' => 'Please validate your email', 'to' => array('member')),
+						'subscription_charge' => array('subject' => '{$site_name}: Thank you for your subscription payment', 'to' => array('member'), 'bcc' => array('admin')),
+						'subscription_expire' => array('subject' => '{$site_name}: Your subscription has expired', 'to' => array('member')),
+						'store_order' => array('subject' => 'Thank you for your order from {$site_name}', 'to' => array('member'), 'bcc' => array('admin')),
+						'store_order_product_downloadable' => array('subject' => 'Your product download: {$product.name}', 'to' => array('member'))
+					);
+		
+			$this->_email_import($import);
 		}
 		
 		return $this->version;
+	}
+	
+	/**
+	* Email Import
+	*
+	* Imports emails and their template files from the template_import/ directory and an array
+	*/
+	function _email_import($import) {
+		$this->CI->load->helper('file');
+		
+		foreach ($import as $hook => $details) {
+			$subject = $details['subject'];
+			$to = $details['to'];
+			$bcc = isset($details['bcc']) ? $details['bcc'] : array();
+			
+			if (file_exists(APPPATH . 'modules/emails/template_import/' . $hook . '.thtml')) {
+				$insert_fields = array(
+									'hook_name' => $hook,
+									'email_parameters' => serialize(array()),
+									'email_subject' => $subject,
+									'email_recipients' => serialize($to),
+									'email_bccs' => serialize($bcc),
+									'email_is_html' => '1'
+								);
+								
+				$this->CI->db->insert('emails', $insert_fields);
+				
+				$email_id = $this->CI->db->insert_id();
+				
+				// get body
+				$body = read_file(APPPATH . 'modules/emails/template_import/' . $hook . '.thtml');
+				
+				// write files
+				$subject_template = $hook . '_' . $email_id . '_subject.thtml';
+				write_file(setting('path_email_templates') . '/' . $subject_template, $subject);
+				$body_template = $hook . '_' . $email_id . '_body.thtml';
+				write_file(setting('path_email_templates') . '/' . $body_template, $body);
+				
+				$this->CI->db->update('emails', array('email_body_template' => $body_template, 'email_subject_template' => $subject_template), array('email_id' => $email_id));
+			}
+		}
 	}
 }

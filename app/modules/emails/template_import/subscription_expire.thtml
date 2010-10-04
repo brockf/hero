@@ -1,0 +1,11 @@
+{extends file="email_layout.thtml"}
+		
+{block name="body"}
+
+<p>Hi {$member.first_name},</p>
+
+<p>Your subscription to {$subscription_plan.name} has expired at {$site_name}.  If this expiration was in error, you may re-subscribe at any time by <a href="{url}">visiting {$site_name}</a>.</p>
+
+<p>If you would like to view your invoices, manage your other subscriptions, or update your account, please visit {url path="users/"}.</p>
+
+{/block}
