@@ -714,14 +714,22 @@ class User_model extends CI_Model
 		
 		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		
+		// prep hook
+		$this->app_hooks->data('member', $user_id);
+		$this->app_hooks->data_var('password', $password);
+		
 		// trip the validation email?
 		if (!empty($validate_key)) {
 			$validation_link = site_url('users/validate/' . $validate_key);
-			TriggerTrip('validate_email', FALSE, FALSE, $customer_id, FALSE, array('validation_link' => $validation_link, 'validation_code' => $validate_key));
+			
+			$this->app_hooks->data_var('validation_link', $validation_link);
+			$this->app_hooks->data_var('validation_code', $validate_key);
+			
+			$this->app_hooks->trigger('member_validate_email');
 		}
 		
-		// trip the new member email
-		TriggerTrip('new_member',FALSE,FALSE,$customer_id,FALSE,array('password' => $password));
+		$this->app_hooks->trigger('member_register');
+		$this->app_hooks->reset();
 		
 		return $user_id;
 	}
@@ -813,6 +821,12 @@ class User_model extends CI_Model
 	*/
 	function delete_user ($user_id) {
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
+		
+		// hook call
+		$this->app_hooks->data('member', $user_id);
+		$this->app_hooks->trigger('member_delete');
+		$this->app_hooks->reset();
+		
 		return TRUE;
 	}
 	
@@ -850,17 +864,12 @@ class User_model extends CI_Model
 		$password = random_string('alnum',9);
 		$this->db->update('users',array('user_password' => md5($password)),array('user_id' => $user['id']));
 	
-		$this->db->where('customer_id',$user['customer_id']);
-		$result = $this->db->get('customers');
+		// hook call
+		$this->app_hooks->data('member', $user['id']);
+		$this->app_hooks->data_var('new_password', $password);
 		
-		if ($result->num_rows() == 0) {
-			return FALSE;
-		}
-		
-		$customer = $result->row_array();
-	
-		// send the email
-		TriggerTrip('forgot_password', FALSE, FALSE, $customer['customer_id'], FALSE, array('new_password' => $password));
+		$this->app_hooks->trigger('member_forgot_password');
+		$this->app_hooks->reset();
 		
 		return TRUE;
 	}
@@ -874,6 +883,12 @@ class User_model extends CI_Model
 	*/
 	function suspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '1'),array('user_id' => $user_id));
+		
+		// hook call
+		$this->app_hooks->data('member', $user_id);
+		$this->app_hooks->trigger('member_suspend');
+		$this->app_hooks->reset();
+		
 		return TRUE;
 	}
 	
@@ -886,6 +901,12 @@ class User_model extends CI_Model
 	*/
 	function unsuspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '0'),array('user_id' => $user_id));
+		
+		// hook call
+		$this->app_hooks->data('member', $user_id);
+		$this->app_hooks->trigger('member_suspend');
+		$this->app_hooks->reset();
+		
 		return TRUE;
 	}
 	
@@ -1128,7 +1149,7 @@ class User_model extends CI_Model
 	/*
 	* Delete User Custom Field
 	*
-	* Delete custom field record and modify database
+	* ge custom field record and modify database
 	*
 	* @param int $id The ID of the field
 	* @param string|boolean The database table to reflect the changes, else FALSE

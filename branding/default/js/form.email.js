@@ -1,58 +1,41 @@
 $(document).ready(function () {
-	// to_address: move check on textbox focus
-	$('#to_address_email').focus(function() {
-		$('[name="to_address"][value="email"]').attr('checked',true);
-	});
-	
-	// bcc_address: move check on textbox focus
-	$('#bcc_address_email').focus(function() {
-		$('[name="bcc_address"][value="email"]').attr('checked',true);
-	});
-	
-	// html toggle
-	// do toggle if is_html == 1
-	if ($('#is_html').val() == '1') {
-		$('#email_body').wysiwyg();
-	}
-	
-	// make it HTML if they click the link
-	$('#make_html').click(function() {
-		$('#email_body').ckeditor(function() { }, { toolbar : "Basic" });
-		$('#is_html').val('1');
+	$('input#add_param').click(function() {
+		$('li.no_params').hide();
 		
-		$(this).remove();
-		return false;
-	});
+		var param_options = $('select#parameter_options').html();
+		var operator_options = $('select#operator_options').html();
+		
+		$(this).parent().before('<li><select class="param" name="param[]">' + param_options + '</select>&nbsp;&nbsp;<select name="operator[]">' + operator_options + '</select>&nbsp;&nbsp;' + '<input type="text" class="text value" name="param_value[]" />&nbsp;&nbsp;&nbsp;(<a class="delete_param" href="#">remove</a>)</li>');
+		
+		bind_params();
+	});	
 	
-	// pull available variables on trigger toggle
-	$('#trigger').change(function() {
-		if ($(this).val() != '') {
-			$.get($('#base_url').html()+'emails/show_variables/'+$(this).val(),
-			  function(data){
-			    $('#email_variables').html(data);
-			  });
-			  
-			if ($(this).val() < 9) {
-				$('.subscription_link').show();
-			}
-			else {
-				$('.subscription_link').hide();
-			}
-		}	  
-	});
-	
-	// handle preset trigger
-	if ($('#trigger').val() != '') {
-		$.get($('#base_url').html()+'emails/show_variables/'+$('#trigger').val(),
-		  function(data){
-		    $('#email_variables').html(data);
-		  });
-		  
-		if ($('#trigger').val() < 9) {
-			$('.subscription_link').show();
+	bind_params();
+});
+
+function bind_params () {
+	$('select.param').change(function() {
+		if ($(this).val() == 'product') {
+			var product_options = $('select#product_options').html();
+			$(this).siblings('.value').replaceWith('<select name="param_value[]" class="value">' + product_options + '</select>');
+		}
+		else if ($(this).val() == 'subscription_plan') {
+			var plan_options = $('select#plan_options').html();
+			$(this).siblings('.value').replaceWith('<select name="param_value[]" class="value">' + plan_options + '</select>');
 		}
 		else {
-			$('.subscription_link').hide();
+			$(this).siblings('.value').replaceWith('<input type="text" class="value text" name="param_value[]" />');
 		}
-	}
-});
+	});
+	
+	$('a.delete_param').click(function() {
+		$(this).parent().remove();
+		
+		// are we out of params?
+		if ($('select.param').length == 0) {
+			$('li.no_params').show();
+		}
+		
+		return false;
+	});
+}

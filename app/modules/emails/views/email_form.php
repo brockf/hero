@@ -4,63 +4,140 @@
 
 if (!isset($form)) {
 	$form = array(
-				'trigger' => '',
-				'to_address' => 'user',
-				'bcc_address' => '',
-				'email_subject' => '',
-				'email_body' => '',
-				'plan' => '',
-				'is_html' => '0'
+				'recipients' => array(),
+				'other_recipients' => '',
+				'parameters' => array(),
+				'bccs' => array(),
+				'other_bccs' => '',
+				'subject' => '',
+				'body' => '',
+				'is_html' => TRUE
 			);
 
 } ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.email.js') . '"></script>
-<script type="text/javascript" src="' . branded_include('js/ckeditor/ckeditor.js') . '"></script> 
-<script type="text/javascript" src="' . branded_include('js/ckeditor/adapters/jquery.js') . '"></script>'));?>
+<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.email.js') . '"></script>'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_email" method="post" action="<?=$form_action;?>">
+<? if (isset($form['id'])) { ?>
+	<input type="hidden" name="email_id" value="<?=$form['id'];?>" />
+<? } ?>
 <fieldset>
-	<legend>System Information</legend>
+	<legend>Hook</legend>
 	<ul class="form">
 		<li>
-			<label for="trigger">Trigger</label>
-			<select id="trigger" class="required" name="trigger">
-				<option <? if ($form['trigger'] == '') { ?> selected="selected" <? } ?> value=""></option>
-				<? foreach ($triggers as $trigger) { ?>
-				<option <? if ($form['trigger'] == $trigger['system_name']) {?> selected="selected" <? } ?> value="<?=$trigger['email_trigger_id'];?>"><?=$trigger['human_name'];?></option>
-				<? } ?>
-			</select>
+			<label for="trigger">Hook</label>
+			<?=$hook['name'];?>
+			<input type="hidden" name="hook" value="<?=$hook['name'];?>" />
 		</li>
 		<li>
-			<div class="help">This system action will trigger this email.</div>
-		</li>
-		<li class="subscription_link">
-			<label for="plan">Subscription Link</label>
-			<select id="plan" name="plan">
-				<option <? if ($form['plan'] == '0') { ?> selected="selected" <? } ?>  value="">All subscriptions</option>
-				<? foreach ($plans as $plan) { ?>
-				<option  <? if ($form['plan'] == $plan['id']) { ?> selected="selected" <? } ?> value="<?=$plan['id'];?>">Subscription: <?=$plan['name'];?></option>
-				<? } ?>
-			</select>
-		</li>
-		<li class="subscription_link">
-			<div class="help">(If applicable - Optional) Only send when the action relates to the subscription plan(s) above.</div>
+			<div class="help"><?=$hook['description'];?></div>
 		</li>
 	</ul>
 </fieldset>
 <fieldset>
-	<legend>Send To</legend>
+	<legend>Parameters</legend>
 	<ul class="form">
 		<li>
-			<label for="to_address_email">Send to</label>
-			<input <? if ($form['to_address'] == 'user') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="user" />&nbsp;User&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['to_address'] != 'user') { ?>checked="checked" <? } ?>type="radio" class="required" id="to_address" name="to_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="to_address_email" name="to_address_email" <? if ($form['to_address'] != 'user' and $form['to_address'] != '') { ?> value="<?=$form['to_address'];?>" <? } ?> />
+			Specify <b>Parameters</b> that must be met for this email to be sent out.
+		</li>
+		<? if (empty($form['parameters'])) { ?>
+			<li class="no_params">
+				You have not selected any parameters.			
+			</li>
+		<? } else { ?>
+			<? foreach ($form['parameters'] as $param => $param_value) { ?>
+				<li>
+				<?
+					list($param,$operator) = explode(' ',$param);
+					if (empty($operator)) {
+						$operator = '==';
+					}
+					else {
+						$operator = trim($operator);
+					}
+					
+					$param = trim($param);
+				?>
+					<select name="param[]" class="param">
+						<? foreach ($hook['email_data'] as $param2) { ?>
+							<option <? if ($param2 == $param) { ?> selected="selected" <? } ?> value="<?=$param2;?>"><?=str_replace('_',' ',ucfirst($param2));?></option>
+						<? } reset($hook['email_data']); ?>
+					</select>
+					&nbsp;&nbsp;
+					<select class="operator" name="operator[]">
+						<option <? if ($operator == '==') { ?> selected="selected" <? } ?> value="==">equals</option>
+						<option <? if ($operator == '!=') { ?> selected="selected" <? } ?> value="!=">does not equal</option>
+					</select>
+					&nbsp;
+					&nbsp;
+					<? if ($param == 'product') { ?>
+						<select class="value" name="param_value[]">
+							<? foreach ($products as $product) { ?>
+								<option <? if ($product == $param_value) { ?> selected="selected" <? } ?> value="<?=$product['id'];?>"><?=$product['name'];?></option>
+							<? } reset($products); ?>
+						</select>
+					<? } elseif ($param == 'plan') { ?>
+						<select class="value" name="param_value[]">
+							<? foreach ($plans as $plan) { ?>
+								<option <? if ($plan == $param_value) { ?> selected="selected" <? } ?> value="<?=$plan['id'];?>"><?=$plan['name'];?></option>
+							<? } reset($products); ?>
+						</select>
+					<? } else { ?>
+						<input type="text" class="text value" name="param_value[]" value="<?=$param_value;?>" />
+					<? } ?>
+					&nbsp;&nbsp;(<a href="#" class="delete_param">remove</a>)
+					</li>
+			<? } ?>
+		<? } ?>
+		<li>
+			<input type="button" class="button" id="add_param" value="Add Parameter" />
+		</li>
+	</ul>
+	<select style="display:none" id="operator_options">
+		<option value="==">equals</option>
+		<option value="!=">does not equal</option>
+	</select>
+	<select style="display:none" id="parameter_options">
+		<option value=""></option>
+		<? foreach ($hook['email_data'] as $param) { ?>
+			<option value="<?=$param;?>"><?=str_replace('_',' ',ucfirst($param));?></option>
+		<? } ?>
+	</select>
+	<select style="display:none" id="product_options">
+		<? foreach ($products as $product) { ?>
+			<option value="<?=$product['id'];?>"><?=$product['name'];?></option>
+		<? } ?>
+	</select>
+	<select style="display:none" id="plan_options">
+		<? foreach ($plans as $plan) { ?>
+			<option value="<?=$plan['id'];?>"><?=$plan['name'];?></option>
+		<? } ?>
+	</select>
+</fieldset>
+<fieldset>
+	<legend>Recipients</legend>
+	<ul class="form">
+		<li>
+			<label>To:</label>
+			<? if (in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="to_member" value="1" <? if (in_array('member', $form['recipients'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
+			<input type="checkbox" name="to_admin" value="1" <? if (in_array('admin', $form['recipients'])) { ?> checked="checked" <? } ?> /> Administrator
+			&nbsp;&nbsp;&nbsp;Others: <input type="text" style="width: 450px" name="to_others" class="text mark_empty" rel="e.g., tom@example.com, bill@otherdomain.com" value="<?=$form['other_recipients'];?>" />
 		</li>
 		<li>
-			<label for="bcc_address_email">BCC</label>
-			<input <? if ($form['bcc_address'] == '') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="" />&nbsp;None&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['bcc_address'] == 'site_email') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="site_email" />&nbsp;<?=setting('site_email');?>&nbsp;&nbsp;&nbsp;
-			<input <? if ($form['bcc_address'] != 'site_email' and $form['bcc_address'] != '') { ?>checked="checked" <? } ?>type="radio" id="bcc_address" name="bcc_address" value="email" />&nbsp;<input type="text" class="text email mark_empty" rel="email@example.com" id="bcc_address_email" name="bcc_address_email" <? if ($form['bcc_address'] != 'site_email' and $form['bcc_address'] != '') { ?> value="<?=$form['bcc_address'];?>" <? } ?> />
+			<div class="help">
+				Select the recipients for this email.  Besides either the member or the site administrator, you can also enter other email addresses separated by a comma.
+			</div>
+		</li>
+		<li>
+			<label>BCC:</label>
+			<? if (in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="bcc_member" value="1" <? if (in_array('member', $form['bccs'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
+			<input type="checkbox" name="bcc_admin" value="1" <? if (in_array('member', $form['bccs'])) { ?> checked="checked" <? } ?> /> Administrator
+			&nbsp;&nbsp;&nbsp;Others: <input type="text" style="width: 450px" name="bcc_others" class="text mark_empty" rel="e.g., tom@example.com, bill@otherdomain.com" value="<?=$form['other_bccs'];?>" />
+		</li>
+		<li>
+			<div class="help">
+				Select (BCC) recipients for this email, same format as above.
+			</div>
 		</li>
 	</ul>
 </fieldset>
@@ -71,14 +148,16 @@ if (!isset($form)) {
 			<label for="email_subject" class="full">Email Subject</label>
 		</li>
 		<li>
-			<input type="text" class="text full required" id="email_subject" name="email_subject" value="<?=$form['email_subject'];?>" />
+			<input type="text" class="text full required" id="subject" name="subject" value="<?=$form['subject'];?>" />
 		</li>
 		<li>
-			<label for="email_body" class="full">Email Body</label><? if ($form['is_html'] == '0') { ?> <a href="#" id="make_html">use HTML format</a><? } ?>
-			<input type="hidden" name="is_html" id="is_html" value="<?=$form['is_html'];?>" autocomplete="off" />
+			<input type="checkbox" name="is_html" value="1" <? if ($form['is_html'] == TRUE) { ?> checked="checked" <? } ?> /> Send the email in HTML format
 		</li>
 		<li>
-			<textarea class="full required" id="email_body" name="email_body"><?=$form['email_body'];?></textarea>
+			<label for="email_body" class="full">Email Body</label>
+		</li>
+		<li>
+			<textarea class="full required" id="body" name="body"><?=$form['body'];?></textarea>
 		</li>
 		<li>
 			<div id="email_variables">

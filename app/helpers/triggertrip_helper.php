@@ -2,6 +2,8 @@
 
 function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE, $customer_id = FALSE, $order_id = FALSE, $other_variables = array())
 {
+	return FALSE;
+	
 	$CI =& get_instance();
 	$CI->load->model('emails/email_model');
 	
@@ -59,7 +61,7 @@ function TriggerTrip($trigger_type, $charge_id = FALSE, $subscription_id = FALSE
     }
     
     // does this trigger have a usergroup move?
-    if ($trigger_type == 'new_subscription' and !empty($plan_id) and isset($user)) {
+    if (($trigger_type == 'new_subscription' or $trigger_type == 'subscription_charge') and !empty($plan_id) and isset($user)) {
     	$CI->load->model('billing/subscription_plan_model');
     	$sub_plan = $CI->subscription_plan_model->get_plan_from_api_plan_id($plan_id);
     	

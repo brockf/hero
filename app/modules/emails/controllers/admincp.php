@@ -38,68 +38,39 @@ class Admincp extends Admincp_Controller {
 							'width' => '5%',
 							'filter' => 'id'),
 						array(
-							'name' => 'Trigger',
-							'sort_column' => 'emails.trigger',
+							'name' => 'Hook',
+							'sort_column' => 'emails.hook',
 							'type' => 'text',
 							'width' => '20%',
 							'filter' => 'trigger'),
 						array(
-							'name' => 'To:',
-							'width' => '15%',
-							'sort_column' => 'emails.to_address',
-							'filter' => 'to_address',
-							'type' => 'text'),
+							'name' => 'Parameters',
+							'width' => '15%'
+							),
+						array(
+							'name' => 'To',
+							'width' => '15%'
+							),
 						array(
 							'name' => 'Email Subject',
-							'sort_column' => 'emails.email_subject',
-							'type' => 'text',
-							'width' => '25%',
-							'filter' => 'email_subject'),
+							'width' => '25%'
+							),
 						array(
 							'name' => 'Format',
-							'width' => '5%')
+							'width' => '10%'),
+						array(
+							'name' => '',
+							'width' => '10%'
+						)
 					);
-		
-		// handle recurring plans if they exist
-		$this->load->model('billing/plan_model');
-		$plans = $this->plan_model->GetPlans();
-		
-		$options = array();
-		if ($plans) {
-			// build $options
-			$options['-1'] = 'No plans.';
-			$options['0'] = 'All plans.';
-			while (list(,$plan) = each($plans)) {
-				$options[$plan['id']] = $plan['name'];
-			}
-			
-			$columns[] = array(
-							'name' => 'Plan Link',
-							'type' => 'select',
-							'options' => $options,
-							'filter' => 'plan_id',
-							'width' => '14%'
-							);
-		}
-		else {
-			$columns[] = array(
-				'name' => 'Plan Link',
-				'width' => '14%'
-				);
-		}
-		
-		$columns[] = array(
-						'name' => '',
-						'width' => '6%'
-				);
 				
 		$this->dataset->columns($columns);
-		$this->dataset->datasource('email_model','GetEmails');
+		$this->dataset->datasource('email_model','get_emails');
 		$this->dataset->base_url(site_url('admincp/emails'));
 		$this->dataset->rows_per_page(1000);
 		
 		// total rows
-		$this->db->where('active', 1);
+		$this->db->where('email_deleted', '0');
 		$total_rows = $this->db->get('emails')->num_rows(); 
 		$this->dataset->total_rows($total_rows);
 		
@@ -109,7 +80,7 @@ class Admincp extends Admincp_Controller {
 		// add actions
 		$this->dataset->action('Delete','admincp/emails/delete_emails');
 		
-		$this->load->view('emails.php', array('plans' => $options));
+		$this->load->view('emails');
 	}
 	
 	/**
@@ -146,76 +117,128 @@ class Admincp extends Admincp_Controller {
 	*
 	* @return true Passes to view
 	*/
-	function new_email ()
-	{
-		define('INCLUDE_CKEDITOR',TRUE);
+	function new_email () {
+		$data = array(
+					'hooks' => $this->app_hooks->get_hooks(),
+					'form_action' => site_url('admincp/emails/new_email_2')
+					);
+				
+		$this->load->view('select_hook',$data);
+	}
+	
+	/**
+	* New Email Step 2
+	*
+	* Create a new email
+	*
+	* @return true Passes to view
+	*/
+	function new_email_2 () {
+		$this->load->model('billing/subscription_plan_model');
+		$this->load->model('store/products_model');
 		
-		$this->load->model('email_model');
-		$this->load->model('billing/plan_model');
-		
-		$triggers = $this->email_model->GetTriggers();
-		$plans = $this->plan_model->GetPlans();
-		
-		if ($plans === FALSE) { 
-			$plans = array();
-		}
+		$plans = $this->subscription_plan_model->get_plans();
+		$products = $this->products_model->get_products();
 		
 		$data = array(
-					'triggers' => $triggers,
+					'hook' => $this->app_hooks->get_hook($this->input->get('hook')),
+					'products' => $products,
 					'plans' => $plans,
 					'form_title' => 'Create New Email',
 					'form_action' => site_url('admincp/emails/post_email/new')
 					);
 				
-		$this->load->view('email_form.php',$data);
+		$this->load->view('email_form',$data);
 	}
 	
 	/**
 	* Handle New/Edit Email Post
 	*/
 	function post_email ($action, $id = false) {		
-		if ($this->input->post('email_body') == '') {
-			$this->notices->SetError('Email Body is a required field.');
-			$error = true;
-		}
-		elseif ($this->input->post('email_subject') == '') {
-			$this->notices->SetError('Email Subject is a required field.');
-			$error = true;
-		}
+		// build values
+		$hook = $this->input->post('hook');
 		
-		if (isset($error)) {
-			if ($action == 'new') {
-				redirect('admincp/emails/new_email');
-				return false;
+		// to:
+		$to = array();
+		if ($this->input->post('to_member') == '1') {
+			$to[] = 'member';
+		}
+		if ($this->input->post('to_admin') == '1') {
+			$to[] = 'admin';
+		}
+		if ($this->input->post('to_others')) {
+			$others = explode(',', $this->input->post('to_others'));
+			foreach ($others as $email) {
+				$email = trim($email);
+				if (!empty($email)) {
+					$to[] = $email;
+				}
 			}
-			else {
-				redirect('admincp/emails/edit_email/' . $id);
-			}	
 		}
 		
-		$params = array(
-						'email_subject' => $this->input->post('email_subject',true),
-						'email_body' => $this->input->post('email_body',true),
-						'from_name' => '',
-						'from_email' => '',
-						'plan' => $this->input->post('plan',true),
-						'is_html' => $this->input->post('is_html',true),
-						'to_address' => ($this->input->post('to_address') == 'email') ? $this->input->post('to_address_email') : 'user',
-						'bcc_address' => ($this->input->post('bcc_address') == 'site_email' or $this->input->post('bcc_address') == '') ? $this->input->post('bcc_address',true) : $this->input->post('bcc_address_email')
-					);
-					
-		if ($params['bcc_address'] == 'email@example.com') {
-			$params['bcc_address'] = '';
+		// bcc:
+		$bcc = array();
+		if ($this->input->post('bcc_member') == '1') {
+			$bcc[] = 'member';
 		}
-				
+		if ($this->input->post('bcc_admin') == '1') {
+			$bcc[] = 'admin';
+		}
+		if ($this->input->post('bcc_others')) {
+			$others = explode(',', $this->input->post('bcc_others'));
+			foreach ($others as $email) {
+				$email = trim($email);
+				if (!empty($email)) {
+					$bcc[] = $email;
+				}
+			}
+		}
+		
+		// parameters
+		$parameters = array();
+		$params = isset($_POST['param']) ? $_POST['param'] : FALSE;
+		if (!empty($params)) {
+			foreach ($params as $key => $param) {
+				if (!empty($_POST['param_value'][$key])) {
+					$parameters[$param . ' ' . $_POST['operator'][$key]] = $_POST['param_value'][$key];
+				}
+			}
+		}
+		
+		// is_html
+		$is_html = ($this->input->post('is_html') == '1') ? TRUE : FALSE;
+		
+		// content
+		$subject = $this->input->post('subject');
+		$body = $this->input->post('body');
+			
 		$this->load->model('email_model');
 		
 		if ($action == 'new') {
-			$email_id = $this->email_model->SaveEmail($this->input->post('trigger'), $params);
+			$email_id = $this->email_model->new_email(
+													$hook,
+													$parameters,
+													$to,
+													$bcc,
+													$subject,
+													$body,
+													$is_html
+												);
+												
 			$this->notices->SetNotice('Email added successfully.');
 		}
 		else {
-			$this->email_model->UpdateEmail($id, $params, $this->input->post('trigger'));
+			$email_id = $this->email_model->update_email(
+													$this->input->post('email_id'),
+													$hook,
+													$parameters,
+													$to,
+													$bcc,
+													$subject,
+													$body,
+													$is_html
+												);
+
 			$this->notices->SetNotice('Email edited successfully.');
 		}
 		
@@ -234,30 +257,28 @@ class Admincp extends Admincp_Controller {
 	* @return string The email form view
 	*/
 	function edit_email($id) {
-		define('INCLUDE_CKEDITOR',TRUE);
+		$this->load->model('billing/subscription_plan_model');
+		$this->load->model('store/products_model');
+		$this->load->model('emails/email_model');
 		
-		$this->load->model('email_model');
-		$this->load->model('billing/plan_model');
+		$email = $this->email_model->get_email($id);
+		$plans = $this->subscription_plan_model->get_plans();
+		$products = $this->products_model->get_products();
 		
-		$triggers = $this->email_model->GetTriggers();
-		$plans = $this->plan_model->GetPlans();
-		
-		if ($plans === FALSE) { 
-			$plans = array();
-		}
-		
-		// preload form variables
-		$email = $this->email_model->GetEmail($id);
+		// get email body from template file
+		$this->load->helper('file');
+		$email['body'] = read_file(setting('path_email_templates') . '/' . $email['body_template']);
 		
 		$data = array(
-					'triggers' => $triggers,
+					'hook' => $this->app_hooks->get_hook($email['hook']),
+					'products' => $products,
 					'plans' => $plans,
 					'form' => $email,
 					'form_title' => 'Edit Email',
 					'form_action' => site_url('admincp/emails/post_email/edit/' . $email['id'])
 					);
 				
-		$this->load->view('email_form.php',$data);
+		$this->load->view('email_form',$data);
 	}
 	
 	/**

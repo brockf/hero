@@ -301,77 +301,6 @@ INSERT INTO `custom_field_groups` (`custom_field_group_id`, `custom_field_group_
 
 -- --------------------------------------------------------
 
--- 
--- Table structure for table `email_triggers`
--- 
-
-CREATE TABLE `email_triggers` (
-  `email_trigger_id` int(11) NOT NULL auto_increment,
-  `system_name` varchar(50) NOT NULL,
-  `human_name` varchar(50) NOT NULL,
-  `description` varchar(255) NOT NULL,
-  `available_variables` text NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  PRIMARY KEY  (`email_trigger_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 AUTO_INCREMENT=11 ;
-
--- 
--- Dumping data for table `email_triggers`
--- 
-
-INSERT INTO `email_triggers` (`email_trigger_id`, `system_name`, `human_name`, `description`, `available_variables`, `active`) VALUES
-(1, 'subscription_charge', 'Subscription Payment', 'Subsequent recurring charges (all but the first charge).', 'a:28:{i:0;s:6:"amount";i:1;s:4:"date";i:2;s:9:"charge_id";i:3;s:14:"card_last_four";i:4;s:15:"subscription_id";i:5;s:23:"subscription_start_date";i:6;s:21:"subscription_end_date";i:7;s:24:"subscription_expiry_date";i:8;s:29:"subscription_next_charge_date";i:9;s:19:"subscription_amount";i:10;s:7:"plan_id";i:11;s:9:"plan_name";i:12;s:18:"billing_first_name";i:13;s:17:"billing_last_name";i:14;s:15:"billing_company";i:15;s:17:"billing_address_1";i:16;s:17:"billing_address_2";i:17;s:12:"billing_city";i:18;s:13:"billing_state";i:19;s:19:"billing_postal_code";i:20;s:15:"billing_country";i:21;s:9:"member_id";i:22;s:17:"member_first_name";i:23;s:16:"member_last_name";i:24;s:12:"member_email";i:25;s:15:"member_username";i:26;s:12:"account_link";i:27;s:9:"site_link";}', 1),
-(2, 'subscription_expire', 'Subscription Expiration', 'Subscription ends gracefully at expiration date with max_occurrences/end_date limitation', 'a:14:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:19:"subscription_amount";i:5;s:7:"plan_id";i:6;s:9:"plan_name";i:7;s:9:"member_id";i:8;s:17:"member_first_name";i:9;s:16:"member_last_name";i:10;s:12:"member_email";i:11;s:15:"member_username";i:12;s:12:"account_link";i:13;s:9:"site_link";}', 1),
-(3, 'subscription_cancel', 'Subscription Cancellation', 'Subscription ends with an explicit CancelRecurring call.  Not a graceful expiration.', 'a:14:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:19:"subscription_amount";i:5;s:7:"plan_id";i:6;s:9:"plan_name";i:7;s:9:"member_id";i:8;s:17:"member_first_name";i:9;s:16:"member_last_name";i:10;s:12:"member_email";i:11;s:15:"member_username";i:12;s:12:"account_link";i:13;s:9:"site_link";}', 1),
-(4, 'subscription_expiring_in_week', 'Subscription to Expire in a Week', 'Subscription will expire in one week.', 'a:24:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:29:"subscription_next_charge_date";i:5;s:19:"subscription_amount";i:6;s:7:"plan_id";i:7;s:9:"plan_name";i:8;s:18:"billing_first_name";i:9;s:17:"billing_last_name";i:10;s:15:"billing_company";i:11;s:17:"billing_address_1";i:12;s:17:"billing_address_2";i:13;s:12:"billing_city";i:14;s:13:"billing_state";i:15;s:19:"billing_postal_code";i:16;s:15:"billing_country";i:17;s:9:"member_id";i:18;s:17:"member_first_name";i:19;s:16:"member_last_name";i:20;s:12:"member_email";i:21;s:15:"member_username";i:22;s:12:"account_link";i:23;s:9:"site_link";}', 1),
-(5, 'subscription_expiring_in_month', 'Subscription to Expire in a Month', 'Subscription will expire in one month.', 'a:24:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:29:"subscription_next_charge_date";i:5;s:19:"subscription_amount";i:6;s:7:"plan_id";i:7;s:9:"plan_name";i:8;s:18:"billing_first_name";i:9;s:17:"billing_last_name";i:10;s:15:"billing_company";i:11;s:17:"billing_address_1";i:12;s:17:"billing_address_2";i:13;s:12:"billing_city";i:14;s:13:"billing_state";i:15;s:19:"billing_postal_code";i:16;s:15:"billing_country";i:17;s:9:"member_id";i:18;s:17:"member_first_name";i:19;s:16:"member_last_name";i:20;s:12:"member_email";i:21;s:15:"member_username";i:22;s:12:"account_link";i:23;s:9:"site_link";}', 1),
-(6, 'subscription_autorecur_in_week', 'Subscription to Autocharge in a Week', 'Subscription will Autocharge in one week.', 'a:24:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:29:"subscription_next_charge_date";i:5;s:19:"subscription_amount";i:6;s:7:"plan_id";i:7;s:9:"plan_name";i:8;s:18:"billing_first_name";i:9;s:17:"billing_last_name";i:10;s:15:"billing_company";i:11;s:17:"billing_address_1";i:12;s:17:"billing_address_2";i:13;s:12:"billing_city";i:14;s:13:"billing_state";i:15;s:19:"billing_postal_code";i:16;s:15:"billing_country";i:17;s:9:"member_id";i:18;s:17:"member_first_name";i:19;s:16:"member_last_name";i:20;s:12:"member_email";i:21;s:15:"member_username";i:22;s:12:"account_link";i:23;s:9:"site_link";}', 1),
-(7, 'subscription_autorecur_in_month', 'Subscription to Autocharge in a Month', 'Subscription will Autocharge in one month.', 'a:24:{i:0;s:15:"subscription_id";i:1;s:23:"subscription_start_date";i:2;s:21:"subscription_end_date";i:3;s:24:"subscription_expiry_date";i:4;s:29:"subscription_next_charge_date";i:5;s:19:"subscription_amount";i:6;s:7:"plan_id";i:7;s:9:"plan_name";i:8;s:18:"billing_first_name";i:9;s:17:"billing_last_name";i:10;s:15:"billing_company";i:11;s:17:"billing_address_1";i:12;s:17:"billing_address_2";i:13;s:12:"billing_city";i:14;s:13:"billing_state";i:15;s:19:"billing_postal_code";i:16;s:15:"billing_country";i:17;s:9:"member_id";i:18;s:17:"member_first_name";i:19;s:16:"member_last_name";i:20;s:12:"member_email";i:21;s:15:"member_username";i:22;s:12:"account_link";i:23;s:9:"site_link";}', 1),
-(8, 'new_subscription', 'New Subscription', 'A new subscription is started.', 'a:28:{i:0;s:6:"amount";i:1;s:4:"date";i:2;s:9:"charge_id";i:3;s:14:"card_last_four";i:4;s:15:"subscription_id";i:5;s:23:"subscription_start_date";i:6;s:21:"subscription_end_date";i:7;s:24:"subscription_expiry_date";i:8;s:29:"subscription_next_charge_date";i:9;s:19:"subscription_amount";i:10;s:7:"plan_id";i:11;s:9:"plan_name";i:12;s:18:"billing_first_name";i:13;s:17:"billing_last_name";i:14;s:15:"billing_company";i:15;s:17:"billing_address_1";i:16;s:17:"billing_address_2";i:17;s:12:"billing_city";i:18;s:13:"billing_state";i:19;s:19:"billing_postal_code";i:20;s:15:"billing_country";i:21;s:9:"member_id";i:22;s:17:"member_first_name";i:23;s:16:"member_last_name";i:24;s:12:"member_email";i:25;s:15:"member_username";i:26;s:12:"account_link";i:27;s:9:"site_link";}', 1),
-(9, 'new_store_order', 'New Store Order', 'A customer purchases one or more products from the storefront.', 'a:29:{i:0;s:6:"amount";i:1;s:4:"date";i:2;s:9:"charge_id";i:3;s:14:"card_last_four";i:4;s:18:"billing_first_name";i:5;s:17:"billing_last_name";i:6;s:15:"billing_company";i:7;s:17:"billing_address_1";i:8;s:17:"billing_address_2";i:9;s:12:"billing_city";i:10;s:13:"billing_state";i:11;s:19:"billing_postal_code";i:12;s:15:"billing_country";i:13;s:19:"shipping_first_name";i:14;s:18:"shipping_last_name";i:15;s:16:"shipping_company";i:16;s:18:"shipping_address_1";i:17;s:18:"shipping_address_2";i:18;s:13:"shipping_city";i:19;s:14:"shipping_state";i:20;s:20:"shipping_postal_code";i:21;s:16:"shipping_country";i:22;s:9:"member_id";i:23;s:17:"member_first_name";i:24;s:16:"member_last_name";i:25;s:12:"member_email";i:26;s:15:"member_username";i:27;s:12:"account_link";i:28;s:9:"site_link";}', 1),
-(10, 'downloadable_product', 'Downloadable Product Purchase', 'A customer purchases a downloadable product, delivered via email.', 'a:18:{i:0;s:9:"member_id";i:1;s:17:"member_first_name";i:2;s:16:"member_last_name";i:3;s:12:"member_email";i:4;s:15:"member_username";i:5;s:13:"download_link";i:6;s:12:"product_name";i:7;s:19:"shipping_first_name";i:8;s:18:"shipping_last_name";i:9;s:16:"shipping_company";i:10;s:18:"shipping_address_1";i:11;s:18:"shipping_address_2";i:12;s:13:"shipping_city";i:13;s:14:"shipping_state";i:14;s:20:"shipping_postal_code";i:15;s:16:"shipping_country";i:16;s:12:"account_link";i:17;s:9:"site_link";}', 1),
-(11, 'new_member', 'Member Registration', 'A new user registers for a member account.', 'a:8:{i:0;s:9:"member_id";i:1;s:17:"member_first_name";i:2;s:16:"member_last_name";i:3;s:12:"member_email";i:4;s:15:"member_username";i:5;s:8:"password";i:6;s:12:"account_link";i:7;s:9:"site_link";}', 1),
-(12, 'forgot_password', 'Forgot Password', 'A user requests a new password because they forgot theirs.', 'a:8:{i:0;s:9:"member_id";i:1;s:17:"member_first_name";i:2;s:16:"member_last_name";i:3;s:12:"member_email";i:4;s:15:"member_username";i:5;s:12:"new_password";i:6;s:12:"account_link";i:7;s:9:"site_link";}', 1),
-(13, 'validate_email', 'Validate Email', 'During registration, a user must validate their email prior to continuing.', 'a:9:{i:0;s:9:"member_id";i:1;s:17:"member_first_name";i:2;s:16:"member_last_name";i:3;s:12:"member_email";i:4;s:15:"member_username";i:5;s:12:"account_link";i:6;s:9:"site_link";i:7;s:15:"validation_link";i:8;s:15:"validation_code";}', 1);
-
--- --------------------------------------------------------
-
--- 
--- Table structure for table `emails`
--- 
-
-CREATE TABLE `emails` (
-  `email_id` int(11) NOT NULL auto_increment,
-  `trigger_id` int(11) NOT NULL,
-  `plan_id` int(11) NOT NULL,
-  `to_address` varchar(255) NOT NULL,
-  `bcc_address` varchar(255) default NULL,
-  `email_subject` varchar(255) NOT NULL,
-  `email_body` text NOT NULL,
-  `from_name` varchar(50) NOT NULL,
-  `from_email` varchar(255) NOT NULL,
-  `is_html` tinyint(1) NOT NULL,
-  `bcc_client` tinyint(1) NOT NULL,
-  `active` tinyint(1) NOT NULL,
-  PRIMARY KEY  (`email_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
-
--- 
--- Dumping data for table `emails`
--- 
-
-INSERT INTO `emails` (`email_id`, `trigger_id`, `plan_id`, `to_address`, `bcc_address`, `email_subject`, `email_body`, `from_name`, `from_email`, `is_html`, `bcc_client`, `active`) VALUES (1, 1, 0, 'user', 'site_email', 'Thank you for your subscription payment to [[SITE_NAME]]', 'Hello [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for your subscription payment!  You were charged $[[AMOUNT]] on [[DATE]].\r\n\r\nYou will be charged again on [[SUBSCRIPTION_NEXT_CHARGE_DATE]].\r\n\r\nTo review your complete billing history or manage your subscriptions, visit [[SITE_LINK]].', '', '', 0, 0, 1),
-(2, 2, 0, 'user', 'site_email', 'Your subscription has expired at [[SITE_NAME]]', 'Hello [[MEMBER_FIRST_NAME]],\r\n\r\nYour subscription to [[PLAN_NAME]] at [[SITE_NAME]] has expired.  There will be no future charges for this subscription.\r\n\r\nTo review your complete billing history or add a new subscription to your account, visit [[SITE_LINK]].', '', '', 0, 0, 1),
-(3, 3, 0, 'user', 'site_email', 'You have cancelled your subscription at [[SITE_NAME]]', 'Hello [[MEMBER_FIRST_NAME]],\r\n\r\nYour subscription to [[PLAN_NAME]] has been cancelled successfully.  You will not be charged again.\r\n\r\nTo review your complete billing history or manage your subscriptions, visit [[SITE_LINK]].', '', '', 0, 0, 1),
-(4, 8, 0, 'user', 'site_email', 'You are now subscribed to [[PLAN_NAME]]', 'Hi [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for subscribing to [[PLAN_NAME]]!  We really appreciate it.\r\n\r\nYou have been charged $[[AMOUNT]] today and will be charged $[[SUBSCRIPTION_AMOUNT]] again on [[SUBSCRIPTION_NEXT_CHARGE_DATE]].\r\n\r\nTo login to your account and manage your profile and subscriptions, visit [[ACCOUNT_LINK]].', '', '', 0, 0, 1),
-(5, 9, 0, 'user', 'site_email', 'Thank you for your order from [[SITE_NAME]]!', 'Hello [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for your order from [[SITE_NAME]]!  You were charged $[[AMOUNT]] on [[DATE]].\r\n\r\nIf your product is a downloadable product, you will receive an email very shortly with a download link.\r\n\r\nIf your product is being shipped, we have your shipping address and the package will be sent soon.\r\n\r\nTo manage your profile or see your billing history, please visit [[ACCOUNT_LINK]].\r\n\r\nThanks again!', '', '', 0, 0, 1),
-(6, 10, 0, 'user', '', 'Download your purchase from [[SITE_NAME]]', 'Hello [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for purchasing from [[SITE_NAME]].\r\n\r\nYou may now download your purchase, [[PRODUCT_NAME]], from:\r\n\r\n[[DOWNLOAD_LINK]]\r\n\r\nTo manage your profile or see your billing history, please visit [[ACCOUNT_LINK]].\r\n\r\nThanks again!', '', '', 0, 0, 1),
-(7, 11, 0, 'user', 'site_email', 'Your account registration at [[SITE_NAME]]', 'Hi [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for registering for an account at [[SITE_NAME]]!\r\n\r\nYour login information is below:\r\n\r\nUsername: [[MEMBER_USERNAME]]\r\nEmail: [[MEMBER_EMAIL]]\r\nPassword: [[PASSWORD]]\r\n\r\nYou may login now at [[SITE_LINK]].', '', '', 0, 0, 1),
-(8, 12, 0, 'user', '', 'Your password has been reset at [[SITE_NAME]]', 'Hi [[MEMBER_FIRST_NAME]],\r\n\r\nYour password has been reset at [[SITE_NAME]].\r\n\r\nYour new login information is below:\r\n\r\nUsername: [[MEMBER_USERNAME]]\r\nEmail: [[MEMBER_EMAIL]]\r\nPassword: [[NEW_PASSWORD]]\r\n\r\nYou may login now at [[SITE_LINK]].', '', '', 0, 0, 1),
-(9, 13, 0, 'user', '', 'Please validate your account email at [[SITE_NAME]]', 'Hi [[MEMBER_FIRST_NAME]],\r\n\r\nThank you for registering for an account at [[SITE_NAME]].\r\n\r\nTo continue using your account, we need to validate that the email address associated with your account is active.  To validate your email, simply click the link below:\r\n\r\n[[VALIDATION_LINK]]', '', '', 0, 0, 1);
-
--- --------------------------------------------------------
-
 CREATE TABLE IF NOT EXISTS `links` (
 	 `link_id` int(11) NOT NULL auto_increment,
 	 `link_topics` varchar(255),
@@ -426,7 +355,7 @@ INSERT INTO `settings` (`setting_group`, `setting_name`, `setting_value`, `setti
 (1, 'ssl_certificate', '0', 'If you have an SSL certificate for your domain installed, this setting will force sensitive information to be transferred via HTTPS.', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}', '0'),
 (2, 'default_gateway', '0', 'This payment gateway, referenced by ID, will be the default gateway for site purchases.', NOW(), 'text', '', '0'),
 (1, 'locale', 'US', 'Some payment gateways and other integrations require this 2-character ISO-standard country code to determine your locale.', NOW(), 'text', '', '0'),
-(1, 'email_signature', 'Sincerely,\nThe [[SITE_NAME]] Team\n[[SITE_LINK]]', 'If this setting is set, it will be attached to each outgoing email', NOW(), 'textarea', '', '0'),
+(1, 'email_signature', '', 'If this setting is set, it will be attached to each outgoing email', NOW(), 'textarea', '', '0'),
 (1, 'use_time_since', '1', 'Should we display dates within 24 hours as "X minutes/hours ago"?', NOW(), 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}', '0'),
 (1, 'date_format', 'd-M-Y h:ia', 'The default format (in PHP date() style) for system dates.', NOW(), 'text', '', '0');
 

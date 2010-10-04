@@ -17,6 +17,141 @@ class Email_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	function new_email ($hook, $parameters = array(), $to = array(), $bcc = array(), $subject, $body, $is_html = TRUE) {
+		$insert_fields = array(
+							'hook_name' => $hook,
+							'email_parameters' => serialize($parameters),
+							'email_subject' => $subject,
+							'email_recipients' => serialize($to),
+							'email_bccs' => serialize($bcc),
+							'email_is_html' => $is_html
+						);
+						
+		$this->db->insert('emails', $insert_fields);
+		
+		$email_id = $this->db->insert_id();
+		
+		// add the standard formatting to the body
+		$body = '{extends file="email_layout.thtml"}
+		
+{block name="body"}' . "\n\n" . $body . "\n\n" . '{/block}';
+		
+		// create template files
+		$this->load->helper('file');
+		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject);
+		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body);
+		
+		// update record
+		$update_fields = array(
+						'email_subject_template' => $hook . '_' . $email_id . '_subject.thtml',
+						'email_body_template' => $hook . '_' . $email_id . '_body.thtml'
+						);
+						
+		$this->db->update('emails', $update_fields, array('email_id' => $email_id));
+				
+		return $email_id;
+	}
+	
+	function update_email ($email_id, $hook, $parameters = array(), $to = array(), $bcc = array(), $subject, $body, $is_html = TRUE) {
+		$update_fields = array(
+							'hook_name' => $hook,
+							'email_parameters' => serialize($parameters),
+							'email_subject' => $subject,
+							'email_recipients' => serialize($to),
+							'email_bccs' => serialize($bcc),
+							'email_is_html' => $is_html
+						);
+						
+		$this->db->update('emails', $update_fields, array('email_id' => $email_id));
+		
+		// create template files
+		$this->load->helper('file');
+		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_subject.thtml', $subject);
+		write_file(setting('path_email_templates') . '/' . $hook . '_' . $email_id . '_body.thtml', $body);
+				
+		return TRUE;
+	}
+	
+	function get_email ($email_id) {
+		$email = $this->get_emails(array('id' => $email_id));
+		
+		if (empty($email)) {
+			return FALSE;
+		}
+		
+		return $email[0];
+	}
+	
+	function get_emails ($filters = array()) {
+		if (isset($filters['hook'])) {
+			$this->db->where('hook_name', $filters['hook']);
+		}
+		
+		if (isset($filters['id'])) {
+			$this->db->where('email_id', $filters['id']);
+		}
+	
+		$this->db->where('email_deleted','0');
+		$result = $this->db->get('emails');
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		$emails = array();
+		foreach ($result->result_array() as $email) {
+			$recipients = unserialize($email['email_recipients']);
+			$bccs = unserialize($email['email_bccs']);
+			
+			$other_recipients = array();
+			foreach ($recipients as $to) {
+				if ($to != 'member' and $to != 'admin') {
+					$other_recipients[] = $to;
+				}
+			}
+			$other_recipients = implode(', ', $other_recipients);
+			
+			$other_bccs = array();
+			foreach ($bccs as $bcc) {
+				if ($bcc != 'member' and $bcc != 'admin') {
+					$other_bccs[] = $bcc;
+				}
+			}
+			$other_bccs = implode(', ', $bccs);
+			
+			$parameters = (!empty($email['email_parameters'])) ? unserialize($email['email_parameters']) : FALSE;
+			
+			$parameters_string = array();
+
+			if (!empty($parameters)) {
+				foreach ($parameters as $param => $value) {
+					$parameters_string[] = '[' . $param . ' ' . $value . ']';
+				}
+			}
+			$parameters_string = implode(', ', $parameters_string);
+		
+			$emails[] = array(
+								'id' => $email['email_id'],
+								'hook' => $email['hook_name'],
+								'parameters' => $parameters,
+								'parameters_string' => $parameters_string,
+								'subject' => $email['email_subject'],
+								'subject_template' => $email['email_subject_template'],
+								'body_template' => $email['email_body_template'],
+								'recipients' => $recipients,
+								'bccs' => $bccs,
+								'is_html' => ($email['email_is_html'] == '1') ? TRUE : FALSE,
+								'other_recipients' => $other_recipients,
+								'other_bccs' => $other_bccs
+							);
+		}
+		
+		return $emails;
+	}
+	
+	
+	/*********************************** OLD CRAPPY CODE **********************************************/
+	
 	/**
 	* Get Email Trigger ID
 	*

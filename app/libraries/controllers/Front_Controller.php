@@ -12,6 +12,10 @@ class Front_Controller extends MY_Controller {
 		
 		// load Smarty template engine and configure it
 		$this->load->library('smarty');
+		$this->smarty->initialize();
+		
+		// init hooks
+		$this->load->library('app_hooks');
 		
 		// load all modules with control panel to build navigation, etc.
 		$directory = APPPATH . 'modules/';

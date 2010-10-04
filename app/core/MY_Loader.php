@@ -297,9 +297,9 @@ class MY_Loader extends CI_Loader
 			if (is_dir(APPPATH . 'modules/' . $module)) {
 				// this is a module
 				if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
-					include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
-					
 					$CI =& get_instance();
+					
+					include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
 					
 					// because of a name conflict, this may be called Modulename_module
 					if (class_exists($module . '_module')) {

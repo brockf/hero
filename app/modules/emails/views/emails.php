@@ -8,11 +8,11 @@ if (!empty($this->dataset->data)) {
 		<tr>
 			<td><input type="checkbox" name="check_<?=$row['id'];?>" value="1" class="action_items" /></td>
 			<td><?=$row['id'];?></td>
-			<td><?=$row['trigger'];?></td>
-			<td><?=$row['to_address'];?></td>
-			<td><?=$row['email_subject'];?></td>
-			<td><? if ($row['is_html'] == 0) { ?>plaintext<? } else { ?>HTML<? } ?></td>
-			<td><? if (isset($plans[$row['plan']])) { ?><?=$plans[$row['plan']];?><? } ?></td>
+			<td><?=$row['hook'];?></td>
+			<td><?=$row['parameters_string'];?></td>
+			<td><?=implode(', ', $row['recipients']);?></td>
+			<td><?=$row['subject'];?></td>
+			<td><? if ($row['is_html'] == TRUE) { ?>HTML<? } else { ?>plaintext<? } ?></td>
 			<td class="options"><a href="<?=site_url('admincp/emails/edit_email/' . $row['id']);?>">edit</a></td>
 		</tr>
 	<?

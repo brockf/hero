@@ -40,6 +40,9 @@ class Admincp_Controller extends MY_Controller {
 		$this->load->helper('directory');
 		$this->load->helper('form');
 		$this->load->helper('admincp/admin_link');
+		
+		// init hooks
+		$this->load->library('app_hooks');
 	
 		// load all modules with control panel to build navigation, etc.
 		$directory = APPPATH . 'modules/';

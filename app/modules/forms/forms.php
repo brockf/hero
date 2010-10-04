@@ -12,8 +12,8 @@
 */
 
 class Forms_module extends Module {
-	var $version = '1.0';
-	var $name = 'forms';
+	public $version = '1.0';
+	public $name = 'forms';
 
 	function __construct () {
 		// set the active module

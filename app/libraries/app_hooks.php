@@ -1,6 +1,6 @@
 <?php
 
-class System_hooks {
+class App_hooks {
 	public $CI;
 	public $registered_hooks;
 	public $hooks;
@@ -42,7 +42,10 @@ class System_hooks {
 		
 		// load Smarty email parser
 		$this->CI->load->library('smarty');
-		$this->CI->smarty_email = new CI_Smarty(TRUE);
+		$this->CI->smarty_email = new CI_Smarty;
+		$this->CI->smarty_email->initialize(TRUE);
+		
+		$this->assign_defaults();
 		
 		// load hooks from database
 		$result = $this->CI->db->get('hooks');
@@ -56,6 +59,35 @@ class System_hooks {
 								'other_email_data' => (!empty($hook['hook_other_email_data'])) ? unserialize($hook['hook_other_email_data']) : ''
 							);
 		}
+	}
+	
+	function assign_defaults () {
+		$settings = $this->CI->config->config;
+		
+		$this->CI->smarty_email->assign('setting', $settings);
+		$this->CI->smarty_email->assign('settings', $settings);
+		$this->CI->smarty_email->assign('site_name', setting('site_name'));
+	}
+	
+	/**
+	* Get Hooks
+	*
+	* @return array Hooks
+	*/
+	function get_hooks () {
+		ksort($this->hooks);
+		return $this->hooks;
+	}
+	
+	/**
+	* Get Hook
+	*
+	* @param string $name
+	*
+	* @return array Hooks
+	*/
+	function get_hook ($name) {
+		return $this->hooks[$name];
 	}
 	
 	/**
@@ -79,7 +111,7 @@ class System_hooks {
 							'hook_created' => date('Y-m-d H:i:s')
 						);
 		
-		$hook_id = $this->CI->db->insert('register');						
+		$hook_id = $this->CI->db->insert('hooks', $insert_fields);						
 		
 		$this->hooks[$name] = array(
 								'id' => $hook_id,
@@ -174,6 +206,8 @@ class System_hooks {
 			$this->product = $product['id'];
 		}
 		elseif ($type == 'invoice') {
+			$this->CI->load->helper('format_street_address');
+			
 			// check for cross-reference
 			if ($this->invoice == $id) {
 				return TRUE;
@@ -235,7 +269,7 @@ class System_hooks {
 			}
 		
 			$this->CI->load->model('billing/subscription_plan_model');
-			$subscription_plan = $this->CI->subscription_plan_model->get_subscription_plan($id);
+			$subscription_plan = $this->CI->subscription_plan_model->get_plan($id);
 			
 			if (empty($subscription_plan)) {
 				die(show_error('Trigger Data: Unable to load data for subscription plan #' . $id));
@@ -244,7 +278,7 @@ class System_hooks {
 			$this->data_var('subscription_plan', $subscription_plan);
 			
 			// save ID
-			$this->subscription_plan = $subscription['id'];
+			$this->subscription_plan = $subscription_plan['id'];
 		}
 		
 		return TRUE;
@@ -310,7 +344,21 @@ class System_hooks {
 				// do we have parameters to meet?
 				if (!empty($email['parameters'])) {
 					foreach ($email['parameters'] as $param => $value) {
-						if ($this->$param != $value) {
+						// get operator
+						list($param,$operator) = explode(' ',$param);
+						if (empty($operator)) {
+							$operator = '==';
+						}
+						else {
+							$operator = trim($operator);
+						}
+						
+						$param = trim($param);
+					
+						if ($operator == '==' and $this->$param != $value) {
+							$send_email = FALSE;
+						}
+						elseif ($operator == '!=' and $this->$param == $value) {
 							$send_email = FALSE;
 						}
 					}
@@ -333,7 +381,7 @@ class System_hooks {
 	* Clear All Data and Variables from Hook
 	*/
 	function reset () {
-		$this->CI->smarty_email->clear_all_assign();
+		$this->CI->smarty_email->clearAllAssign();
 		$this->smarty_assigned = FALSE;
 		
 		// clear data
@@ -343,6 +391,8 @@ class System_hooks {
 			$this->$option = FALSE;
 		}
 		reset($this->email_data_options);
+		
+		$this->assign_defaults();
 		
 		return TRUE;
 	} 
@@ -407,9 +457,10 @@ class System_hooks {
 			// assign variables to smarty
 			foreach ($this->data as $k => $v) {
 				// if HTML, let's run nl2br()
-				if ($email['is_html'] == TRUE) {
+				if ($email['is_html'] == TRUE and !is_array($v)) {
 					$v = nl2br($v);
 				}
+				
 				$this->CI->smarty_email->assign($k, $v);
 			}
 			

@@ -13,20 +13,40 @@ class CI_Smarty extends Smarty {
 	var $CI;
 	var $perpetual_data; // holds data from looping block plugins
 
-	function __construct() {
+	function __construct ($email_parser = FALSE) {
 		parent::__construct();
-		
+	}
+	
+	/**
+	* Initialize
+	*
+	* @param boolean $email_parser If this is the template parser for outgoing emails, set to TRUE
+	*							   This overrides certain features of the parser.
+	*/
+	function initialize ($email_parser = FALSE) {
 		// store CI within Smarty's object
 		$this->CI =& get_instance();
 		
 		// specify directories
 		$this->setCompileDir(FCPATH . 'writeable/templates_compile');
 		$this->setCacheDir(FCPATH . 'writeable/templates_cache');
-		$this->setTemplateDir(FCPATH . 'themes/' . $this->CI->config->item('current_theme'));
+		
+		if ($email_parser == FALSE) {
+			$this->setTemplateDir(FCPATH . 'themes/' . $this->CI->config->item('current_theme'));
+		}
+		else {
+			$this->setTemplateDir(setting('path_email_templates'));
+		}
 		
 		// plugin directories
 		$this->addPluginsDir(FCPATH . 'themes/_plugins/');
-		$this->addPluginsDir(FCPATH . 'themes/' . $this->CI->config->item('current_theme') . '/plugins');
+		
+		if ($email_parser == FALSE) {
+			$this->addPluginsDir(FCPATH . 'themes/' . $this->CI->config->item('current_theme') . '/plugins');
+		}
+		else {
+			$this->addPluginsDir(setting('path_email_templates') . '/plugins');
+		}
 		
 		// set global template variables
 		$this->assign('APPPATH',APPPATH);
@@ -35,16 +55,20 @@ class CI_Smarty extends Smarty {
 		
 		// put settings into template variables
 		$settings = $this->CI->config->config;
+		
 		$this->assign('setting', $settings);
+		$this->assign('settings', $settings);
 		
-		// assign current URL to variable
-		$this->assign('current_url',current_url());
-		
-		// are we loggedin
-		$this->assign('logged_in',($this->CI->user_model->logged_in() ? TRUE : FALSE));
-		
-		// user data
-		$this->assign('member', $this->CI->user_model->get());
+		if ($email_parser == FALSE) {
+			// assign current URL to variable
+			$this->assign('current_url',current_url());
+			
+			// are we loggedin
+			$this->assign('logged_in',($this->CI->user_model->logged_in() ? TRUE : FALSE));
+			
+			// user data
+			$this->assign('member', $this->CI->user_model->get());
+		}
 	}
 	
 	// modify the display class

@@ -43,8 +43,8 @@ if (file_exists(APPPATH . 'config/database.php')) {
 	$autoload['libraries'] = array('database',
 								   'session',
 								   'auto_updater',
-								   'email',
 								   'module',
+								   'email',
 								   'response' // for OpenGateway compatibility
 								);
 }

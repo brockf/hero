@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.05';
+	var $version = '1.07';
 	var $name = 'users';
 
 	function __construct () {
@@ -127,6 +127,22 @@ class Users_module extends Module {
 		if ($db_version < 1.05) {
 			$this->CI->settings_model->new_setting(3, 'registration_redirect', 'users/', 'Redirect to this address after a user registers.  Can be an absolute or relative URL.', 'text', '');
 			$this->CI->settings_model->new_setting(3, 'show_subscriptions', '1', 'After a registration, should we redirect to subscription packages (if they exist)?  If this redirect doesn\'t happen, the "registration_redirect" setting will be used.', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+		}
+		
+		if ($db_version < 1.06) {
+			$this->CI->load->library('app_hooks');
+		
+			$this->CI->app_hooks->register('member_register','A new member account is created.',array('member'),array('password'));
+			$this->CI->app_hooks->register('member_validate_email','A member must validate their email address after registration.',array('member'),array('validation_link','validation_code'));
+			$this->CI->app_hooks->register('member_forgot_password','A member requests a new password via the "Forgot Password" feature.',array('member'),array('new_password'));
+		}
+		
+		if ($db_version < 1.07) {
+			$this->CI->load->library('app_hooks');
+			
+			$this->CI->app_hooks->register('member_suspend','A member account is suspended.',array('member'));
+			$this->CI->app_hooks->register('member_unsuspend','A member account is unsuspended.',array('member'));
+			$this->CI->app_hooks->register('member_delete','A member account is deleted.',array('member'));
 		}
 		
 		// return current version
