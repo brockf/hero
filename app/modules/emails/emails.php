@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.04';
+	var $version = '1.05';
 	var $name = 'emails';
 
 	function __construct () {
@@ -73,6 +73,24 @@ class Emails extends Module {
 					);
 		
 			$this->_email_import($import);
+		}
+		
+		if ($db_version < 1.05) {
+			// mail queue
+			$this->CI->db->query('CREATE TABLE `mail_queue` (
+								  `mail_queue_id` int(11) NOT NULL auto_increment,
+								  `to` TEXT NOT NULL,
+								  `subject` TEXT NOT NULL,
+								  `body` TEXT NOT NULL,
+								  `date` DATETIME NOT NULL,
+								  `wordwrap` TINYINT(1) NOT NULL,
+								  `is_html` TINYINT(1) NOT NULL,
+								  PRIMARY KEY  (`mail_queue_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								
+			$this->load->library('app_hooks');
+			
+			$this->app_hooks->bind('cron','email_model','mail_queue',APPPATH . 'modules/emails/models/email_model.php');
 		}
 		
 		return $this->version;

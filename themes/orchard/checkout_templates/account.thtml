@@ -22,7 +22,7 @@
 				<input type="submit" class="button" name="continue" value="Continue with Checkout" />
 			</li>
 			<li class="indent">
-				<a href="{url path="user/forgot_password"}">Forgotten your password?</a>
+				<a href="{url path="users/forgot_password"}">Forgotten your password?</a>
 			</li>
 		</ul>
 	</fieldset>

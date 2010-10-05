@@ -524,6 +524,7 @@ class App_hooks {
 		$this->CI->load->library('email');
 		
 		// dynamic config
+		$config = array();
 		$config['mailtype'] = ($email['is_html'] == TRUE) ? 'html' : 'text';
 		$config['wordwrap'] = ($email['is_html'] == TRUE) ? FALSE : TRUE;
 		$this->CI->email->initialize($config);

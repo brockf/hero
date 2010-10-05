@@ -20,6 +20,55 @@ class Email_model extends CI_Model
 	}
 	
 	/**
+	* Send Mail from the Queue
+	*/
+	function mail_queue () {
+		$CI =& get_instance();
+		
+		// get mail from queue
+		
+		$result = $this->db->select('*')->from('mail_queue')->order_by('date','DESC')->limit(setting('mail_queue_limit'))->get();
+		
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+		
+		foreach ($result->result_array() as $mail) {
+			$config = array();
+			
+			$config['mailtype'] = ($mail['is_html'] == '1') ? 'html' : 'text';
+			$config['wordwrap'] = ($mail['wordwrap'] == '1') ? FALSE : TRUE;
+			
+			$CI->email->initialize($config);
+			
+			// To: 
+			if (strpos($mail['to'],',') !== FALSE) {
+				// we have multiple emails
+				$emails = explode(',', $mail['to']);
+				$mail['to'] = array();
+				foreach ($emails as $email) {
+					$mail['to'][] = $email;
+				}
+			}
+			
+			$CI->email->to($mail['to']);
+			
+			// From: 
+			$CI->email->from(setting('site_email'), setting('email_name'));
+			
+			// Build Subject
+			$CI->email->subject($mail['subject']);
+			
+			// Build Body
+			$CI->email->message($mail['body']);
+			
+			// Send!
+			$CI->email->send();
+			$CI->email->clear();
+		}
+	}
+	
+	/**
 	* Update Layout
 	*
 	* Updates the main email_layout.thtml template.  It will be created if it doesn't exist,
