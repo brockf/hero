@@ -15,7 +15,7 @@
 
 <p><b>Cronjob Last Run:</b> <? if (setting('cron_last_update') == FALSE) { ?>Never<? } else { ?><?=date('M d, Y h:i:a', strtotime(setting('cron_last_update')));?><? } ?></p>
 
-<p><b>Cronjob Command for *nix Servers:</b> */5 * 	* 	* 	* wget -q <?=site_url('cron/update/' . setting('cron_key'));?></p>
+<p><b>Cronjob Command for *nix Servers:</b> */5 * 	* 	* 	* wget -q <?=site_url('cron/update/' . setting('cron_key'));?> > /dev/null</p>
 
 <div class="help" style="margin: 0; padding: 0;">This command executes the following script every 5 minutes.  However, the cronjob actions themselves
 won't unnecessarily repeat themselves.  For example, subscription maintenance will only occur once per day.</div>
