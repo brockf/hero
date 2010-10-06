@@ -9,9 +9,11 @@
 <p>Your shopping cart:</p>
 
 <ul>
-{foreach $products as $product}
-     <li>({$product.quantity}) {$product.name}</li>
-{/foreach}
+{if $products}
+	{foreach $products as $product}
+	     <li>({$product.quantity}) {$product.name}</li>
+	{/foreach}
+{/if}
 {if $subscription_plan}
      <li>{$subscription_plan.name}</li>
 {/if}

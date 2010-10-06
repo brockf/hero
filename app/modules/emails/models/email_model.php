@@ -24,6 +24,7 @@ class Email_model extends CI_Model
 	*/
 	function mail_queue () {
 		$CI =& get_instance();
+		set_time_limit(500);
 		
 		// get mail from queue
 		
@@ -57,14 +58,18 @@ class Email_model extends CI_Model
 			$CI->email->from(setting('site_email'), setting('email_name'));
 			
 			// Build Subject
-			$CI->email->subject($mail['subject']);
+			$subject = base64_decode($mail['subject']);
+			$CI->email->subject($subject);
 			
 			// Build Body
-			$CI->email->message($mail['body']);
+			$body = base64_decode($mail['body']);
+			$CI->email->message($body);
 			
 			// Send!
 			$CI->email->send();
 			$CI->email->clear();
+			
+			$this->db->delete('mail_queue', array('mail_queue_id' => $mail['mail_queue_id']));
 		}
 	}
 	

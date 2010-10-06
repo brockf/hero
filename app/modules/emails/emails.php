@@ -88,9 +88,9 @@ class Emails extends Module {
 								  PRIMARY KEY  (`mail_queue_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 								
-			$this->load->library('app_hooks');
+			$this->CI->load->library('app_hooks');
 			
-			$this->app_hooks->bind('cron','email_model','mail_queue',APPPATH . 'modules/emails/models/email_model.php');
+			$this->CI->app_hooks->bind('cron','email_model','mail_queue',APPPATH . 'modules/emails/models/email_model.php');
 		}
 		
 		return $this->version;
