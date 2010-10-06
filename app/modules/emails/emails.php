@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.05';
+	var $version = '1.06';
 	var $name = 'emails';
 
 	function __construct () {
@@ -81,7 +81,7 @@ class Emails extends Module {
 								  `mail_queue_id` int(11) NOT NULL auto_increment,
 								  `to` TEXT NOT NULL,
 								  `subject` TEXT NOT NULL,
-								  `body` TEXT NOT NULL,
+								  `body` VARCHAR(250) NOT NULL,
 								  `date` DATETIME NOT NULL,
 								  `wordwrap` TINYINT(1) NOT NULL,
 								  `is_html` TINYINT(1) NOT NULL,
@@ -91,6 +91,10 @@ class Emails extends Module {
 			$this->CI->load->library('app_hooks');
 			
 			$this->CI->app_hooks->bind('cron','email_model','mail_queue',APPPATH . 'modules/emails/models/email_model.php');
+		}
+		
+		if ($db_version < 1.06) {
+			$this->CI->settings_model->new_setting(1, 'mail_queue_limit', '450', 'How many emails should be processed from the mail queue every 5 minutes?', 'text', '', FALSE, FALSE);
 		}
 		
 		return $this->version;

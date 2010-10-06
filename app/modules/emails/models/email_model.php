@@ -26,13 +26,43 @@ class Email_model extends CI_Model
 		$CI =& get_instance();
 		set_time_limit(500);
 		
-		// get mail from queue
+		$mail_queue_limit = setting('mail_queue_limit');
+		if (empty($mail_queue_limit) or !is_numeric($mail_queue_limit) or $mail_queue_limit > 5000) {
+			$mail_queue_limit = 450;
+		}
 		
-		$result = $this->db->select('*')->from('mail_queue')->order_by('date','DESC')->limit(setting('mail_queue_limit'))->get();
+		// get mail from queue		
+		$this->db->select('*');
+		$this->db->from('mail_queue');
+		$this->db->order_by('date','ASC');
+		$this->db->limit($mail_queue_limit);
+		$result = $this->db->get();
 		
 		if ($result->num_rows() == 0) {
+			// nothing in the queue
+			// delete all mail queue files
+			$mail_queue_folder = setting('path_writeable') . 'mail_queue';
+			
+			$CI->load->helper('directory');
+			$files = directory_map($mail_queue_folder);
+			
+			foreach ($files as $file) {
+				// is this a queue file?
+				if (strpos($file, '.email') !== FALSE) {
+					// unnecessary but basic checks to make sure we won't wipe out the entire file system
+					if (!empty($mail_queue_folder) and strpos($mail_queue_folder,'.') !== 0 and $file != '.' and strpos($file,'.') !== 0) {
+						unlink($mail_queue_folder . '/' . $file);
+					}
+				}
+			}
+			
 			return FALSE;
 		}
+		
+		// store the previous body here, so we don't keep having to access the
+		// writeable/mail_queue/*.email files
+		$previous_body = '';
+		$previous_body_file = '';
 		
 		foreach ($result->result_array() as $mail) {
 			$config = array();
@@ -58,12 +88,25 @@ class Email_model extends CI_Model
 			$CI->email->from(setting('site_email'), setting('email_name'));
 			
 			// Build Subject
-			$subject = base64_decode($mail['subject']);
+			$subject = $mail['subject'];
 			$CI->email->subject($subject);
 			
 			// Build Body
-			$body = base64_decode($mail['body']);
-			$CI->email->message($body);
+			if (empty($previous_body_file) or empty($previous_body) or ($mail['body'] != $previous_body_file)) {
+				// read body from file
+				$CI->load->helper('file');
+				$mail_queue_folder = setting('path_writeable') . 'mail_queue';
+				
+				$body = read_file($mail_queue_folder . '/' . $mail['body']);
+				
+				$previous_body_file = $mail['body'];
+				$previous_body = $body;
+			}
+			else {
+				$body = $previous_body;
+			}
+			
+			$CI->email->message((string)$body);
 			
 			// Send!
 			$CI->email->send();

@@ -61,12 +61,13 @@ $config['app_support'] = 'http://www.cariboucms.com/support';
 |--------------------------------------------------------------------------
 |
 */
-$config['path_product_files'] = FCPATH . 'writeable/product_files/';
-$config['path_product_images'] = FCPATH . 'writeable/product_images/';
-$config['path_editor_uploads'] = FCPATH . 'writeable/editor_uploads/';
-$config['path_custom_field_uploads'] = FCPATH . 'writeable/custom_uploads/';
-$config['path_image_thumbs'] = FCPATH . 'writeable/image_thumbs/';
-$config['path_email_templates'] = FCPATH . 'writeable/email_templates/';
+$config['path_writeable'] = FCPATH . 'writeable/';
+$config['path_product_files'] = $config['path_writeable'] . 'product_files/';
+$config['path_product_images'] = $config['path_writeable'] . 'product_images/';
+$config['path_editor_uploads'] = $config['path_writeable'] . 'editor_uploads/';
+$config['path_custom_field_uploads'] = $config['path_writeable'] . 'custom_uploads/';
+$config['path_image_thumbs'] = $config['path_writeable'] . 'image_thumbs/';
+$config['path_email_templates'] = $config['path_writeable'] . 'email_templates/';
 
 /*
 |--------------------------------------------------------------------------
