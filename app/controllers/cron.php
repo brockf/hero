@@ -10,7 +10,7 @@ class Cron extends Front_Controller {
 		set_time_limit(500);
 		
 		if ($this->config->item('cron_key') != $key) {
-			return 'Invalid key.';
+			die('Invalid key.');
 		}
 		
 		$this->app_hooks->trigger('cron');
