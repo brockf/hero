@@ -37,7 +37,7 @@ class Admincp extends Admincp_Controller {
 						array(
 							'name' => 'ID #',
 							'type' => 'id',
-							'width' => '5%',
+							'width' => '3%',
 							'filter' => 'id'
 							),
 						array(
@@ -52,21 +52,21 @@ class Admincp extends Admincp_Controller {
 							'type' => 'text',
 							'filter' => 'email',
 							'sort_column' => 'user_email',
-							'width' => '15%'
+							'width' => '18%'
 							),
 						array(
 							'name' => 'Full Name',
 							'type' => 'text',
 							'filter' => 'name',
 							'sort_column' => 'user_last_name',
-							'width' => '15%'
+							'width' => '16%'
 							),
 						array(
 							'name' => 'Usergroup(s)',
 							'type' => 'select',
 							'filter' => 'group',
 							'options' => $options,
-							'width' => '10%'
+							'width' => '14%'
 							),
 						array(
 							'name' => 'Status',
@@ -76,13 +76,8 @@ class Admincp extends Admincp_Controller {
 							'options' => array('0' => 'Active', '1' => 'Suspended')
 							),
 						array(
-							'name' => 'Last Login',
-							'sort_column' => 'user_last_login',
-							'width' => '15%'
-							),
-						array(
 							'name' => '',
-							'width' => '10%'
+							'width' => '19%'
 							)
 					);
 						
@@ -110,6 +105,32 @@ class Admincp extends Admincp_Controller {
 		$data = array('usergroups' => $usergroups);
 		
 		$this->load->view('users.php', $data);
+	}
+	
+	function user_actions ($action, $id) {
+		$this->load->model('users/user_model');
+		$user = $this->user_model->get_user($id);
+		
+		if ($action == 'profile') {
+			redirect('admincp/users/profile/' . $user['id']);
+		}
+		elseif ($action == 'edit') {
+			redirect('admincp/users/edit/' . $user['id']);
+		}
+		elseif ($action == 'subscriptions') {
+			header('Location: ' . dataset_link('admincp/reports/subscriptions', array('member_name' => $user['id'])));
+		}
+		elseif ($action == 'logins') {
+			header('Location: ' . dataset_link('admincp/users/logins', array('username' => $user['username'])));
+		}
+		elseif ($action == 'invoices') {
+			header('Location: ' . dataset_link('admincp/reports/invoices', array('member_name' => $user['id'])));
+		}
+		elseif ($action == 'products') {
+			header('Location: ' . dataset_link('admincp/reports/products', array('member_name' => $user['id'])));
+		}
+		
+		return TRUE;
 	}
 	
 	function delete ($users, $return_url) {

@@ -133,10 +133,15 @@ $(document).ready(function() {
 		var id = $(this).siblings('input[name="action_id"]').val();
 		var action = $(this).siblings('select[name="action"]').val();
 		
-		var form_url = $('#site_url').html() + $(this).attr('rel') + '/' + action + '/' + id;
-		
-		$('form#dataset_form').attr("ACTION",form_url);
-		$('form#dataset_form').submit();
+		if (action != '' && action != false) {
+			var form_url = $('#site_url').html() + $(this).attr('rel') + '/' + action + '/' + id;
+			
+			$('form#dataset_form').attr("ACTION",form_url);
+			$('form#dataset_form').submit();
+		}
+		else {
+			return false;
+		}
 	});
 	
 	// mark empty fields with the mark_empty script

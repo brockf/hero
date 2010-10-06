@@ -492,6 +492,22 @@ div.dataset_actions {
 	left: 0px;
 }
 
+div.dataset_stats {
+	font-size: 9pt;
+	color: #222;
+	float: left;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	text-align: left;
+}
+
+div.dataset_stats b {
+	padding: 0;
+	background-color: transparent;
+	color: #222;
+}
+
 div.hidden {
 	display: none;
 }

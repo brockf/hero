@@ -13,8 +13,20 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['last_name'];?>, <?=$row['first_name'];?></td>
 			<td><? foreach ($row['usergroups'] as $group) { ?><?=$usergroups[$group];?><br /><? } ?></td>
 			<td><? if ($row['suspended'] == '1') { ?>Suspended<? } else { ?>Active<? } ?></td>
-			<td><?=$row['last_login'];?></td>
-			<td class="options"><a href="<?=site_url('admincp/users/edit/' . $row['id']);?>">edit</a></td>
+			<td class="options">
+				<input type="hidden" name="action_id" value="<?=$row['id'];?>" />
+				<select name="action">
+					<option value="0" selected="selected"></option>
+					<option value="profile">view profile</option>
+					<option value="edit">edit account</option>
+					<option value="invoices">invoices</option>
+					<option value="subscriptions">subscriptions</option>
+					<option value="products">product orders</option>
+					<option value="logins">login history</option>
+				</select>
+				&nbsp;
+				<input type="submit" rel="admincp/users/user_actions" class="action button" name="go_action" value="Go" />
+			</td>
 		</tr>
 	<?
 	}
@@ -22,7 +34,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="9">No members match your filters.</td>
+	<td colspan="4">No members match your filters.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>

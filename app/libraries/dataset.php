@@ -516,6 +516,7 @@ class Dataset {
     	$output = '</table>';
     	
     	$output .= '<div class="pagination">';
+    	$output .= '<div class="dataset_stats"><b>' . $this->total_rows . '</b> records in dataset</div>';
     	$output .= $this->pagination;
     	$output .= '</div></form>
 			    	<div class="hidden" id="class">' . $this->CI->uri->segment(2) . '</div>
