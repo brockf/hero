@@ -8,7 +8,7 @@
 
 <p>{$download_link}</p>
 
-<p>Note: This link will expired once used, so don't forget to save your download in a safe place.</p>
+<p>Note: This link will expire once used, so don't forget to save your download in a safe place.</p>
 
 <p>If you would like to view your invoices or update your account, please visit {url path="users/"}.</p>
 

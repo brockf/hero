@@ -4,6 +4,8 @@ class Front_Controller extends MY_Controller {
 	function __construct () {
 		parent::__construct();
 		
+		$this->load->helper('ssl');
+		
 		// we are in the frontend
 		define("_FRONTEND","TRUE");
 		

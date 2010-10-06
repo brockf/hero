@@ -31,7 +31,7 @@ class Dataset extends Controller {
 		foreach ($values as $value) {
 			list($name,$value) = explode('=',$value);
 			
-			if ($value != '') {
+			if ($value != '' and $value != 'filter+results' and $value != 'start+date' and $value != 'end+date') {
 				$serialize[$name] = $value;
 			}	
 		}

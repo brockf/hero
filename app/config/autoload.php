@@ -64,7 +64,6 @@ else {
 
 $autoload['helper'] = array('ioncube_license',
 							'url',
-							'ssl',
 							'date',
 							'local_time',
 							'time_since',
