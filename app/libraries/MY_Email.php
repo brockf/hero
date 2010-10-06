@@ -14,6 +14,8 @@
 class MY_Email extends CI_Email {
 	private $_plaintext_subject;
 	private $_plaintext_body;
+	private $_plaintext_from_name;
+	private $_plaintext_from_email;
 	private $_previous_body; // for caching body files in queued mass mails
 	private $_previous_body_file;
 
@@ -31,6 +33,13 @@ class MY_Email extends CI_Email {
 		$this->_plaintext_body = $message;
 		
 		parent::message($message);
+	}
+	
+	function from ($from_email, $from_name) {
+		$this->_plaintext_from_name = $from_name;
+		$this->_plaintext_from_email = $from_email;
+		
+		parent::from($from_email, $from_name);
 	}
 	
 	function send ($queue = FALSE) {
@@ -78,6 +87,8 @@ class MY_Email extends CI_Email {
 			
 			$CI->db->insert('mail_queue', array(
 												'`to`' => $to,
+												'`from_name`' => $this->_plaintext_from_name,
+												'`from_email`' => $this->_plaintext_from_email,
 												'`subject`' => $subject,
 												'`body`' => $body_file,
 												'`date`' => date('Y-m-d H:i:s'),

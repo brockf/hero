@@ -46,12 +46,14 @@ class Email_model extends CI_Model
 			$CI->load->helper('directory');
 			$files = directory_map($mail_queue_folder);
 			
-			foreach ($files as $file) {
-				// is this a queue file?
-				if (strpos($file, '.email') !== FALSE) {
-					// unnecessary but basic checks to make sure we won't wipe out the entire file system
-					if (!empty($mail_queue_folder) and strpos($mail_queue_folder,'.') !== 0 and $file != '.' and strpos($file,'.') !== 0) {
-						unlink($mail_queue_folder . '/' . $file);
+			if (is_array($files)) {
+				foreach ($files as $file) {
+					// is this a queue file?
+					if (strpos($file, '.email') !== FALSE) {
+						// unnecessary but basic checks to make sure we won't wipe out the entire file system
+						if (!empty($mail_queue_folder) and strpos($mail_queue_folder,'.') !== 0 and $file != '.' and strpos($file,'.') !== 0) {
+							unlink($mail_queue_folder . '/' . $file);
+						}
 					}
 				}
 			}
@@ -85,7 +87,7 @@ class Email_model extends CI_Model
 			$CI->email->to($mail['to']);
 			
 			// From: 
-			$CI->email->from(setting('site_email'), setting('email_name'));
+			$CI->email->from($mail['from_email'], $mail['from_name']);
 			
 			// Build Subject
 			$subject = $mail['subject'];

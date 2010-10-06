@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.06';
+	var $version = '1.07';
 	var $name = 'emails';
 
 	function __construct () {
@@ -95,6 +95,11 @@ class Emails extends Module {
 		
 		if ($db_version < 1.06) {
 			$this->CI->settings_model->new_setting(1, 'mail_queue_limit', '450', 'How many emails should be processed from the mail queue every 5 minutes?', 'text', '', FALSE, FALSE);
+		}
+		
+		if ($db_version < 1.07) {
+			$this->CI->db->query('ALTER TABLE `mail_queue` ADD COLUMN `from_name` VARCHAR(250) AFTER `to`');
+			$this->CI->db->query('ALTER TABLE `mail_queue` ADD COLUMN `from_email` VARCHAR(250) AFTER `from_name`');
 		}
 		
 		return $this->version;
