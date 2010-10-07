@@ -120,6 +120,9 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'subscriptions') {
 			header('Location: ' . dataset_link('admincp/reports/subscriptions', array('member_name' => $user['id'])));
 		}
+		elseif ($action == 'add_subscription') {
+			redirect('admincp/billing/new_subscription/' . $user['id']);
+		}
 		elseif ($action == 'logins') {
 			header('Location: ' . dataset_link('admincp/users/logins', array('username' => $user['username'])));
 		}
