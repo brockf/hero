@@ -219,6 +219,7 @@ class Blog_model extends CI_Model
 		
 		foreach ($contents as $key => $content) {
 			// prep summary
+			$blog['summary_field'] = str_replace('content_','',$blog['summary_field']);
 			$contents[$key]['summary'] = ($blog['auto_trim'] == TRUE) ? shorten($content[$blog['summary_field']], setting('blog_summary_length'), TRUE) : $content[$blog['summary_field']];
 		}
 		
