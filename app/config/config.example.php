@@ -93,6 +93,9 @@ $config['image_library'] = '';
 // if you specified ImageMagick or NetPBM, you must specify the path
 $config['image_library_path'] = '';
 
+// secure routes (these will be redirected to HTTPS if you have an SSL certificate)
+$config['secure_modules'] = array('users','checkout');
+
 /*
 |--------------------------------------------------------------------------
 | Index File
