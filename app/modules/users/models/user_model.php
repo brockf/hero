@@ -531,7 +531,7 @@ class User_model extends CI_Model
 	*
 	* @return boolean TRUE upon being OK, FALSE if not
 	*/
-	function unique_email ($email) {
+	function unique_email ($email) {	
 		$this->db->select('user_id');
 		$this->db->where('user_email',$email);
 		$this->db->where('user_deleted','0');
