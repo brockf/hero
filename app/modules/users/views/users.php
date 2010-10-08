@@ -24,6 +24,11 @@ if (!empty($this->dataset->data)) {
 					<option value="subscriptions">subscriptions</option>
 					<option value="products">product orders</option>
 					<option value="logins">login history</option>
+					<? if ($row['suspended'] == TRUE) { ?>
+						<option value="unsuspend">unsuspend user</option>
+					<? } else { ?>
+						<option value="suspend">suspend user</option>
+					<? } ?>
 				</select>
 				&nbsp;
 				<input type="submit" rel="admincp/users/user_actions" class="action button" name="go_action" value="Go" />

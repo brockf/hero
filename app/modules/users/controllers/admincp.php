@@ -123,6 +123,12 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'add_subscription') {
 			redirect('admincp/billing/new_subscription/' . $user['id']);
 		}
+		elseif ($action == 'suspend') {
+			redirect('admincp/users/suspend_user/' . $user['id']);
+		}
+		elseif ($action == 'unsuspend') {
+			redirect('admincp/users/unsuspend_user/' . $user['id']);
+		}
 		elseif ($action == 'logins') {
 			header('Location: ' . dataset_link('admincp/users/logins', array('username' => $user['username'])));
 		}
