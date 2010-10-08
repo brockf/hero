@@ -286,7 +286,8 @@ class Dataset {
     	if (empty($this->total_rows)) {
     		// they didn't pass the total_rows via total_rows()
     		$unlimited_params = $this->get_unlimited_parameters();
-	    	$total_rows = count($this->CI->data_model->$data_function($unlimited_params));
+    		$unlimited_data = $this->CI->data_model->$data_function($unlimited_params);
+	    	$total_rows = (empty($unlimited_data)) ? 0 : count($unlimited_data);
 	    	
 	    	// save total rows
     		$this->total_rows = $total_rows;

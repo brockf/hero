@@ -36,7 +36,7 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 	
 	// if the cache is over 2 minutes old, we re-generate!
 	if ($modified_time === FALSE or (time() - $modified_time > 120))
-	{
+	{	
 		// load library
 		$CI->load->library('image_lib');
 		$CI->load->helper('get_available_image_library');
@@ -58,7 +58,7 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 		$CI->image_lib->resize();
 		$CI->image_lib->clear();
 	}
-
+	
 	return site_url(str_replace(FCPATH,'',$image_thumb));
 }
 
