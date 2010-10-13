@@ -15,6 +15,7 @@ class User_model extends CI_Model
 {
 	var $active_user;  // the logged-in use
 	var $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
+	private $cache_fields;
 	
 	function __construct()
 	{
@@ -728,7 +729,7 @@ class User_model extends CI_Model
 			$this->app_hooks->trigger('member_validate_email');
 		}
 		
-		$this->app_hooks->trigger('member_register');
+		$this->app_hooks->trigger('member_register', $user_id);
 		$this->app_hooks->reset();
 		
 		return $user_id;
@@ -946,6 +947,8 @@ class User_model extends CI_Model
 	* @return array Each user in an array of users
 	*/
 	function get_users ($filters = array()) {
+		$fields = $this->get_custom_fields();
+		
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
 		}
@@ -996,6 +999,13 @@ class User_model extends CI_Model
 		if (isset($filters['signup_date_end'])) {
 			$date = date('Y-m-d H:i:s', strtotime($filters['signup_date_end']));
 			$this->db->where('users.user_signup_date <=', $date);
+		}
+		
+		// custom field params
+		foreach ($fields as $field) {
+			if (isset($filters[$field['name']])) {
+				$this->db->where('users.' . $field['name'],$filters[$field['name']]);
+			}
 		}
 		
 		$this->db->where('user_deleted','0');
@@ -1197,6 +1207,12 @@ class User_model extends CI_Model
 	* @return array $fields The custom fields
 	*/
 	function get_custom_fields ($filters = array()) {
+		$cache_string = md5(implode(',',$filters));
+		
+		if (isset($this->cache_fields[$cache_string])) {
+			return $this->cache_fields[$cache_string];
+		}
+	
 		$this->load->model('custom_fields_model');
 	
 		if (isset($filters['id'])) {
@@ -1240,6 +1256,8 @@ class User_model extends CI_Model
 							'registration_form' => ($field['user_field_registration_form'] == '1') ? TRUE : FALSE
 						);
 		}
+		
+		$this->cache_fields[$cache_string] = $fields;
 		
 		return $fields;
 	}
