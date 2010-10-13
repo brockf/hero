@@ -918,10 +918,10 @@ class User_model extends CI_Model
 	*
 	* @param array User fields
 	*/
-	function get_user ($user_id) {
+	function get_user ($user_id, $any_status = FALSE) {
 		$filters = array('id' => $user_id);
 		
-		$user = $this->get_users($filters);
+		$user = $this->get_users($filters, $any_status);
 		
 		if (empty($user)) {
 			return FALSE;
@@ -946,7 +946,7 @@ class User_model extends CI_Model
 	*
 	* @return array Each user in an array of users
 	*/
-	function get_users ($filters = array()) {
+	function get_users ($filters = array(), $any_status = FALSE) {
 		$fields = $this->get_custom_fields();
 		
 		if (isset($filters['id'])) {
@@ -1004,11 +1004,13 @@ class User_model extends CI_Model
 		// custom field params
 		foreach ($fields as $field) {
 			if (isset($filters[$field['name']])) {
-				$this->db->where('users.' . $field['name'],$filters[$field['name']]);
+				$this->db->like('users.' . $field['name'],'%' . $filters[$field['name']] . '%');
 			}
 		}
 		
-		$this->db->where('user_deleted','0');
+		if ($any_status == FALSE) {
+			$this->db->where('user_deleted','0');
+		}
 		
 		// standard ordering and limiting
 		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'user_username';

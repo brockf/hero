@@ -209,7 +209,7 @@ class App_hooks {
 			}
 			
 			$this->CI->load->model('users/user_model');
-			$user = $this->CI->user_model->get_user($id);
+			$user = $this->CI->user_model->get_user($id, TRUE);
 			
 			if (empty($user)) {
 				die(show_error('Trigger Data: Unable to load data for user #' . $id));

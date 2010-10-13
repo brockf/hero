@@ -107,3 +107,68 @@ Available block variables:
 
 * {$var.form_action} (the value for the form's "action" attribute")
 * {$var.return} (the encoded value for the hidden "return" field)
+
+[h3]members (parameters: var, id, username, name, email, limit, sort, sort_dir, offset, [any_custom_member_data_variable])[/h3]
+
+Return one or more members in the format between the template tags.
+
+Required parameters:
+
+* [span_code]var[/span_code] - The name of the variable for the array containing the returned template variables.
+
+Optional standard parameters:
+
+* [span_code]id[/span_code] - The member ID
+* [span_code]email[/span_code] - The email address of the user (may match multiple members because it's a search comparison)
+* [span_code]username[/span_code] - Also a search comparison, matches the username.
+* [span_code]name[/span_code] - Search member first and last names
+* [span_code]group[/span_code] - Only return members who are in this group.
+
+Other parameters:
+
+* You can use any member data field name as a parameter.  For example, if you have a parameter called "School" with a database of field name, you can use a parameter "school" to filter the results.
+
+Returns:
+
+* Within the tags, each matching member is returned and outputted with the variable you specify in the [span_code]var[/span_code] parameter.
+* Also, a [span_code]{$members_total_count}[/span_code] variable is available for the [span_code]{paginate}[/span_code] tag to do some pagination.
+
+Example Usage:
+
+[code]
+<table class="table" cellpadding="0" cellspacing="0">
+	<thead>
+		<tr>
+			<td style="width: 25%">Name</td>
+			<td style="width: 20%">Company</td>
+			<td style="width: 20%">School</td>
+			<td style="width: 20%">Chapter</td>
+			<td style="width: 15%">Date of Initiation</td>
+		</tr>
+	</thead>
+	<tbody>
+		{members var="member" group="3" sort="user_last_name" sort_dir="ASC" limit="100"}
+			{assign var="member_id" value=$member.id}
+			<tr>
+				<td>
+					<a href="{url path="members/profile/$member_id"}">{$member.last_name}, {$member.first_name}</a>
+				</td>
+				<td>
+					{$member.company}
+				</td>
+				<td>
+					{$member.school_name}
+				</td>
+				<td>
+					{$member.chapter_name}
+				</td>
+				<td>
+					{$member.year_of_initiation}
+				</td>
+			</tr>
+		{/members}
+	</tbody>
+</table>
+
+{paginate variable="page" base_url=$current_url total_rows=$members_total_count per_page="100"}
+[/code]

@@ -35,6 +35,12 @@ Required variables:
 * [span_code]per_page[/span_code] - How many items to show per page
 * [span_code]variable[/span_code] - The query string variable to use in pagination (e.g., index.php?page=5 would have "page" as the variable).
 
+Usage:
+
+[code]
+{paginate variable="page" base_url=$current_url total_rows=$total_rows per_page="50"}
+[/code]
+
 [h2]restricted (parameters: in_group, not_in_group)[/h2]
 
 If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).
