@@ -3,7 +3,7 @@ $(document).ready(function () {
 	$('#weight, #price, #inventory').addClass('number');
 	
 	// add membership tier rows
-	$('#add_membership_tier').click(function () {
+	$('input#add_membership_tier').click(function () {
 		var newline = $(this).parent().prev().html();
 		
 		$(this).parent().before('<li>' + newline + '</li>');
@@ -12,6 +12,74 @@ $(document).ready(function () {
 		
 		return false;
 	});
+	
+	// add product option
+	bind_option_remove_links();
+	
+	$('input#add_product_option').click(function () {
+		$('div#add_option_dialog').modal();
+		
+		return false;
+	});
+	
+	$('input#add_value').click(function () {
+		var count = $('input.values').size() + 1;
+	
+		$(this).parent().before('<li><label>Value #' + count + '</label><input type="text" name="value' + count + '" class="values mark_empty text" style="width:130px" rel="Label" />&nbsp;&nbsp;<input type="text" name="price' + count + '" class="prices mark_empty text" style="width: 100px" rel="Price (optional)" /></li>');
+			
+		return false;
+	});
+	
+	$('form#use_existing_option_dialog_form').submit(function () {
+		var select = $(this).find('select[name="option"]');
+		var option_id = select.val();
+		var option_name = select.find('option[value="' + option_id + '"]').text();
+		
+		// add to list
+		$('ul#product_options').append('<li><input type="hidden" name="options[]" value="' + option_id + '" />' + option_name + ' (<a href="#" class="remove_option">remove</a>)');
+		
+		// bind remove links
+		bind_option_remove_links();
+		
+		return false;
+	});
+	
+	$('form#add_option_dialog_form').submit(function () {
+		$(this).find('.loading').show();
+		
+		$.post( 
+			$(this).attr('ACTION'),
+			$(this).serialize(), 
+				function(data) { 
+					$('form#add_option_dialog_form .loading').hide();
+					
+					var response_span = $('form#add_option_dialog_form span.response');
+					
+					if (data.error) {
+						response_span.html(data.error);
+					}
+					else {
+						// add to list
+						$('ul#product_options').append('<li><input type="hidden" name="options[]" value="' + data.option_id + '" />' + data.option_name + ' (<a href="#" class="remove_option">remove</a>)');
+						
+						// bind remove links
+						bind_option_remove_links();
+						
+						$('form#add_option_dialog_form input[name="name"]').val('');
+						$('form#add_option_dialog_form input.values').parent().remove();
+						$('input#add_value').click(); // adds an initial starting value again
+						
+						// close dialog
+						$.modal.close();
+					}
+				},
+			"json"
+		);  
+		
+		return false;
+	});
+	
+	// end product option
 	
 	InventoryOptions();
 	FileOptions();
@@ -99,4 +167,12 @@ function GroupOptions () {
 	else {
 		$('li.group_move_options').hide();
 	}
+}
+
+function bind_option_remove_links () {
+	$('a.remove_option').click(function() {
+		$(this).parent().remove();
+		
+		return false;
+	});
 }

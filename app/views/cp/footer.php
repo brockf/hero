@@ -14,5 +14,4 @@
 <div class="hidden" id="base_url"><?=site_url('admincp') . '/';?></div>
 <div class="hidden" id="site_url"><?=base_url();?></div>
 <div class="hidden" id="current_url"><?=current_url();?></div>
-</body>
-</html>
+<?=$this->load->view('cp/html_footer');?>

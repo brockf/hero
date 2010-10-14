@@ -247,6 +247,9 @@ class Users extends Front_Controller {
 		
 		// we validated!  let's create the account
 		$custom_fields = $this->custom_fields_model->post_to_array('1', TRUE);
+		
+		// are we validating the emails?
+		$validation = (setting('validate_emails') == '1') ? TRUE : FALSE;
 			
 		$user_id = $this->user_model->new_user(
 												$this->input->post('email'),
@@ -258,7 +261,7 @@ class Users extends Front_Controller {
 												FALSE, // no affiliate
 												FALSE, // not an administratior
 												$custom_fields,
-												TRUE // require validation
+												$validation // require validation
 											);
 											
 		// log them in
