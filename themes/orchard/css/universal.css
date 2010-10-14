@@ -907,6 +907,13 @@ div.product div.cart_form input.button {
 	margin-top: 6px;
 }
 
+div.cart span.options {
+	color: #444;
+	font-size: 8pt;
+	display: block;
+	margin-left: 20px;
+}
+
 td.sub_total {
 	text-align: right;
 }

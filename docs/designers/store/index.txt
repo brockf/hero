@@ -31,7 +31,7 @@ Each product has the following tags available in both product listings and the p
 * [span_code]{$feature_image_url}[/span_code] (URL of the file)
 
 
-Within the product page, the [span_code]{$images}[/span_code] holds an array of all product images (or [span_code]FALSE[/span_code] if none exist).  It can be iterated through like this:
+Within the product page (typically the [span_code]store_product.thtml[/span_code] template, the [span_code]{$images}[/span_code] holds an array of all product images (or [span_code]FALSE[/span_code] if none exist).  It can be iterated through like this:
 
 [code]
 {if $images}
@@ -45,6 +45,8 @@ Within the product page, the [span_code]{$images}[/span_code] holds an array of 
 	</div>
 {/if}
 [/code]
+
+On the standard product page, you can show information for the product's collection if the product is only in collection.  So, for sites using collections to build standard "categories", you can display the category name with [span_code]{$collection.name}[/span_code].  Other variables: [span_code]{$collection.url}[/span_code], [span_code]{$collection.description}[/span_code], [span_code]{$collection.parent}[/span_code], and [span_code]{$collection.id}[/span_code].
 
 [h2]Template Plugins[/h2]
 

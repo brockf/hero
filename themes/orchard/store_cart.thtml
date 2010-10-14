@@ -21,7 +21,16 @@ My Shopping Cart - {$smarty.block.parent}
 				{if $cart}
 				{foreach $cart as $item}
 				<tr>
-					<td>{$item.name}</td>
+					<td>
+						{$item.name}
+						{if $item.options}
+							<span class="options">
+								{foreach $item.options as $label => $value}
+									{$label}: {$value}&nbsp;&nbsp;
+								{/foreach}
+							</span>
+						{/if}
+					</td>
 					<td>{setting name="currency_symbol"}{$item.price}</td>
 					<td>{if $item.is_subscription == FALSE}<input type="text" style="width: 50px" name="qty_{$item.rowid}" value="{$item.qty}" />{else}{$item.qty}{/if}</td>
 					<td>{setting name="currency_symbol"}{$item.subtotal}</td>
