@@ -100,7 +100,7 @@ class Settings_model extends CI_Model
 	*
 	* @param int $setting_group The setting group ID
 	* @param string $setting_name The name of the setting
-	* @param string $setting_valued The default value of the setting
+	* @param string $setting_value The default value of the setting
 	* @param string $setting_help The help text for the setting
 	* @param string $setting_type The type of setting it is (options: toggle, textarea, text)
 	* @param string $setting_options A serialized array of options for toggle settings

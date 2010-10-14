@@ -80,7 +80,7 @@ class Admin_form {
 	* @param string $li_id The ID of the LI element containing the field
 	* @param array $classes Additional classes to apply to the element
 	*/
-	function text ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
+	function text ($label, $name, $value = '', $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -172,7 +172,7 @@ class Admin_form {
 	* @param string $height The complete style:height element definition
 	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function textarea ($label, $name, $value, $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px', $li_id = '') {
+	function textarea ($label, $name, $value = '', $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px', $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
@@ -198,12 +198,13 @@ class Admin_form {
 	* @param string $name Field name
 	* @param array $options The select options in the form of array(value1 => display1, value2 => display2)
 	* @param string|array $selected The selected value(s).  A string for selects, an array for multiselects
+	* @param boolean $multiselect Is this a multiselect?
 	* @param boolean $required Is the field required for submission?
 	* @param string $help A piece of help text
 	* @param boolean $full Should the field take up the entire pane?
 	* @param string $li_id The ID of the LI element containing the field
 	*/
-	function dropdown ($label, $name, $options, $selected, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
+	function dropdown ($label, $name, $options, $selected = FALSE, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
 			show_error('You must create a fieldset before adding fields.');
 		}
