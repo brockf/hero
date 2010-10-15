@@ -2,9 +2,11 @@
 
 class Phpbb_functions {
 	public $CI;
+	private $session_began;
 	
 	function __construct () {
 		$this->CI =& get_instance();
+		$this->session_began = FALSE;
 	}
 	
 	/**
@@ -15,7 +17,7 @@ class Phpbb_functions {
 	* @return boolean
 	*/
 	function validate_config () {
-		if (!$this->CI->db->table_exists(setting('phpbb3_table_prefix'))) {
+		if (!$this->CI->db->table_exists(setting('phpbb3_table_prefix') . 'users')) {
 			return FALSE;
 		}		
 		
@@ -23,6 +25,8 @@ class Phpbb_functions {
 		if (@!file_exists($test_file)) {
 			return FALSE;
 		}
+		
+		return TRUE;
 	}
 	
 	function hook_login ($user_id, $password) {
@@ -48,20 +52,36 @@ class Phpbb_functions {
 		$phpbb_root_path = setting('phpbb3_document_root');
 		
 		// common libraries
-		require_once($phpbb_root_path . 'common' . $phpEx);
-		$user->session_begin();
+		require_once($phpbb_root_path . 'common.' . $phpEx);
+		if ($this->session_began != TRUE) {
+		    $user->session_begin();
+		    $this->session_began = TRUE;
+		}
+		
+		$login = $auth->login($this->CI->user_model->get('username'), $password);
 		
 		// get username
-		if (!$auth->login($this->CI->user_model->get('username'), $password)) {
-			// login failure - let's try updating the password and trying again
-			$this->_update_password($this->CI->user_model->get('username'), $password);
-			
-			if (!$auth->login($this->CI->user_model->get('username'), $password)) {
+		if ($login['status'] != '3') {
+			if ($login['status'] == '11') {
+				// password failure
+				$this->_update_password($this->CI->user_model->get('username'), $password);
+				
+				$login = $auth->login($this->CI->user_model->get('username'), $password);
+				
+				if ($login['status'] != '3') {
+					return FALSE;
+				}
+				else {
+					$this->_fix_groups($user_id);
+					return TRUE;
+				}
+			}
+			else {
 				// maybe they don't have an account?
-				$result = $this->CI->db->where('username',$this->CI->user_model->get('username'))->get($this->_table('users'));
+				$result = $this->CI->db->select('*')->from($this->_table('users'))->where('username', $this->CI->user_model->get('username'))->get();
 				
 				if ($result->num_rows() == 0) {
-					// user doesn't exist, create them
+					// no account
 					$this->_register($this->CI->user_model->get('username'), $password, $this->CI->user_model->get('email'), setting('phpbb3_group_default'));
 					
 					if (!$auth->login($this->CI->user_model->get('username'), $password)) {
@@ -73,11 +93,9 @@ class Phpbb_functions {
 						return TRUE;
 					}
 				}
-			}
-			else {
-				// we logged in with the new password!
-				$this->_fix_groups($user_id);
-				return TRUE;
+				else {
+					return FALSE;
+				}
 			}
 		}
 		else {
@@ -109,7 +127,10 @@ class Phpbb_functions {
 		
 		// common libraries
 		require_once($phpbb_root_path . 'common.' . $phpEx);
-		$user->session_begin();
+		if ($this->session_began != TRUE) {
+		    $user->session_begin();
+		    $this->session_began = TRUE;
+		}
 		
 		$local_user = $this->CI->user_model->get_user($user_id);
 		
@@ -186,8 +207,6 @@ class Phpbb_functions {
 		
 		// common libraries
 		require_once($phpbb_root_path . 'common.' . $phpEx);
-		$user->session_begin();
-		$auth->acl($user->data);
 		
 		// the user library
 		require_once($phpbb_root_path . 'includes/functions_user.' . $phpEx);
@@ -205,7 +224,7 @@ class Phpbb_functions {
 		group_user_add(setting('phpbb3_group_default'),'',$local_user['username']);
 		
 		// now add each group
-		$groups = $user['usergroups'];
+		$groups = $local_user['usergroups'];
 		
 		foreach ($groups as $group) {
 			group_user_add($group_assignments[$group['id']],'',$local_user['username']);
@@ -237,7 +256,10 @@ class Phpbb_functions {
 	
 	    // common libraries
 	    require_once($phpbb_root_path . 'common.' . $phpEx);
-	    $user->session_begin();
+	    if ($this->session_began != TRUE) {
+		    $user->session_begin();
+		    $this->session_began = TRUE;
+		}
 	    $auth->acl($user->data);
 	
 	    // the user library
@@ -250,7 +272,7 @@ class Phpbb_functions {
 	    $user_row = array(
 	      'username' => $username,
 	      'user_password' => $password,
-	      'user_email' => $user_email,
+	      'user_email' => $email,
 	      'group_id' => $group_id,
 	      'user_timezone' => '1.00',
 	      'user_dst' => 0,

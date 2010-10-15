@@ -378,6 +378,10 @@ class Admin_form {
 		}
 	
 		foreach ($custom_fields as $field) {
+			if ($field['required'] == TRUE) {
+				$field['friendly_name'] = $field['friendly_name'] . '*';
+			}
+		
 			if ($field['type'] == 'text') {
 				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
 				

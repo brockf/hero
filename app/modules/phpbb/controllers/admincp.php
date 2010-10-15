@@ -20,7 +20,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function index() {
-		if (!$this->db->table_exists(setting('phpbb3_table_prefix'))) {
+		if (!$this->db->table_exists(setting('phpbb3_table_prefix') . 'users')) {
 			return redirect('admincp/phpbb/database');
 		}		
 		
@@ -35,7 +35,7 @@ class Admincp extends Admincp_Controller {
 		
 		// we'll get an array of all phpBB3 user groups
 		$forum_groups = array();
-	    $select = $this->db->get($settings['tableprefix'] . 'groups');
+	    $select = $this->db->get(setting('phpbb3_table_prefix') . 'groups');
 		foreach ($select->result_array() as $group) {
 	    	$forum_groups[$group['group_name']] = $group['group_id'];
 	  	}
@@ -55,6 +55,11 @@ class Admincp extends Admincp_Controller {
 			$selected = isset($group_settings[$group['id']]) ? $group_settings[$group['id']] : FALSE;
 			$form->dropdown($usergroup['name'] . ' Forum Group','group_' . $group['id'],$forum_groups,$selected);	
 		}
+		
+		$form->value_row('&nbsp;','<div style="float:left; width: 600px"><b>Important phpBB Code Fix</b><br />
+								   <p>Due to a conflict between this application and phpBB, the phpBB code needs to modified slightly.</p>
+								   <p>Please find the "redirect()" function at ' . setting('phpbb3_document_root') . 'includes/functions.php 
+								   and wrap "if (!defined(\'BASEPATH\')) {" and "}" around this function.</div>');
 		
 		$data = array(
 					'form_title' => 'phpBB3: Group Configuration',

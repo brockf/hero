@@ -18,7 +18,7 @@ if (!empty($this->dataset->data)) {
 				<select name="action">
 					<option value="0" selected="selected"></option>
 					<option value="profile">view profile</option>
-					<option value="edit">edit account</option>
+					<option value="edit">edit profile</option>
 					<option value="add_subscription">add subscription</option>
 					<option value="invoices">invoices</option>
 					<option value="subscriptions">subscriptions</option>
