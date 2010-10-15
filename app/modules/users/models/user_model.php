@@ -118,6 +118,15 @@ class User_model extends CI_Model
 			$this->db->update('users',array('user_remember_key' => $remember_key),array('user_id' => $user['id']));
 		}
 		
+		// prep hook
+		$CI =& get_instance();
+		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
+		// app_hooks like the other controllers
+		$CI->load->library('app_hooks');
+		$CI->app_hooks->data('member', $user['id']);
+		$CI->app_hooks->trigger('member_login', $user['id'], $password);
+		$CI->app_hooks->reset();
+		
 		return TRUE;
     }
     
@@ -157,6 +166,14 @@ class User_model extends CI_Model
 		$CI =& get_instance();
 		$CI->load->helper('cookie');
 		delete_cookie('user_remember_key');
+		
+		// prep hook
+		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
+		// app_hooks like the other controllers
+		$CI->load->library('app_hooks');
+		$CI->app_hooks->data('member', $this->Get('id'));
+		$CI->app_hooks->trigger('member_logout', $this->Get('id'));
+		$CI->app_hooks->reset();
     	
     	return TRUE;
     }
@@ -716,21 +733,22 @@ class User_model extends CI_Model
 		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		
 		// prep hook
-		$this->app_hooks->data('member', $user_id);
-		$this->app_hooks->data_var('password', $password);
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->data_var('password', $password);
 		
 		// trip the validation email?
 		if (!empty($validate_key)) {
 			$validation_link = site_url('users/validate/' . $validate_key);
 			
-			$this->app_hooks->data_var('validation_link', $validation_link);
-			$this->app_hooks->data_var('validation_code', $validate_key);
+			$CI->app_hooks->data_var('validation_link', $validation_link);
+			$CI->app_hooks->data_var('validation_code', $validate_key);
 			
-			$this->app_hooks->trigger('member_validate_email');
+			$CI->app_hooks->trigger('member_validate_email');
 		}
 		
-		$this->app_hooks->trigger('member_register', $user_id);
-		$this->app_hooks->reset();
+		$CI->app_hooks->trigger('member_register', $user_id, $password);
+		$CI->app_hooks->reset();
 		
 		return $user_id;
 	}
@@ -824,9 +842,10 @@ class User_model extends CI_Model
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
 		
 		// hook call
-		$this->app_hooks->data('member', $user_id);
-		$this->app_hooks->trigger('member_delete');
-		$this->app_hooks->reset();
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->trigger('member_delete');
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}
@@ -841,6 +860,13 @@ class User_model extends CI_Model
 	*/
 	function update_password ($user_id, $new_password) {
 		$this->db->update('users',array('user_password' => md5($new_password)),array('user_id' => $user_id));
+		
+		// prep hook
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->data_var('new_password', $new_password);
+		$CI->app_hooks->trigger('member_change_password', $user_id, $new_password);
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}
@@ -866,11 +892,12 @@ class User_model extends CI_Model
 		$this->db->update('users',array('user_password' => md5($password)),array('user_id' => $user['id']));
 	
 		// hook call
-		$this->app_hooks->data('member', $user['id']);
-		$this->app_hooks->data_var('new_password', $password);
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user['id']);
+		$CI->app_hooks->data_var('new_password', $password);
 		
-		$this->app_hooks->trigger('member_forgot_password');
-		$this->app_hooks->reset();
+		$CI->app_hooks->trigger('member_forgot_password');
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}
@@ -886,9 +913,10 @@ class User_model extends CI_Model
 		$this->db->update('users',array('user_suspended' => '1'),array('user_id' => $user_id));
 		
 		// hook call
-		$this->app_hooks->data('member', $user_id);
-		$this->app_hooks->trigger('member_suspend');
-		$this->app_hooks->reset();
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->trigger('member_suspend');
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}
@@ -904,9 +932,10 @@ class User_model extends CI_Model
 		$this->db->update('users',array('user_suspended' => '0'),array('user_id' => $user_id));
 		
 		// hook call
-		$this->app_hooks->data('member', $user_id);
-		$this->app_hooks->trigger('member_suspend');
-		$this->app_hooks->reset();
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->trigger('member_suspend');
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}

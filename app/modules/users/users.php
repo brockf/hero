@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.07';
+	var $version = '1.08';
 	var $name = 'users';
 
 	function __construct () {
@@ -143,6 +143,14 @@ class Users_module extends Module {
 			$this->CI->app_hooks->register('member_suspend','A member account is suspended.',array('member'));
 			$this->CI->app_hooks->register('member_unsuspend','A member account is unsuspended.',array('member'));
 			$this->CI->app_hooks->register('member_delete','A member account is deleted.',array('member'));
+		}
+		
+		if ($db_version < 1.08) {
+			$this->CI->load->library('app_hooks');
+			
+			$this->CI->app_hooks->register('member_login','A member logs in.',array('member'));
+			$this->CI->app_hooks->register('member_logout','A member logs out.',array('member'));
+			$this->CI->app_hooks->register('member_change_password','A member changes their password.',array('member'), array('new_password'));
 		}
 		
 		// return current version
