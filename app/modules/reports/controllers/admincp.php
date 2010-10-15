@@ -22,6 +22,8 @@ class Admincp extends Admincp_Controller {
 	function cronjob () {
 		$this->navigation->parent_active('configuration');
 		
+		$this->navigation->module_link('Run Cronjob Manually',site_url('cron/update/' . setting('cron_key')));
+		
 		return $this->load->view('cronjob');
 	}
 	

@@ -252,7 +252,7 @@ class Blog_model extends CI_Model
 		$this->load->library('pagination');
 		
 		// get total rows
-		$this->db->select('content_id');
+		$this->db->select('content.content_id');
 		$this->db->where('content_type_id',$blog['type']);
 		
 		// filter by author?
@@ -264,6 +264,9 @@ class Blog_model extends CI_Model
 		if ($blog['filter_topics'] !== FALSE) {
 			$this->db->where_in('topic_id', $blog['filter_topics']);
 		}
+		
+		$this->db->join('topic_maps','topic_maps.content_id = content.content_id');
+		$this->db->group_by('content.content_id');
 		
 		$result = $this->db->get('content');
 		$total_rows = $result->num_rows();

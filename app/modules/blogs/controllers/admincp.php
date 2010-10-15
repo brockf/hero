@@ -27,8 +27,10 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('publish/content_type_model');
 		$types = $this->content_type_model->get_content_types(array('is_standard' => '1'));
 		$type_options = array();
-		foreach ($types as $type) {
-			$type_options[$type['id']] = $type['name'];
+		if (!empty($types)) {
+			foreach ($types as $type) {
+				$type_options[$type['id']] = $type['name'];
+			}
 		}
 			
 		$columns = array(

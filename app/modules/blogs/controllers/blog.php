@@ -25,7 +25,7 @@ class Blog extends Front_Controller {
 		$this->load->model('blogs/blog_model');
 		
 		$blog_id = $this->blog_model->get_blog_id($url_path);
-		
+
 		$blog = $this->blog_model->get_blog($blog_id);
 		
 		if (empty($blog_id) or empty($blog)) {
