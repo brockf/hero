@@ -1031,9 +1031,11 @@ class User_model extends CI_Model
 		}
 		
 		// custom field params
-		foreach ($fields as $field) {
-			if (isset($filters[$field['name']])) {
-				$this->db->like('users.' . $field['name'],'%' . $filters[$field['name']] . '%');
+		if (is_array($fields)) {
+			foreach ($fields as $field) {
+				if (isset($filters[$field['name']])) {
+					$this->db->like('users.' . $field['name'],'%' . $filters[$field['name']] . '%');
+				}
 			}
 		}
 		
