@@ -17,6 +17,10 @@ class Phpbb_functions {
 	* @return boolean
 	*/
 	function validate_config () {
+		if (setting('phpbb3_table_prefix') == '' or setting('phpbb3_document_root') == '') {
+			return FALSE;
+		}
+		
 		if (!$this->CI->db->table_exists(setting('phpbb3_table_prefix') . 'users')) {
 			return FALSE;
 		}		
@@ -143,6 +147,10 @@ class Phpbb_functions {
 	}
 	
 	function hook_change_password ($user_id, $password) {
+		if (!$this->validate_config()) {
+			return FALSE;
+		}
+	
 		$user = $this->CI->user_model->get_user($user_id);
 		
 		$this->_update_password($user['username'], $password);
@@ -186,6 +194,10 @@ class Phpbb_functions {
 	
 	// ensures that they are in their proper groups
 	function _fix_groups ($user_id) {
+		if (!$this->validate_config()) {
+			return FALSE;
+		}
+	
 		if (setting('phpbb3_groups') == '') {
 			return FALSE;
 		}
