@@ -822,11 +822,22 @@ class User_model extends CI_Model
 	* @return TRUE
 	*/
 	function update_billing_address ($user_id, $address_fields) {
-		$customer_id = $this->get_customer_id($user_id);
-		
 		$CI =& get_instance();
 		$CI->load->model('billing/customer_model');
-		$CI->customer_model->UpdateCustomer($customer_id, $address_fields);
+		
+		$customer_id = $this->get_customer_id($user_id);
+		
+		if ($customer_id != FALSE) {
+			$CI->customer_model->UpdateCustomer($customer_id, $address_fields);
+		}
+		else {
+			// user doesn't have a customer record, let's create one
+			$address_fields['internal_id'] = $user_id;
+			$customer_id = $CI->customer_model->NewCustomer($address_fields);
+			
+			// link this to customer account
+			$this->db->update('users', array('customer_id' => $customer_id), array('user_id' => $user_id));
+		}
 		
 		return TRUE;
 	}
