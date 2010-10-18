@@ -24,7 +24,7 @@ function smarty_block_registration_form ($params, $tagdata, &$smarty, &$repeat){
 		}
 		
 		// form action
-		$variables['form_action'] = site_url('users/post_registration');
+		$variables['form_action'] = secure(site_url('users/post_registration'));
 		
 		// populated values
 		$variables['first_name'] = $smarty->CI->input->post('firstname');
