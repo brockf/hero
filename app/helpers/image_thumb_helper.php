@@ -13,6 +13,10 @@
 */
 function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 {
+	if (!file_exists($image_path)) {
+		die(show_error('Image file does not exist for thumb: "' . $image_path . '".'));
+	}
+
 	// Get the CodeIgniter super object
 	$CI =& get_instance();
 	$CI->load->helper('file_extension');
@@ -26,17 +30,17 @@ function image_thumb ($image_path, $height = FALSE, $width = FALSE)
 		$width = str_replace('px','',$width);
 	}
 	
+	// get modification date of the source file
+	$last_modified = filemtime($image_path);
+	
 	// generate image thumbnail filename from full path and dimensions
-	$file_name = md5($image_path . $height . $width) . '.' . file_extension($image_path);
+	$file_name = md5($last_modified . $image_path . $height . $width) . '.' . file_extension($image_path);
 
 	// Path to image thumbnail
 	$image_thumb = setting('path_image_thumbs') . $file_name;
 	
-	$modified_time = file_exists($image_thumb) ? filemtime($image_thumb) : FALSE;
-	
-	// if the cache is over 2 minutes old, we re-generate!
-	if ($modified_time === FALSE or (time() - $modified_time > 120))
-	{	
+	// if the file has been modified since the last thumb was generated, it will have a new md5 and thus the cache won't exist yet
+	if (!file_exists($image_thumb)) {
 		// load library
 		$CI->load->library('image_lib');
 		$CI->load->helper('get_available_image_library');
