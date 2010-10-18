@@ -107,6 +107,7 @@ Available block variables:
 
 * {$var.form_action} (the value for the form's "action" attribute")
 * {$var.return} (the encoded value for the hidden "return" field)
+* {$var.custom_fields} (a standard custom fields array of registration form variables)
 
 [h3]members (parameters: var, id, username, name, email, limit, sort, sort_dir, offset, [any_custom_member_data_variable])[/h3]
 

@@ -33,6 +33,7 @@ function smarty_block_registration_form ($params, $tagdata, &$smarty, &$repeat){
 		$variables['username'] = $smarty->CI->input->post('username');
 		
 		$custom_fields = $smarty->CI->user_model->get_custom_fields(array('registration_form' => TRUE, 'not_in_admin' => TRUE));
+		$variables['custom_fields'] = $custom_fields;
 		
 		if (is_array($custom_fields)) {
 			foreach ($custom_fields as $field) {
