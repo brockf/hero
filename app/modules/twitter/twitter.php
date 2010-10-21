@@ -42,15 +42,15 @@ class Twitter_module extends Module {
 	function update ($db_version) {
 		if ($db_version < '1.0') {
 			// initial install
-			$this->CI->settings_model->new_setting(1, 'twitter_consumer_key', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_consumer_secret', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_oauth_token', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_oauth_token_secret', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_content_types', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_topics', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_template', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_enabled', '0', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'twitter_last_tweet', '', '', 'text','');
+			$this->CI->settings_model->new_setting(1, 'twitter_consumer_key', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_consumer_secret', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_oauth_token', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_oauth_token_secret', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_content_types', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_topics', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_template', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_enabled', '0', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'twitter_last_tweet', '', '', 'text','', FALSE, TRUE);
 		}
 		
 		if ($db_version < '1.01') {

@@ -42,10 +42,10 @@ class Phpbb_module extends Module {
 	function update ($db_version) {
 		if ($db_version < '1.0') {
 			// initial install
-			$this->CI->settings_model->new_setting(1, 'phpbb3_document_root', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'phpbb3_table_prefix', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'phpbb3_group_default', '', '', 'text','');
-			$this->CI->settings_model->new_setting(1, 'phpbb3_groups', '', '', 'text','');
+			$this->CI->settings_model->new_setting(1, 'phpbb3_document_root', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'phpbb3_table_prefix', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'phpbb3_group_default', '', '', 'text','', FALSE, TRUE);
+			$this->CI->settings_model->new_setting(1, 'phpbb3_groups', '', '', 'text','', FALSE, TRUE);
 		}
 		
 		if ($db_version < '1.01') {
