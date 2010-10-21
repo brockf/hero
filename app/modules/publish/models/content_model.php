@@ -482,7 +482,7 @@ class Content_model extends CI_Model
 		}
 		
 		// standard ordering and limiting
-		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'content.content_date';
+		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'content.content_id';
 		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'DESC';
 		$this->db->order_by($order_by, $order_dir);
 		
