@@ -733,22 +733,26 @@ class User_model extends CI_Model
 		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		
 		// prep hook
-		$CI =& get_instance();
-		$CI->app_hooks->data('member', $user_id);
-		$CI->app_hooks->data_var('password', $password);
-		
-		// trip the validation email?
-		if (!empty($validate_key)) {
-			$validation_link = site_url('users/validate/' . $validate_key);
+		// only run this hook if the App_hooks library is loaded
+		// it may not be if this is the user created during the install wizard
+		if (class_exists('App_hooks')) {
+			$CI =& get_instance();
+			$CI->app_hooks->data('member', $user_id);
+			$CI->app_hooks->data_var('password', $password);
 			
-			$CI->app_hooks->data_var('validation_link', $validation_link);
-			$CI->app_hooks->data_var('validation_code', $validate_key);
+			// trip the validation email?
+			if (!empty($validate_key)) {
+				$validation_link = site_url('users/validate/' . $validate_key);
+				
+				$CI->app_hooks->data_var('validation_link', $validation_link);
+				$CI->app_hooks->data_var('validation_code', $validate_key);
+				
+				$CI->app_hooks->trigger('member_validate_email');
+			}
 			
-			$CI->app_hooks->trigger('member_validate_email');
+			$CI->app_hooks->trigger('member_register', $user_id, $password);
+			$CI->app_hooks->reset();
 		}
-		
-		$CI->app_hooks->trigger('member_register', $user_id, $password);
-		$CI->app_hooks->reset();
 		
 		return $user_id;
 	}
