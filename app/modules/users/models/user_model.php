@@ -975,6 +975,10 @@ class User_model extends CI_Model
 		}
 	}
 	
+	function count_users ($filters) {
+		return $this->get_users($filters, FALSE, TRUE);
+	}
+	
 	/*
 	* Get Users
 	*
@@ -987,10 +991,11 @@ class User_model extends CI_Model
 	* @param string $filters['sort_dir'] ASC or DESC
 	* @param int $filters['limit'] How many records to retrieve
 	* @param int $filters['offset'] Start records retrieval at this record
+	* @param boolean $any_status Set to TRUE to allow for deleted users, as well
 	*
 	* @return array Each user in an array of users
 	*/
-	function get_users ($filters = array(), $any_status = FALSE) {
+	function get_users ($filters = array(), $any_status = FALSE, $counting = FALSE) {
 		$fields = $this->get_custom_fields();
 		
 		if (isset($filters['id'])) {
@@ -1068,7 +1073,15 @@ class User_model extends CI_Model
 			$this->db->limit($filters['limit'], $offset);
 		}
 		
-		$result = $this->db->get('users');
+		if ($counting === TRUE) {
+			$this->db->select('users.user_id');
+			$result = $this->db->get('users');
+			
+			return $result->num_rows();
+		}
+		else {
+			$result = $this->db->get('users');
+		}
 		
 		if ($result->num_rows() == 0) {
 			return FALSE;

@@ -491,20 +491,21 @@ class Content_model extends CI_Model
 			$this->db->limit($filters['limit'], $offset);
 		}
 		
-		// we want to select everything from the content database
-		$this->db->select('content.*');
-		// if we are dipping into the specific content db (e.g., `articles), we're taking
-		// care of that select above
-		
 		$this->db->from('content');
 		
 		if ($counting == FALSE) {
+			// we want to select everything from the content database
+			$this->db->select('content.*');
+			// if we are dipping into the specific content db (e.g., `articles), we're taking
+			// care of that select above
+			
 			// get the query we've been building for the embedded select, then clear the active record
 			// query being built
 			$embedded_from_query = $this->db->_compile_select();
 			$this->db->_reset_select();
 		}
 		else {
+			$this->db->select('content.content_id');
 			return $this->db->get()->num_rows();
 		}
 		
