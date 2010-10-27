@@ -90,7 +90,7 @@ class User_model extends CI_Model
 		}
 		
 		// track login
-		$this->login_by_id($user['id']); 
+		$this->login_by_id($user['id'], $password); 
 		
 		// remember?
 		if ($remember == TRUE) {
@@ -118,15 +118,6 @@ class User_model extends CI_Model
 			$this->db->update('users',array('user_remember_key' => $remember_key),array('user_id' => $user['id']));
 		}
 		
-		// prep hook
-		$CI =& get_instance();
-		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
-		// app_hooks like the other controllers
-		$CI->load->library('app_hooks');
-		$CI->app_hooks->data('member', $user['id']);
-		$CI->app_hooks->trigger('member_login', $user['id'], $password);
-		$CI->app_hooks->reset();
-		
 		return TRUE;
     }
     
@@ -135,7 +126,7 @@ class User_model extends CI_Model
     *
     * @param int $user_id
     */
-    function login_by_id ($user_id) {
+    function login_by_id ($user_id, $password = FALSE) {
     	$CI =& get_instance();
     	$CI->load->model('users/login_model');
 		$CI->login_model->new_login($user_id);
@@ -151,6 +142,15 @@ class User_model extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('store/cart_model');
 		$CI->cart_model->user_login($this->active_user);
+		
+		// prep hook
+		$CI =& get_instance();
+		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
+		// app_hooks like the other controllers
+		$CI->load->library('app_hooks');
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->trigger('member_login', $user_id, $password);
+		$CI->app_hooks->reset();
 		
 		return TRUE;
     }

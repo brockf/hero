@@ -10,7 +10,7 @@
 
 function smarty_block_in_group ($params, $tagdata, &$smarty, &$repeat){
 	if (!$repeat) {	
-		if ($smary->CI->user_model->in_group($params['privileges'])) {
+		if ($smarty->CI->user_model->in_group($params['privileges'])) {
 			return $tagdata;
 		}
 		else {
