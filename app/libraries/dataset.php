@@ -220,9 +220,11 @@ class Dataset {
     *
     * Initializes the dataset with previously set data configuration, column specs
     *
+    * @param boolean $paginate_now Automatically initialize pagination, otherwise this::initialize_pagination() must be invoked after this
+    *
     * @return bool True upon successful initialization
     */
-    function initialize () {
+    function initialize ($paginate_now = TRUE) {
     	// get filter values
 		$this->get_filter_array();
 		
@@ -281,9 +283,25 @@ class Dataset {
 		// get data with our parameters
 		$this->data = $this->CI->data_model->$data_function($this->params);
     	
+    	if ($paginate_now === TRUE) {
+    		$this->initialize_pagination();
+    	}
+		
+		return TRUE; 
+    }
+    
+    /**
+    * Initialize Pagination
+    *
+    * Initializes pagination manually.  This is useful if the CP method wants to use the $this->params value generated
+    * in this::initialize() to manually pass a total_rows value via this::total_rows()
+    *
+    */
+    function initialize_pagination () {
     	// if we weren't told how many rows are in the dataset yet, we will
     	// calculate them automatically with an unlimited data call
     	if (empty($this->total_rows)) {
+    		$data_function = $this->data_function;
     		// they didn't pass the total_rows via total_rows()
     		$unlimited_params = $this->get_unlimited_parameters();
     		$unlimited_data = $this->CI->data_model->$data_function($unlimited_params);
@@ -307,7 +325,7 @@ class Dataset {
 		// build the pagination links
 		$this->get_pagination();
 		
-		return TRUE; 
+		return TRUE;
     }
     
     /**

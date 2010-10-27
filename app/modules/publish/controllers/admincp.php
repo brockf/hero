@@ -98,7 +98,13 @@ class Admincp extends Admincp_Controller {
 			$this->dataset->base_url(site_url('admincp/publish/index'));
 			
 			// initialize the dataset
-			$this->dataset->initialize();
+			$this->dataset->initialize(FALSE);
+			
+			// count total rows
+			$this->load->model('content_model');
+			$total_rows = $this->content_model->count_content($this->dataset->get_unlimited_parameters());
+			$this->dataset->total_rows($total_rows);
+			$this->dataset->initialize_pagination();
 	
 			// add actions
 			$this->dataset->action('Delete','admincp/publish/delete');
@@ -166,7 +172,13 @@ class Admincp extends Admincp_Controller {
 				$this->dataset->base_url(site_url('admincp/publish'));
 				
 				// initialize the dataset
-				$this->dataset->initialize();
+				$this->dataset->initialize(FALSE);
+				
+				// count total rows
+				$this->load->model('content_model');
+				$total_rows = $this->content_model->count_content($this->dataset->get_unlimited_parameters());
+				$this->dataset->total_rows($total_rows);
+				$this->dataset->initialize_pagination();
 		
 				// add actions
 				$this->dataset->action('Delete','admincp/publish/delete');
@@ -247,7 +259,13 @@ class Admincp extends Admincp_Controller {
 				$this->dataset->base_url(site_url('admincp/publish'));
 				
 				// initialize the dataset
-				$this->dataset->initialize();
+				$this->dataset->initialize(FALSE);
+				
+				// count total rows
+				$this->load->model('content_model');
+				$total_rows = $this->content_model->count_content($this->dataset->get_unlimited_parameters());
+				$this->dataset->total_rows($total_rows);
+				$this->dataset->initialize_pagination();
 		
 				// add actions
 				$this->dataset->action('Delete','admincp/publish/delete');
