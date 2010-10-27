@@ -1076,8 +1076,9 @@ class User_model extends CI_Model
 		if ($counting === TRUE) {
 			$this->db->select('users.user_id');
 			$result = $this->db->get('users');
-			
-			return $result->num_rows();
+			$rows = $result->num_rows();
+			$result->free_result();
+			return $rows;
 		}
 		else {
 			$result = $this->db->get('users');
@@ -1130,6 +1131,8 @@ class User_model extends CI_Model
 			$users[] = $this_user;
 							
 		}
+		
+		$result->free_result();
 		
 		return $users;
 	}

@@ -506,7 +506,10 @@ class Content_model extends CI_Model
 		}
 		else {
 			$this->db->select('content.content_id');
-			return $this->db->get()->num_rows();
+			$result = $this->db->get();
+			$rows = $result->num_rows();
+			$result->free_result();
+			return $rows;
 		}
 		
 		// this filter has to be applied late, because the users table needs to be joined
@@ -566,6 +569,8 @@ class Content_model extends CI_Model
 			
 			$contents[] = $this_content;
 		}
+		
+		$result->free_result();
 		
 		return $contents;
 	}
