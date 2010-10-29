@@ -434,7 +434,6 @@ class App_hooks {
 					}
 					else {
 						// the class isn't loaded, we'll call the file and load it
-						
 						include(FCPATH . $bind['filename']);
 						$bind_class = new $class;
 						call_user_func_array(array($bind_class,$method), $args);
