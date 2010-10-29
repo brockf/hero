@@ -85,7 +85,7 @@ class Install extends Controller {
 				
 				$database_file = preg_replace('/\$db\[\'default\'\]\[\'hostname\'\](.*?)\=(.*?)\"(.*?)\"/','$db[\'default\'][\'hostname\'] = "' . $this->input->post('db_host') . '"',$database_file);
 				$database_file = preg_replace('/\$db\[\'default\'\]\[\'username\'\](.*?)\=(.*?)\"(.*?)\"/','$db[\'default\'][\'username\'] = "' . $this->input->post('db_user') . '"',$database_file);
-				$database_file = preg_replace('/\$db\[\'default\'\]\[\'password\'\](.*?)\=(.*?)\'(.*?)\'/','$db[\'default\'][\'password\'] = "' . $this->input->post('db_pass') . '"',$database_file);
+				$database_file = preg_replace('/\$db\[\'default\'\]\[\'password\'\](.*?)\=(.*?)\'(.*?)\'/','$db[\'default\'][\'password\'] = \'' . $this->input->post('db_pass') . '\'',$database_file);
 				$database_file = preg_replace('/\$db\[\'default\'\]\[\'database\'\](.*?)\=(.*?)\"(.*?)\"/','$db[\'default\'][\'database\'] = "' . $this->input->post('db_name') . '"',$database_file);
 				
 				// write database file
