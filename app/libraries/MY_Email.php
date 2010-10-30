@@ -83,13 +83,11 @@ class MY_Email extends CI_Email {
 				$to = $this->_recipients;
 			}
 			
-			$subject = $this->_plaintext_subject;
-			
 			$CI->db->insert('mail_queue', array(
 												'`to`' => $to,
 												'`from_name`' => $this->_plaintext_from_name,
 												'`from_email`' => $this->_plaintext_from_email,
-												'`subject`' => $subject,
+												'`subject`' => $this->_plaintext_subject,
 												'`body`' => $body_file,
 												'`date`' => date('Y-m-d H:i:s'),
 												'`wordwrap`' => ($this->wordwrap == TRUE) ? '1' : '0',
