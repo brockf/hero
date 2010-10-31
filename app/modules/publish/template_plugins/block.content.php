@@ -19,12 +19,27 @@
 
 function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 	if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
-		$smarty->trigger_error('You must specify a "type" parameter for template {content} calls.');
+		$smarty->trigger_error('You must specify a "type" parameter for template {content} calls if you are not specifying an "id" parameter.');
 	}
 	elseif (!isset($params['var'])) {
 		$smarty->trigger_error('You must specify a "var" parameter for template {content} calls.  This parameter specifies the variable name for the returned array.');
 	}
 	else {
+		// type may not be the ID, but the system name
+		if (isset($params['type'])) {
+			if (!is_numeric($params['type'])) {
+				$smarty->CI->load->model('publish/content_type_model');
+				$type = $smarty->CI->content_type_model->get_content_types(array('system_name' => $params['type']));
+				
+				if (empty($type)) {
+					$smarty->trigger_error('Could not load content type data for "' . $params['type'] . '"');
+				}
+				else {
+					$params['type'] = $type[0]['id'];
+				}
+			}
+		}
+	
 		// deal with filters
 		$filters = array();
 		

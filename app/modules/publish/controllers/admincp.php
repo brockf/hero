@@ -716,7 +716,11 @@ class Admincp extends Admincp_Controller {
 							'width' => '5%'),
 						array(
 							'name' => 'Name',
-							'width' => '40%'),
+							'width' => '25%'),
+						array(
+							'name' => 'System Name',
+							'width' => '15%'
+							),
 						array(
 							'name' => 'Standard Content',
 							'width' => '15%',

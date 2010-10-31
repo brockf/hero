@@ -9,6 +9,7 @@ if (!empty($this->dataset->data)) {
 			<td><input type="checkbox" name="check_<?=$row['id'];?>" value="1" class="action_items" /></td>
 			<td><?=$row['id'];?></td>
 			<td><?=$row['name'];?></td>
+			<td><?=$row['system_name'];?></td>
 			<td><? if ($row['is_standard'] == TRUE) { ?>Yes<? } ?></td>
 			<td><? if ($row['is_privileged'] == TRUE) { ?>Yes<? } ?></td>
 			<td class="options">
@@ -22,7 +23,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="6">No content types in this dataset.</td>
+	<td colspan="7">No content types in this dataset.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>

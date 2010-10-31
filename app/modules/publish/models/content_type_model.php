@@ -242,6 +242,9 @@ class Content_type_model extends CI_Model
 		if (isset($filters['is_standard'])) {
 			$this->db->where('content_type_is_standard',$filters['is_standard']);
 		}
+		if (isset($filters['system_name'])) {
+			$this->db->where('content_type_system_name',$filters['system_name']);
+		}
 		if (isset($filters['is_module'])) {
 			$this->db->where('content_type_is_module',$filters['is_module']);
 		}
