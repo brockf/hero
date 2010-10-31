@@ -30,7 +30,7 @@ Retrieve content of a specific type and display it in the format you specify bet
 
 Required parameters:
 
-* Either [span_code]type[/span_code] (content type ID for the content you would like to retrieve) or [span_code]id[/span_code] (content ID number).
+* Either [span_code]type[/span_code] (content type ID or system_name for the content you would like to retrieve) or [span_code]id[/span_code] (content ID number).
 * [span_code]var[/span_code] - The name of the variable for each returned item array
 
 Optional parameters:
@@ -72,6 +72,13 @@ Publish Date: {$post.date|date_format: "%b %e, %Y"}
 Body:
 
 {$post.body}
+{/content}
+
+Example - using the system name instead of the numeric type ID
+
+[code]
+{content type="news_posts" var="post" limit="10"}
+<p>{$post.title}<br />{$post.summary}</p>
 {/content}
 [/code]
 
