@@ -86,6 +86,9 @@ function bind_js_effects () {
 }
 
 function bind_add_link () {
+	// bind search
+	$('input#items_search').quicksearch('table.links tbody tr');
+
 	$('input.add_link').click(function () {
 		var base_url = $('div#base_url').html();
 	

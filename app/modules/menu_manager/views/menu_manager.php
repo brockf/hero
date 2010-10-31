@@ -1,5 +1,6 @@
 <?=$this->load->view(branded_view('cp/header'), array('head_files' => '<link href="' . branded_include('css/menu_manager.css') . '" rel="stylesheet" type="text/css" media="screen" />
 <script type="text/javascript" src="' . branded_include('js/jquery-ui-1.8.2.min.js') . '"></script>
+<script type="text/javascript" src="' . branded_include('js/jquery.quicksearch.js') . '"></script>
 <script type="text/javascript" src="' . branded_include('js/menu_manager.js') . '"></script>'));?>
 <h1>Menu Manager</h1>
 <div id="menu_manager">
@@ -21,7 +22,7 @@
 				</div>
 			</div>
 			<div id="link_creator">
-				<h2>Add Link(s) to Menu</h2>
+				<h2>Add Link(s) to Menu&nbsp;&nbsp;<input id="items_search" name="items_search" class="mark_empty" rel="search link items" style="width: 250px" /></h2>
 				<div id="link_creator_wrapper">
 					<?=$possible_links;?>
 				</div>
