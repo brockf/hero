@@ -21,7 +21,7 @@ $(document).ready(function () {
 			var setting_name = $(this).parent().parent().children('td.name').html();
 			
 			var current_value = value_td.html().trim();
-			value_td.html('<form class="validate form mark_empty" rel="new setting" action="' + post_url + '"><input type="hidden" name="name" value="' + setting_name + '" /><input class="text required" style="width:100%" name="value" value="' + current_value + '" /></form>');
+			value_td.html('<form class="validate form mark_empty" rel="new setting" method="post" action="' + post_url + '"><input type="hidden" name="name" value="' + setting_name + '" /><input class="text required" style="width:100%" name="value" value="' + current_value + '" /></form>');
 			
 			$(this).removeClass('edit');
 			$(this).addClass('save');

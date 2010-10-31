@@ -62,7 +62,9 @@ class Auto_updater {
 			}
 		}
 		
-		// update database version
-		$CI->db->query('UPDATE `system` SET `db_version`=\'' . $software_version . '\'');
+		// update database version if necessary
+		if ($software_version != $db_version) {
+			$CI->db->query('UPDATE `system` SET `db_version`=\'' . $software_version . '\'');
+		}
 	}
 }

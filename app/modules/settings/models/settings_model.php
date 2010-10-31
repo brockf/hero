@@ -88,6 +88,10 @@ class Settings_model extends CI_Model
 	* @param string $value The new setting value
 	*/
 	function update_setting ($name, $value) {
+		if (empty($name)) {
+			return FALSE;
+		}
+		
 		$this->db->update('settings',array('setting_value' => $value), array('setting_name' => $name));
 		
 		return TRUE;

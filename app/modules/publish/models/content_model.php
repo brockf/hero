@@ -355,24 +355,27 @@ class Content_model extends CI_Model
 			}
 		
 			// find out the table name
-			$this->db->select('content_type_id');
-			if (isset($filters['id'])) {
+			if (isset($filters['type'])) {
+				$content_type_id = $filters['type'];
+			}
+			else {
+				$this->db->select('content_type_id');
 				$this->db->where('content_id',$filters['id']);
-			}
-			elseif (isset($filters['type'])) {
-				$this->db->where('content_type_id',$filters['type']);
+				$result = $this->db->get('content');
+				$row = $result->row_array();
+				$content_type_id = $row['content_type_id'];
 			}
 			
-			$result = $this->db->get('content');
-			
-			if ($result->num_rows() == 0) {
+			if (isset($result) and $result->num_rows() == 0) {
 				return FALSE;
 			}
 			else {
-				$row = $result->row_array();
-				
 				$this->load->model('publish/content_type_model');
-				$type = $this->content_type_model->get_content_type($row['content_type_id']);
+				$type = $this->content_type_model->get_content_type($content_type_id);
+				
+				if (empty($type)) {
+					return FALSE;
+				}
 				
 				// get custom fields
 				$this->load->model('custom_fields_model');

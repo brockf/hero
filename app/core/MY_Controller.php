@@ -7,5 +7,9 @@ class MY_Controller extends Controller {
 		// we don't want to do anything if we're not installed
 		$this->load->helper('install_redirect_helper');
 		install_redirect();
+		
+		if ($this->config->item('debug_profiler') === TRUE) {
+			$this->output->enable_profiler(TRUE);
+		}
 	}	
 }

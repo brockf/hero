@@ -96,6 +96,10 @@ $config['image_library_path'] = '';
 // secure routes (these will be redirected to HTTPS if you have an SSL certificate)
 $config['secure_modules'] = array('users','checkout');
 
+// if enabled, the debugger will display a profile of all queries, memory usage, and other
+// useful information upon each page load
+$config['debug_profiler'] = FALSE;
+
 /*
 |--------------------------------------------------------------------------
 | Index File

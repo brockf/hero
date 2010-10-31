@@ -18,6 +18,19 @@ class Menu_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	function clear_cache ($menu_id) {
+		$this->load->helper('directory');
+		$files = directory_map($this->config->item('path_writeable') . 'menu_cache');
+		
+		foreach ($files as $file) {
+			if (strpos($file, $menu_id . '-') === 0) {
+				unlink($this->config->item('path_writeable') . 'menu_cache/' . $file);
+			}
+		}
+		
+		return TRUE;
+	}
+	
 	/*
 	* Create New Menu
 	*
@@ -191,6 +204,24 @@ class Menu_model extends CI_Model
 	* @return array $links
 	*/
 	function get_links ($filters = array()) {
+		// caching
+		// we'll only cache for calls with a filter menu as all frontend calls
+		// have this parameter
+		
+		if (isset($filters['menu'])) {
+			$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
+			$directory = $this->config->item('path_writeable') . 'menu_cache/';
+			
+			if (file_exists($directory . $cache_file)) {
+				$links = file_get_contents($directory . $cache_file);
+				$links = unserialize($links);
+				
+				return $links;
+			}
+		}
+		
+		// no cache, continue...
+	
 		if (isset($filters['menu'])) {
 			$this->db->where('menu_id',$filters['menu']);
 		}
@@ -232,6 +263,15 @@ class Menu_model extends CI_Model
 						'order' => $row['menu_link_order'],
 						'link_url_path' => $row['link_url_path']
 					);
+		}
+		
+		// save cache
+		if (isset($filters['menu'])) {
+			$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
+			$directory = $this->config->item('path_writeable') . 'menu_cache/';
+			
+			$this->load->helper('file');
+			write_file($directory . $cache_file, serialize($links));
 		}
 		
 		return $links;

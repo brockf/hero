@@ -88,7 +88,8 @@ class Phpbb_functions {
 					// no account
 					$this->_register($this->CI->user_model->get('username'), $password, $this->CI->user_model->get('email'), setting('phpbb3_group_default'));
 					
-					if (!$auth->login($this->CI->user_model->get('username'), $password)) {
+					$login = $auth->login($this->CI->user_model->get('username'), $password);
+					if ($login['status'] != '3') {
 						// we are *still* failing - this is irrepairable
 						return FALSE;
 					}

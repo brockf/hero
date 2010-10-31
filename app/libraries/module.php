@@ -70,7 +70,9 @@ class Module {
 		
 			$new_version = $this->update($version);
 			
-			$this->CI->module_model->update_version($this->active_module, $new_version);
+			if ($version != $new_version) {
+				$this->CI->module_model->update_version($this->active_module, $new_version);
+			}
 		}
 	}
 	

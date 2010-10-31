@@ -12,7 +12,7 @@
 */
 
 class Menu_manager extends Module {
-	var $version = '1.01';
+	var $version = '1.02';
 	var $name = 'menu_manager';
 
 	function __construct () {
@@ -63,6 +63,10 @@ class Menu_manager extends Module {
 								  `menu_name` varchar(200) NOT NULL,
 								  PRIMARY KEY  (`menu_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+		
+		if ($db_version < 1.02) {
+			$this->CI->settings_model->make_writeable_folder(setting('path_writeable') . 'menu_cache', TRUE);
 		}
 		
 		return $this->version;

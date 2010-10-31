@@ -90,7 +90,15 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/invoice_model','get_invoices');
 		$this->dataset->base_url(site_url('admincp/reports/invoices'));
-		$this->dataset->Initialize();
+		
+		// initialize the dataset
+		$this->dataset->initialize(FALSE);
+		
+		// count total rows
+		$this->load->model('billing/invoice_model');
+		$total_rows = $this->invoice_model->count_invoices($this->dataset->get_unlimited_parameters());
+		$this->dataset->total_rows($total_rows);
+		$this->dataset->initialize_pagination();
 		
 		$this->load->model('billing/invoice_model');
 		
