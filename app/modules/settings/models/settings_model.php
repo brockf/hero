@@ -42,9 +42,8 @@ class Settings_model extends CI_Model
 					die(show_error('Folder appeared to get created but it\'s not writable: ' . $path));
 				}
 				
-				write_file($path . '/index.html','');
-				
 				if ($no_access == TRUE) {
+					write_file($path . '/index.html','');
 					write_file($path . '/.htaccess',"<Files *>\nDeny from all\n</Files>");
 				}
 			}
