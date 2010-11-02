@@ -25,7 +25,11 @@ function smarty_block_login_form ($params, $tagdata, &$smarty, &$repeat){
 		}
 		
 		// form action
-		$variables['form_action'] = secure(site_url('users/post_login'));
+		$variables['form_action'] = site_url('users/post_login');
+		
+		if (setting('ssl_certificate') == '1') {
+			$variables['form_action'] = secure($variables['form_action']);
+		}
 		
 		// username
 		$variables['username'] = isset($params['username']) ? $params['username'] : '';
