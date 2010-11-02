@@ -45,7 +45,7 @@ class User_model extends CI_Model
         			// no correspondence, this key has expired
         			delete_cookie('user_remember_key');
         			
-        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => $remember_key));
+        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => get_cookie('user_remember_key', TRUE)));
         		}
         		else {
         			$user = $result->row_array();
