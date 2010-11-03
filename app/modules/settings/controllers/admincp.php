@@ -42,7 +42,6 @@ class Admincp extends Admincp_Controller {
 	
 	function save ()
 	{
-		die();
 		$current = $this->settings_model->get_setting($this->input->post('name'));
 		
 		$value = $this->input->post('value');
