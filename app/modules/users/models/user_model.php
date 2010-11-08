@@ -987,6 +987,7 @@ class User_model extends CI_Model
 	* @param int $filters['suspended'] Set to 1 to retrieve suspended users
 	* @param string $filters['email'] The email address to filter by
 	* @param string $filters['name'] Search by first and last name
+	* @param string $filters['keyword'] Search by ID, Name, Email, or Username
 	* @param string $filters['sort'] Field to sort by
 	* @param string $filters['sort_dir'] ASC or DESC
 	* @param int $filters['limit'] How many records to retrieve
@@ -998,6 +999,17 @@ class User_model extends CI_Model
 	function get_users ($filters = array(), $any_status = FALSE, $counting = FALSE) {
 		$fields = $this->get_custom_fields();
 		
+		// keyword search
+		if (isset($filters['keyword'])) {
+			$this->db->where('user_deleted','0');
+			$this->db->where('user_id', $filters['keyword']);
+			$this->db->or_like('user_username', $filters['keyword']);
+			$this->db->or_like('user_email', $filters['keyword']);
+			$this->db->or_like('user_last_name', $filters['keyword']);
+			$this->db->or_like('user_first_name', $filters['keyword']);
+		}
+		
+		// other filters
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
 		}

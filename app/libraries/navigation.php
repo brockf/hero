@@ -104,6 +104,10 @@ class Navigation {
 		return $return;
 	}
 	
+	function clear_module_links () {
+		$this->module_links = array();
+	}
+	
 	function take_id () {
 		$this->item_count++;
 		

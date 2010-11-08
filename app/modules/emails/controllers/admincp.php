@@ -22,6 +22,133 @@ class Admincp extends Admincp_Controller {
 		$this->navigation->module_link('Edit Global Email Layout',site_url('admincp/emails/email_layout'));
 	}
 	
+	function send() {
+		$this->navigation->clear_module_links();
+	
+		// get usergroups
+		$this->load->model('users/usergroup_model');
+		$usergroups = $this->usergroup_model->get_usergroups();
+		
+		$data = array(
+					'usergroups' => $usergroups
+					);
+	
+		$this->load->view('send', $data);
+	}
+	
+	function post_send() {
+		$this->load->library('form_validation');
+		$this->form_validation->set_rules('subject','Subject','required');
+		$this->form_validation->set_rules('body','Body','required');
+		
+		if ($this->form_validation->run() === FALSE) {
+			// errors
+			$this->notices->SetError(validation_errors());
+			
+			return redirect('admincp/emails/send');
+		}
+		
+		$recipients = array();
+		$queue_mail = FALSE;
+		$is_html = ($this->input->post('html') == '1') ? TRUE : FALSE;
+		
+		// build list of recipients
+		if (!empty($_POST['recipient_groups'])) {
+			foreach ($_POST['recipient_groups'] as $group) {
+				$members = $this->user_model->get_users(array('group' => $group));
+				
+				if (!empty($members)) {	
+					$queue_mail = TRUE;
+								
+					foreach ($members as $member) {
+						$recipients[] = array('email' => $member['email'], 'first_name' => $member['first_name'], 'last_name' => $member['last_name']);
+					}
+				}
+			}
+		}
+		
+		if (!empty($_POST['recipient_members'])) {
+			foreach ($_POST['recipient_members'] as $member) {
+				$member = $this->user_model->get_user($member);
+				
+				if (!empty($member)) {
+					$recipients[] = array('email' => $member['email'], 'first_name' => $member['first_name'], 'last_name' => $member['last_name']);
+				}
+			}
+		}
+		
+		if (empty($recipients)) {
+			$this->notices->SetError('No recipients were selected.');
+			
+			return redirect('admincp/emails/send');
+		}
+		
+		// send, but not to duplicates
+		// initialize email
+		$CI =& get_instance();
+		$CI->load->library('email');
+		
+		$settings = array();
+		if ($is_html === TRUE) {
+			$settings['mailtype'] = 'html';
+		}
+		
+		$CI->email->initialize($settings);
+		
+		// track duplicates
+		$sent = array();
+		
+		foreach ($recipients as $recipient) {
+			if (in_array($recipient['email'], $sent)) {
+				continue;
+			}
+			
+			// variables
+			$search = array('[member_first_name]', '[member_last_name]', '[member_email]');
+			$replace = array($recipient['first_name'], $recipient['last_name'], $recipient['email']);
+			
+			// parse message
+			$subject = str_ireplace($search, $replace, $this->input->post('subject'));
+			$body = str_ireplace($search, $replace, $this->input->post('body'));
+		
+			// send full email
+			$CI->email->from(setting('site_email'), setting('site_name'));
+			$CI->email->to($recipient['email']);
+			
+			$CI->email->subject($subject);
+			$CI->email->message($body);
+			
+			$CI->email->send($queue_mail);
+			$CI->email->clear();
+			
+			$sent[] = $recipient['email'];
+		}
+		
+		$this->notices->SetNotice('Email sent successfully to ' . count($sent) . ' members.');
+		
+		return redirect('admincp/emails/send');
+	}
+	
+	function member_search () {
+		$members = $this->user_model->get_users(array(
+											'keyword' => $this->input->post('keyword'),
+											'limit' => '50'
+										));
+		
+		$this->load->helper('array_to_json');
+		
+		if (empty($members)) {
+			return print(array_to_json(array()));
+		}
+		
+		$results = array();
+		foreach ($members as $member) {
+			$results[$member['id']] = $member['last_name'] . ', ' . $member['first_name'] . ' (' . $member['email'] . ')';
+		}
+		
+		return print(array_to_json($results));
+	}
+	
 	/**
 	* Manage emails
 	*

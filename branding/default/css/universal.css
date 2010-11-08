@@ -756,6 +756,49 @@ div.product_images span.featured {
 	text-transform: uppercase;
 }
 
+div.sidebar {
+	width: 25%;
+	border: 1px solid #222;	
+	-moz-border-radius: 7px;
+	-webkit-border-radius: 7px;
+	border-radius: 6px;
+	font-size: 9pt;
+	padding-bottom: 10px;
+	float: left;
+	margin-right: 3%
+}
+
+div.sidebar h2 {
+	-moz-border-radius: 6px;
+	-webkit-border-radius: 6px;
+	border-radius: 6px;
+	background-image: url(../images/side_h2_back.gif);
+	background-repeat: repeat-x;
+	color: #fff;
+	font-weight: bold;
+	padding: 4px 10px;
+	font-size: 9pt;
+	text-transform: uppercase;
+	margin-bottom: 6px;
+}
+
+div.sidebar h3 {
+	background-color: #f0f0f1;
+	border: 1px solid #ccc;
+	border-left: 0;
+	border-right: 0;
+	padding: 3px 5px;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 8pt;
+	font-weight: bold;
+	margin: 6px 0;
+}
+
+div.sidebar div.sidebar_content {
+	padding: 6px 10px;
+}
+
 /* specific form stylings */
 #email_variables {
 	border: 1px solid #f8f7a1;
@@ -1062,4 +1105,14 @@ span.product_options {
 	font-size: 8pt;
 	display: block;
 	margin-left: 20px;
+}
+
+ul.recipients {
+	margin: 0 0 0 10px;
+	padding: 0;
+	list-style-type: none;
+}
+
+ul.recipients li {
+	display: block;
 }

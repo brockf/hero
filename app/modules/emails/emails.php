@@ -30,6 +30,8 @@ class Emails extends Module {
 	function admin_preload ()
 	{
 		$this->CI->navigation->child_link('configuration',20,'Emails',site_url('admincp/emails'));
+		
+		$this->CI->navigation->child_link('members',25,'Send Email',site_url('admincp/emails/send'));
 	}
 	
 	function update ($db_version) {

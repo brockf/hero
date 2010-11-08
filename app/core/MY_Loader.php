@@ -310,6 +310,8 @@ class MY_Loader extends CI_Loader
 					}
 					
 					$CI->module_definitions->$module = new $class_name;
+					
+					log_message('debug', 'Module defined and loaded: ' . $module);
 				}
 			}
 		}
