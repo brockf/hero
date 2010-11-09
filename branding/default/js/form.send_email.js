@@ -11,7 +11,7 @@ $(document).ready(function () {
 		}
 		
 		// check query length
-		if (query.length < 4) {
+		if (query.length < 3) {
 			return false;
 		}
 		
