@@ -21,7 +21,7 @@ class Admincp extends Admincp_Controller {
 	
 	function index () {
 		$this->navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
-	
+		
 		$this->load->library('dataset');
 		
 		$this->load->model('usergroup_model');			
