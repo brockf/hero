@@ -40,7 +40,7 @@ class Form extends Front_Controller {
 		// do they have permissions?
 		if (!$this->user_model->in_group($form['privileges'])) {
 			$this->load->helper('paywall/paywall');
-			if (paywall($content, 'content') !== FALSE) {
+			if (paywall($form, 'form') !== FALSE) {
 				die();
 			}
 		}
