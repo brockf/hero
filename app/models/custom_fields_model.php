@@ -265,12 +265,13 @@ class Custom_fields_model extends CI_Model {
 							'name' => $field['custom_field_name'],
 							'type' => $field['custom_field_type'],
 							'options' => (!empty($field['custom_field_options'])) ? unserialize($field['custom_field_options']) : array(),
-							'help' => $field['custom_field_help_text'],
+							'help' => (!empty($field['custom_field_help_text'])) ? $field['custom_field_help_text'] : FALSE,
 							'order' => $field['custom_field_order'],
-							'width' => $field['custom_field_width'],
-							'default' => $field['custom_field_default'],
+							'width' => (!empty($field['custom_field_width'])) ? $field['custom_field_width'] : FALSE,
+							'default' => (!empty($field['custom_field_default'])) ? $field['custom_field_default'] : FALSE,
 							'required' => ($field['custom_field_required'] == 1) ? TRUE : FALSE,
-							'validators' => (!empty($field['custom_field_validators'])) ? unserialize($field['custom_field_validators']) : array()
+							'validators' => (!empty($field['custom_field_validators'])) ? unserialize($field['custom_field_validators']) : array(),
+							'data' => (!empty($field['custom_field_data'])) ? unserialize($field['custom_field_data']) : array()
 						);
 		}
 		

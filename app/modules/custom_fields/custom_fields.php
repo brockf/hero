@@ -12,7 +12,7 @@
 */
 
 class Custom_fields extends Module {
-	var $version = '1.0';
+	var $version = '1.01';
 	var $name = 'custom_fields';
 
 	function __construct () {
@@ -45,6 +45,12 @@ class Custom_fields extends Module {
 	function update($db_version) {
 		if ($db_version < 1.0) {
 			$this->CI->settings_model->make_writeable_folder(setting('path_custom_field_uploads'));
+		}
+		
+		
+		if ($db_version < 1.01) {
+			// add data field for additional field data
+			$this->CI->db->query('ALTER TABLE `custom_fields` ADD COLUMN `custom_field_data` TEXT AFTER `custom_field_help_text`');
 		}
 		
 		return $this->version;

@@ -109,6 +109,17 @@ $(document).ready(function () {
 // form functions
 
 function MarkEmpty () {
+	// convert HTML5 "placeholder" to mark_empty below, if we don't have placeholder support
+	var input = document.create('input');
+	var has_placeholder_support = ('placeholder' in input);
+	
+	if (has_placeholder_support == FALSE) {
+		$('*[placeholder]').each(function() {
+			$(this).addClass('mark_empty');
+			$(this).attr('rel') = $(this).attr('placeholder');
+		});
+	}
+
 	$('.mark_empty').each(function () {
 		var field_name = $(this).attr('rel');
 		
