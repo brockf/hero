@@ -22,6 +22,9 @@ class Fieldtype {
 	// describe the fieldtype in a short sentence
 	public $fieldtype_description;
 	
+	// hold a string of a validation error from secondary validate_post() processing, if available
+	public $validation_error;
+	
 	// field values
 	public $id;
 	public $type;
@@ -43,11 +46,11 @@ class Fieldtype {
 	private $loaded_fieldtypes = array();
 	
 	// global object
-	private $CI;
+	public $CI;
 	
 	// constructor
 	function __construct () {
-		$this->CI = &get_instance();
+		$this->CI =& get_instance();
 	}
 	
 	// super methods
@@ -82,17 +85,17 @@ class Fieldtype {
 		
 		$object = new $class_name;
 		
-		$object->id = $field_data['id'];
-		$object->label = (isset($field_data['label'])) ? $field_data['label'] : $field_data['friendly_name'];
-		$object->type = $field_data['type'];
-		$object->options = $field_data['options'];
-		$object->help = $field_data['help'];
-		$object->order = $field_data['order'];
-		$object->width = $field_data['width'];
-		$object->default = $field_data['default'];
-		$object->required = $field_data['required'];
-		$object->validators = $field_data['validators'];
-		$object->data = $field_data['data'];
+		$object->id($field_data['id'])
+			   ->label((isset($field_data['label'])) ? $field_data['label'] : $field_data['friendly_name'])
+			   ->name($field_data['name'])
+			   ->type($field_data['type'])
+			   ->options($field_data['options'])
+			   ->help($field_data['help'])
+			   ->width($field_data['width'])
+			   ->default_value($field_data['default'])
+			   ->required($field_data['required'])
+			   ->validators((is_array($field_data['validators'])) ? $field_data['validators'] : array())
+			   ->data($field_data['data']);
 		
 		return $object;
 	}
@@ -108,7 +111,7 @@ class Fieldtype {
 	
 		if (!in_array(strtolower($type), $this->loaded_fieldtypes)) {
 			// load fieldtype			
-			if (!$this->CI->load->library('custom_fields/fieldtypes/' . $class)) {
+			if (!include(APPPATH . '/modules/custom_fields/libraries/fieldtypes/' . strtolower($type) . '.php')) {
 				log_message('error','Unable to load fieldtype: ' . $class);
 				
 				return FALSE;
@@ -125,7 +128,7 @@ class Fieldtype {
 	function load_all_types () {
 		$this->CI->load->helper('directory');
 		
-		$files = directory_map('./fieldtypes/');
+		$files = directory_map(APPPATH . '/modules/custom_fields/libraries/fieldtypes/');
 		
 		foreach ($files as $file) {
 			$file = str_replace('.php','',$file);
@@ -137,6 +140,36 @@ class Fieldtype {
 	}
 	
 	// field methods
+	function id ($id) {
+		$this->id = $id;
+		
+		return $this;
+	}
+	
+	function type ($type) {
+		$this->type = $type;
+		
+		return $this;
+	}
+	
+	function default_value ($default) {
+		$this->default = $default;
+		
+		return $this;
+	}
+	
+	function options ($options) {
+		$this->options = $options;
+		
+		return $this;
+	}
+	
+	function data ($data) {
+		$this->data = $data;
+		
+		return $this;
+	}
+	
 	function value ($value) {
 		$this->value = $value;
 		
@@ -161,6 +194,12 @@ class Fieldtype {
 		return $this;
 	}
 	
+	function help ($help) {
+		$this->help = $help;
+		
+		return $this;
+	}
+	
 	function placeholder ($placeholder) {
 		$this->placeholder = $placeholder;
 		
@@ -169,6 +208,12 @@ class Fieldtype {
 	
 	function required ($required = TRUE) {
 		$this->required = $required;
+		
+		return $this;
+	}
+	
+	function validators ($validators = array()) {
+		$this->validators = $validators;
 		
 		return $this;
 	}

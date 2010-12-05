@@ -28,6 +28,14 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 	if (isset($params['value'])) {
 		$field_object->value($params['value']);
 	}
+	else {
+		// older templates are missing the "value" parameter declaration, let's do another check
+		$values = ($smarty->CI->input->get('values')) ? unserialize(query_value_decode($smarty->CI->input->get('values'))) : array();
+		
+		if (isset($values[$field_object->name])) {
+			$field_object->value($values[$field_object->name]);
+		}
+	}
 	
 	// output field
 	return $field_object->output_frontend();

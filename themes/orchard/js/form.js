@@ -101,10 +101,10 @@ $(document).ready(function () {
 
 function MarkEmpty () {
 	// convert HTML5 "placeholder" to mark_empty below, if we don't have placeholder support
-	var input = document.create('input');
+	var input = document.createElement('input');
 	var has_placeholder_support = ('placeholder' in input);
 	
-	if (has_placeholder_support == FALSE) {
+	if (has_placeholder_support == false) {
 		$('*[placeholder]').each(function() {
 			$(this).addClass('mark_empty');
 			$(this).attr('rel') = $(this).attr('placeholder');

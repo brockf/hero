@@ -9,10 +9,13 @@
 
 class Text_fieldtype extends Fieldtype {
 	function __construct () {
+		parent::__construct();
+	
 		$this->compatibility = array('publish','users','products','collections','forms');
 		$this->enabled = TRUE;
 		$this->fieldtype_name = 'Text';
 		$this->fieldtype_description = 'Description';
+		$this->validation_error = '';
 	}
 	
 	function output_shared () {
@@ -26,11 +29,11 @@ class Text_fieldtype extends Fieldtype {
 			$this->field_class('required');
 		}
 		
-		if (in_array('numeric', $field['validators'])) {
+		if (in_array('numeric', $this->validators)) {
 			$this->field_class('number');
 		}
 		
-		if (in_array('alphanumeric', $field['validators'])) {
+		if (in_array('alphanumeric', $this->validators)) {
 			$this->field_class('alphanumeric');
 		}
 		
@@ -89,9 +92,47 @@ class Text_fieldtype extends Fieldtype {
 		return $return;
 	}
 	
+	function validation_rules () {
+		$rules = array();
+		
+		$this->CI->load->helper('valid_domain');
+		
+		// run $this->validators
+		if (!empty($this->validators)) {
+			foreach ($this->validators as $validator) {
+				if ($validator == 'whitespace') {
+					$rules[] = 'trim';
+				}
+				elseif ($validator == 'alphanumeric') {
+					$rules[] = 'alpha_numeric';
+				}
+				elseif ($validator == 'numeric') {
+					$rules[] = 'numeric';
+				}
+				elseif ($validator == 'domain') {
+					$rules[] = 'valid_domain';
+				}
+				elseif ($validator == 'email') {
+					$rules[] = 'valid_email';
+				}
+			}
+		}
+		
+		// check required
+		if ($this->required == TRUE) {
+			$rules[] = 'required';
+		}
+		
+		return $rules;
+	}
+	
 	function validate_post () {
 		// nothing extra to validate here other than the rulers in $this->validators
 		return TRUE;
+	}
+	
+	function post_to_value () {
+		return $this->CI->input->post($this->name);
 	}
 	
 	function field_form () {

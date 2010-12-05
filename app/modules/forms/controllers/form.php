@@ -48,6 +48,7 @@ class Form extends Front_Controller {
 		// do we have passed values?
 		$values = ($this->input->get('values')) ? unserialize(query_value_decode($this->input->get('values'))) : array();
 		
+		// we don't want non values, so we'll fill the $values array with empty placeholders
 		if (empty($values)) {
 			$this->load->model('custom_fields_model');
 			$fields = $this->custom_fields_model->get_custom_fields(array('group' => $form['custom_field_group_id']));
@@ -86,24 +87,20 @@ class Form extends Front_Controller {
 			die(show_error('Invalid permissions'));
 		}
 		
-		// form validation
-		$this->load->library('form_validation');
-		$this->load->model('custom_fields_model');
+		// form validation and processing
+		$this->load->library('custom_fields/form_builder');
+		$this->form_builder->build_form_from_group($form['custom_field_group_id']);
 		
-		$rules = $this->custom_fields_model->get_validation_rules($form['custom_field_group_id']);
-		
-		$this->form_validation->set_rules($rules);
-		
-		if ($this->form_validation->run() !== TRUE) {
-			$this->session->set_flashdata('validation_errors',validation_errors());
+		if ($this->form_builder->validate_post() === FALSE) {
+			$this->session->set_flashdata('validation_errors',$this->form_builder->validation_errors());
 			
-			$values = query_value_encode(serialize($this->custom_fields_model->post_to_array($form['custom_field_group_id'])));
+			$values = query_value_encode(serialize($this->form_builder->post_to_array($form['custom_field_group_id'])));
 		
 			return redirect($form['url_path'] . '?errors=true&values=' . $values);
 		}
 		
 		// we validated!  let's make the post
-		$custom_fields = $this->custom_fields_model->post_to_array($form['custom_field_group_id']);
+		$custom_fields = $this->form_builder->post_to_array($form['custom_field_group_id']);
 			
 		$this->form_model->new_response($form['id'], ($this->user_model->logged_in()) ? $this->user_model->get('id') : 0, $custom_fields);
 		
