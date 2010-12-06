@@ -82,7 +82,7 @@ $(document).ready(function () {
 		});
 		
 		// validate input.number fields
-		$(this).find('input.number').each(function() {
+		$(this).find('input.number, input.numeric').each(function() {
 			if ($(this).val() != '' && !isNumeric($(this).val())) {
 				if ($('label[for="'+$(this).attr('id')+'"]').text() != "") {
 					field_label = $('label[for="'+$(this).attr('id')+'"]').text();

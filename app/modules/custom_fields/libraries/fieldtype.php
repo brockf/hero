@@ -25,6 +25,9 @@ class Fieldtype {
 	// hold a string of a validation error from secondary validate_post() processing, if available
 	public $validation_error;
 	
+	// MySQL column type
+	public $db_column;
+	
 	// field values
 	public $id;
 	public $type;
@@ -51,6 +54,10 @@ class Fieldtype {
 	// constructor
 	function __construct () {
 		$this->CI =& get_instance();
+	}
+	
+	function db_column() {
+		return $this->db_column;
 	}
 	
 	// super methods
@@ -108,7 +115,7 @@ class Fieldtype {
 	
 	function load_type ($type) {
 		$class = $this->class_name_from_type($type);
-	
+		
 		if (!in_array(strtolower($type), $this->loaded_fieldtypes)) {
 			// load fieldtype			
 			if (!include(APPPATH . '/modules/custom_fields/libraries/fieldtypes/' . strtolower($type) . '.php')) {
@@ -119,6 +126,10 @@ class Fieldtype {
 			else {
 				// loaded successfully
 				$this->loaded_types[] = strtolower($type);
+				
+				// assign to this object
+				$object_name = strtolower($type);
+				$this->$object_name = new $class;
 				
 				return TRUE;
 			}

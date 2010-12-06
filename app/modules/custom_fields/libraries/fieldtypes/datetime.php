@@ -1,22 +1,22 @@
 <?php
 
 /*
-* Date Fieldtype
+* Datetime Fieldtype
 *
 * @extends Fieldtype
-* @class Date_fieldtype
+* @class Datetime_fieldtype
 */
 
-class Date_fieldtype extends Fieldtype {
+class Datetime_fieldtype extends Fieldtype {
 	function __construct () {
 		parent::__construct();
 	 
 		$this->compatibility = array('publish','users','products','collections','forms');
 		$this->enabled = TRUE;
-		$this->fieldtype_name = 'Date';
-		$this->fieldtype_description = 'Date selector (no time).';
+		$this->fieldtype_name = 'Date &amp; Time';
+		$this->fieldtype_description = 'Date with time.';
 		$this->validation_error = '';
-		$this->db_column = 'DATE';
+		$this->db_column = 'DATETIME';
 	}
 	
 	function output_shared () {
@@ -31,7 +31,7 @@ class Date_fieldtype extends Fieldtype {
 		}
 		
 		$this->field_class('text');
-		$this->field_class('date');
+		$this->field_class('datetime');
 		
 		return;
 	}
@@ -66,9 +66,26 @@ class Date_fieldtype extends Fieldtype {
 		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';
 		
 		// build HTML
+		$this->CI->load->helper('form');
+		
+		$options = array();
+		for ($i = 1; $i <= 12; $i++) {
+			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = $i;
+		}
+		$hour_field = form_dropdown($this->name . '_hour', $options, !empty($this->value) ? date('h', strtotime($this->value)) : date('h'));
+		
+		$options = array();
+		for ($i = 1; $i <= 59; $i++) {
+			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = str_pad($i,2,'0',STR_PAD_LEFT);
+		}
+		$minute_field = form_dropdown($this->name . '_minute', $options, !empty($this->value) ? date('i', strtotime($this->value)) : date('i'));
+		
+		$options = array('am' => 'am', 'pm' => 'pm');
+		$ampm_field = form_dropdown($this->name . '_ampm', $options, !empty($this->value) ? date('a', strtotime($this->value)) : date('a'));
+		
 		$return = '<li>
 						<label for="' . $this->name . '">' . $this->label . '</label>
-						<input ' . $attributes . ' />
+						<input ' . $attributes . ' /> ' . $hour_field . ' ' . $minute_field . ' ' . $ampm_field . '
 						' . $help . '
 					</li>';
 					
@@ -83,7 +100,7 @@ class Date_fieldtype extends Fieldtype {
 			}
 			elseif ($this->CI->input->post($this->name . '_day') != FALSE) {
 				// build value from 3 fields
-				$value = $this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day');
+				$value = $this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day') . ' ' . $this->CI->input->post($this->name . '_hour') . ':' . $this->CI->input->post($this->name . '_minute') . ' ' . $this->CI->input->post($this->name . '_ampm');
 				$this->value($value);
 			}
 		}
@@ -121,7 +138,22 @@ class Date_fieldtype extends Fieldtype {
 		}
 		$year_field = form_dropdown($this->name . '_year', $options, !empty($this->value) ? date('Y', strtotime($this->value)) : date('Y'));
 		
-		$return = $day_field . ' ' . $month_field . ' ' . $year_field;
+		$options = array();
+		for ($i = 1; $i <= 12; $i++) {
+			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = $i;
+		}
+		$hour_field = form_dropdown($this->name . '_hour', $options, !empty($this->value) ? date('h', strtotime($this->value)) : date('h'));
+		
+		$options = array();
+		for ($i = 1; $i <= 59; $i++) {
+			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = str_pad($i,2,'0',STR_PAD_LEFT);
+		}
+		$minute_field = form_dropdown($this->name . '_minute', $options, !empty($this->value) ? date('i', strtotime($this->value)) : date('i'));
+		
+		$options = array('am' => 'am', 'pm' => 'pm');
+		$ampm_field = form_dropdown($this->name . '_ampm', $options, !empty($this->value) ? date('a', strtotime($this->value)) : date('a'));
+		
+		$return = $day_field . ' ' . $month_field . ' ' . $year_field . '&nbsp;&nbsp;' . $hour_field . ' ' . $minute_field . ' ' . $ampm_field;
 					
 		return $return;
 	}
@@ -144,10 +176,12 @@ class Date_fieldtype extends Fieldtype {
 	
 	function post_to_value () {
 		if ($this->CI->input->post($this->name . '_day') !== FALSE) {
-			return date('Y-m-d', strtotime($this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day')));
+			// separate date and time fields
+			return date('Y-m-d H:i:00', strtotime($this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day') . ' ' . $this->CI->input->post($this->name . '_hour') . ':' . $this->CI->input->post($this->name . '_minute') . ' ' . $this->CI->input->post($this->name . '_ampm')));
 		}
 		else {
-			$this->CI->input->post($this->name);
+    		// one date field + time fields
+			return date('Y-m-d H:i:00', strtotime($this->CI->input->post($this->name) . ' ' . $this->CI->input->post($this->name . '_hour') . ':' . $this->CI->input->post($this->name . '_minute') . ' ' . $this->CI->input->post($this->name . '_ampm')));
 		}
 	}
 	

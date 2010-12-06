@@ -357,22 +357,11 @@ class Custom_fields_model extends CI_Model {
 	* @return string database field type
 	*/
 	function get_type ($type) {
-		switch($type) {
-			case 'textarea':
-			case 'wysiwyg':
-				$db_type = 'TEXT';
-				break;
-			case 'select':
-			case 'checkbox':
-			case 'radio':
-				$db_type = 'VARCHAR(100)';
-				break;
-			case 'date':
-				$db_type = 'DATE';
-				break;
-			default:
-				$db_type = 'VARCHAR(250)';
-		}
+		$CI =& get_instance();
+		
+		$CI->load->library('custom_fields/fieldtype');
+		$CI->fieldtype->load_type($type);
+		$db_type = $CI->fieldtype->$type->db_column();
 		
 		return $db_type;
 	}

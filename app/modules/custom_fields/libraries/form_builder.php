@@ -42,7 +42,11 @@ class Form_builder {
 		$this->CI->load->library('form_validation');
 		reset($this->form);
 		foreach ($this->form as $field) {
-			$this->CI->form_validation->set_rules($field->name, $field->label, implode('|',$field->validation_rules()));
+			$rules = $field->validation_rules();
+			
+			if (!empty($rules)) {
+				$this->CI->form_validation->set_rules($field->name, $field->label, implode('|',$field->validation_rules()));
+			}
 		}
 		
 		if ($this->CI->form_validation->run() === FALSE) {

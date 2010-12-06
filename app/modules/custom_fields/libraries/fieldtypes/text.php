@@ -10,12 +10,13 @@
 class Text_fieldtype extends Fieldtype {
 	function __construct () {
 		parent::__construct();
-	
+	 
 		$this->compatibility = array('publish','users','products','collections','forms');
 		$this->enabled = TRUE;
 		$this->fieldtype_name = 'Text';
-		$this->fieldtype_description = 'Description';
+		$this->fieldtype_description = 'A single line of text.';
 		$this->validation_error = '';
+		$this->db_column = 'VARCHAR(250)';
 	}
 	
 	function output_shared () {
@@ -29,12 +30,11 @@ class Text_fieldtype extends Fieldtype {
 			$this->field_class('required');
 		}
 		
-		if (in_array('numeric', $this->validators)) {
-			$this->field_class('number');
-		}
+		$this->field_class('text');
 		
-		if (in_array('alphanumeric', $this->validators)) {
-			$this->field_class('alphanumeric');
+		// add validator names to class list
+		foreach ($this->validators as $validator) {
+			$this->field_class($validator);
 		}
 		
 		// prep final attributes	
