@@ -512,8 +512,10 @@ class Admincp extends Admincp_Controller {
 		$type = $this->content_type_model->get_content_type($this->input->post('type'));
 		
 		$this->load->model('content_model');
-		$this->load->model('custom_fields_model');
-		$custom_fields = $this->custom_fields_model->post_to_array($type['custom_field_group_id']);
+		
+		$this->load->library('custom_fields/form_builder');
+		$this->form_builder->build_form_from_group($type['custom_field_group_id']);
+		$custom_fields = $this->form_builder->post_to_array();
 		
 		if ($action == 'new') {
 			$content_id = $this->content_model->new_content(
