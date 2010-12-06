@@ -116,7 +116,7 @@ class Fieldtype {
 	function load_type ($type) {
 		$class = $this->class_name_from_type($type);
 		
-		if (!in_array(strtolower($type), $this->loaded_fieldtypes)) {
+		if (!class_exists($class)) {
 			// load fieldtype			
 			if (!include(APPPATH . '/modules/custom_fields/libraries/fieldtypes/' . strtolower($type) . '.php')) {
 				log_message('error','Unable to load fieldtype: ' . $class);
@@ -134,6 +134,8 @@ class Fieldtype {
 				return TRUE;
 			}
 		}
+		
+		return TRUE;
 	}
 	
 	function load_all_types () {

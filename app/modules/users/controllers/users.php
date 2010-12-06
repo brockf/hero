@@ -54,23 +54,23 @@ class Users extends Front_Controller {
 		$values['last_name'] = $this->input->post('last_name');
 		
 		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
-		foreach ($custom_fields as $field) {
-			$values[$field['name']] = isset($_POST[$field['name']]) ? $_POST[$field['name']] : FALSE;
-		}
 		
+		$this->load->library('custom_fields/form_builder');
+		$this->form_builder->build_form_from_array($custom_fields);
+		$values = $this->form_builder->post_to_array();
 		$values = query_value_encode(serialize($values));
 		
 		// validate standard and custom form fields
-		$validated = $this->user_model->validation(TRUE);
+		$validated = $this->user_model->validation(TRUE, FALSE);
 		
 		if ($validated !== TRUE) {
-			$this->session->set_flashdata('profile_errors',validation_errors());
+			$this->session->set_flashdata('profile_errors',$validated);
 		
 			return redirect('users/profile?errors=true&values=' . $values);
 		}
 		
 		// we validated!  let's update the account
-		$custom_fields = $this->custom_fields_model->post_to_array('1');
+		$custom_fields = $this->form_builder->post_to_array();
 			
 		$this->user_model->update_user(
 										$this->user_model->get('id'),
@@ -213,18 +213,13 @@ class Users extends Front_Controller {
 		$values['last_name'] = $this->input->post('last_name');
 		
 		$custom_fields = $this->user_model->get_custom_fields(array('not_in_admin' => TRUE));
+		
+		// get values for this form
 		if (is_array($custom_fields)) {
-			foreach ($custom_fields as $field) {
-				if ($this->input->post($field['name']) !== FALSE) {
-					$values[$field['name']] = $this->input->post($field['name']);
-				}
-				elseif (!empty($field['default'])) {
-					$values[$field['name']] = $field['default'];
-				}
-				else {
-					$values[$field['name']] = '';
-				}
-			}
+			$this->load->library('custom_fields/form_builder');
+			$this->form_builder->build_form_from_array($custom_fields);
+		
+			$values = $this->form_builder->post_to_array();
 		}
 		
 		$values = query_value_encode(serialize($values));
@@ -237,16 +232,17 @@ class Users extends Front_Controller {
 		}
 		
 		// validate standard and custom form fields
-		$validated = $this->user_model->validation(FALSE);
+		$validated = $this->user_model->validation(FALSE, FALSE);
 		
 		if ($validated !== TRUE) {
-			$this->session->set_flashdata('register_errors',validation_errors());
+			$this->session->set_flashdata('register_errors',$validated);
 		
 			return redirect('users/register?return=' . query_value_encode($return) . '&errors=true&values=' . $values);
 		}
 		
 		// we validated!  let's create the account
-		$custom_fields = $this->custom_fields_model->post_to_array('1', TRUE);
+		$this->form_builder->build_form_from_array($custom_fields);
+		$custom_fields = $this->form_builder->post_to_array();
 		
 		// are we validating the emails?
 		$validation = (setting('validate_emails') == '1') ? TRUE : FALSE;

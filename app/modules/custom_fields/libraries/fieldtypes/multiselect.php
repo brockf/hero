@@ -31,7 +31,7 @@ class Multiselect_fieldtype extends Fieldtype {
 	}
 	
 	function output_admin () {
-		if ($this->CI->input->post($this->name) == FALSE) {
+		if (empty($this->value) and $this->CI->input->post($this->name) == FALSE) {
 			$this->value($this->default);
 		}
 		
@@ -39,7 +39,7 @@ class Multiselect_fieldtype extends Fieldtype {
 		if (@is_array(unserialize($this->value))) {
 			$this->value = unserialize($this->value);
 		}
-	
+		
 		$this->output_shared();
 		
 		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';

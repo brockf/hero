@@ -9,14 +9,23 @@
 */
 class Form_builder {
 	public $CI;
-	public $form;
+	public $form = array();
 	public $validation_errors = array();
 	
 	function __construct () {
 		$this->CI =& get_instance();
 	}
 	
-	/*
+	function reset() {
+		foreach ($this->form as $field) {
+			unset($field);
+		}
+	
+		$this->form = array();
+		$this->validation_errors = array();
+	}
+	
+	/**
 	* Build Form from Group
 	*
 	* Creates an array in this object of all the fieldtype objects, from a custom field group
@@ -26,7 +35,30 @@ class Form_builder {
 	* @return boolean
 	*/
 	function build_form_from_group ($custom_field_group_id) {
+		$this->reset();
+		
 		$custom_fields = $this->CI->custom_fields_model->get_custom_fields(array('group' => $custom_field_group_id));
+		
+		$this->CI->load->library('custom_fields/fieldtype');
+	
+		foreach ($custom_fields as $field) {
+			$this->form[] =& $this->CI->fieldtype->load($field);
+		}
+	
+		return TRUE;
+	}
+	
+	/**
+	* Build Form from Array
+	*
+	* Builds the internal form from an array from get_custom_fields()
+	*
+	* @param array get_custom_fields array
+	*
+	* @return boolean
+	*/
+	function build_form_from_array ($custom_fields) {
+		$this->reset();
 		
 		$this->CI->load->library('custom_fields/fieldtype');
 	
@@ -50,7 +82,7 @@ class Form_builder {
 		}
 		
 		if ($this->CI->form_validation->run() === FALSE) {
-			$this->validation_errors = array_merge($this->validation_errors(TRUE),explode('.',strip_tags(validation_errors())));
+			$this->validation_errors = array_merge($this->validation_errors(TRUE),explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors())));
 		}
 		
 		// secondary additional validation
@@ -101,5 +133,37 @@ class Form_builder {
 		}
 		
 		return $array;
+	}
+	
+	function set_values ($values = array()) {
+		reset($this->form);
+		
+		foreach ($this->form as $field) {
+			$field->value($values[$field->name]);
+		}
+		
+		return TRUE;
+	}
+	
+	function clear_defaults () {
+		reset($this->form);
+		
+		foreach ($this->form as $field) {
+			$field->default_value($field->name, FALSE);
+		}
+		
+		return TRUE;
+	}
+	
+	function output_admin () {
+		reset($this->form);
+		
+		$return = '';
+		
+		foreach ($this->form as $field) {
+			$return .= $field->output_admin();
+		}
+		
+		return $return;
 	}
 }

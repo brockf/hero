@@ -373,122 +373,38 @@ class Admin_form {
 	* @param boolean $no_defaults Do not use default values for empty fields (i.e., when editing an existing record)
 	*/
 	function custom_fields ($custom_fields = array(), $values = array(), $no_defaults = FALSE) {
+		$CI =& get_instance();
+		$CI->load->library('custom_fields/fieldtype');
+		
 		if (!is_array($custom_fields) or empty($custom_fields)) {
 			return FALSE;
 		}
 	
 		foreach ($custom_fields as $field) {
-			if ($field['required'] == TRUE) {
-				$field['friendly_name'] = $field['friendly_name'] . '*';
+			$CI->load->library('custom_fields/fieldtype');
+			$field_object =& $CI->fieldtype->load($field);
+			
+			// set value
+			if (!empty($values) and isset($values[$field_object->name])) {
+				$field_object->value($values[$field_object->name]);
 			}
-		
-			if ($field['type'] == 'text') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$this->text($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
+			
+			// clear default?
+			if ($no_defaults == TRUE) {
+				$field_object->default_value(FALSE);
 			}
-			elseif ($field['type'] == 'password') {
-				$this->password($field['friendly_name'], $field['name'], $field['help'], $field['required'], FALSE, $field['width'], $field['id']);
-			}
-			elseif ($field['type'] == 'textarea') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';			
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-					
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], '150px', $field['id']);
-			}
-			elseif ($field['type'] == 'wysiwyg') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$this->textarea($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], 'complete', FALSE, $field['width'], '150px', $field['id']);
-			}
-			elseif ($field['type'] == 'select') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$options = array();
-				foreach ($field['options'] as $option) {
-					$options[$option['value']] = $option['name'];
-				}
-				
-				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, FALSE, $field['required'], $field['help'], FALSE, $field['id']);
-			}
-			elseif ($field['type'] == 'multiselect') {
-				if (isset($values[$field['name']]) and is_array($values[$field['name']])) {
-					$value = $values[$field['name']];
-				}
-				elseif (isset($values[$field['name']]) and @is_array(unserialize($values[$field['name']]))) {
-					$value = unserialize($values[$field['name']]);
-				}
-				else {
-					$value = array();
-				}
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = array($field['default']);
-				}
-				
-				$options = array();
-				foreach ($field['options'] as $option) {
-					$options[$option['value']] = $option['name'];
-				}
-				
-				$this->dropdown($field['friendly_name'], $field['name'], $options, $value, TRUE, $field['required'], $field['help'], FALSE, $field['id']);
-			}
-			elseif ($field['type'] == 'radio') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$options = array();
-				foreach ($field['options'] as $option) {
-					$options[$option['value']] = $option['name'];
-				}
-				
-				$this->radio($field['friendly_name'], $field['name'], $options, $value, $field['required'], $field['help'], FALSE, $field['id']);
-			}
-			elseif ($field['type'] == 'checkbox') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$options = array();
-				foreach ($field['options'] as $option) {
-					$options[$option['value']] = $option['name'];
-				}
-				
-				$this->checkbox($field['friendly_name'], $field['name'], 'yes', $field['required'], $field['help'], FALSE, $field['id']);
-			}
-			elseif ($field['type'] == 'file') {
-				$this->file($field['friendly_name'], $field['name'], $field['width'], FALSE, $field['id']);
-			}
-			elseif ($field['type'] == 'date') {
-				$value = (isset($values[$field['name']])) ? $values[$field['name']] : '';		
-				
-				if (empty($value) and $no_defaults == FALSE) {
-					$value = $field['default'];
-				}
-				
-				$this->date($field['friendly_name'], $field['name'], $value, $field['help'], $field['required'], FALSE, FALSE, $field['width'], $field['id']);
-			}
+			
+			// get HTML
+			$html = $field_object->output_admin();
+			unset($field_object);
+			
+			$this->fields[$this->fieldset][] = array(
+														'type' => 'custom',
+														'html' => $html
+													);
 		}
+		
+		return TRUE;
 	}
 	
 	/*
@@ -515,6 +431,9 @@ class Admin_form {
 			foreach ($this->fields[$i] as $field) {
 				if ($field['type'] == 'hidden') {
 					$return .= '<input type="hidden" id="' . $field['name'] . '" name="' . $field['name'] . '" value="' . $field['value'] . '" />';
+				}
+				elseif ($field['type'] == 'custom') {
+					$return .= $field['html'];
 				}
 				else {
 					$field['li_id'] = (isset($field['li_id'])) ? $field['li_id'] : $field['name'];

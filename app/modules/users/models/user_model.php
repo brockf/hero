@@ -442,42 +442,49 @@ class User_model extends CI_Model
 	* Validates POST data to be acceptable for creating a new user
 	*
 	* @param boolean $editing Set to TRUE if this is an edited user (i.e., password can be blank)
+	* @param boolean $error_array Return errors in an array or HTML formatted string (TRUE for array)
 	*
 	* @return array|boolean If errors, returns an array of individual errors, else returns TRUE
 	*/
-	function validation ($editing = FALSE) {
-		$this->load->library('form_validation');
-		$this->load->model('custom_fields_model');
-		$this->load->helpers(array('unique_username','unique_email'));
+	function validation ($editing = FALSE, $error_array = TRUE) {	
+		$CI =& get_instance();
 		
-		$this->form_validation->set_rules('first_name','First Name','trim|required');
-		$this->form_validation->set_rules('last_name','Last Name','trim|required');
+		$CI->load->library('form_validation');
+		$CI->load->model('custom_fields_model');
+		$CI->load->helpers(array('unique_username','unique_email'));
+		
+		$CI->form_validation->set_rules('first_name','First Name','trim|required');
+		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
-		$this->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
+		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
 		$unique_username = ($editing == FALSE) ? 'unique_username|' : '';
-		$this->form_validation->set_rules('username','Username','trim|alphanumeric' . $unique_username);
+		$CI->form_validation->set_rules('username','Username','trim|alphanumeric' . $unique_username);
 		
 		if ($editing == FALSE) {
-			$this->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
+			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
 		}
 		
-		// get custom field rules for field group #1 (user fields)
-		$rules = $this->custom_fields_model->get_validation_rules('1');
-		$this->form_validation->set_rules($rules);
+		if ($CI->form_validation->run() === FALSE) {
+			if ($error_array == TRUE) {
+				return explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors()));
+			}
+			else {
+				return validation_errors();
+			}
+		}
 		
-		if ($this->form_validation->run() == FALSE) {
-			$errors = rtrim(validation_errors('','||'),'|');
-			$errors = explode('||',str_replace('<p>','',$errors));
+		// validate custom fields
+		$custom_fields = $this->get_custom_fields(array('not_in_admin' => TRUE));
+		
+		$CI->load->library('custom_fields/form_builder');
+		$CI->form_builder->build_form_from_array($custom_fields);
+
+		if ($CI->form_builder->validate_post() === FALSE) {
+			$errors = $CI->form_builder->validation_errors(($error_array == TRUE) ? TRUE : FALSE);
 			return $errors;
 		}
 		
-		// file validation
-		if ($this->custom_fields_model->validate_files('1') == FALSE) {
-			return array('File upload has an invalid extension.');
-		}
-		else {
-			return TRUE;
-		}
+		return TRUE;
 	}
 	
 	/**
@@ -1329,6 +1336,7 @@ class User_model extends CI_Model
 							'default' => $field['custom_field_default'],
 							'required' => ($field['custom_field_required'] == 1) ? TRUE : FALSE,
 							'validators' => (!empty($field['custom_field_validators'])) ? unserialize($field['custom_field_validators']) : array(),
+							'data' => (!empty($field['custom_field_data'])) ? unserialize($field['custom_field_data']) : array(),
 							'billing_equiv' => $field['user_field_billing_equiv'],
 							'admin_only' => ($field['user_field_admin_only'] == '1') ? TRUE : FALSE,
 							'registration_form' => ($field['user_field_registration_form'] == '1') ? TRUE : FALSE

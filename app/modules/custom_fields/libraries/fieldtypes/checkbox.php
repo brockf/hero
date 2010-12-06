@@ -40,7 +40,7 @@ class Checkbox_fieldtype extends Fieldtype {
 	}
 	
 	function output_admin () {
-		if (empty($_POST)) {
+		if (empty($_POST) and empty($this->value)) {
 			$this->value($this->default);
 		}
 	

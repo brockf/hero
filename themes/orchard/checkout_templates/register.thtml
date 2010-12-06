@@ -57,11 +57,11 @@
 							<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
 						</li>
 						<li>
-							{custom_field field=$field}
+							{custom_field field=$fieldvalue=$values[$field.name]}
 						</li>
 					{else}
 						<li>
-							{custom_field field=$field} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+							{custom_field field=$field value=$values[$field.name]} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
 						</li>
 					{/if}
 					{if $field.help}

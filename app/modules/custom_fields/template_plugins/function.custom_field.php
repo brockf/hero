@@ -7,6 +7,7 @@
 *
 * @param array $field The data array for the field as created by custom_fields_model
 * @param string|array $value The current value (arrays for multiselects)
+* @param string $default Set the default value (particularly useful for disabling defaults on forms that should not reset to defaults)
 *
 * @return string Field HTML
 */
@@ -17,7 +18,7 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 	$smarty->CI->load->library('custom_fields/fieldtype');
 
 	// initialize field
-	$field_object = $smarty->CI->fieldtype->load($field);
+	$field_object =& $smarty->CI->fieldtype->load($field);
 	
 	// check for error
 	if ($field_object === FALSE) {
@@ -37,6 +38,15 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 		}
 	}
 	
+	// use default parameter if supplied
+	if (isset($params['default'])) {
+		$field_object->default_value($params['default']);
+	}
+	
 	// output field
-	return $field_object->output_frontend();
+	$html = $field_object->output_frontend();
+	
+	unset($field_object);
+	
+	return $html;
 }

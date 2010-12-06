@@ -47,11 +47,11 @@ Edit Your Profile - {$smarty.block.parent}
 						<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
 					</li>
 					<li>
-						{custom_field field=$field}
+						{custom_field field=$field value=$values[$field.name] default=FALSE}
 					</li>
 				{else}
 					<li>
-						{custom_field field=$field} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+						{custom_field field=$field value=$values[$field.name] default=FALSE} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
 					</li>
 				{/if}
 				{if $field.help}

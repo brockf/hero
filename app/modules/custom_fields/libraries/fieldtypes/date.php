@@ -37,7 +37,7 @@ class Date_fieldtype extends Fieldtype {
 	}
 	
 	function output_admin () {
-		if ($this->CI->input->post($this->name) == FALSE) {
+		if (empty($this->value) and $this->CI->input->post($this->name) == FALSE) {
 			$this->value($this->default);
 		}
 		

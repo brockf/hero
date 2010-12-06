@@ -364,9 +364,11 @@ class Admincp extends Admincp_Controller {
 			}	
 		}
 		
-		if ($action == 'new') {
-			$custom_fields = $this->custom_fields_model->post_to_array('1');
+		$this->load->library('custom_fields/form_builder');
+		$this->form_builder->build_form_from_group(1);
+		$custom_fields = $this->form_builder->post_to_array();
 			
+		if ($action == 'new') {
 			$user_id = $this->user_model->new_user(
 													$this->input->post('email'),
 													$this->input->post('password'),
@@ -382,8 +384,6 @@ class Admincp extends Admincp_Controller {
 			$this->notices->SetNotice('User added successfully.');
 		}
 		else {
-			$custom_fields = $this->custom_fields_model->post_to_array('1');	
-			
 			$this->user_model->update_user(
 											$id,
 											$this->input->post('email'),
