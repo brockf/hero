@@ -36,7 +36,7 @@ class Date_fieldtype extends Fieldtype {
 	function output_shared () {
 		// set defaults
 		if ($this->width == FALSE) {
-			$this->width = '150px';
+			$this->width = '80px';
 		}
 		
 		// prep classes

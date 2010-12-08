@@ -8,6 +8,11 @@
 	<script type="text/javascript" src="<?=branded_include('js/jquery-1.4.2.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
+	<script type="text/javascript">
+		$(document).ready(function () {
+			$('#username').focus();
+		});
+	</script>
 </head>
 <body>
 	<div id="notices"><?=get_notices();?></div>

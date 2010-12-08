@@ -56,12 +56,8 @@ class Content_model extends CI_Model
 		if (empty($publish_date)) {
 			$publish_date = date('Y-m-d H:i:s');
 		}
-		elseif (date('Y-m-d',strtotime($publish_date)) == date('Y-m-d')) {
-			// publishing today
-			$publish_date = date('Y-m-d H:i:s');
-		}
 		else {
-			$publish_date = date('Y-m-d',strtotime($publish_date)) . ' 00:00:00';
+			$publish_date = date('Y-m-d H:i:s',strtotime($publish_date));
 		}
 		
 		// insert it into standard content table first
@@ -143,15 +139,11 @@ class Content_model extends CI_Model
 		}
 		
 		// prep the date
-		if (empty($publish_date) or date('Y-m-d',strtotime($publish_date)) == date('Y-m-d',strtotime($content['date']))) {
-			$publish_date = FALSE;
-		}
-		elseif (date('Y-m-d',strtotime($publish_date)) == date('Y-m-d')) {
-			// publishing today
+		if (empty($publish_date)) {
 			$publish_date = date('Y-m-d H:i:s');
 		}
 		else {
-			$publish_date = date('Y-m-d',strtotime($publish_date)) . ' 00:00:00';
+			$publish_date = date('Y-m-d H:i:s',strtotime($publish_date));
 		}
 		
 		// update standard content table first

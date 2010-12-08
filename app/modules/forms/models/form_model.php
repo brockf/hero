@@ -309,7 +309,12 @@ class Form_model extends CI_Model
 					$value = implode(', ', unserialize($custom_fields[$field['name']]));
 				}
 				elseif ($field['type'] == 'file_upload') {
-					$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
+					if (empty($custom_fields[$field['name']])) {
+						$value = 'no upload';
+					}
+					else {
+						$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
+					}
 				}
 				else {
 					$value = $custom_fields[$field['name']];

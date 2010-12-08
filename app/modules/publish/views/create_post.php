@@ -1,24 +1,66 @@
 <?=$this->load->view(branded_view('cp/header'));?>
-<h1><?=$form_title;?></h1>
 <form class="form validate" id="form_create_post" enctype="multipart/form-data" method="post" action="<?=$form_action;?>">
 <?=form_hidden('type',$type['id']);?>
-<? if (!empty($standard)) { ?>
-	<div class="post_standard">
-		<?=$standard;?>
+
+<? if (!empty($standard) or (!empty($privileges))) { ?>
+
+<div class="sidebar">
+	<h2>Publish Options</h2>
+	
+	<div class="sidebar_content">
+	<? if (!empty($standard)) { ?>
+		<div class="post_standard">
+			<fieldset>
+				<ul class="form">
+					<?=$standard;?>	
+				</ul>
+			</fieldset>
+		</div>
+	<? } ?>
 	</div>
-<? } ?>
-<? if (!empty($privileges)) { ?>
+	
+	<? if (!empty($privileges)) { ?>
+	<h3>Access Restrictions</h3>
+	
+	<div class="sidebar_content">
 	<div class="post_privileges">
-		<?=$privileges;?>
+		<fieldset>
+			<ul class="form">
+				<?=$privileges;?>
+			</ul>
+		</fieldset>
+	</div>
 	</div>
 <? } ?>
-<? if (!empty($custom_fields)) { ?>
-	<div class="post_custom_fields">
-		<?=$custom_fields;?>
-	</div>
-<? } ?>
-<div class="submit">
-	<input type="submit" class="button" name="form_create_post" value="Save Post" />
 </div>
-</form>
+
+<? } ?>
+
+<h1><?=$type['singular_name'];?> Publisher</h1>
+
+<? if (!empty($standard) or (!empty($privileges))) { ?>
+	<div style="float: left; width: 70%;">
+<? } ?>
+
+	<? if (!empty($standard)) { ?>
+		<div class="post_title">
+			<?=$title;?>
+		</div>
+	<? } ?>
+	
+	<? if (!empty($custom_fields)) { ?>
+		<div class="post_custom_fields">
+			<?=$custom_fields;?>
+		</div>
+	<? } ?>
+	<div class="submit">
+		<input type="submit" class="button" name="form_create_post" value="Save Post" />
+	</div>
+	</form>
+	
+<? if (!empty($standard) or (!empty($privileges))) { ?>
+	</div>
+	<div style="clear:both"></div>
+<? } ?>
+
 <?=$this->load->view(branded_view('cp/footer'));?>

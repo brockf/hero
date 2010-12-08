@@ -1,11 +1,11 @@
 <?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.send_email.js') . '"></script>'));?>
-<h1>Send Email</h1>
-
 <div class="sidebar">
 	<h2>Select Recipient(s)</h2>
 	<div class="sidebar_content">
 		Specify the recipient(s) for this email below.
-		<h3>Member Groups</h3>
+	</div>
+	<h3>Member Groups</h3>
+	<div class="sidebar_content">
 		<ul class="recipients groups">
 			<? foreach ($usergroups as $group) { ?>
 			<li>
@@ -13,8 +13,9 @@
 			</li>
 			<? } ?>
 		</ul>
-		
-		<h3>Members</h3>
+	</div>	
+	<h3>Members</h3>
+	<div class="sidebar_content">
 		<form method="post" action="">
 			<input type="text" id="member_search" class="mark_empty" autocomplete="off" rel="Search by ID, Username, Name, or Email" name="member_search" style="width:98%" />
 		</form>
@@ -23,6 +24,9 @@
 		</ul>
 	</div>
 </div>
+
+<h1>Send Email</h1>
+
 
 <div style="float: left; width: 70%;">
 	<form class="form validate" method="post" action="<?=site_url('admincp/emails/post_send');?>">

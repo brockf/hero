@@ -70,7 +70,7 @@ class Multicheckbox_fieldtype extends Fieldtype {
 		
 		$return = '<li>
 						<label for="' . $this->name . '">' . $this->label . '</label>
-						<div style="float: left; width: 500px">';
+						<div style="float: left">';
 						
 		foreach ($this->options as $option) {
 			$checked = ((is_array($this->value) and in_array($option['value'], $this->value)) or (!is_array($this->value) and $this->value == $option['value'])) ? ' checked="checked" ' : '';

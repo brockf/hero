@@ -758,10 +758,8 @@ div.product_images span.featured {
 
 div.sidebar {
 	width: 25%;
-	border: 1px solid #222;	
-	-moz-border-radius: 7px;
-	-webkit-border-radius: 7px;
-	border-radius: 6px;
+	background-color: #222;
+	color: #dedede;
 	font-size: 9pt;
 	padding-bottom: 10px;
 	float: left;
@@ -769,25 +767,22 @@ div.sidebar {
 }
 
 div.sidebar h2 {
-	-moz-border-radius: 6px;
-	-webkit-border-radius: 6px;
-	border-radius: 6px;
-	background-image: url(../images/side_h2_back.gif);
-	background-repeat: repeat-x;
-	color: #fff;
+	background-color: #000;
+	color: #f0f0f1;
 	font-weight: bold;
-	padding: 4px 10px;
-	font-size: 9pt;
-	text-transform: uppercase;
+	padding: 6px 10px 4px 10px;
+	border-bottom: 3px solid #444;
+	font-size: 11pt;
 	margin-bottom: 6px;
 }
 
 div.sidebar h3 {
-	background-color: #f0f0f1;
-	border: 1px solid #ccc;
+	background-color: #19717c;
+	color: #fff;
+	border: 1px solid #333;
 	border-left: 0;
 	border-right: 0;
-	padding: 3px 5px;
+	padding: 3px 10px;
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: 8pt;
@@ -797,6 +792,26 @@ div.sidebar h3 {
 
 div.sidebar div.sidebar_content {
 	padding: 6px 10px;
+}
+
+div.sidebar div.help {
+	width: 100%;
+	font-size: 8pt;
+	margin-left: 0;
+	margin-top: 5px;
+	clear:both;
+}
+
+div.sidebar label {
+	width: 100%;
+	display: block;
+	text-align: left;
+}
+
+div.sidebar fieldset {
+	margin: 0;
+	padding: 0;
+	border: 0;
 }
 
 /* specific form stylings */
@@ -1108,7 +1123,7 @@ span.product_options {
 }
 
 ul.recipients {
-	margin: 0 0 0 10px;
+	margin: 10px 0 0 10px;
 	padding: 0;
 	list-style-type: none;
 }
