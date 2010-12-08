@@ -8,8 +8,15 @@
 */
 
 class File_upload_fieldtype extends Fieldtype {
+	// this property holds the full path to the upload directory
 	public $upload_directory;
 
+	/**
+	* Constructor
+	*
+	* Assign basic properties to this fieldtype, useful in listing available fieldtypes.
+	* Also defines the MySQL column format for fields of this type.
+	*/
 	function __construct () {
 		parent::__construct();
 	 
@@ -24,6 +31,14 @@ class File_upload_fieldtype extends Fieldtype {
 		$this->upload_directory = setting('path_custom_field_uploads');
 	}
 	
+	/**
+	* Output Shared
+	*
+	* Perform actions shared between admin- and frontend-outputs.  Compile attributes of this
+	* fieldtype object into an HTML attribute line.
+	*
+	* @return string $attributes
+	*/
 	function output_shared () {
 		// set defaults
 		if ($this->width == FALSE) {
@@ -57,6 +72,13 @@ class File_upload_fieldtype extends Fieldtype {
 		return $attributes;
 	}
 	
+	/**
+	* Output Admin
+	*
+	* Returns the field with it's <label> in an <li> suitable for the admin forms.
+	*
+	* @return string $return The HTML to be included in a form
+	*/
 	function output_admin () {
 		$attributes = $this->output_shared();
 		
@@ -75,6 +97,13 @@ class File_upload_fieldtype extends Fieldtype {
 		return $return;
 	}
 	
+	/**
+	* Output Frontend
+	*
+	* Returns the isolated field.  Likely called from the {custom_field} template function.
+	*
+	* @return string $return The HTML to be included in a form.
+	*/
 	function output_frontend () {
 		$attributes = $this->output_shared();
 		
@@ -85,10 +114,30 @@ class File_upload_fieldtype extends Fieldtype {
 		return $return;
 	}
 	
+	/**
+	* Validation Rules
+	*
+	* Return an array of CodeIgniter form_validation rules for this fieldtype.  These are used
+	* by form_builder to run a validation across all fields at once using CodeIgniter.
+	*
+	* @return array $rules
+	*/
 	function validation_rules () {
 		return array();
 	}
 	
+	/**
+	* Validate Post
+	*
+	* This validation is outside of CodeIgniter's form_validation library.  It is run specifically
+	* for this field after it passes the major form_validation check.  Not all fieldtypes
+	* will require it.  If an error is found, it should be stored in $this->validation_error
+	* (using $this->label to refer to the field) and should return FALSE so that the form
+	* processor in form_builder knows there was an error.  It will pull the error from
+	* $this->validation_error.
+	*
+	* @return boolean
+	*/
 	function validate_post () {
 		$this->CI->load->helper('file_extension');
 		
@@ -111,6 +160,13 @@ class File_upload_fieldtype extends Fieldtype {
 		return TRUE;
 	}
 	
+	/**
+	* Post to Value
+	*
+	* Convert the $_POST value to the value that should be inserted into the database.
+	*
+	* @return string $db_value
+	*/
 	function post_to_value () {
 		if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name'])) {
 			$this->CI->settings_model->make_writeable_folder($this->upload_directory,FALSE);
@@ -150,6 +206,13 @@ class File_upload_fieldtype extends Fieldtype {
 		return $post_value;
 	}
 	
+	/**
+	* Field Form
+	*
+	* Build the form that will be used to add/edit fields of this type.
+	* 
+	* @return string $form Built using form_builder.
+	*/
 	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
 		$this->CI->load->library('custom_fields/form_builder');
@@ -189,6 +252,16 @@ class File_upload_fieldtype extends Fieldtype {
 		return $this->CI->form_builder->output_admin();      
 	}
 	
+	/**
+	* Field Form Process
+	*
+	* Process the submission of $this->field_form() and return an array of data to be used in custom_fields_model->new_custom_field().
+	*
+	* Available keys for the returned array: name, type, default (string/array), help, required, validators (array), data (array), 
+	*										 options (array), width
+	*
+	* @return array
+	*/
 	function field_form_process () {
 		// build array for database
 		

@@ -1,6 +1,6 @@
 $(document).ready(function() {
 	$('div.help').each(function() {
-		$(this).parent().remove();
+		$(this).remove();
 	});
 	
 	$('input.required').removeClass('required');

@@ -8,6 +8,12 @@
 */
 
 class Date_fieldtype extends Fieldtype {
+	/**
+	* Constructor
+	*
+	* Assign basic properties to this fieldtype, useful in listing available fieldtypes.
+	* Also defines the MySQL column format for fields of this type.
+	*/
 	function __construct () {
 		parent::__construct();
 	 
@@ -19,6 +25,14 @@ class Date_fieldtype extends Fieldtype {
 		$this->db_column = 'DATE';
 	}
 	
+	/**
+	* Output Shared
+	*
+	* Perform actions shared between admin- and frontend-outputs.  Assigns classes to the field object,
+	* and assigns a width if not set.
+	*
+	* @return void
+	*/
 	function output_shared () {
 		// set defaults
 		if ($this->width == FALSE) {
@@ -37,6 +51,14 @@ class Date_fieldtype extends Fieldtype {
 		return;
 	}
 	
+	/**
+	* Output Admin
+	*
+	* Returns the field with it's <label> in an <li> suitable for the admin forms.
+	* Uses the datepicker.
+	*
+	* @return string $return The HTML to be included in a form
+	*/
 	function output_admin () {
 		if (empty($this->value) and $this->CI->input->post($this->name) == FALSE) {
 			$this->value($this->default);
@@ -76,6 +98,13 @@ class Date_fieldtype extends Fieldtype {
 		return $return;
 	}
 	
+	/**
+	* Output Frontend
+	*
+	* Returns the isolated field.  Likely called from the {custom_field} template function.
+	*
+	* @return string $return The HTML to be included in a form.
+	*/
 	function output_frontend () {
 		if (empty($this->value)) {
 			if (empty($_POST) and !empty($this->default)) {
@@ -115,7 +144,13 @@ class Date_fieldtype extends Fieldtype {
 		$month_field = form_dropdown($this->name . '_month', $options, !empty($this->value) ? date('m', strtotime($this->value)) : '01');
 		
 		$options = array();
-		$start = date('Y') - 100;
+		
+		if ($this->data['future_only'] == TRUE) {
+			$start = date('Y') - 100;
+		}
+		else {
+			$start = date('Y');
+		}
 		$end = date('Y') + 100;
 		for ($i = $start; $i <= $end; $i++) {
 			$options[$i] = $i;
@@ -127,6 +162,14 @@ class Date_fieldtype extends Fieldtype {
 		return $return;
 	}
 	
+	/**
+	* Validation Rules
+	*
+	* Return an array of CodeIgniter form_validation rules for this fieldtype.  These are used
+	* by form_builder to run a validation across all fields at once using CodeIgniter.
+	*
+	* @return array $rules
+	*/
 	function validation_rules () {
 		$rules = array();
 		
@@ -138,11 +181,36 @@ class Date_fieldtype extends Fieldtype {
 		return $rules;
 	}
 	
+	/**
+	* Validate Post
+	*
+	* This validation is outside of CodeIgniter's form_validation library.  It is run specifically
+	* for this field after it passes the major form_validation check.  Not all fieldtypes
+	* will require it.  If an error is found, it should be stored in $this->validation_error
+	* (using $this->label to refer to the field) and should return FALSE so that the form
+	* processor in form_builder knows there was an error.  It will pull the error from
+	* $this->validation_error.
+	*
+	* @return boolean
+	*/
 	function validate_post () {
-		// nothing extra to validate here other than the rulers in $this->validators
+		if ($this->data['future_only'] == TRUE) {
+			if ((strtotime($this->post_to_value()) + (24*60*60)) < time()) {
+				$this->validation_error = $this->label . ' must be in the future.';
+				return FALSE;
+			}
+		}
+		
 		return TRUE;
 	}
 	
+	/**
+	* Post to Value
+	*
+	* Convert the $_POST value to the value that should be inserted into the database.
+	*
+	* @return string $db_value
+	*/
 	function post_to_value () {
 		if ($this->CI->input->post($this->name . '_day') !== FALSE) {
 			return date('Y-m-d', strtotime($this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day')));
@@ -152,11 +220,62 @@ class Date_fieldtype extends Fieldtype {
 		}
 	}
 	
-	function field_form () {
+	/**
+	* Field Form
+	*
+	* Build the form that will be used to add/edit fields of this type.
+	* 
+	* @return string $form Built using form_builder.
+	*/
+	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
+		$this->CI->load->library('custom_fields/form_builder');
+		$this->CI->form_builder->reset();
+		
+	    $help = $this->CI->form_builder->add_field('textarea');
+	    $help->label('Help Text')
+	    	 ->name('help')
+	    	 ->width('500px')
+	    	 ->height('80px')
+	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
+	    	 
+	   	$future = $this->CI->form_builder->add_field('checkbox');
+	   	$future->label('Future Only')
+	   	       ->name('future_only')
+	   	       ->help('Only allow future dates?');
+	    
+	    if (!empty($edit_id)) {
+	    	$this->CI->load->model('custom_fields_model');
+	    	$field = $this->CI->custom_fields_model->get_custom_field($edit_id);
+	    	
+	    	$help->value($field['help']);
+	    	if (isset($field['data']['future_only'])) {
+	    		$future->value($field['data']['future_only']);
+	    	}
+	    }	  
+	          
+		return $this->CI->form_builder->output_admin();      
 	}
 	
+	/**
+	* Field Form Process
+	*
+	* Process the submission of $this->field_form() and return an array of data to be used in custom_fields_model->new_custom_field().
+	*
+	* Available keys for the returned array: name, type, default (string/array), help, required, validators (array), data (array), 
+	*										 options (array), width
+	*
+	* @return array
+	*/
 	function field_form_process () {
 		// build array for database
-	}
-}
+		
+		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
+		
+		return array(
+					'name' => $this->CI->input->post('name'),
+					'type' => $this->CI->input->post('type'),
+					'help' => $this->CI->input->post('help'),
+					'data' => array('future_only' => ($this->CI->input->post('future_only')) ? TRUE : FALSE)
+				);
+	}}

@@ -169,9 +169,9 @@ class Custom_fields_model extends CI_Model {
 							'custom_field_type' => $type,
 							'custom_field_default' => $default,
 							'custom_field_width' => $width,
-							'custom_field_options' => serialize($options),
+							'custom_field_options' => (empty($options)) ? serialize(array()) : serialize($options),
 							'custom_field_required' => ($required == FALSE) ? '0' : '1',
-							'custom_field_validators' => serialize($validators),
+							'custom_field_validators' => (empty($validators)) ? serialize(array()) : serialize($validators),
 							'custom_field_help_text' => $help,
 							'custom_field_data' => (!empty($data)) ? serialize($data) : ''
 						);

@@ -8,14 +8,26 @@
 *
 */
 class Form_builder {
+	// global CI object
 	public $CI;
+	
+	// each Fieldtype object is stored in order as a value of this array
 	public $form = array();
+	
+	// if there are errors in validation, they are stored in this array
 	public $validation_errors = array();
 	
 	function __construct () {
 		$this->CI =& get_instance();
 	}
 	
+	/**
+	* Reset Form
+	*
+	* Remove/unset all field objects in this form.  Clear validation errors.
+	*
+	* @return void
+	*/
 	function reset() {
 		foreach ($this->form as $field) {
 			unset($field);
@@ -86,6 +98,18 @@ class Form_builder {
 		return $field_object;
 	}
 	
+	/**
+	* Validate Post
+	*
+	* When there is a form active in this library, this method can be used to validate the $_POST submission.
+	* First, it will gather rules dynamically from each Fieldtype object and run them with CodeIgniter's
+	* form_validation library.  Then, it will check for specific atypical validation routines with each field.
+	*
+	* If errors are found, they are stored as an array at $this->validation_errors so they are easy to grab.
+	* They can be grabbed with $this->validation_errors().
+	*
+	* @return boolean TRUE if no errors, FALSE if errors
+	*/
 	function validate_post () {
 		// initial rules-based validation
 		$this->CI->load->library('form_validation');
@@ -117,6 +141,16 @@ class Form_builder {
 		return TRUE;
 	}
 	
+	/**
+	* Get Validation Errors
+	*
+	* Return validation errors, either as a paragraph (like CI's validation_errors())
+	* or as an array.
+	*
+	* @param boolean $array Set to TRUE to retrieve only the array.  Default: FALSE.
+	*
+	* @return string|array
+	*/
 	function validation_errors ($array = FALSE) {
 		$return = '';
 		$errors = array();
@@ -142,6 +176,16 @@ class Form_builder {
 		return $return;
 	}
 	
+	/**
+	* Post to Array
+	* 
+	* Convert the current $_POST submission into a nice array of data
+	* ready for insert into a database (via a model method, most likely).
+	* Each field will have a key in the array and a corresponding value
+	* built by the Fieldtype's post_to_value() method.
+	*
+	* @return array
+	*/
 	function post_to_array () {
 		reset($this->form);
 		
@@ -154,6 +198,17 @@ class Form_builder {
 		return $array;
 	}
 	
+	/**
+	* Set Values
+	*
+	* If you have an array of data corresponding to an entire form (e.g., a "title", "description", and "date"),
+	* you can assign each bit of data to it's corresponding field's ->value parameter by loading the whole
+	* array here.
+	*
+	* @param array $values
+	*
+	* @return boolean TRUE
+	*/
 	function set_values ($values = array()) {
 		reset($this->form);
 		
@@ -164,6 +219,13 @@ class Form_builder {
 		return TRUE;
 	}
 	
+	/**
+	* Clear Defaults
+	*
+	* Sometimes, like when we are editing an existing entry, we don't want to use default values.
+	*
+	* @return boolean TRUE
+	*/
 	function clear_defaults () {
 		reset($this->form);
 		
@@ -174,6 +236,14 @@ class Form_builder {
 		return TRUE;
 	}
 	
+	/**
+	* Output Admin
+	*
+	* Return a compiled string of each Fieldtype object's output_admin() method.  i.e., a form
+	* generated automatically.
+	*
+	* @return string HTML for the form (a series of <li> elements)
+	*/
 	function output_admin () {
 		reset($this->form);
 		

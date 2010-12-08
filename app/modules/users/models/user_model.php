@@ -1161,29 +1161,16 @@ class User_model extends CI_Model
 	/*
 	* New User Custom Field
 	*
-	* Create new user custom field record and modifies the database
+	* Creates the user-field-specific custom field record
 	*
-	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
-	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
-	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
-	* @param string $default Default selected value
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $help A string of help text
+	* @param int $custom_field_id
 	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
 	* @param boolean $admin_only Is this an admin-only field?
 	* @param boolean $registration_form Should we show this in the registration form?
-	* @param boolean $required TRUE to require the field for submission
-	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
-	* @param string|boolean $db_table The database table to add the field to, else FALSE
 	*
 	* @return int $custom_field_id
 	*/
-	function new_custom_field ($name, $type, $options, $default, $width, $help, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE, $required = FALSE, $validators = array()) {
-		$this->load->model('custom_fields_model');
-		
-		// create custom field to user group
-		$custom_field_id = $this->custom_fields_model->new_custom_field('1', $name, $type, $options, $default, $width, $help, $required, $validators, 'users');
-		
+	function new_custom_field ($custom_field_id, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE) {
 		$insert_fields = array(
 							'custom_field_id' => $custom_field_id,
 							'subscription_plans' => '',
@@ -1201,33 +1188,26 @@ class User_model extends CI_Model
 	/*
 	* Update User Custom Field
 	*
-	* Updates custom field records as well as modifies the appropriate database
+	* Updates the user_fields table with user custom field-specific information
 	*
 	* @param int $user_field_id The custom field ID to edit
-	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
-	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
-	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
-	* @param string $default Default selected value
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $help A string of help text
 	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
 	* @param boolean $admin_only Is this an admin-only field?
 	* @param boolean $registration_form Should we show this in the registration form?
-	* @param boolean $required TRUE to require the field for submission
-	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
-	* @param string|boolean $db_table The database table to add the field to, else FALSE
 	*
 	* @return boolean TRUE
 	*/
-	function update_custom_field ($user_field_id, $name, $type, $options, $default, $width, $help, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE, $required = FALSE, $validators = array()) {	
-		$this->load->model('custom_fields_model');
-		
-		// get custom_field_id
-		$field = $this->get_custom_field($user_field_id);
-		
-		// create custom field to user group
-		$custom_field_id = $this->custom_fields_model->update_custom_field($field['custom_field_id'], '1', $name, $type, $options, $default, $width, $help, $required, $validators, 'users');
-		
+	function update_custom_field ($custom_field_id, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE) {	
+		$result = $this->db->select('user_field_id')
+							 ->from('user_fields')
+							 ->where('custom_field_id',$custom_field_id)
+							 ->get();
+							 
+		if ($result->num_rows() == 0) {
+			// no record yet
+			$field_id = $this->new_custom_field($custom_field_id, $billing_equiv, $admin_only, $registration_form);
+		}
+				
 		$update_fields = array(
 							'subscription_plans' => '',
 							'products' => '',
@@ -1236,7 +1216,7 @@ class User_model extends CI_Model
 							'user_field_registration_form' => ($registration_form == TRUE) ? '1' : '0'
 							);
 							
-		$this->db->update('user_fields',$update_fields,array('user_field_id' => $user_field_id));
+		$this->db->update('user_fields',$update_fields,array('custom_field_id' => $custom_field_id));
 		
 		return TRUE;
 	}
@@ -1312,10 +1292,18 @@ class User_model extends CI_Model
 			$this->db->where('user_field_admin_only','0');
 		}
 	
-		$this->db->join('custom_fields','custom_fields.custom_field_id = user_fields.custom_field_id','inner');
+		$this->db->join('user_fields','custom_fields.custom_field_id = user_fields.custom_field_id','left');
 		$this->db->order_by('custom_fields.custom_field_order','ASC');
 		
-		$result = $this->db->get('user_fields');
+		$this->db->select('user_fields.user_field_id');
+		$this->db->select('user_fields.user_field_billing_equiv');
+		$this->db->select('user_fields.user_field_admin_only');
+		$this->db->select('user_fields.user_field_registration_form');
+		$this->db->select('custom_fields.*');
+		
+		$this->db->where('custom_field_group','1');
+		
+		$result = $this->db->get('custom_fields');
 		
 		if ($result->num_rows() == 0) {
 			return FALSE;

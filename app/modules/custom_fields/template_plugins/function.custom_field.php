@@ -3,11 +3,12 @@
 /*
 * Custom Field Template Function
 *
-* Displays a custom field from a standard custom field data array
+* Displays a custom field from a standard custom field data array.  It uses the fieldtype library's
+* output_frontend() method (returns an isolated field).
 *
 * @param array $field The data array for the field as created by custom_fields_model
-* @param string|array $value The current value (arrays for multiselects)
-* @param string $default Set the default value (particularly useful for disabling defaults on forms that should not reset to defaults)
+* @param string|array $value (Optional) The current value (arrays for multiselects)
+* @param string $default (Optional) Set the default value (particularly useful for disabling defaults on forms that should not reset to defaults)
 *
 * @return string Field HTML
 */

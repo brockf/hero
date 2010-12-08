@@ -688,20 +688,32 @@ class Admincp extends Admincp_Controller {
 							),
 						array(
 							'name' => 'Human Name',
-							'width' => '25%'
+							'width' => '19%'
 							),
 						array(
 							'name' => 'System Name',
-							'width' => '25%'
+							'width' => '15%'
 							),
 						array(
 							'name' => 'Type',
 							'type' => 'text',
-							'width' => '20%'
+							'width' => '10%'
+							),
+						array(
+							'name' => 'Billing Address Field?',
+							'width' => '15%'
+							),
+						array(
+							'name' => 'Admin Only?',
+							'width' => '11%'
+							),
+						array(
+							'name' => 'Registration Form?',
+							'width' => '15%'
 							),
 						array(
 							'name' => '',
-							'width' => '25%'
+							'width' => '15%'
 							)
 					);
 						
@@ -710,10 +722,6 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->base_url(site_url('admincp/users/data'));
 		$this->dataset->rows_per_page(1000);
 		
-		// total rows
-		$total_rows = $this->db->get('user_fields')->num_rows(); 
-		$this->dataset->total_rows($total_rows);
-		
 		// initialize the dataset
 		$this->dataset->initialize();
 
@@ -721,6 +729,17 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->action('Delete','admincp/users/data_delete');
 		
 		$this->load->view('data.php');
+	}
+	
+	function data_update () {
+		$this->user_model->update_custom_field(
+											$this->input->post('custom_field_id'),
+											$this->input->post('billing_equiv'),
+											($this->input->post('admin_only')) ? TRUE : FALSE,
+											($this->input->post('registration_form')) ? TRUE : FALSE
+										);
+										
+		echo 'SUCCESS';
 	}
 	
 	function data_add () {

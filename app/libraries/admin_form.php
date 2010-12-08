@@ -395,11 +395,13 @@ class Admin_form {
 			}
 			
 			// get HTML
+			$field_object->help(FALSE);
 			$html = $field_object->output_admin();
 			unset($field_object);
 			
 			$this->fields[$this->fieldset][] = array(
 														'type' => 'custom',
+														'li_id' => $field['id'],
 														'html' => $html
 													);
 		}
@@ -433,6 +435,10 @@ class Admin_form {
 					$return .= '<input type="hidden" id="' . $field['name'] . '" name="' . $field['name'] . '" value="' . $field['value'] . '" />';
 				}
 				elseif ($field['type'] == 'custom') {
+					if (isset($field['li_id'])) {
+						$field['html'] = str_replace('<li','<li id="row_' . $field['li_id'] . '"',$field['html']);
+					}
+					
 					$return .= $field['html'];
 				}
 				else {
