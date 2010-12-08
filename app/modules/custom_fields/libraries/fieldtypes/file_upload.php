@@ -114,7 +114,7 @@ class File_upload_fieldtype extends Fieldtype {
 										To upload your file via FTP, follow the directions below:
 									</li>
 									<li>
-										<b>1)</b> Connect to your FTP server with your favourite <a class="tooltip" title="An FTP client, such as \'FileZilla\', is an application you download on your computer." href="javascript:void(0)">FTP client</a>.
+										<b>1)</b> Connect to your FTP server with your favourite <a class="tooltip" title="An FTP client, such as \'FileZilla\', is an application you download on your computer that connects to FTP server and uploads/downloads files." href="javascript:void(0)">FTP client</a>.
 									</li>
 									<li>
 										<b>2)</b> Upload your file to <span class="code">' . $this->upload_directory . '</span>.

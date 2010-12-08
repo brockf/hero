@@ -11,7 +11,7 @@ $(document).ready(function() {
 	});
 	
 	// tooltips
-	$(".tooltip").tipTip();
+	$(".tooltip").addClass('tip_top').tipTip();
 	
 	// menu
 	$(document).click(function() {
