@@ -19,6 +19,12 @@ class Textarea_fieldtype extends Fieldtype {
 		$this->db_column = 'TEXT';
 	}
 	
+	function height ($height) {
+		$this->data['height'] = $height;
+		
+		return $this;
+	}
+	
 	function output_shared () {
 		// set defaults
 		if ($this->width == FALSE) {
@@ -129,11 +135,64 @@ class Textarea_fieldtype extends Fieldtype {
 		return $this->CI->input->post($this->name);
 	}
 	
-	function field_form () {
+	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
+		$this->CI->load->library('custom_fields/form_builder');
+		$this->CI->form_builder->reset();
+		
+		$default = $this->CI->form_builder->add_field('textarea');
+		$default->label('Default Value')
+	          ->name('default')
+	          ->width('500px');
+	          
+	    $help = $this->CI->form_builder->add_field('textarea');
+	    $help->label('Help Text')
+	    	 ->name('help')
+	    	 ->width('500px')
+	    	 ->height('80px')
+	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
+	    	 
+	    $required = $this->CI->form_builder->add_field('checkbox');
+	    $required->label('Required Field')
+	    	  ->name('required')
+	    	  ->help('If checked, this box must not be empty for the form to be processed.');
+	    	  
+	   	$validators = $this->CI->form_builder->add_field('multicheckbox');
+	   	$validators->label('Validators')
+	   			   ->name('validators')
+	   			   ->options(
+	   			   		array(
+	   			   			array('name' => 'Trim whitespace from around response', 'value' => 'trim'),
+	   			   			array('name' => 'Strip HTML tags', 'value' => 'strip_tags'),
+	   			   			array('name' => 'Only alphanumeric characters', 'value' => 'alpha_numeric')
+	   			   		)
+	   			   );
+	    	  
+	    if (!empty($edit_id)) {
+	    	$this->CI->load->model('custom_fields_model');
+	    	$field = $this->CI->custom_fields_model->get_custom_field($edit_id);
+	    	
+	    	$default->value($field['default']);
+	    	$help->value($field['help']);
+	    	$validators->value($field['validators']);
+	    	$required->value($field['required']);
+	    }	  
+	          
+		return $this->CI->form_builder->output_admin();      
 	}
 	
 	function field_form_process () {
 		// build array for database
+		
+		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
+		
+		return array(
+					'name' => $this->CI->input->post('name'),
+					'type' => $this->CI->input->post('type'),
+					'default' => $this->CI->input->post('default'),
+					'help' => $this->CI->input->post('help'),
+					'validators' => $this->CI->input->post('validators'),
+					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE
+				);
 	}
 }

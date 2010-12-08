@@ -724,110 +724,11 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data_add () {
-		$this->navigation->parent_active('configuration');
-		
-		$data = array(
-						'field' => array(),
-						'form_title' => 'New Member Data Field',
-						'form_action' => site_url('admincp/users/post_data/new')
-					);
-	
-		$this->load->view('data_form.php', $data);
-	}
-	
-	function post_data ($action, $id = FALSE) {
-		$this->navigation->parent_active('configuration');
-		
-		if ($this->input->post('name') == '') {
-			$this->notices->SetError('Field name is a required field.');
-			$error = true;
-		}
-		
-		if (in_array($this->input->post('type'),array('select','radio')) and trim($this->input->post('options')) == '') {
-			$this->notices->SetError('You must specify field options.');
-			$error = true;
-		}
-		
-		if (isset($error)) {
-			if ($action == 'new') {
-				redirect('admincp/users/data_add');
-				return false;
-			}
-			else {
-				redirect('admincp/users/data_edit/' . $id);
-			}	
-		}
-		
-		// build validators
-		$validators = array();
-		
-		if ($this->input->post('type') != 'file') {
-			if ($this->input->post('validate_email') == '1') { $validators[] = 'email'; }
-			if ($this->input->post('validate_whitespace') == '1') { $validators[] = 'whitespace'; }
-			if ($this->input->post('validate_alphanumeric') == '1') { $validators[] = 'alphanumeric'; }
-			if ($this->input->post('validate_numeric') == '1') { $validators[] = 'numeric'; }
-			if ($this->input->post('validate_domain') == '1') { $validators[] = 'domain'; }
-		}
-		else {
-			$validators = explode(' ',$this->input->post('file_validation'));
-		}
-		
-		// build required
-		$required = ($this->input->post('required') == '1') ? TRUE : FALSE;
-		
-		if ($action == 'new') {
-			$field_id = $this->user_model->new_custom_field(
-																$this->input->post('name'),
-																$this->input->post('type'),
-																$this->input->post('options'),
-																$this->input->post('default'),
-																$this->input->post('width'),
-																$this->input->post('help'),
-																$this->input->post('billing_equiv'),
-																($this->input->post('admin_only') == '1') ? TRUE : FALSE,
-																($this->input->post('registration_form') == '1') ? TRUE : FALSE,
-																$required,
-																$validators
-															);
-			
-			$this->notices->SetNotice('Field added successfully.');
-		}
-		else {
-			$this->user_model->update_custom_field(
-												$id,
-												$this->input->post('name'),
-												$this->input->post('type'),
-												$this->input->post('options'),
-												$this->input->post('default'),
-												$this->input->post('width'),
-												$this->input->post('help'),
-												$this->input->post('billing_equiv'),
-												($this->input->post('admin_only') == '1') ? TRUE : FALSE,
-												($this->input->post('registration_form') == '1') ? TRUE : FALSE,
-												$required,
-												$validators
-											);
-															
-			$this->notices->SetNotice('Field edited successfully.');
-		}
-		
-		redirect('admincp/users/data');
-		
-		return TRUE;
+		return redirect('admincp/custom_fields/add/1/users/users');
 	}
 	
 	function data_edit ($id) {
-		$this->navigation->parent_active('configuration');
-		
-		$field = $this->user_model->get_custom_field($id);
-		
-		$data = array(
-						'field' => $field,
-						'form_title' => 'Edit Member Data Field',
-						'form_action' => site_url('admincp/users/post_data/edit/' . $field['id'])
-					);
-	
-		$this->load->view('data_form.php', $data);
+		return redirect('admincp/custom_fields/edit/' . $id . '/users/users');
 	}
 	
 	/**

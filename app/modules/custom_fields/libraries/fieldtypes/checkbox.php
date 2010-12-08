@@ -96,11 +96,54 @@ class Checkbox_fieldtype extends Fieldtype {
 		return ($this->CI->input->post($this->name) != FALSE) ? '1' : '0';
 	}
 	
-	function field_form () {
+	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
+		$this->CI->load->library('custom_fields/form_builder');
+		$this->CI->form_builder->reset();
+		
+		$default = $this->CI->form_builder->add_field('select');
+		$default->label('Default State')
+	          ->name('default')
+	          ->options(array(
+	          				array('value' => 'checked', 'name' => 'Checked'),
+							array('value' => 'unchecked', 'name' => 'Unchecked')
+	          			));
+	          
+	    $help = $this->CI->form_builder->add_field('textarea');
+	    $help->label('Help Text')
+	    	 ->name('help')
+	    	 ->width('500px')
+	    	 ->height('80px')
+	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
+	    	 
+	    $required = $this->CI->form_builder->add_field('checkbox');
+	    $required->label('Required Field')
+	    	  ->name('required')
+	    	  ->help('If checked, this box must be checked for the form to be processed.');
+	    	  
+	    if (!empty($edit_id)) {
+	    	$this->CI->load->model('custom_fields_model');
+	    	$field = $this->CI->custom_fields_model->get_custom_field($edit_id);
+	    	
+	    	$default->value(!empty($field['default']) ? 'checked' : 'unchecked');
+	    	$help->value($field['help']);
+	    	$required->value($field['required']);
+	    }	  
+	          
+		return $this->CI->form_builder->output_admin();      
 	}
 	
 	function field_form_process () {
 		// build array for database
+		
+		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
+		
+		return array(
+					'name' => $this->CI->input->post('name'),
+					'type' => $this->CI->input->post('type'),
+					'default' => ($this->CI->input->post('default') == 'checked') ? 'checked' : '',
+					'help' => $this->CI->input->post('help'),
+					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE
+				);
 	}
 }

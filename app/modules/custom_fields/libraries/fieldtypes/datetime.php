@@ -32,6 +32,7 @@ class Datetime_fieldtype extends Fieldtype {
 		
 		$this->field_class('text');
 		$this->field_class('datetime');
+		$this->field_class('datepick');
 		
 		return;
 	}
@@ -131,7 +132,12 @@ class Datetime_fieldtype extends Fieldtype {
 		$month_field = form_dropdown($this->name . '_month', $options, !empty($this->value) ? date('m', strtotime($this->value)) : '01');
 		
 		$options = array();
-		$start = date('Y') - 100;
+		if ($this->data['future_only'] == TRUE) {
+			$start = date('Y') - 100;
+		}
+		else {
+			$start = date('Y');
+		}
 		$end = date('Y') + 100;
 		for ($i = $start; $i <= $end; $i++) {
 			$options[$i] = $i;
@@ -170,7 +176,14 @@ class Datetime_fieldtype extends Fieldtype {
 	}
 	
 	function validate_post () {
-		// nothing extra to validate here other than the rulers in $this->validators
+		// is this a future date?
+		if ($this->data['future_only'] == TRUE) {
+			if (strtotime($this->post_to_value()) < time()) {
+				$this->validation_error = $this->label . ' must be in the future.';
+				return FALSE;
+			}
+		}
+		
 		return TRUE;
 	}
 	
@@ -185,11 +198,46 @@ class Datetime_fieldtype extends Fieldtype {
 		}
 	}
 	
-	function field_form () {
+	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
+		$this->CI->load->library('custom_fields/form_builder');
+		$this->CI->form_builder->reset();
+		
+	    $help = $this->CI->form_builder->add_field('textarea');
+	    $help->label('Help Text')
+	    	 ->name('help')
+	    	 ->width('500px')
+	    	 ->height('80px')
+	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
+	    	 
+	   	$future = $this->CI->form_builder->add_field('checkbox');
+	   	$future->label('Future Only')
+	   	       ->name('future_only')
+	   	       ->help('Only allow future dates?');
+	    
+	    if (!empty($edit_id)) {
+	    	$this->CI->load->model('custom_fields_model');
+	    	$field = $this->CI->custom_fields_model->get_custom_field($edit_id);
+	    	
+	    	$help->value($field['help']);
+	    	if (isset($field['data']['future_only'])) {
+	    		$future->value($field['data']['future_only']);
+	    	}
+	    }	  
+	          
+		return $this->CI->form_builder->output_admin();      
 	}
 	
 	function field_form_process () {
 		// build array for database
+		
+		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
+		
+		return array(
+					'name' => $this->CI->input->post('name'),
+					'type' => $this->CI->input->post('type'),
+					'help' => $this->CI->input->post('help'),
+					'data' => array('future_only' => ($this->CI->input->post('future_only')) ? TRUE : FALSE)
+				);
 	}
 }

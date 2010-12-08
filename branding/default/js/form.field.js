@@ -1,53 +1,25 @@
 $(document).ready(function () {
-	ShowHideFieldOptions();
+	var base_url = $('#base_url').html();
+	var site_url = $('#site_url').html();
 
-	$('#type').click(function() {
-		ShowHideFieldOptions();
-	});
-});
-
-function ShowHideFieldOptions () {
-	// handle preset values
-	if ($('#type').val() == 'text' || $('#type').val() == 'file' || $('#type').val() == 'date' || $('#type').val() == 'wysiwyg' || $('#type').val() == 'textarea' || $('#type').val() == 'checkbox') {
-		$('.field_options').hide();
-	}
-	else {
-		$('.field_options').show();
-	}
-	
-	if ($('#type').val() == 'text' || $('#type').val() == 'wysiwyg' || $('#type').val() == 'textarea') {
-		$('.field_width').show();
-		$('.field_default_checkbox').hide();
-		$('.field_default_text').show();
-	}
-	else if ($('#type').val() == 'file' || $('#type').val() == 'date') {
-		$('.field_default_checkbox').hide();
-		$('.field_default_text').hide();
-	}
-	else if ($('#type').val() == 'checkbox') {
-		$('.field_default_checkbox').show();
-		$('.field_default_text').hide();
-		$('.field_width').hide();
-	}
-	else {
-		$('.field_default_text').hide();
-		$('.field_default_checkbox').hide();
-		$('.field_width').hide();
-	}
-	
-	if ($('#type').val() == 'file') {
-		$('.normal_validation').hide();
-		$('.file_validation').show();
-		$('.field_default').hide();
-	}
-	else if ($('#type').val() == 'date') {
-			$('.normal_validation').hide();
-			$('.file_validation').hide();
-			$('.field_default').hide();
+	$('#type').click(function () {
+		if ($(this).val() != $(this).data('current')) {
+			// place loading image
+			$('fieldset#field_options').html('<img src="' + site_url + 'branding/default/images/loading.gif" alt="Loading..." />');
+					
+			// we have a change compatible with IE6
+			var this_type = $(this).val();
+			var field_id = $('#field_id').val();
+			
+			$.post(base_url + 'custom_fields/ajax_field_form', { type : this_type, id : field_id } , function (response) {
+				$('fieldset#field_options').html('<ul class="form">' + response + '</ul>');
+			});
 		}
-	else {
-		$('.normal_validation').show();
-		$('.file_validation').hide();
-		$('.field_default').show();
-	}
-}
+		
+		// store current value of #type
+		$('#type').data('current', $('#type').val());
+	});
+	
+	// trigger click
+	$('#type').trigger('click');
+});

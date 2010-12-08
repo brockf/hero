@@ -53,166 +53,6 @@ class Custom_fields_model extends CI_Model {
 	}
 	
 	/*
-	* Get Rules
-	* 
-	* Generates a CodeIgniter form_validation array for custom fields based on the field group ID
-	*
-	* @param int $field_group_id
-	*
-	* @return array $rules CodeIgniter rules
-	*/
-	function get_validation_rules ($field_group_id) {
-		$fields = $this->get_custom_fields(array('group' => $field_group_id));
-		
-		$this->load->helper('valid_domain');
-		
-		$return = array();
-		
-		foreach ($fields as $field) {
-			$rules = array();
-			
-			if ($field['type'] != 'file' and isset($field['validators'])) {
-				foreach ($field['validators'] as $validator) {
-					if ($validator == 'whitespace') {
-						$rules[] = 'trim';
-					}
-					elseif ($validator == 'alphanumeric') {
-						$rules[] = 'alpha_numeric';
-					}
-					elseif ($validator == 'numeric') {
-						$rules[] = 'numeric';
-					}
-					elseif ($validator == 'domain') {
-						$rules[] = 'valid_domain';
-					}
-					elseif ($validator == 'email') {
-						$rules[] = 'valid_email';
-					}
-				}
-				
-				if ($field['required'] == TRUE) {
-					$rules[] = 'required';
-				}
-				
-				if (!empty($rules)) {
-					$return[] = array(
-									'field' => $field['name'],
-									'label' => $field['friendly_name'],
-									'rules' => implode('|',$rules)
-								);
-				}
-			}
-		}
-		
-		return $return;
-	}
-	
-	/*
-	* Validate Files
-	* 
-	* Secondary validation of any form that may have files in it,
-	* as they can't be handled by CodeIgniter
-	*
-	* @param int $field_group_id
-	*
-	* @return boolean TRUE upon success
-	*/
-	function validate_files ($field_group_id) {
-		$fields = $this->get_custom_fields(array('group' => $field_group_id));
-		
-		$this->load->helper('file_extension');
-		
-		foreach ($fields as $field) {
-			if ($field['type'] == 'file') {
-				if (!empty($field['validators']) and is_array($field['validators'])) {
-					if (is_uploaded_file($_FILES[$field['name']]['tmp_name']) and !in_array(file_extension($_FILES[$field['name']]['name']),$field['validators'])) {
-						return FALSE;
-					}
-				}
-			}
-		}
-		
-		return TRUE;
-	}
-	
-	/*
-	* Post to Array
-	*
-	* Convert all custom field data for a field group from POST into an array
-	*
-	* @param int $field_group_id
-	* @param boolean $populate_with_defaults If the field isn't in the POST,should we use the default values?  (i.e., for user registrations)
-	*
-	* @return array Field data
-	*/
-	function post_to_array($field_group_id, $populate_with_defaults = FALSE) {
-		if (empty($field_group_id)) {
-			return array();
-		}
-	
-		$fields = $this->get_custom_fields(array('group' => $field_group_id));
-		
-		$array = array();
-		foreach ($fields as $field) {
-			// if this doesn't exist in POST, should we replace it with its default value?
-			if ($populate_with_defaults == TRUE and $this->input->post($field['name']) === FALSE) {
-				// yes
-				if (!empty($field['default'])) {
-					$_POST[$field['name']] = $field['default'];
-				}
-			}
-		
-			if ($field['type'] == 'multiselect') {
-				$array[$field['name']] = serialize($this->input->post($field['name']));
-			}
-			elseif ($field['type'] == 'file') {
-				// do the upload
-				if (isset($_FILES[$field['name']]) and is_uploaded_file($_FILES[$field['name']]['tmp_name'])) {
-					$CI =& get_instance();
-					$CI->settings_model->make_writeable_folder($this->upload_directory,FALSE);
-					
-					$config = array();
-					$config['upload_path'] = $this->upload_directory;
-					$config['allowed_types'] = '*';
-					$config['encrypt_name'] = TRUE;
-					
-					// upload class may already be loaded
-					if (isset($this->upload)) {
-						$this->upload->initialize($config);
-					}
-					else {
-						$this->load->library('upload', $config);
-					}
-					
-					// do upload
-					if (!$this->upload->do_upload($field['name'])) {
-						die(show_error($this->upload->display_errors()));
-					}
-					
-					$filename = $this->upload->file_name;
-					
-					// reset filename in case we use the uploader again
-					$this->upload->file_name = '';
-					
-					$array[$field['name']] = str_replace(FCPATH,'',$this->upload_directory . $filename);
-				}
-			}
-			elseif ($field['type'] == 'date' and $this->input->post($field['name'] . '_day')) {
-				// we are getting the 3 individual date fields
-				$array[$field['name']] = $this->input->post($field['name'] . '_year') . '-' . $this->input->post($field['name'] . '_month') . '-' . $this->input->post($field['name'] . '_day');
-			}
-			elseif ($field['type'] == 'checkbox') {
-				$array[$field['name']] = ($this->input->post($field['name'])) ? '1' : '0';
-			}
-			else {
-				$array[$field['name']] = $this->input->post($field['name']);
-			}
-		}
-		
-		return $array;
-	}
-	
-	/*
 	* Get Custom Field
 	*
 	* @param int $custom_field_id
@@ -261,6 +101,7 @@ class Custom_fields_model extends CI_Model {
 		foreach ($result->result_array() as $field) {
 			$fields[] = array(
 							'id' => $field['custom_field_id'],
+							'group_id' => $field['custom_field_group'],
 							'friendly_name' => $field['custom_field_friendly_name'],
 							'name' => $field['custom_field_name'],
 							'type' => $field['custom_field_type'],
@@ -296,10 +137,11 @@ class Custom_fields_model extends CI_Model {
 	* @param boolean $required TRUE to require the field for submission
 	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
 	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	* @param array $data Array of additional data which should be associated with this field
 	*
 	* @return int $custom_field_id
 	*/
-	function new_custom_field ($group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
+	function new_custom_field ($group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
 		$options = $this->format_options($options);
 		
 		// calculate system name
@@ -330,7 +172,8 @@ class Custom_fields_model extends CI_Model {
 							'custom_field_options' => serialize($options),
 							'custom_field_required' => ($required == FALSE) ? '0' : '1',
 							'custom_field_validators' => serialize($validators),
-							'custom_field_help_text' => $help
+							'custom_field_help_text' => $help,
+							'custom_field_data' => (!empty($data)) ? serialize($data) : ''
 						);
 						
 		$this->db->insert('custom_fields',$insert_fields);
@@ -382,10 +225,11 @@ class Custom_fields_model extends CI_Model {
 	* @param boolean $required TRUE to require the field for submission
 	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
 	* @param string|boolean $db_table The database table to add the field to, else FALSE
+	* @param array $data Array of additional data which should be associated with this field
 	*
 	* @return boolean TRUE
 	*/
-	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE) {
+	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
 		$options = $this->format_options($options);
 		
 		// we may need the old system name
@@ -407,7 +251,8 @@ class Custom_fields_model extends CI_Model {
 							'custom_field_width' => $width,
 							'custom_field_required' => ($required == FALSE) ? '0' : '1',
 							'custom_field_validators' => serialize($validators),
-							'custom_field_help_text' => $help
+							'custom_field_help_text' => $help,
+							'custom_field_data' => (!empty($data)) ? serialize($data) : ''
 						);
 						
 		$this->db->update('custom_fields',$update_fields,array('custom_field_id' => $custom_field_id));

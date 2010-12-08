@@ -32,6 +32,7 @@ class Date_fieldtype extends Fieldtype {
 		
 		$this->field_class('text');
 		$this->field_class('date');
+		$this->field_class('datepick');
 		
 		return;
 	}

@@ -69,6 +69,23 @@ class Form_builder {
 		return TRUE;
 	}
 	
+	/**
+	* Add Field
+	*
+	* Manually add a fieldtype object to this form
+	*
+	* @param string $type
+	*/
+	function add_field ($type) {
+		$this->CI->load->library('custom_fields/fieldtype');
+		
+		$field_object = $this->CI->fieldtype->create($type);
+		
+		$this->form[] =& $field_object;
+		
+		return $field_object;
+	}
+	
 	function validate_post () {
 		// initial rules-based validation
 		$this->CI->load->library('form_validation');
@@ -96,6 +113,8 @@ class Form_builder {
 		if (!empty($this->validation_errors)) {
 			return FALSE;
 		}
+		
+		return TRUE;
 	}
 	
 	function validation_errors ($array = FALSE) {

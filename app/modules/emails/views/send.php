@@ -32,7 +32,7 @@
 			</li>
 			<li>
 				<ul class="final_recipients">
-					<li class="empty">No recipients, yet.  Select you recipients in the dialog to the left.</li>
+					<li class="empty">No recipients, yet.  Select your recipients in the dialog to the left.</li>
 				</ul>
 			</li>
 			<li>

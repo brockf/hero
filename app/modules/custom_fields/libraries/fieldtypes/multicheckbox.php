@@ -1,22 +1,22 @@
 <?php
 
 /*
-* Select Fieldtype
+* Multicheckbox Fieldtype
 *
 * @extends Fieldtype
-* @class Select_fieldtype
+* @class Multicheckbox_fieldtype
 */
 
-class Select_fieldtype extends Fieldtype {
+class Multicheckbox_fieldtype extends Fieldtype {
 	function __construct () {
 		parent::__construct();
 	 
 		$this->compatibility = array('publish','users','products','collections','forms');
 		$this->enabled = TRUE;
-		$this->fieldtype_name = 'Select Dropdown';
-		$this->fieldtype_description = 'Select one of many options in a dropdown list.';
+		$this->fieldtype_name = 'Multicheckbox Dropdown';
+		$this->fieldtype_description = 'Check one or many options in a list of checkboxes.';
 		$this->validation_error = '';
-		$this->db_column = 'VARCHAR(150)';
+		$this->db_column = 'TEXT';
 	}
 	
 	function output_shared () {
@@ -34,7 +34,12 @@ class Select_fieldtype extends Fieldtype {
 		if (empty($this->value) and $this->CI->input->post($this->name) == FALSE) {
 			$this->value($this->default);
 		}
-	
+		
+		// we may be passed a serialized array
+		if (@is_array(unserialize($this->value))) {
+			$this->value = unserialize($this->value);
+		}
+		
 		$this->output_shared();
 		
 		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';
@@ -42,14 +47,16 @@ class Select_fieldtype extends Fieldtype {
 		// build HTML
 		$this->CI->load->helper('form');
 		
-		$options = array();
-		foreach ($this->options as $option) {
-			$options[$option['value']] = $option['name'];
-		}
-		
 		$return = '<li>
 						<label for="' . $this->name . '">' . $this->label . '</label>
-						' . form_dropdown($this->name, $options, $this->value) . '
+						<div style="float: left; width: 500px">';
+						
+		foreach ($this->options as $option) {
+			$checked = ((is_array($this->value) and in_array($option['value'], $this->value)) or (!is_array($this->value) and $this->value == $option['value'])) ? ' checked="checked" ' : '';
+			$return .= '<div class="check_option"><input type="checkbox" name="' . $this->name . '[]" value="' . $option['value'] . '" ' . $checked . ' /> ' . $option['name'] . '</div>';	
+		}
+		
+		$return .= '				</div>
 						' . $help . '
 					</li>';
 					
@@ -61,9 +68,14 @@ class Select_fieldtype extends Fieldtype {
 			if (empty($_POST)) {
 				$this->value($this->default);
 			}
-			elseif ($this->CI->input->post($this->name) != FALSE) {
-				$this->value($this->CI->input->post($this->name));
+			elseif (isset($_POST[$this->name])) {
+				$this->value($_POST[$this->name]);
 			}
+		}
+		
+		// we may be passed a serialized array
+		if (@is_array(unserialize($this->value))) {
+			$this->value = unserialize($this->value);
 		}
 		
 		$attributes = $this->output_shared();
@@ -71,12 +83,12 @@ class Select_fieldtype extends Fieldtype {
 		// build HTML
 		$this->CI->load->helper('form');
 		
-		$options = array();
-		foreach ($this->options as $option) {
-			$options[$option['value']] = $option['name'];
-		}
+		$return = '';
 		
-		$return = form_dropdown($this->name, $options, $this->value);
+		foreach ($this->options as $option) {
+			$checked = ((is_array($this->value) and in_array($option['value'], $this->value)) or (!is_array($this->value) and $this->value == $option['value'])) ? ' checked="checked" ' : '';
+			$return .= '<div class="check_option"><input type="checkbox" name="' . $this->name . '[]" value="' . $option['value'] . '" ' . $checked . ' /> ' . $option['name'] . '</div>';	
+		}
 					
 		return $return;
 	}
@@ -98,7 +110,13 @@ class Select_fieldtype extends Fieldtype {
 	}
 	
 	function post_to_value () {
-		return $this->CI->input->post($this->name);
+		$array = $this->CI->input->post($this->name);
+		
+		if (!is_array($array)) {
+			$array = array($array);
+		}
+		
+		return serialize($array);
 	}
 	
 	function field_form ($edit_id = FALSE) {
@@ -109,13 +127,14 @@ class Select_fieldtype extends Fieldtype {
 		$options->label('Options')
 			  ->name('options')
 			  ->width('500px')
-			  ->height('150px')
 			  ->required(TRUE)
+			  ->height('150px')
 			  ->help('Enter each option on a newline. If you want the option database value to be different than the option the user actually selects, enter it in the format of "Name=Value".');
 		
-		$default = $this->CI->form_builder->add_field('text');
-		$default->label('Default Selection')
-	          ->name('default');
+		$default = $this->CI->form_builder->add_field('textarea');
+		$default->label('Default Selection(s)')
+	          ->name('default')
+	          ->help('To select multiple values by default, enter each value on a newline.');
 	          
 	    $help = $this->CI->form_builder->add_field('textarea');
 	    $help->label('Help Text')
@@ -127,7 +146,7 @@ class Select_fieldtype extends Fieldtype {
 	    $required = $this->CI->form_builder->add_field('checkbox');
 	    $required->label('Required Field')
 	    	  ->name('required')
-	    	  ->help('If checked, this field must not be empty for a successful form submission.');
+	    	  ->help('If checked, at least one checkbox must be checked a successful form submission.');
 	    	  
 	    if (!empty($edit_id)) {
 	    	$this->CI->load->model('custom_fields_model');
@@ -150,6 +169,11 @@ class Select_fieldtype extends Fieldtype {
 			}
 			$field['options'] = $options_text;
 	    	
+	    	// format default
+	    	if (@is_array(unserialize($field['default']))) {
+	    		$field['default'] = implode("\n", unserialize($field['default']));
+	    	}
+	    	
 	    	$options->value($field['options']);
 	    	$default->value($field['default']);
 	    	$help->value($field['help']);
@@ -164,10 +188,28 @@ class Select_fieldtype extends Fieldtype {
 		
 		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
 		
+		// we may need to serialize the default options
+		if (strpos($this->CI->input->post('default')) !== FALSE) {
+			$defaults = explode("\n", $this->CI->input->post('default'));
+			$final_defaults = array();
+			foreach ($defaults as $default) {
+				$default = trim($default);
+				
+				if (!empty($default)) {
+					$final_defaults[] = $default;
+				}
+			}
+			
+			$final_defaults = serialize($final_defaults);
+		}
+		else {
+			$final_defaults = $this->CI->input->post('default');
+		}
+		
 		return array(
 					'name' => $this->CI->input->post('name'),
 					'type' => $this->CI->input->post('type'),
-					'default' => $this->CI->input->post('default'),
+					'default' => $final_defaults,
 					'options' => $this->CI->input->post('options'),
 					'help' => $this->CI->input->post('help'),
 					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE

@@ -378,98 +378,9 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('form_model');
 		$form = $this->form_model->get_form($id);
 	
-		$data = array(
-						'field' => array(),
-						'form' => $form,
-						'form_title' => 'New Field',
-						'form_action' => site_url('admincp/forms/post_field/new')
-					);
-	
-		$this->load->view('field_form', $data);
+		return redirect('admincp/custom_fields/add/' . $form['custom_field_group_id'] . '/forms/' . $form['table_name']);
 	}
-	
-	function post_field ($action, $id = FALSE) {
-		if ($this->input->post('name') == '') {
-			$this->notices->SetError('Field name is a required field.');
-			$error = TRUE;
-		}
 		
-		if (in_array($this->input->post('type'),array('select','radio')) and trim($this->input->post('options')) == '') {
-			$this->notices->SetError('You must specify field options.');
-			$error = TRUE;
-		}
-		
-		if (isset($error)) {
-			if ($action == 'new') {
-				redirect('admincp/forms/field_add/' . $this->input->post('form_id'));
-				return false;
-			}
-			else {
-				redirect('admincp/forms/field_edit/' . $this->input->post('form_id') . '/' . $id);
-			}	
-		}
-		
-		// build validators
-		$validators = array();
-		
-		if ($this->input->post('type') != 'file') {
-			if ($this->input->post('validate_email') == '1') { $validators[] = 'email'; }
-			if ($this->input->post('validate_whitespace') == '1') { $validators[] = 'whitespace'; }
-			if ($this->input->post('validate_alphanumeric') == '1') { $validators[] = 'alphanumeric'; }
-			if ($this->input->post('validate_numeric') == '1') { $validators[] = 'numeric'; }
-			if ($this->input->post('validate_domain') == '1') { $validators[] = 'domain'; }
-		}
-		else {
-			$validators = explode(' ',$this->input->post('file_validation'));
-		}
-		
-		// build required
-		$required = ($this->input->post('required') == '1') ? TRUE : FALSE;
-		
-		$this->load->model('custom_fields_model');
-		$this->load->model('form_model');
-		
-		$form = $this->form_model->get_form($this->input->post('form_id'));
-		
-		if ($action == 'new') {
-			$field_id = $this->custom_fields_model->new_custom_field(
-																$form['custom_field_group_id'],
-																$this->input->post('name'),
-																$this->input->post('type'),
-																$this->input->post('options'),
-																$this->input->post('default'),
-																$this->input->post('width'),
-																$this->input->post('help'),
-																$required,
-																$validators,
-																$form['table_name']
-															);
-			
-			$this->notices->SetNotice('Field added successfully.');
-		}
-		else {
-			$this->custom_fields_model->update_custom_field(
-												$id,
-												$form['custom_field_group_id'],
-												$this->input->post('name'),
-												$this->input->post('type'),
-												$this->input->post('options'),
-												$this->input->post('default'),
-												$this->input->post('width'),
-												$this->input->post('help'),
-												$required,
-												$validators,
-												$form['table_name']
-											);
-															
-			$this->notices->SetNotice('Field edited successfully.');
-		}
-		
-		redirect('admincp/forms/fields/' . $form['id']);
-		
-		return TRUE;
-	}
-	
 	function field_edit ($form_id, $id) {
 		$this->load->model('form_model');
 		$form = $this->form_model->get_form($form_id);
@@ -477,14 +388,7 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('custom_fields_model');
 		$field = $this->custom_fields_model->get_custom_field($id);
 		
-		$data = array(
-						'field' => $field,
-						'form' => $form,
-						'form_title' => 'Edit Field',
-						'form_action' => site_url('admincp/forms/post_field/edit/' . $field['id'])
-					);
-	
-		$this->load->view('field_form', $data);
+		return redirect('admincp/custom_fields/edit/' . $field['id'] . '/forms/' . $form['table_name']);
 	}
 	
 	function fields_delete ($form_id, $fields, $return_url) {

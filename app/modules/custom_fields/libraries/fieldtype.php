@@ -62,6 +62,26 @@ class Fieldtype {
 	
 	// super methods
 	
+	/**
+	* Load Empty Field
+	*
+	* @param $type
+	*
+	* @return object Field object
+	*/
+	function create ($type) {
+		if (!$this->load_type($type)) {
+			return FALSE;
+		}
+		
+		// prep class name for fieldtype object class
+		$class_name = $this->class_name_from_type($type);
+		
+		$object = new $class_name;
+		
+		return $object;
+	}
+	
 	/*
 	* Load Field
 	*
@@ -83,14 +103,11 @@ class Fieldtype {
 			return FALSE;
 		}
 		
-		if (!$this->load_type($field_data['type'])) {
+		$object = $this->create($field_data['type']);
+		
+		if ($object === FALSE) {
 			return FALSE;
 		}
-		
-		// prep class name for fieldtype object class
-		$class_name = $this->class_name_from_type($field_data['type']);
-		
-		$object = new $class_name;
 		
 		$object->id($field_data['id'])
 			   ->label((isset($field_data['label'])) ? $field_data['label'] : $field_data['friendly_name'])
@@ -106,7 +123,7 @@ class Fieldtype {
 		
 		return $object;
 	}
-	
+
 	function class_name_from_type ($type) {
 		$class_name = ucfirst($type) . '_fieldtype';
 		
@@ -139,17 +156,36 @@ class Fieldtype {
 	}
 	
 	function load_all_types () {
-		$this->CI->load->helper('directory');
-		
-		$files = directory_map(APPPATH . '/modules/custom_fields/libraries/fieldtypes/');
+		$files = $this->get_fieldtype_filenames();
 		
 		foreach ($files as $file) {
-			$file = str_replace('.php','',$file);
-			
 			$this->load_type($file);
 		}
 		
 		return TRUE;
+	}
+	
+	function get_fieldtype_options () {
+		$this->load_all_types();
+		
+		$options = array();
+		foreach ($this->loaded_types as $type) {
+			$options[$type] = $this->$type->fieldtype_name;
+		}
+		
+		return $options;
+	}
+	
+	function get_fieldtype_filenames () {
+		$this->CI->load->helper('directory');
+		
+		$files = directory_map(APPPATH . '/modules/custom_fields/libraries/fieldtypes/');
+		
+		foreach ($files as $key => $file) {
+			$files[$key] = str_replace('.php','',$file);
+		}
+		
+		return $files;
 	}
 	
 	// field methods

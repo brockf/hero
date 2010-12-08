@@ -63,8 +63,11 @@ class File_upload_fieldtype extends Fieldtype {
 		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';
 		
 		// build HTML
+		// we can track an already-uploaded filename with a hidden field so, if we
+		// don't have a new upload, we stick with the file we already have
 		$return = '<li>
 						<label for="' . $this->name . '">' . $this->label . '</label>
+						<input type="hidden" name="' . $this->name . '_uploaded" value="' . $this->value . '" />
 						<input ' . $attributes . ' /> ' . $this->value . '
 						' . $help . '
 					</li>';
@@ -76,7 +79,8 @@ class File_upload_fieldtype extends Fieldtype {
 		$attributes = $this->output_shared();
 		
 		// build HTML
-		$return = '<input ' . $attributes . ' />';
+		$return = '<input type="hidden" name="' . $this->name . '_uploaded" value="' . $this->value . '" />
+				   <input ' . $attributes . ' />';
 					
 		return $return;
 	}
@@ -89,6 +93,13 @@ class File_upload_fieldtype extends Fieldtype {
 		$this->CI->load->helper('file_extension');
 		
 		if (isset($this->data['filetypes']) and !empty($this->data['filetypes'])) {
+			if (in_array('jpg', $this->data['filetypes'])) {
+				$this->data['filetypes'][] = 'jpeg';
+			}
+			elseif (in_array('jpeg', $this->data['filetypes'])) {
+				$this->data['filetypes'][] = 'jpg';
+			}
+		
 			if (is_uploaded_file($_FILES[$this->name]['tmp_name']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
 				$this->validation_error = $this->label . ' is not of the proper filetype.';
 			
@@ -107,11 +118,7 @@ class File_upload_fieldtype extends Fieldtype {
 			$config = array();
 			$config['upload_path'] = $this->upload_directory;
 			$config['allowed_types'] = '*';
-			
-			// only encrypt the name if this is a frontend form
-			if (defined("_FRONTEND")) {
-				$config['encrypt_name'] = TRUE;
-			}
+			$config['encrypt_name'] = TRUE;
 			
 			// upload class may already be loaded
 			if (isset($this->CI->upload)) {
@@ -131,17 +138,68 @@ class File_upload_fieldtype extends Fieldtype {
 			// reset filename in case we use the uploader again
 			$this->CI->upload->file_name = '';
 			
-			$post_value = str_replace(FCPATH,'',$this->CI->upload_directory . $filename);
+			$post_value = str_replace(FCPATH,'',$this->upload_directory . $filename);
+		}
+		elseif ($this->CI->input->post($this->name . '_uploaded')) {
+			$post_value = $this->CI->input->post($this->name . '_uploaded');
+		}
+		else {
+			$post_value = '';
 		}
 		
 		return $post_value;
 	}
 	
-	function field_form () {
+	function field_form ($edit_id = FALSE) {
 		// build fieldset with admin_form which is used when editing a field of this type
+		$this->CI->load->library('custom_fields/form_builder');
+		$this->CI->form_builder->reset();
+		
+		$filetypes = $this->CI->form_builder->add_field('text');
+		$filetypes->label('Allowed Filetypes')
+	          ->name('filetypes')
+	          ->help('Enter the filetypes (e.g., "jpg", "gif", "pdf", and "doc") that can be uploaded here.  Though not a foolproof mechanism
+	          	      for validating filetypes, validating the file extension will help make sure people upload proper files here.  If someone
+	          	      does upload a malicious file by renaming the file, the file will still be non-executable as all filenames are encrypted and
+	          	      securely stored.');
+	          
+	    $help = $this->CI->form_builder->add_field('textarea');
+	    $help->label('Help Text')
+	    	 ->name('help')
+	    	 ->width('500px')
+	    	 ->height('80px')
+	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
+	    	 
+	    $required = $this->CI->form_builder->add_field('checkbox');
+	    $required->label('Required Field')
+	    	  ->name('required')
+	    	  ->help('If checked, a file must be uploaded here for the form to be processed.');
+	    	  
+	    if (!empty($edit_id)) {
+	    	$this->CI->load->model('custom_fields_model');
+	    	$field = $this->CI->custom_fields_model->get_custom_field($edit_id);
+	    	
+	    	if (isset($field['data']['filetypes'])) {
+	    		$filetypes->value(implode(' ',$field['data']['filetypes']));
+	    	}
+	    	$help->value($field['help']);
+	    	$required->value($field['required']);
+	    }	  
+	          
+		return $this->CI->form_builder->output_admin();      
 	}
 	
 	function field_form_process () {
 		// build array for database
+		
+		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
+		
+		return array(
+					'name' => $this->CI->input->post('name'),
+					'type' => $this->CI->input->post('type'),
+					'help' => $this->CI->input->post('help'),
+					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE,
+					'data' => array('filetypes' => explode(' ', $this->CI->input->post('filetypes')))
+				);
 	}
 }
