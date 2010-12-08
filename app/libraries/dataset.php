@@ -445,7 +445,7 @@ class Dataset {
     	}
     	
     	if ($this->available_filters === TRUE) {
-    		$output .= '<div class="apply_filters"><input type="submit" class="button" name="filter_dataset" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="reset_filters" class="button" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" class="button" value="Export" /></div>';
+    		$output .= '<div class="apply_filters"><input type="submit" class="button tooltip" title="Only show results matching the filter criteria you have entered/selected at the top of the dataset." name="filter_dataset" value="Filter Dataset" />&nbsp;&nbsp;<input id="reset_filters" type="reset" name="reset_filters" class="button tooltip" title="Show all results in this dataset" value="Clear Filters" />&nbsp;&nbsp;<input id="dataset_export_button" type="button" name="" class="button tooltip" title="Export all dataset results (with ALL of their information) to a CSV file.  This file can then be imported into an application like Excel." value="Export" /></div>';
     	}
     	
     	$output .= '</div>
