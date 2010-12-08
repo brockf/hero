@@ -13,7 +13,7 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['date'];?></td>
 			<td><?=$row['type_name'];?></td>
 			<td><?=$row['hits'];?></td>
-			<td class="options"><a href="<?=site_url('admincp/publish/edit/' . $row['id']);?>">edit</a><? if ($row['is_standard'] == TRUE) { ?> | <a href="<?=$row['url'];?>">view</a><? } ?></td>
+			<td class="options"><a href="<?=site_url('admincp/publish/edit/' . $row['id']);?>">edit</a><? if ($row['is_standard'] == TRUE) { ?> <a href="<?=$row['url'];?>">view</a><? } ?></td>
 		</tr>
 	<?
 	}

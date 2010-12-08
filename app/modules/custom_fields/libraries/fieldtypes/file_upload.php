@@ -42,7 +42,7 @@ class File_upload_fieldtype extends Fieldtype {
 	function output_shared () {
 		// set defaults
 		if ($this->width == FALSE) {
-			$this->width = '275px';
+			$this->width = '240px';
 		}
 		
 		// prep classes
@@ -82,7 +82,12 @@ class File_upload_fieldtype extends Fieldtype {
 	function output_admin () {
 		$attributes = $this->output_shared();
 		
-		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';
+		$this->help = 'Maximum filesize for web upload: ' . setting('upload_max') . '.  ' . $this->help;
+		
+		$help = '<div class="help">' . $this->help . '</div>';
+		
+		// create text that appears after the upload box
+		$after_box = '<input type="button" class="button" onclick="javascript:$(\'#ftp_notes_' . $this->name . '\').modal(); void(0);" name="" value="Upload via FTP" />';
 		
 		// build HTML
 		// we can track an already-uploaded filename with a hidden field so, if we
@@ -90,8 +95,40 @@ class File_upload_fieldtype extends Fieldtype {
 		$return = '<li>
 						<label for="' . $this->name . '">' . $this->label . '</label>
 						<input type="hidden" name="' . $this->name . '_uploaded" value="' . $this->value . '" />
-						<input ' . $attributes . ' /> ' . $this->value . '
+						<input type="hidden" name="' . $this->name . '_ftp" value="" />
+						<input ' . $attributes . ' /> ' . $after_box . '
 						' . $help . '
+						
+						<!-- hidden modal window for assigning FTP filenames -->
+							<div class="modal" style="height:200px" id="ftp_notes_' . $this->name . '">
+							<script type="text/javascript">
+								$(document).ready(function() {
+									$(\'input[name="' . $this->name . '_ftp_input"]\').keyup(function () {
+										$(\'input[name="' . $this->name . '_ftp"]\').val($(this).val());
+									});
+								});
+							</script>
+							<h3>Upload File via FTP</h3>
+								<ul class="form">
+									<li>
+										To upload your file via FTP, follow the directions below:
+									</li>
+									<li>
+										<b>1)</b> Connect to your FTP server with your favourite <a class="tooltip" title="An FTP client, such as \'FileZilla\', is an application you download on your computer." href="javascript:void(0)">FTP client</a>.
+									</li>
+									<li>
+										<b>2)</b> Upload your file to <span class="code">' . $this->upload_directory . '</span>.
+									</li>
+									<li>
+										<b>3)</b> Enter your uploaded filename here: <input type="text" name="' . $this->name . '_ftp_input" /> (e.g., "myfile.pdf").
+									</li>
+									<li>
+										<b>4)</b> Close this window
+									</li>
+								</ul>
+							</div>
+						<!-- end hidden modal window -->
+						
 					</li>';
 					
 		return $return;
@@ -149,9 +186,18 @@ class File_upload_fieldtype extends Fieldtype {
 				$this->data['filetypes'][] = 'jpg';
 			}
 		
-			if (is_uploaded_file($_FILES[$this->name]['tmp_name']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
+			if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
 				$this->validation_error = $this->label . ' is not of the proper filetype.';
 			
+				return FALSE;
+			}
+		}
+		
+		// check FTP uploaded file exists, if required
+		if ($this->required == TRUE and $this->CI->input->post($this->name . '_ftp') != '') {
+			if (!file_exists($this->upload_directory . $this->CI->input->post($this->name . '_ftp'))) {
+				$this->validation_error = $this->label . ': FTP uploaded file for does not exist.';
+				
 				return FALSE;
 			}
 		}
@@ -195,6 +241,9 @@ class File_upload_fieldtype extends Fieldtype {
 			$this->CI->upload->file_name = '';
 			
 			$post_value = str_replace(FCPATH,'',$this->upload_directory . $filename);
+		}
+		elseif ($this->CI->input->post($this->name . '_ftp')) {
+			$post_value = str_replace(FCPATH,'',$this->upload_directory . $this->CI->input->post($this->name . '_ftp'));
 		}
 		elseif ($this->CI->input->post($this->name . '_uploaded')) {
 			$post_value = $this->CI->input->post($this->name . '_uploaded');

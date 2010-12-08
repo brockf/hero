@@ -12,7 +12,7 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['author_username'];?></td>
 			<td><?=$row['date'];?></td>
 			<td><?=$row['hits'];?></td>
-			<td class="options"><a href="<?=site_url('admincp/publish/edit/' . $row['id']);?>">edit</a><? if ($row['is_standard'] == TRUE) { ?> | <a href="<?=$row['url'];?>">view</a><? } ?></td>
+			<td class="options"><a href="<?=site_url('admincp/publish/edit/' . $row['id']);?>">edit</a><? if ($row['is_standard'] == TRUE) { ?> <a href="<?=$row['url'];?>">view</a><? } ?></td>
 		</tr>
 	<?
 	}

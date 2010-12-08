@@ -10,6 +10,9 @@ $(document).ready(function() {
 		$(this).toggleClass('hover');
 	});
 	
+	// tooltips
+	$(".tooltip").tipTip();
+	
 	// menu
 	$(document).click(function() {
 		$('div#navigation ul.children').hide();
@@ -77,6 +80,15 @@ $(document).ready(function() {
 	
 	// table row colours
 	$('table.dataset tr:even').addClass('odd');
+	
+	// table row mouseovers
+	$('table.dataset tbody tr').hover(function() {
+		if (!$(this).hasClass('selected')) {
+			$(this).addClass('hovered');
+		}
+	}, function() {
+		$(this).removeClass('hovered');
+	});
 	
 	// handle row clicks/checkbox clicks
 	$('table.dataset tbody tr').click(function(event) {

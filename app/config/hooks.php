@@ -10,6 +10,17 @@
 |
 */
 
-
+/**
+* Oneday, we'll compile all JS prior to viewing the control panel
+*
+$hook['display_override'] = array(
+                                'class'    => 'Head_compile',
+                                'function' => 'compile',
+                                'filename' => 'head_compile.php',
+                                'filepath' => 'libraries',
+                                'params' => array()
+                                );
+*/
+                                
 /* End of file hooks.php */
-/* Location: ./system/opengateway/config/hooks.php */
+/* Location: ./application/config/hooks.php */

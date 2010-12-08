@@ -17,6 +17,7 @@
 	<? } ?>
 	
 	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
+	<script type="text/javascript" src="<?=branded_include('js/tiptip.min.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
 	
 	<? if (isset($head_files)) { ?><?=$head_files;?><? } ?>

@@ -13,7 +13,7 @@ if (!empty($this->dataset->data)) {
 			<td><? if ($row['is_standard'] == TRUE) { ?>Yes<? } ?></td>
 			<td><? if ($row['is_privileged'] == TRUE) { ?>Yes<? } ?></td>
 			<td class="options">
-				<a href="<?=site_url('admincp/publish/type_edit/' . $row['id']);?>">edit</a> | 
+				<a href="<?=site_url('admincp/publish/type_edit/' . $row['id']);?>">edit</a> 
 				<a href="<?=site_url('admincp/publish/type_fields/' . $row['id']);?>">manage fields</a>
 			</td>
 		</tr>

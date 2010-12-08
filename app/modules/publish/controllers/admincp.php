@@ -539,7 +539,9 @@ class Admincp extends Admincp_Controller {
 					'custom_fields' => $custom_fields,
 					'type' => $type,
 					'form_title' => 'Edit Content',
-					'form_action' => site_url('admincp/publish/post/edit/' . $content['id'])
+					'form_action' => site_url('admincp/publish/post/edit/' . $content['id']),
+					'invalid' => ($this->input->get('invalid')) ? TRUE : FALSE,
+					'errors' => $this->session->flashdata('errors')
 				);
 				
 		$this->load->view('create_post', $data);
@@ -563,6 +565,19 @@ class Admincp extends Admincp_Controller {
 		// gather custom field data
 		$this->load->library('custom_fields/form_builder');
 		$this->form_builder->build_form_from_group($type['custom_field_group_id']);
+		
+		// validation, though we won't kill script if it doesn't validate because we don't
+		// want to lose any data
+		// we'll allow the post to save, then take them to the edit screen with errors!
+		if ($this->form_builder->validate_post() === FALSE) {
+			$validation_errors = $this->form_builder->validation_errors();
+			$this->notices->SetError($validation_errors);
+			$error = TRUE;
+		}
+		else {
+			$error = FALSE;
+		}
+		
 		$custom_fields = $this->form_builder->post_to_array();
 		
 		if ($action == 'new') {
@@ -576,8 +591,10 @@ class Admincp extends Admincp_Controller {
 													$form_builder_data['date'],
 													$custom_fields
 												);
-													
-			$this->notices->SetNotice('Content posted successfully.');
+				
+			if ($error == FALSE) {										
+				$this->notices->SetNotice('Content posted successfully.');
+			}
 		}
 		elseif ($action == 'edit') {
 			$this->content_model->update_content(
@@ -589,11 +606,24 @@ class Admincp extends Admincp_Controller {
 											$form_builder_data['date'],
 											$custom_fields
 										);
-											
-			$this->notices->SetNotice('Post updated successfully.');
+			
+			if ($error == FALSE) {								
+				$this->notices->SetNotice('Post updated successfully.');
+			}
 		}
 		
-		redirect('admincp/publish/manage/' . $this->input->post('type'));
+		if ($error == TRUE) {
+			// may not have $content_id if editign
+			if (!empty($id)) {
+				$content_id = $id;
+			}
+		
+			$this->session->set_flashdata('errors', $validation_errors);
+			redirect('admincp/publish/edit/' . $content_id . '?invalid=TRUE');
+		}
+		else {
+			redirect('admincp/publish/manage/' . $this->input->post('type'));
+		}
 	}
 	
 	function topic_add () {

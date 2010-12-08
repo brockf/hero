@@ -10,7 +10,7 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['id'];?></td>
 			<td><a href="<?=site_url('admincp/forms/edit/' . $row['id']);?>"><?=$row['title'];?></a></td>
 			<td><a href="<?=$row['admin_link'];?>"><?=$row['num_responses'];?> responses</a></td>
-			<td class="options"><a href="<?=site_url('admincp/forms/fields/' . $row['id']);?>">manage fields</a> | <a href="<?=site_url('admincp/forms/edit/' . $row['id']);?>">edit</a> | <a href="<?=$row['url'];?>">view</a></td>
+			<td class="options"><a href="<?=site_url('admincp/forms/fields/' . $row['id']);?>">manage fields</a> <a href="<?=site_url('admincp/forms/edit/' . $row['id']);?>">edit</a> | <a href="<?=$row['url'];?>">view</a></td>
 		</tr>
 	<?
 	}

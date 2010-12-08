@@ -42,6 +42,11 @@
 	<div style="float: left; width: 70%;">
 <? } ?>
 
+<? if ($invalid === TRUE) { ?>
+	<p class="warning"><span>This content did not pass validation (errors below).  However, <b>it is posted live</b>!  Please correct these errors
+	as soon as possible: <div style="font-weight: bold"><?=$errors;?></span></div></p>
+<? } ?>
+
 	<? if (!empty($standard)) { ?>
 		<div class="post_title">
 			<?=$title;?>
