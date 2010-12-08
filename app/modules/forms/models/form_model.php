@@ -305,14 +305,11 @@ class Form_model extends CI_Model
 			}
 
 			foreach ($form['custom_fields'] as $field) {
-				if ($field['type'] == 'multiselect') {
+				if (@is_array(unserialize($custom_fields[$field['name']]))) {
 					$value = implode(', ', unserialize($custom_fields[$field['name']]));
 				}
-				elseif ($field['type'] == 'file') {
+				elseif ($field['type'] == 'file_upload') {
 					$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
-				}
-				elseif ($field['type'] == 'date') {
-					$value = date('F j, Y', strtotime($custom_fields[$field['name']]));
 				}
 				else {
 					$value = $custom_fields[$field['name']];
