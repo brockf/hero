@@ -2,7 +2,7 @@
 
 [h2]What are plugins?[/h2]
 
-Plugins are single files of code that are dropped into the "plugins" folder.  Each plugin consists of one class with as many methods as you would like. These methods are executed after being bound to [devs/hooks](hooks) during the install process (the [span_code]update()[/span_code] method of the class).  Each plugin also has an [span_code]uninstall()[/span_code] method which removes these bindings.
+Plugins are single files of code that are dropped into the "plugins" folder.  Each plugin consists of one class with as many methods as you would like. These methods are executed after being bound to [developers/hooks](hooks) during the install process (the [span_code]update()[/span_code] method of the class).  Each plugin also has an [span_code]uninstall()[/span_code] method which removes these bindings.
 
 All plugins could be turned into complete modules but, if you don't need an administration panel (besides Plugin settings), and you don't require any frontend controller files, library files, etc., a plugin is a simple way to add some functionality to [APPNAME].
 

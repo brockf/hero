@@ -22,7 +22,7 @@ The following template, or variations of it, are included in most standard theme
 by a Blog you create in the control panel, but it will actually ignore any of your settings as all of the content is filtered
 and retrieved from directly within the template.
 
-All of this code magic is done with the [designers/template-plugins](paginate) and [designers/publish](content) template plugins as well as
+All of this code magic is done with the [designers/template_plugins](paginate) and [designers/publish](content) template plugins as well as
 standard [http://www.smarty.net](Smarty) tags like [span_code]assign[/span_code].
 
 Below is the full template, for advanced designer/developer usage:

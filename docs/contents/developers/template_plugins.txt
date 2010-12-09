@@ -2,7 +2,7 @@
 
 [APPNAME] offers a variety of template plugins that can be used throughout your template files to do things like retrieve content, access setting values, and generate proper URL's.
 
-Developers can create their own template plugin functions or blocks and include them in their modules (or add them to the standard template plugin folder) at [filename]app/modules/yourmodule/template_plugins[/filename] (or similar folder).  Developers must specify this folder location as a local for template plugins in the front_preload() of their [devs/modules](module definition file) like so:
+Developers can create their own template plugin functions or blocks and include them in their modules (or add them to the standard template plugin folder) at [filename]app/modules/yourmodule/template_plugins[/filename] (or similar folder).  Developers must specify this folder location as a local for template plugins in the front_preload() of their [developers/modules](module definition file) like so:
 
 [code]
 class Modulename extends Module {

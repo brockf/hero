@@ -6,28 +6,28 @@ Third-party modules created by developers and standard modules included in the a
 
 Creating a module is simple and requires the following:
 
-- A folder: [filename]/modules/[modulename]/[/filename]
-- A module definition and installation file: [filename]/modules/[modulename]/[modulename].php[/filename]
+* A folder: [filename]/modules/[modulename]/[/filename]
+* A module definition and installation file: [filename]/modules/[modulename]/[modulename].php[/filename]
 
 Optionally, you can add the following:
 
-- One or more model definition files at: [filename]/modules/[modulename]/models/[modelname]_model.php[/filename]
-- A control panel controller file at: [filename]/modules/[modulename]/controllers/admincp.php[/filename]
-- Other controller files at: [filename]/modules/[modulename]/controllers/[/filename]
-- A views folder for control panel interface screens: [filename]/modules/[modulename]/views/[/filename]
-- Helper files in: [filename]/modules/[modulename]/helpers/[/filename]
-- Library files in: [filename]/modules/[modulename]/libraries/[/filename]
+* One or more model definition files at: [filename]/modules/[modulename]/models/[modelname]_model.php[/filename]
+* A control panel controller file at: [filename]/modules/[modulename]/controllers/admincp.php[/filename]
+* Other controller files at: [filename]/modules/[modulename]/controllers/[/filename]
+* A views folder for control panel interface screens: [filename]/modules/[modulename]/views/[/filename]
+* Helper files in: [filename]/modules/[modulename]/helpers/[/filename]
+* Library files in: [filename]/modules/[modulename]/libraries/[/filename]
 
 Developers have access to all standard [http://www.codeigniter.com/user_guide](CodeIgniter) libraries/helpers, as well as a number of additional libraries and helpers specific to this application.  So, it's highly encouraged to use the [http://www.codeigniter.com/user_guide](CodeIgniter documentation) as much as possible.
 
 For more information on these, check out the following documentation for commonly-used classes:
 
-- [devs/classes/admin_form](Administration Form Library) (Admin_form)
-- [devs/classes/dataset](Dataset Listing Library) (Dataset)
-- [devs/classes/notifications](Notification Library) (Notifications)
-- [devs/classes/navigation](Navigation Library) (Navigation)
-- [devs/classes/links](Universal Links Model) (Link_model)
-- [devs/classes/settings](Settings Model) (Settings_model)
+* [developers/classes/admin_form](Administration Form Library) (Admin_form)
+* [developers/classes/dataset](Dataset Listing Library) (Dataset)
+* [developers/classes/notifications](Notification Library) (Notifications)
+* [developers/classes/navigation](Navigation Library) (Navigation)
+* [developers/classes/links](Universal Links Model) (Link_model)
+* [developers/classes/settings](Settings Model) (Settings_model)
 
 Furthermore, in the frontend, developers have access to the Smarty API and are highly encouraged to use the included [http://www.smarty.net](Smarty templating engine) for displaying their web pages.
 
@@ -126,7 +126,7 @@ class Modulename extends Module {
 }
 [/code]
 
-Now, Smarty will look in this directory for function/block plugin files like [filename]function.your_plugin.php[/filename].  For more information on creating template plugins, via our [devs/template-plugins](documentation on creating a template plugin).
+Now, Smarty will look in this directory for function/block plugin files like [filename]function.your_plugin.php[/filename].  For more information on creating template plugins, via our [developers/template_plugins](documentation on creating a template plugin).
 
 [h2]Model File(s) ([filename]/modules/modulename/models/your_model.php[/filename])[/h2]
 
@@ -163,7 +163,7 @@ Frontend controller files give you new frontend presences.  For example, the Pub
 
 Frontend controllers automatically map to URL's.  For example, a controller called "test.php" is accessible at [url]/modulename/test[/url], and any methods inside of it are accessible at [url]/modulename/test/method_name[/url].
 
-However, by tapping into the [devs/classes/links](Universal Links model) (Link_model), you can map any URL path (such as [url]/my/fake/url/path[/url]) to the module > controller > method of your choice.  The URL path will be passed to your method as its first argument.  For example, in the Publish module, URL's like [url]/my_article[/url] are mapped to publish (module) > content (controller) > view (method).  The [span_code]content::view()[/span_code] method takes one argument, $url_path, and looks up the content in the database using this $url_path.
+However, by tapping into the [developers/classes/links](Universal Links model) (Link_model), you can map any URL path (such as [url]/my/fake/url/path[/url]) to the module > controller > method of your choice.  The URL path will be passed to your method as its first argument.  For example, in the Publish module, URL's like [url]/my_article[/url] are mapped to publish (module) > content (controller) > view (method).  The [span_code]content::view()[/span_code] method takes one argument, $url_path, and looks up the content in the database using this $url_path.
 
 As a start, your frontend controller must extend the [span_code]Front_Controller[/span_code] class and call its parent's constructor:
 
@@ -204,9 +204,9 @@ Frontend controllers will almost always assign variables and display templates w
 
 These are all optional components of your module and also standard parts of the CodeIgniter framework.  They exist at the following folders (not required):
 
-- [filename]/modules/modulename/views/[/filename]
-- [filename]/modules/modulename/helpers/[/filename]
-- [filename]/modules/modulename/libraries/[/filename]
+* [filename]/modules/modulename/views/[/filename]
+* [filename]/modules/modulename/helpers/[/filename]
+* [filename]/modules/modulename/libraries/[/filename]
 
 Views are most commonly used for control panel screens (frontend pages use the [http://www.smarty.net](Smarty template engine)).
 

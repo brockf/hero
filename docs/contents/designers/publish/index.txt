@@ -51,7 +51,7 @@ Additional variables available:
 After a [span_code]{content}[/span_code] template call, two additional variables are available in your templates related to the previous content call:
 
 * [span_code]{$content_count}[/span_code] - The number of content items returned between your tags.  This is useful to show a result if zero items are returned with something like, [span_code]{if $content_count == 0}No content items were displayed.{/if}[/span_code].
-* [span_code]{$content_total_count}[/span_code] - Ignoring your limit and sort parameters, how many possible items are there?  This is useful in generating pagination with the [devs/designers/template-plugins]([span_code]{pagination}[/span_code] template function).
+* [span_code]{$content_total_count}[/span_code] - Ignoring your limit and sort parameters, how many possible items are there?  This is useful in generating pagination with the [designers/template_plugins]([span_code]{pagination}[/span_code] template function).
 
 Example - retrieve the latest 10 items for a content type:
 

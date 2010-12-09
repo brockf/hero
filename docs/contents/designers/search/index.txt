@@ -1,6 +1,8 @@
 [h2]Search Module[/h2]
 
-The search module is a powerful way to open up all of your site's standard content and products to users with a one-keyword search.  Only standard content types (with a title & URL) can be included in search results.  Search options are configured at Configuration > Search in the control panel.
+The search module is a powerful way to open up all of your site's standard content and products to users with a one-keyword search.  Only standard content types (with a title & URL) can be included in search results.
+
+Search options (e.g., what content is searchable) are configured at Configuration > Search in the control panel.
 
 [h2]Creating a Search Form[/h2]
 
