@@ -2,7 +2,7 @@
 
 A critical component of the control panel is *forms*.  Forms are built using an expandable library of fieldtypes (defined as PHP classes at [filename]/app/modules/custom_fields/libraries/fieldtypes/[/filename]).
 
-In the control panel, forms are displayed with the Form_builder library ([filename]/app/modules/custom_fields/libraries/Œform_builder.php[/filename]).  In the frontend, forms are built by parsing each individual field with the [span_code]{custom_field}[/span_code] template plugin (documented below).
+In the control panel, forms are displayed with the Form_builder library ([filename]/app/modules/custom_fields/libraries/form_builder.php[/filename]).  In the frontend, forms are built by parsing each individual field with the [span_code]{custom_field}[/span_code] template plugin (documented below).
 
 [h2]The Fieldtype Library[/h2]
 
@@ -84,7 +84,7 @@ $output = $this->form_builder->output_admin();
 $this->form_builder->reset();
 [/code]
 
-Note:  The legacy form library, [span_code]Admin_form[/span_code] (in [filename]app/libraries[/filename]), replicates this functionality within its framework:
+[note]The legacy form library, [span_code]Admin_form[/span_code] (in [filename]app/libraries[/filename]), replicates this functionality within its framework:[/note]
 
 [code]
 $this->load->library('admin_form');

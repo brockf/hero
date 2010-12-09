@@ -4,7 +4,7 @@
 
 Content, by default, is displayed through the [filename]content.thtml[/filename] template.  However, as you can define any type of content type with an unlimited number of custom fields, it is not likely that one template will suffice.  You can choose to display a specific content type through another template by specifying the "Output Template" when adding/editing a content type in the control panel in Publish > Content Types.
 
-All content variables are available in this template as standard Smarty templates (and can be modified as such).  By default, all standard content includes the following variables:
+All content variables are available in this template as standard Smarty templates (and can be modified as such).  By default, all *standard* content includes the following variables:
 
 * [span_code]{$title}[/span_code]
 * [span_code]{$date}[/span_code]
@@ -73,12 +73,21 @@ Body:
 
 {$post.body}
 {/content}
+[/code]
 
-Example - using the system name instead of the numeric type ID
+Example - using the system name instead of the numeric type ID:
 
 [code]
 {content type="news_posts" var="post" limit="10"}
 <p>{$post.title}<br />{$post.summary}</p>
+{/content}
+[/code]
+
+Example - retrieve content based on a fulltext keyword search, limited to top 25 results:
+
+[code]
+{content type="docs" var="doc" keyword="php" limit="25" sort="relevance" sort_dir="DESC"}
+	<a href="{$doc.url}">{$doc.title}</a> - {$doc.relevance}
 {/content}
 [/code]
 

@@ -28,7 +28,7 @@ Usage (assuming the template has been passed an array of custom fields as [span_
 
 Generate the HTML for a pagination set of links.
 
-Required variables:
+Required parameters:
 
 * [span_code]base_url[/span_code] - The URL to use as the base for pagination
 * [span_code]total_rows[/span_code] - The total number of rows in the dataset
@@ -45,8 +45,7 @@ Usage:
 
 If the user is in the in_group and not in the not_in_group, the content between the tags is parsed.  Both tags are optional.  Furthermore, if you want to check either the in_group or not_in_group status of the user against multiple member group ID's, you can pass a string like "1|2" (each member group ID is separated by a pipe).
 
-Note that, while most of the examples below show the parameters passed as integers or pipe-delimited strings, you can also pass arrays such as the standard
-[privileges](privileges array) used in many [APPNAME] modules.
+Note that, while most of the examples below show the parameters passed as integers or pipe-delimited strings, you can also pass arrays such as the standard [privileges](privileges array) used in many [APPNAME] modules.
 
 Basic usage:
 

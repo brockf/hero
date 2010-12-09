@@ -1,0 +1,46 @@
+html, body {
+	margin: 0;
+	padding: 20px;
+	font-family: arial, helvetica, sans-serif;
+	font-size: 12pt;
+	color: #333;
+}
+
+h1 {
+	border-bottom: 3px solid #333;
+}
+
+h2 {
+	border-bottom: 1px solid #444;
+}
+
+h3 {
+	border-bottom: 1px solid #444;
+}
+
+h1 span, h2 span {
+	background-color: transparent !important;
+}
+
+span.filename {
+	font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+	background-color: #d6f6ff;
+	padding: 3px;
+}
+
+span.url {
+	font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+	background-color: #d6ffe5;
+	padding: 3px;
+}
+
+span.code {
+	font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+	background-color: #ffffd6;
+	padding: 3px;
+}
+
+div.note {
+	background-color: #ffd6d6;
+	padding: 3px;
+}

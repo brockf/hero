@@ -1,6 +1,6 @@
 [h1]Template Variables[/h1]
 
-Throughout your template, variables are replaced with their respective data.  This is at the heart of the template process.  For example, in the content template, you may use the [span_code]{$title}[/span_code] and [span_code]{$date}[/span_code] variables:
+Throughout your template, variables are replaced with their respective data.  This is at the heart of the template process.  For example, when displaying standard content in the publish module, you may use the [span_code]{$title}[/span_code] and [span_code]{$date}[/span_code] variables:
 
 [code]
 <h1>{$title}</h1>
@@ -37,7 +37,7 @@ These are all standard Smarty modifiers and information is available at the [htt
 
 [h2]Variables within Block Plugins[/h2]
 
-Block plugins that return variables, such as [designers/publish](the [span_code]content[/span_code] plugin), return variables in an array by a name you specify, often as the [span_code]var[/span_code] parameter of the function.
+Block plugins that return variables, such as [designers/publish/index](the [span_code]content[/span_code] plugin), return variables in an array by a name you specify, often as the [span_code]var[/span_code] parameter of the function.
 
 Example:
 

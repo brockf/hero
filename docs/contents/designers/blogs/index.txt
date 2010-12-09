@@ -1,14 +1,10 @@
 [h2]Blogs/Archives Module[/h2]
 
-**Note: For all intents and purposes, the products of the Blogs/Archives module will be simply referred to as "Blogs" from here on out.  This module
-just produces content listings and can be used for either purpose (and many other purposes too, if you get creative).**
+[note]For all intents and purposes, the products of the Blogs/Archives module will be simply referred to as "Blogs" from here on out.  This module just produces content listings and can be used for either purpose (and many other purposes too, if you get creative).[/note]
 
 [h2]Simply Displaying the Blog/Archive Content Listing[/h2]
 
-Blogs display a list of content based on filters that you set you in the control panel.  For example, you may have a blog that shows content with a Topic
-of "Presidential News".  At this blog page, the blog module will retrieve the latest content with your parameters and allow you to loop through
-and display this content in the template.  It will also produce a CSS-friendly pagination HTML code snippet for you to use in your templates
-so that people can browse through the content page-by-page. 
+Blogs display a list of content based on filters that you set you in the control panel.  For example, you may have a blog that shows content with a Topic of "Presidential News".  At this blog page, the blog module will retrieve the latest content with your parameters and allow you to loop through and display this content in the template.  It will also produce a CSS-friendly pagination HTML code snippet for you to use in your templates so that people can browse through the content page-by-page. 
 
 In your blog template file (customizable when creating the blog), there will be the following variables available:
 
@@ -17,13 +13,9 @@ In your blog template file (customizable when creating the blog), there will be 
 
 [h2]Advanced Technique: Searchable, Filter-able Archive/Blog Listing Pages[/h2]
 
-The following template, or variations of it, are included in most standard themes.  It provides a great example of how to use standard
-[APPNAME] template tags to create a searchable, browseable, filter-able archives page for your content.  This template will be triggered
-by a Blog you create in the control panel, but it will actually ignore any of your settings as all of the content is filtered
-and retrieved from directly within the template.
+The following template, or variations of it, are included in most standard themes.  It provides a great example of how to use standard [APPNAME] template tags to create a searchable, browseable, filter-able archives page for your content.  This template will be triggered by a Blog you create in the control panel, but it will actually ignore any of your settings as all of the content is filtered and retrieved from directly within the template.
 
-All of this code magic is done with the [designers/template_plugins](paginate) and [designers/publish](content) template plugins as well as
-standard [http://www.smarty.net](Smarty) tags like [span_code]assign[/span_code].
+All of this code magic is done with the [designers/template_plugins](paginate) and [designers/publish](content) template plugins as well as standard [http://www.smarty.net](Smarty) tags like [span_code]assign[/span_code].
 
 Below is the full template, for advanced designer/developer usage:
 
