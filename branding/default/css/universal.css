@@ -897,8 +897,8 @@ div.product_images span.featured {
 
 div.sidebar {
 	width: 25%;
-	background-color: #222;
-	color: #dedede;
+	background-color: #dedede;
+	color: #333;
 	font-size: 9pt;
 	padding-bottom: 10px;
 	float: left;
@@ -906,11 +906,11 @@ div.sidebar {
 }
 
 div.sidebar h2 {
-	background-color: #000;
-	color: #f0f0f1;
+	background-color: #ededed;
+	color: #222;
 	font-weight: bold;
 	padding: 6px 10px 4px 10px;
-	border-bottom: 3px solid #444;
+	border-bottom: 3px solid #999;
 	font-size: 11pt;
 	margin-bottom: 6px;
 }
@@ -918,9 +918,6 @@ div.sidebar h2 {
 div.sidebar h3 {
 	background-color: #19717c;
 	color: #fff;
-	border: 1px solid #333;
-	border-left: 0;
-	border-right: 0;
 	padding: 3px 10px;
 	font-weight: bold;
 	text-transform: uppercase;

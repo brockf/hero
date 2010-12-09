@@ -433,6 +433,7 @@ class Admincp extends Admincp_Controller {
 					'privileges' => $privileges,
 					'custom_fields' => $custom_fields,
 					'type' => $type,
+					'invalid' => FALSE,
 					'form_title' => 'Publish New Content',
 					'form_action' => site_url('admincp/publish/post/new')
 				);
