@@ -50,6 +50,8 @@ $(document).ready(function () {
 					
 				return false;
 			});
+			
+			$('a.tooltip').tipTip();
 		});
 	});
 	
