@@ -214,6 +214,7 @@ $(document).ready(function () {
 	// set frontpage
 	$('input#set_frontpage').click(function() {
 		if ($(this).data('setting_frontpage') == true) {
+			$(this).data('setting_frontpage',false);
 			$('div#set_frontpage_help').hide();
 				
 			// show all files again, and unbind this functionality with a nice reload
@@ -225,11 +226,14 @@ $(document).ready(function () {
 			$('div#set_frontpage_help').slideDown();
 			
 			// remove all non template/folder links
+			$('div#file_list ul').slideDown();
 			$('div#file_list li').not('.folder').not('.template').hide();
 			
 			$('div#file_list li.template').addClass('possible_frontpage').children('a').removeClass('editable');
 			
 			$('li.possible_frontpage a').click(function () {
+				$('input#set_frontpage').data('setting_frontpage',false);
+				
 				var old_tip = $('div#set_frontpage_help').html();
 				
 				$('div#set_frontpage_help').html('<p style="text-align:center"><img src="' + site_url + 'branding/default/images/loading.gif" alt="Loading..." /></p>');
