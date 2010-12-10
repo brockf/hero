@@ -53,7 +53,7 @@ class Admincp extends Admincp_Controller {
 		
 		$path = FCPATH . 'themes/' . $theme . '/' . $filename;
 		
-		if (!is_writable($path)) {
+		if (file_exists($path) and !is_really_writable($path)) {
 			return FALSE;
 		}
 		
@@ -138,7 +138,7 @@ class Admincp extends Admincp_Controller {
 		$path = FCPATH . 'themes/' . $theme . '/' . $file;
 		
 		// check writeability
-		if (!is_writable($path)) {
+		if (!is_really_writable($path)) {
 			echo 'fail';
 			return FALSE;
 		}

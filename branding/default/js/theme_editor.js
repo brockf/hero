@@ -109,6 +109,11 @@ $(document).ready(function () {
 	
 	// delete file
 	$('input#delete_file').click(function () {
+		var confirmed = confirm('Are you sure you want to delete this file?');
+		if (confirmed != true) {
+			return false;
+		}
+	
 		var filename = $('input#current_file').val();
 		var selected_theme = $('select[name="theme_directory"]').val();
 		
