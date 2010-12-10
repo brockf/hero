@@ -36,10 +36,11 @@ class Link_model extends CI_Model {
 	* @param string $module The module name in the modules/ folder
 	* @param string $controller The controller to initiate
 	* @param string $method The method to instantiate and pass the $url_path string to via mod_rewrite
+	* @param string $parameter Some functions - like URLs mapped to templates - require a parameter to identify what to load at this URL
 	*
 	* @return $link_id
 	*/
-	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method) {
+	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method, $parameter = '') {
 		$url_path = $this->prep_url_path($url_path);
 		$url_path = $this->get_unique_url_path($url_path);
 	
@@ -50,7 +51,8 @@ class Link_model extends CI_Model {
 								'link_type' => $type_name,
 								'link_module' => $module,
 								'link_controller' => $controller,
-								'link_method' => $method
+								'link_method' => $method,
+								'link_parameter' => $parameter
 							);
 							
 		$this->db->insert('links',$insert_fields);
@@ -132,6 +134,26 @@ class Link_model extends CI_Model {
 		return $url_path;
 	}
 	
+	/**
+	* Check Unique
+	*
+	* @param string $url_path
+	*
+	* @return boolean
+	*/
+	function is_unique ($url_path) {
+		$this->db->where('link_url_path',$url_path);
+		$this->db->select('link_id');
+		$result = $this->db->get('links');
+		
+		if ($result->num_rows() > 0) {
+			return FALSE;
+		}
+		else {
+			return TRUE;
+		}
+	}
+	
 	/*
 	* Get Unique URL Path
 	*
@@ -174,6 +196,8 @@ class Link_model extends CI_Model {
 	/*
 	* Get Universal Content Links
 	*
+	* @param string $filters['url_path']
+	* @param string $filters['parameter']
 	* @param $filters['sort']
 	* @param $filters['sort_dir']
 	* @param $filters['offset']
@@ -191,6 +215,14 @@ class Link_model extends CI_Model {
 			$this->db->limit($filters['limit'], $offset);
 		}
 		
+		if (isset($filters['url_path'])) {
+			$this->db->where('link_url_path',$filters['url_path']);
+		}
+		
+		if (isset($filters['parameter'])) {
+			$this->db->where('link_parameter',$filters['parameter']);
+		}
+		
 		$result = $this->db->get('links');
 		
 		if ($result->num_rows() == 0) {
@@ -206,7 +238,8 @@ class Link_model extends CI_Model {
 								'type' => $link['link_type'],
 								'module' => $link['link_module'],
 								'controller' => $link['link_controller'],
-								'method' => $link['link_method']
+								'method' => $link['link_method'],
+								'parameter' => $link['link_parameter']
 							);
 		}
 		
