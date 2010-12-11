@@ -14,9 +14,13 @@
 class Dashboard extends Admincp_Controller {
 	function __construct() {
 		parent::__construct();
+		
+		$this->navigation->parent_active('dashboard');
 	}
 	
 	function index() {
-		redirect('admincp/users');
+		
+	
+		$this->load->view('cp/dashboard');
 	}
 }

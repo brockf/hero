@@ -1,4 +1,6 @@
 <?=$this->head_assets->javascript('js/settings.js');?>
+<?=$this->head_assets->stylesheet('css/settings.css');?>
+
 <?=$this->load->helper('shorten');?>
 
 <?=$this->load->view(branded_view('cp/header.php'));?>

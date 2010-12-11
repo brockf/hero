@@ -39,6 +39,9 @@ class Dataset {
     	// set defaults
     	$this->base_url = current_url();
         $this->rows_per_page = 50;
+        
+        // stylesheet
+		$this->head_assets->stylesheet('css/dataset.css');
     }
     
     /*

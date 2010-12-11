@@ -1,4 +1,5 @@
 <?=$this->head_assets->javascript('js/theme_editor.js');?>
+<?=$this->head_assets->stylesheet('css/theme_editor.css');?>
 
 <?=$this->load->view(branded_view('cp/header'));?>
 <div class="sidebar" style="width: 30%">

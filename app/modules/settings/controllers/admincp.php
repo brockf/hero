@@ -37,7 +37,7 @@ class Admincp extends Admincp_Controller {
 					'groups' => $groups
 			);
 		
-		$this->load->view('settings.php', $data);
+		$this->load->view('settings', $data);
 	}
 	
 	function save ()
