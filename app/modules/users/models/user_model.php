@@ -20,18 +20,19 @@ class User_model extends CI_Model
 	// so a user can be logged in the CP but no the frontend (helps for testing - eases confusion)
 	private $session_name = 'user_id';
 	
+	// are we in the control panel?
+	private $in_admin = null;
+	
 	private $cache_fields;
 	
 	function __construct()
 	{
 		parent::CI_Model();
 		
-		if (defined('_CONTROLPANEL')) {
+		if ($this->in_admin()) {
 			// let's use a different session token so that we can independent sessions
 			$this->session_name = 'admin_id';
 		}
-		
-		echo $this->session->userdata($this->session_name);
 		
 		// check for session
         if ($this->session->userdata($this->session_name) != '') {
@@ -39,7 +40,7 @@ class User_model extends CI_Model
         	$this->set_active($this->session->userdata($this->session_name));
         	
         	// no carts in the control panel...
-        	if (!defined('_CONTROLPANEL')) {
+        	if (!$this->in_admin()) {
 	        	// handle a potential cart
 	        	$CI =& get_instance();
 	        	$CI->load->model('store/cart_model');
@@ -48,7 +49,7 @@ class User_model extends CI_Model
         }
         else {
         	// we don't have remember_keys for admins...
-        	if (!defined('_CONTROLPANEL')) {
+        	if (!$this->in_admin()) {
 	        	$this->load->helper('cookie');
 	        	
 	        	// we may have a remembered user
@@ -72,6 +73,30 @@ class User_model extends CI_Model
 	        	}
 	        }
         }
+	}
+	
+	/**
+	* CP Check
+	* 
+	* Are we in the control panel?
+	*
+	* @return boolean
+	*/
+	function in_admin () {
+		if ($this->in_admin != null) {
+			return $this->in_admin;
+		}
+	
+		$CI =& get_instance();
+		
+		if (strpos($CI->uri->uri_string(), '/admincp') === 0) {
+			$this->in_admin = TRUE;
+		}
+		else {
+			$this->in_admin = FALSE;
+		}
+		
+		return $this->in_admin;
 	}
 	
 	/*
