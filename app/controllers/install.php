@@ -6,7 +6,7 @@
 *
 * @version 1.0
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 
 */
 class Install extends Controller {

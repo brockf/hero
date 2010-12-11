@@ -6,6 +6,10 @@
 * Deal with multiple Fieldtype objects and build an entire form.  Handles form-wide actions like
 * validation.
 *
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 class Form_builder {
 	// global CI object

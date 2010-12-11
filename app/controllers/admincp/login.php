@@ -5,7 +5,7 @@
 * Log in and out
 *
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 
 */
 

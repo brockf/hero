@@ -9,7 +9,9 @@
 * custom_fields_model.
 *
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 class Admin_form {
 	var $fields;

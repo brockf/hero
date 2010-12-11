@@ -7,6 +7,10 @@
 * and CSS includes to the <head> of a page.  An output() method must be called
 * in the template to actually display these.
 *
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 
 class Head_assets {

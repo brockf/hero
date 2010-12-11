@@ -10,8 +10,9 @@
 * Requires jQuery and appropriate CSS.
 *
 * @author Electric Function, Inc.
-* @package Electric Publisher
-
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 class Dataset {
 	var $CI; // CodeIgniter super object

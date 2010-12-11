@@ -7,52 +7,70 @@
 *
 * @author Electric Function, Inc.
 * @copyright Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 *
 */
 
 class User_model extends CI_Model
 {
-	var $active_user;  // the logged-in use
-	var $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
+	public $active_user;  // the logged-in use
+	public $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
+	
+	// this will change if we are in the control panel, as we want to have independent sessions foreach
+	// so a user can be logged in the CP but no the frontend (helps for testing - eases confusion)
+	private $session_name = 'user_id';
+	
 	private $cache_fields;
 	
 	function __construct()
 	{
 		parent::CI_Model();
 		
+		if (defined('_CONTROLPANEL')) {
+			// let's use a different session token so that we can independent sessions
+			$this->session_name = 'admin_id';
+		}
+		
+		echo $this->session->userdata($this->session_name);
+		
 		// check for session
-        if ($this->session->userdata('user_id') != '') {
+        if ($this->session->userdata($this->session_name) != '') {
         	// load active user into cache for future ->Get() calls
-        	$this->set_active($this->session->userdata('user_id'));
+        	$this->set_active($this->session->userdata($this->session_name));
         	
-        	// handle a potential card
-        	$CI =& get_instance();
-        	$CI->load->model('store/cart_model');
-        	$CI->cart_model->save_cart_to_db();
+        	// no carts in the control panel...
+        	if (!defined('_CONTROLPANEL')) {
+	        	// handle a potential cart
+	        	$CI =& get_instance();
+	        	$CI->load->model('store/cart_model');
+	        	$CI->cart_model->save_cart_to_db();
+	        }
         }
         else {
-        	$this->load->helper('cookie');
-        	
-        	// we may have a remembered user
-        	if (get_cookie('user_remember_key',TRUE)) {
-        		// does this correspond with a remember key?
-        		$this->db->select('user_id');
-        		$this->db->where('user_remember_key', get_cookie('user_remember_key', TRUE));
-        		$result = $this->db->get('users');
-        		
-        		if ($result->num_rows() == 0) {
-        			// no correspondence, this key has expired
-        			delete_cookie('user_remember_key');
-        			
-        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => get_cookie('user_remember_key', TRUE)));
-        		}
-        		else {
-        			$user = $result->row_array();
-        			
-        			$this->login_by_id($user['user_id']);
-        		}
-        	}
+        	// we don't have remember_keys for admins...
+        	if (!defined('_CONTROLPANEL')) {
+	        	$this->load->helper('cookie');
+	        	
+	        	// we may have a remembered user
+	        	if (get_cookie('user_remember_key',TRUE)) {
+	        		// does this correspond with a remember key?
+	        		$this->db->select('user_id');
+	        		$this->db->where('user_remember_key', get_cookie('user_remember_key', TRUE));
+	        		$result = $this->db->get('users');
+	        		
+	        		if ($result->num_rows() == 0) {
+	        			// no correspondence, this key has expired
+	        			delete_cookie('user_remember_key');
+	        			
+	        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => get_cookie('user_remember_key', TRUE)));
+	        		}
+	        		else {
+	        			$user = $result->row_array();
+	        			
+	        			$this->login_by_id($user['user_id']);
+	        		}
+	        	}
+	        }
         }
 	}
 	
@@ -133,7 +151,7 @@ class User_model extends CI_Model
 		
 		$this->db->update('users',array('user_last_login' => date('Y-m-d H:i:s')),array('user_id' => $user_id));
     	
-    	$this->session->set_userdata('user_id',$user_id);
+    	$this->session->set_userdata($this->session_name,$user_id);
     	$this->session->set_userdata('login_time',now());
 		
 		$this->set_active($user_id);
@@ -161,7 +179,7 @@ class User_model extends CI_Model
     * @return boolean TRUE upon success
     */
     function logout () {
-    	$this->session->unset_userdata('user_id','login_time');
+    	$this->session->unset_userdata($this->session_name,'login_time');
     	
 		$CI =& get_instance();
 		$CI->load->helper('cookie');

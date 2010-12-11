@@ -8,7 +8,7 @@
 *
 * @author Electric Function, Inc.
 * @copyright Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 *
 */
 

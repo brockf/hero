@@ -9,6 +9,10 @@
 * Each field-specific method returns the object for method chaining.
 *
 * @class Fieldtype
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 class Fieldtype {
 	// general settings

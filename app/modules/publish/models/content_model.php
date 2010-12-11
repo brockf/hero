@@ -6,7 +6,7 @@
 * Manages content
 *
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 
 */
 

@@ -7,7 +7,7 @@
 *
 * @version 1.0
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 */
 
 class Frontpage extends Front_Controller {

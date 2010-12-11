@@ -3,7 +3,7 @@
 /**
  * Smarty Class
  *
- * @package Electric Publisher
+ * @package Electric Framework
  * @author  Electric Function, Inc.
  */
  

@@ -6,7 +6,7 @@
 * Manages content types, including their custom fields
 *
 * @author Electric Function, Inc.
-* @package Electric Publisher
+* @package Electric Framework
 
 */
 
