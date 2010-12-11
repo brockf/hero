@@ -1,7 +1,10 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<link href="' . branded_include('css/menu_manager.css') . '" rel="stylesheet" type="text/css" media="screen" />
-<script type="text/javascript" src="' . branded_include('js/jquery-ui-1.8.2.min.js') . '"></script>
-<script type="text/javascript" src="' . branded_include('js/jquery.quicksearch.js') . '"></script>
-<script type="text/javascript" src="' . branded_include('js/menu_manager.js') . '"></script>'));?>
+<?=$this->head_assets->stylesheet('css/menu_manager.css');?>'));?>
+<?=$this->head_assets->javascript('js/jquery-ui-1.8.2.min.js');?>
+<?=$this->head_assets->javascript('js/jquery.quicksearch.js');?>
+<?=$this->head_assets->javascript('js/menu_manager.js');?>'));?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
+
 <h1>Menu Manager</h1>
 <div id="menu_manager">
 	<div id="list_menus">

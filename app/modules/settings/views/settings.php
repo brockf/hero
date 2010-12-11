@@ -1,6 +1,7 @@
-<?=$this->load->view(branded_view('cp/header.php'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/settings.js') . '"></script>'));?>
-
+<?=$this->head_assets->javascript('js/settings.js');?>
 <?=$this->load->helper('shorten');?>
+
+<?=$this->load->view(branded_view('cp/header.php'));?>
 
 <h1>Settings Manager</h1>
 

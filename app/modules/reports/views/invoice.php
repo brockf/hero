@@ -1,4 +1,6 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/report.invoice.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/report.invoice.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1>Invoice #<?=$invoice['id'];?> (<?=$invoice['date'];?>)</h1>
 
 <? if ($invoice['refunded'] == TRUE) { ?>

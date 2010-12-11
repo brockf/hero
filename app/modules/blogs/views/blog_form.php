@@ -17,7 +17,10 @@ if (!isset($blog)) {
 }
 
 ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.blog.js') . '"></script>'));?>
+
+<?=$this->head_assets->javascript('js/form.blog.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_blog" method="post" action="<?=$form_action;?>">
 <fieldset>

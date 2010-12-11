@@ -1,4 +1,6 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.field.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/form.field.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="go_field" method="post" action="<?=$form_action;?>">
 <input type="hidden" name="area" value="<?=$area;?>" />

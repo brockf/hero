@@ -1,4 +1,6 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.send_email.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/form.send_email.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <div class="sidebar">
 	<h2>Select Recipient(s)</h2>
 	<div class="sidebar_content">

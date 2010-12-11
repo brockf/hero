@@ -6,12 +6,14 @@ class Admincp_Controller extends MY_Controller {
 	function __construct () {
 		parent::__construct();
 		
+		// by defining _CONTROLPANEL, certain functionality can be modified to be appropriate to this context
 		define("_CONTROLPANEL","TRUE");
 		
+		// load notices library (display success/error messages at top of screen)
 		$this->load->library('notices');
 		$this->load->helper('admincp/get_notices');
 		
-		// are they logged in?
+		// are they logged in? and an administrator?
 		if ($this->user_model->logged_in() and !$this->user_model->is_admin()) {
 			$this->notices->SetError('You are logged in but do not have control panel privileges.');
 			redirect(site_url('admincp/login'));
@@ -25,6 +27,7 @@ class Admincp_Controller extends MY_Controller {
 		// store dynamically-generated navigation
 		$this->load->library('navigation');
 		
+		// add basic navigation categories
 		$this->navigation->parent_link('dashboard','Dashboard');
 		$this->navigation->parent_link('publish','Publish');
 		$this->navigation->parent_link('storefront','Storefront');
@@ -40,6 +43,9 @@ class Admincp_Controller extends MY_Controller {
 		$this->load->helper('directory');
 		$this->load->helper('form');
 		$this->load->helper('admincp/admin_link');
+		
+		// load assets library (include stylesheets and javascript files dynamically)
+		$this->load->library('head_assets');
 		
 		// init hooks
 		$this->load->library('app_hooks');

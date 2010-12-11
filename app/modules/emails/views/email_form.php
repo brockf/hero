@@ -15,7 +15,10 @@ if (!isset($form)) {
 			);
 
 } ?>
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/form.email.js') . '"></script>'));?>
+
+<?=$this->head_assets->javascript('js/form.email.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1><?=$form_title;?></h1>
 <form class="form validate" id="form_email" method="post" action="<?=$form_action;?>">
 <? if (isset($form['id'])) { ?>

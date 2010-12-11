@@ -1,4 +1,6 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/theme_editor.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/theme_editor.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <div class="sidebar" style="width: 30%">
 	<h2 style="margin-bottom: 0">Theme Files: <?=form_dropdown('theme_directory', $themes, $theme);?></h2>
 	<div id="file_list_options">

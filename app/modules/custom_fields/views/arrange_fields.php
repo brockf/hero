@@ -1,6 +1,8 @@
-<?=$this->load->view(branded_view('cp/header'),array('head_files' => '<script type="text/javascript" src="' . branded_include('js/jquery-ui-1.8.2.min.js') . '"></script>
-<script type="text/javascript" src="' . branded_include('js/sortable.js') . '"></script>
-<script type="text/javascript" src="' . branded_include('js/arrange_fields.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/jquery-ui-1.8.2.min.js');?>
+<?=$this->head_assets->javascript('js/sortable.js');?>
+<?=$this->head_assets->javascript('js/arrange_fields.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1>Arrange Data Fields</h1>
 <form rel="<?=$field_group_id;?>" class="form arrange validate" enctype="multipart/form-data" id="form_arrange" method="post" action="<?=site_url('admincp/custom_fields/save/' . $return_url);?>">
 

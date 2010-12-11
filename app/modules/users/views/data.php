@@ -1,4 +1,6 @@
-<?=$this->load->view(branded_view('cp/header'), array('head_files' => '<script type="text/javascript" src="' . branded_include('js/data.user_fields.js') . '"></script>'));?>
+<?=$this->head_assets->javascript('js/data.user_fields.js');?>
+
+<?=$this->load->view(branded_view('cp/header'));?>
 <h1>Manage Member Data Fields</h1>
 <?=$this->dataset->table_head();?>
 
