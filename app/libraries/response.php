@@ -21,8 +21,8 @@ class Response
 			
 			if ($format == 'xml') {
 				//Load the XML library
-				$CI->load->library('arraytoxml');
-				$response = $CI->arraytoxml->toXML($response, 'response');
+				$CI->load->library('array_to_xml');
+				$response = $CI->array_to_xml->toXML($response, 'response');
 			}
 			elseif ($format == 'php') {
 				$response = serialize($response);

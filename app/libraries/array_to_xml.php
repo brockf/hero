@@ -1,6 +1,6 @@
 <?php
 
-class ArrayToXML
+class array_to_xml
 {
     /**
      * The main function for converting to an XML document.
@@ -33,11 +33,11 @@ class ArrayToXML
 
             // if there is another array found recrusively call this function
             if ( is_array( $value ) ) {
-                $node = ArrayToXML::isAssoc( $value ) || $numeric ? $xml->addChild( $key ) : $xml;
+                $node = array_to_xml::isAssoc( $value ) || $numeric ? $xml->addChild( $key ) : $xml;
 
                 // recrusive call.
                 if ( $numeric ) $key = 'anon';
-                ArrayToXML::toXml( $value, $key, $node );
+                array_to_xml::toXml( $value, $key, $node );
             } else {
                 // add single node.
                 $value = xml_value_prep($value);
@@ -66,7 +66,7 @@ class ArrayToXML
         if ( !$children ) return (string) $xml;
         $arr = array();
         foreach ( $children as $key => $node ) {
-            $node = ArrayToXML::toArray( $node );
+            $node = array_to_xml::toArray( $node );
 
             // support for 'anon' non-associative arrays
             if ( $key == 'anon' ) $key = count( $arr );
