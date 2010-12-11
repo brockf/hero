@@ -83,7 +83,7 @@ $(document).ready(function() {
 	
 	// table row mouseovers
 	$('table.dataset tbody tr').hover(function() {
-		if (!$(this).hasClass('selected')) {
+		if (!$(this).hasClass('selected') && !$(this).hasClass('filters')) {
 			$(this).addClass('hovered');
 		}
 	}, function() {

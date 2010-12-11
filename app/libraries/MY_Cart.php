@@ -125,4 +125,78 @@ class MY_Cart extends CI_Cart {
 		// Woot!
 		return TRUE;
 	}
+	
+	/**
+	* Extend update() so that it can update any part of the array...
+	*/
+	
+	function update($items = array())
+	{
+		// Was any cart data passed?
+		if ( ! is_array($items) OR count($items) == 0)
+		{
+			return FALSE;
+		}
+			
+		// You can either update a single product using a one-dimensional array, 
+		// or multiple products using a multi-dimensional one.  The way we
+		// determine the array type is by looking for a required array key named "id".
+		// If it's not found we assume it's a multi-dimensional array
+		$save_cart = FALSE;
+		if (isset($items['rowid']))
+		{
+			if ($this->_update($items) == TRUE)
+			{
+				$save_cart = TRUE;
+			}
+		}
+		else
+		{
+			foreach ($items as $val)
+			{
+				if (is_array($val) AND isset($val['rowid']))
+				{
+					if ($this->_update($val) == TRUE)
+					{
+						$save_cart = TRUE;
+					}
+				}			
+			}
+		}
+
+		// Save the cart data if the insert was successful
+		if ($save_cart == TRUE)
+		{
+			$this->_save_cart();
+			return TRUE;
+		}
+
+		return FALSE;
+	}
+	
+	function _update($items = array())
+	{
+		// Without these array indexes there is nothing we can do
+		if (!isset($items['rowid']) OR ! isset($this->_cart_contents[$items['rowid']]))
+		{
+			return FALSE;
+		}
+		
+		foreach ($items as $key => $value) {		
+			$this->_cart_contents[$items['rowid']][$key] = $value;
+		}
+		
+		// Is the quantity zero?  If so we will remove the item from the cart.
+		// If the quantity is greater than zero we are updating
+		if (isset($items['qty']) and $items['qty'] == 0)
+		{
+			unset($this->_cart_contents[$items['rowid']]);		
+		}
+		elseif (isset($items['qty']))
+		{
+			$this->_cart_contents[$items['rowid']]['qty'] = $items['qty'];
+		}
+		
+		return TRUE;
+	}
 }
