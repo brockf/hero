@@ -48,6 +48,7 @@ $route['callback:any'] = 'billing/callback/process';
 
 // admin specific routes
 $route['admincp'] = 'admincp/dashboard';
+$route['admincp/dashboard/([a-zA-Z_-]+)'] = 'admincp/dashboard/$1';
 $route['admincp/dataset/([a-zA-Z_-]+)'] = 'admincp/dataset/$1';
 $route['admincp/login'] = 'admincp/login';
 $route['admincp/login/go'] = 'admincp/login/go';

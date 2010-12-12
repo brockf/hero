@@ -41,7 +41,7 @@ class Dataset {
         $this->rows_per_page = 50;
         
         // stylesheet
-		$this->head_assets->stylesheet('css/dataset.css');
+		$this->CI->head_assets->stylesheet('css/dataset.css');
     }
     
     /*

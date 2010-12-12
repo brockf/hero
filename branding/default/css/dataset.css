@@ -64,7 +64,7 @@ table.dataset tbody tr.selected td {
 
 table.dataset tbody td.options a {
 	background-color: #23565c;
-	padding: 2px 5px;
+	padding: 2px 8px;
 	border-radius: 4px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;

@@ -1,4 +1,5 @@
 <?=$this->head_assets->javascript('js/report.invoice.js');?>
+<?=$this->head_assets->stylesheet('css/dataset.css');?>
 
 <?=$this->load->view(branded_view('cp/header'));?>
 <h1>Invoice #<?=$invoice['id'];?> (<?=$invoice['date'];?>)</h1>

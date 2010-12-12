@@ -1,5 +1,16 @@
 <?php
 
+/**
+* Head Compile Library
+*
+* A work in progress: This will dynamically compile and minify included JS and CSS files.
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
+*/
+
 class Head_compile {
 	var $CI;
 	

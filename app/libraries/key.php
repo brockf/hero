@@ -1,5 +1,16 @@
 <?php
 
+/**
+* Key Generator
+*
+* Generates API keys.  Somewhat useless now.
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
+*/
+
 class Key
 {
     function AssignRandValue()
