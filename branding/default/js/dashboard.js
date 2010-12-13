@@ -5,6 +5,9 @@ $(document).ready(function () {
 	
 	// stats & dates
 	$('input[name="date_select"]').click(function() {
+		// we may be getting this via a <li> click
+		$(this).attr('checked','checked');
+		
 		// set to active
 		$('div#date_selector li').removeClass('active');
 		$(this).parent().addClass('active');
@@ -16,6 +19,11 @@ $(document).ready(function () {
 		// show these charts
 		$('span.chart').hide();
 		$('span.chart.' + $(this).val()).fadeIn(250).css('display','block');
+	});
+	
+	// allow them to click the entire line
+	$('div#date_selector li span').click(function() {
+		$(this).siblings('input').trigger('click');
 	});
 	
 	// initiate sparkline, then hide

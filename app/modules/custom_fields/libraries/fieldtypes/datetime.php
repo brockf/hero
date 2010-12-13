@@ -98,7 +98,7 @@ class Datetime_fieldtype extends Fieldtype {
 		$hour_field = form_dropdown($this->name . '_hour', $options, !empty($this->value) ? date('h', strtotime($this->value)) : date('h'));
 		
 		$options = array();
-		for ($i = 1; $i <= 59; $i++) {
+		for ($i = 0; $i <= 59; $i++) {
 			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = str_pad($i,2,'0',STR_PAD_LEFT);
 		}
 		$minute_field = form_dropdown($this->name . '_minute', $options, !empty($this->value) ? date('i', strtotime($this->value)) : date('i'));
@@ -180,7 +180,7 @@ class Datetime_fieldtype extends Fieldtype {
 		$hour_field = form_dropdown($this->name . '_hour', $options, !empty($this->value) ? date('h', strtotime($this->value)) : date('h'));
 		
 		$options = array();
-		for ($i = 1; $i <= 59; $i++) {
+		for ($i = 0; $i <= 59; $i++) {
 			$options[str_pad($i,2,'0',STR_PAD_LEFT)] = str_pad($i,2,'0',STR_PAD_LEFT);
 		}
 		$minute_field = form_dropdown($this->name . '_minute', $options, !empty($this->value) ? date('i', strtotime($this->value)) : date('i'));

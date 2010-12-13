@@ -89,7 +89,9 @@ class User_model extends CI_Model
 	
 		$CI =& get_instance();
 		
-		if (strpos($CI->uri->uri_string(), '/admincp') === 0) {
+		$url = $CI->uri->uri_string();
+		// it may be at 0 or 1 depending on if we retained the initial slash...
+		if (strpos($url, 'admincp') === 0 or strpos($url, 'admincp') === 1) {
 			$this->in_admin = TRUE;
 		}
 		else {

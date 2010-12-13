@@ -268,8 +268,11 @@ class Admincp extends Admincp_Controller {
 		$plans = $this->subscription_plan_model->get_plans();
 		$products = $this->products_model->get_products();
 		
+		$hook = $this->app_hooks->get_hook($this->input->get('hook'));
+		
 		$data = array(
-					'hook' => $this->app_hooks->get_hook($this->input->get('hook')),
+					'hook' => $hook,
+					'variables' => $this->email_variables($hook['email_data']),
 					'products' => $products,
 					'plans' => $plans,
 					'form_title' => 'Create New Email',
@@ -277,6 +280,142 @@ class Admincp extends Admincp_Controller {
 					);
 				
 		$this->load->view('email_form',$data);
+	}
+	
+	/**
+	* Email Variables
+	*
+	* Return a list of possible email variables
+	*
+	* @param array $email_data from get_hook().  The "email_data" array stored for the hook,
+	*
+	* @return array sorted alphabetically
+	*/
+	function email_variables ($email_data) {
+		$vars = array();
+		
+		if (in_array('member', $email_data)) {
+			// dynamically load variables from a get_user() call
+			$user = $this->user_model->get();
+			
+			foreach ($user as $key => $v) {
+				if (is_bool($v)) {
+					$type = 'boolean';
+				}
+				elseif (is_numeric($v)) {
+					$type = 'integer';
+				}
+				elseif (is_array($v)) {
+					$type = 'array';
+				}
+				else {
+					$type = 'string';
+				}
+				$vars[] = array('tag' => '{$member.' . $key . '}', 'type' => $type);
+			}
+		}
+		
+		if (in_array('product', $email_data)) {
+			$vars[] = array('tag' => '{$product.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$product.url}', 'type' => 'url');
+			$vars[] = array('tag' => '{$product.url_path}', 'type' => 'url_path');
+			$vars[] = array('tag' => '{$product.quick_add_to_cart_url}', 'type' => 'url');
+			$vars[] = array('tag' => '{$product.collections}', 'type' => 'array');
+			$vars[] = array('tag' => '{$product.name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$product.description}', 'type' => 'string');
+			$vars[] = array('tag' => '{$product.price}', 'type' => 'float');
+			$vars[] = array('tag' => '{$product.weight}', 'type' => 'float');
+			$vars[] = array('tag' => '{$product.requires_shipping}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$product.track_inventory}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$product.inventory}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$product.inventory_allow_oversell}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$product.sku}', 'type' => 'string');
+			$vars[] = array('tag' => '{$product.is_taxable}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$product.is_download}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$product.download_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$product.download_size}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$product.feature_image}', 'type' => 'filename');
+			$vars[] = array('tag' => '{$product.feature_image_url}', 'type' => 'url');
+		}
+		
+		if (in_array('order', $email_data)) {
+			$vars[] = array('tag' => '{$shipping_address}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products}', 'type' => 'array');
+			$vars[] = array('tag' => '{$products.X.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$products.X.url}', 'type' => 'url');
+			$vars[] = array('tag' => '{$products.X.url_path}', 'type' => 'url_path');
+			$vars[] = array('tag' => '{$products.X.quick_add_to_cart_url}', 'type' => 'url');
+			$vars[] = array('tag' => '{$products.X.collections}', 'type' => 'array');
+			$vars[] = array('tag' => '{$products.X.name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products.X.description}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products.X.price}', 'type' => 'float');
+			$vars[] = array('tag' => '{$products.X.weight}', 'type' => 'float');
+			$vars[] = array('tag' => '{$products.X.requires_shipping}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$products.X.track_inventory}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$products.X.inventory}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$products.X.inventory_allow_oversell}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$products.X.sku}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products.X.is_taxable}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$products.X.is_download}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$products.X.download_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products.X.download_size}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$products.X.feature_image}', 'type' => 'filename');
+			$vars[] = array('tag' => '{$products.X.feature_image_url}', 'type' => 'url');
+		}
+		
+		if (in_array('invoice', $email_data)) {
+			$vars[] = array('tag' => '{$billing_address}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$invoice.gateway}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$invoice.amount}', 'type' => 'float');
+			$vars[] = array('tag' => '{$invoice.card_last_four}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$invoice.tax_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.tax_paid}', 'type' => 'float');
+			$vars[] = array('tag' => '{$invoice.tax_rate}', 'type' => 'float');
+		}
+		
+		if (in_array('subscription', $email_data)) {
+			$vars[] = array('tag' => '{$subscription.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.date_created}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.amount}', 'type' => 'float');
+			$vars[] = array('tag' => '{$subscription.interval}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.start_date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.end_date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.last_charge_date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.next_charge_date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.cancel_date}', 'type' => 'date');
+			$vars[] = array('tag' => '{$subscription.number_occurrences}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.active}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$subscription.renewing_subscription_id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.updating_subscription_id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.card_last_four}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.renew_link}', 'type' => 'url');
+			$vars[] = array('tag' => '{$subscription.cancel_link}', 'type' => 'url');
+			$vars[] = array('tag' => '{$subscription.update_cc_link}', 'type' => 'url');
+			$vars[] = array('tag' => '{$subscription.is_recurring}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$subscription.is_active}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$subscription.is_renewed}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$subscription.is_updated}', 'type' => 'boolean');
+		}
+		
+		if (in_array('subscription_plan', $email_data)) {
+			$vars[] = array('tag' => '{$subscription_plan.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$subscription_plan.initial_charge}', 'type' => 'float');
+			$vars[] = array('tag' => '{$subscription_plan.amount}', 'type' => 'float');
+			$vars[] = array('tag' => '{$subscription_plan.interval}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.free_trial}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.occurrences}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.is_taxable}', 'type' => 'boolean');
+			$vars[] = array('tag' => '{$subscription_plan.active_subscribers}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.promotion}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.demotion}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription_plan.description}', 'type' => 'string');
+			$vars[] = array('tag' => '{$subscription_plan.add_to_cart}', 'type' => 'url');
+		}
+		
+		return $vars;
 	}
 	
 	/**
@@ -397,8 +536,11 @@ class Admincp extends Admincp_Controller {
 		$this->load->helper('file');
 		$email['body'] = read_file(setting('path_email_templates') . '/' . $email['body_template']);
 		
+		$hook = $this->app_hooks->get_hook($email['hook']);
+		
 		$data = array(
-					'hook' => $this->app_hooks->get_hook($email['hook']),
+					'hook' => $hook,
+					'variables' => $this->email_variables($hook['email_data']),
 					'products' => $products,
 					'plans' => $plans,
 					'form' => $email,
@@ -447,44 +589,5 @@ class Admincp extends Admincp_Controller {
 		$this->notices->SetNotice('Email layout updated successfully.');
 		
 		redirect('admincp/emails/email_layout');
-	}
-	
-	/**
-	* Show Available Variables
-	*
-	* Show the available variables for a trigger
-	*
-	* @param int $trigger_id The ID of the trigger
-	*
-	* @return string An unordered HTML list of available variables
-	*/
-	function show_variables ($trigger_id) {
-		$this->load->model('email_model');
-		
-		$variables = $this->email_model->GetEmailVariables($trigger_id);
-		
-		$return = '<p><b>Available Variables for this Trigger Type</b></p>
-				   <ul class="notes">
-				   		<li>Not all values are available for each event.  For example, <span class="var">[[CUSTOMER_ADDRESS_1]]</span> cannot be replaced if the customer
-				  	    does not have an address registered in the system.</li>
-				   		<li>Usage Example: <span class="var">[[AMOUNT]]</span> will be replaced by a value like "34.95" in the email.</li>
-				   		<li>To format dates, you can include a parameter in the variable such as, <span class="var">[[DATE|"M d, Y"]]</span> (output example: Aug 19, 2010).  You can
-				   		specify any date format using either of PHP\'s <a href="http://www.php.net/date">date()</a> and <a href="http://www.php.net/strftime">strftime()</a>
-				   		formatting styles.</li>
-				   </ul>
-				   <ul class="variables">';
-				   
-		// default variable added later
-		$return .= '<li>[[SITE_NAME]]</li>';
-		
-		foreach ($variables as $variable) {
-			$return .= '<li>[[' . strtoupper($variable) . ']]</li>';
-		}
-		
-		$return .= '</ul><div style="clear:both"></div>';
-		
-		echo $return;
-		
-		return true;
 	}
 }

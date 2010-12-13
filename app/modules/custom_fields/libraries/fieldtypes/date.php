@@ -145,7 +145,7 @@ class Date_fieldtype extends Fieldtype {
 		
 		$options = array();
 		
-		if ($this->data['future_only'] == TRUE) {
+		if (isset($this->data['future_only']) and $this->data['future_only'] == TRUE) {
 			$start = date('Y') - 100;
 		}
 		else {
@@ -194,7 +194,7 @@ class Date_fieldtype extends Fieldtype {
 	* @return boolean
 	*/
 	function validate_post () {
-		if ($this->data['future_only'] == TRUE) {
+		if (isset($this->data['future_only']) and $this->data['future_only'] == TRUE) {
 			if ((strtotime($this->post_to_value()) + (24*60*60)) < time()) {
 				$this->validation_error = $this->label . ' must be in the future.';
 				return FALSE;
@@ -278,4 +278,5 @@ class Date_fieldtype extends Fieldtype {
 					'help' => $this->CI->input->post('help'),
 					'data' => array('future_only' => ($this->CI->input->post('future_only')) ? TRUE : FALSE)
 				);
-	}}
+	}
+}

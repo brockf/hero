@@ -1054,3 +1054,7 @@ ul.recipients {
 ul.recipients li {
 	display: block;
 }
+
+span.light {
+	color: #888;
+}

@@ -12,9 +12,9 @@
 				</li>
 			<? } ?>
 		</ul>
-			<div class="submit">
-				<input type="submit" class="submit button" name="" value="Continue Creating Email" />
-			</div>
+		<div class="submit">
+			<input type="submit" class="submit button" name="" value="Continue Creating Email" />
+		</div>
 	</fieldset>
 </form>
 

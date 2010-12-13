@@ -7,9 +7,9 @@
 <div id="dash_stats" rel="day">
 	<div id="date_selector">
 		<ul>
-			<li><input type="radio" name="date_select" value="day" /> Today</li>
-			<li><input type="radio" name="date_select" value="week" /> This Week</li>
-			<li><input type="radio" name="date_select" value="month" /> This Month</li>
+			<li><input type="radio" name="date_select" value="day" /> <span>Today</span></li>
+			<li><input type="radio" name="date_select" value="week" /> <span>This Week</span></li>
+			<li><input type="radio" name="date_select" value="month" /> <span>This Month</span></li>
 		</ul>
 	</div>
 	<div class="stat">
