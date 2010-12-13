@@ -1,3 +1,5 @@
+<?=$this->head_assets->stylesheet('css/dataset.css');?>
+
 <?=$this->load->view(branded_view('cp/header'));?>
 <h1>Profile: <?=$user['username'];?></h1>
 <h2 class="cat user">Member Data</h2>
