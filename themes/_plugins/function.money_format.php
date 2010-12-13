@@ -9,7 +9,7 @@
 *
 * @return float Formatted money
 */
-function smarty_function_money_format ($params, &$smarty, $template) {
+function smarty_function_money_format ($params, &$smarty) {
 	if (!isset($params['value'])) {
 		show_error('You must pass a "value" to the {money_format} template function.');
 	}
