@@ -62,6 +62,10 @@ table.dataset tbody tr.selected td {
 	background-color: #f9fcca;
 }
 
+table.dataset tbody td.options {
+	white-space: nowrap;
+}
+
 table.dataset tbody td.options a {
 	background-color: #23565c;
 	padding: 2px 8px;

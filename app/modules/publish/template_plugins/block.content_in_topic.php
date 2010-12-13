@@ -16,10 +16,10 @@
 
 function smarty_block_content_in_topic ($params, $tagdata, &$smarty, &$repeat) {
 	if (!isset($params['topic'])) {
-		$smarty->trigger_error('You must specify a "topic" parameter for template {content_in_topic} calls.');
+		show_error('You must specify a "topic" parameter for template {content_in_topic} calls.');
 	}
 	if (!isset($params['var'])) {
-		$smarty->trigger_error('You must specify a "var" parameter for template {content_in_topic} calls.  This parameter specifies the variable name for the returned array.');
+		show_error('You must specify a "var" parameter for template {content_in_topic} calls.  This parameter specifies the variable name for the returned array.');
 	}
 	else {
 		// deal with filters
@@ -55,9 +55,9 @@ function smarty_block_content_in_topic ($params, $tagdata, &$smarty, &$repeat) {
 		}
 		
 		// initialize block loop
-		$data_name = $smarty->loop_data_key($filters);
+		$data_name = $smarty->CI->smarty->loop_data_key($filters);
 		
-		if ($smarty->loop_data($data_name) === FALSE) {
+		if ($smarty->CI->smarty->loop_data($data_name) === FALSE) {
 			// make content request
 			$smarty->CI->load->model('publish/content_model');
 			$content = $smarty->CI->content_model->get_contents($filters);
@@ -66,7 +66,7 @@ function smarty_block_content_in_topic ($params, $tagdata, &$smarty, &$repeat) {
 			$content = FALSE;
 		}
 		
-		$smarty->block_loop($data_name, $content, (string)$params['var'], $repeat);
+		$smarty->CI->smarty->block_loop($data_name, $content, (string)$params['var'], $repeat);
 	}		
 	
 	echo $tagdata;

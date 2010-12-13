@@ -19,10 +19,10 @@
 
 function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 	if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
-		$smarty->trigger_error('You must specify a "type" parameter for template {content} calls if you are not specifying an "id" parameter.');
+		show_error('You must specify a "type" parameter for template {content} calls if you are not specifying an "id" parameter.');
 	}
 	elseif (!isset($params['var'])) {
-		$smarty->trigger_error('You must specify a "var" parameter for template {content} calls.  This parameter specifies the variable name for the returned array.');
+		show_error('You must specify a "var" parameter for template {content} calls.  This parameter specifies the variable name for the returned array.');
 	}
 	else {
 		// type may not be the ID, but the system name
@@ -32,7 +32,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 				$type = $smarty->CI->content_type_model->get_content_types(array('system_name' => $params['type']));
 				
 				if (empty($type)) {
-					$smarty->trigger_error('Could not load content type data for "' . $params['type'] . '"');
+					show_error('Could not load content type data for "' . $params['type'] . '"');
 				}
 				else {
 					$params['type'] = $type[0]['id'];
@@ -90,9 +90,9 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 		}
 		
 		// initialize block loop
-		$data_name = $smarty->loop_data_key($filters);
+		$data_name = $smarty->CI->smarty->loop_data_key($filters);
 		
-		if ($smarty->loop_data($data_name) === FALSE) {
+		if ($smarty->CI->smarty->loop_data($data_name) === FALSE) {
 			// make content request
 			$smarty->CI->load->model('publish/content_model');
 			$content = $smarty->CI->content_model->get_contents($filters);
@@ -110,7 +110,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			$content = FALSE;
 		}
 		
-		$smarty->block_loop($data_name, $content, (string)$params['var'], $repeat);
+		$smarty->CI->smarty->block_loop($data_name, $content, (string)$params['var'], $repeat);
 	}
 			
 	echo $tagdata;

@@ -728,6 +728,16 @@ class Admincp extends Admincp_Controller {
 		// add actions
 		$this->dataset->action('Delete','admincp/users/data_delete');
 		
+		// we may not have all of the fields in the `user_fields` table, because they are created in the
+		// custom_fields controller and not here
+		if (!empty($this->dataset->data)) {
+			foreach ($this->dataset->data as $field) {
+				if (!isset($field['id'])) {
+					$this->user_model->update_custom_field($field['custom_field_id'], '', FALSE, FALSE);
+				}
+			}
+		}
+		
 		$this->load->view('data.php');
 	}
 	

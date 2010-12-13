@@ -10,7 +10,7 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['id'];?></td>
 			<td><a href="<?=site_url('admincp/blogs/edit/' . $row['id']);?>"><?=$row['title'];?></a></td>
 			<td><?=$row['type_name'];?></td>
-			<td class="options"><a href="<?=site_url('admincp/blogs/edit/' . $row['id']);?>">edit</a> <a href="<?=$row['url'];?>">view</a> | <a href="<?=site_url('admincp/publish/create_post/' . $row['type']);?>">new post</a></td>
+			<td class="options"><a href="<?=site_url('admincp/blogs/edit/' . $row['id']);?>">edit</a> <a href="<?=$row['url'];?>">view</a> <a href="<?=site_url('admincp/publish/create_post/' . $row['type']);?>">new post</a></td>
 		</tr>
 	<?
 	}

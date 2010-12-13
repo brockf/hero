@@ -9,6 +9,6 @@
 *
 * @return string URL
 */
-function smarty_function_theme_url ($params, $smarty, $template) {
+function smarty_function_theme_url ($params, $smarty) {
 	return site_url('themes/' . $smarty->CI->config->item('current_theme') . '/' . $params['path']);
 }

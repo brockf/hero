@@ -12,8 +12,14 @@
 *
 * @return string Field HTML
 */
-function smarty_function_custom_field ($params, $smarty, $template) {
+function smarty_function_custom_field ($params, $smarty) {
 	$field = $params['field'];
+	
+	// we don't throw a nasty error here, because sometimes an empty $custom_fields array gets into the mix and
+	// we have to be gentle with this
+	if (empty($field)) {
+		return FALSE;
+	}
 	
 	// load field as object and display the field
 	$smarty->CI->load->library('custom_fields/fieldtype');
@@ -23,7 +29,7 @@ function smarty_function_custom_field ($params, $smarty, $template) {
 	
 	// check for error
 	if ($field_object === FALSE) {
-		$smarty->trigger_error('Unable to load custom field: ' . $field['type']);
+		show_error('Unable to load custom field: ' . $field['type']);
 	}
 	
 	// add value from parameter if it's there

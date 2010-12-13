@@ -10,7 +10,7 @@
 *
 * @return string $image_src To be used like <img src="{thumbnail ...}" />
 */
-function smarty_function_shorten ($params, $smarty, $template) {
+function smarty_function_shorten ($params, $smarty) {
 	if (!isset($params['length'])) {
 		return 'You must specify a "length" parameter for the {shorten} template function.';
 	}

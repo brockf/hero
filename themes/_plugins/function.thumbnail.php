@@ -11,7 +11,7 @@
 *
 * @return string $image_src To be used like <img src="{thumbnail ...}" />
 */
-function smarty_function_thumbnail ($params, $smarty, $template) {
+function smarty_function_thumbnail ($params, $smarty) {
 	$smarty->CI->load->helper('image_thumb');
 	
 	return image_thumb($params['path'], (isset($params['height'])) ? $params['height'] : FALSE, (isset($params['width'])) ? $params['width'] : FALSE);

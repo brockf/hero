@@ -7,7 +7,7 @@
 *
 * @return string $image_src To be used like <img src="{jerry_thumbnail ...}" />
 */
-function smarty_function_jerry_thumbnail ($params, $smarty, $template) {
+function smarty_function_jerry_thumbnail ($params, $smarty) {
 	$smarty->CI->load->model('publish/content_model');
 	$content = $smarty->CI->content_model->get_contents(array('type' => '1', 'sort' => 'content.content_date', 'sort_dir' => 'desc', 'limit' => '1'));
 	

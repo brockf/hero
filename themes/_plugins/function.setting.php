@@ -9,6 +9,6 @@
 *
 * @return string $setting value
 */
-function smarty_function_setting ($params, $smarty, $template) {
+function smarty_function_setting ($params, $smarty) {
 	return setting($params['name']);
 }

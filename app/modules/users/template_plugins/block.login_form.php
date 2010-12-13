@@ -11,7 +11,7 @@
 
 function smarty_block_login_form ($params, $tagdata, &$smarty, &$repeat){
 	if (!isset($params['var'])) {
-		$smarty->trigger_error('You must specify a "var" parameter for template {login_form} calls.  This parameter specifies the variable name for the returned array.');
+		show_error('You must specify a "var" parameter for template {login_form} calls.  This parameter specifies the variable name for the returned array.');
 	}
 	else {
 		$variables = array();

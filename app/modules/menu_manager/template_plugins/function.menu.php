@@ -13,7 +13,7 @@
 *
 * @return string $menu
 */
-function smarty_function_menu ($params, $smarty, $template) {
+function smarty_function_menu ($params, $smarty) {
 	// check params
 	if (!isset($params['name'])) {
 		return 'The {menu} template plugin requires a "name" parameter to identify the menu to load.';
@@ -50,7 +50,7 @@ function smarty_function_menu ($params, $smarty, $template) {
 	$params['class'] = (isset($params['class'])) ? $params['class'] : '';
 	$params['id'] = (isset($params['id'])) ? $params['id'] : '';
 	
-	$return .= '<ul class="' . $params['class'] . '" id="' . $params['id'] . '">';
+	$return = '<ul class="' . $params['class'] . '" id="' . $params['id'] . '">';
 	
 	foreach ($menu_items as $id => $item) {
 		// do we have children?

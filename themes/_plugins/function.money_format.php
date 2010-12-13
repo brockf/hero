@@ -11,7 +11,7 @@
 */
 function smarty_function_money_format ($params, &$smarty, $template) {
 	if (!isset($params['value'])) {
-		$smarty->trigger_error('You must pass a "value" to the {money_format} template function.');
+		show_error('You must pass a "value" to the {money_format} template function.');
 	}
 
 	return money_format("%!i", $params['value']);

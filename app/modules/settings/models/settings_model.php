@@ -93,6 +93,9 @@ class Settings_model extends CI_Model
 		
 		$this->db->update('settings',array('setting_value' => $value), array('setting_name' => $name));
 		
+		// update current settings during this runtime
+		$this->config->set_item($setting_name, $setting_value);
+		
 		return TRUE;
 	}
 	
@@ -124,6 +127,9 @@ class Settings_model extends CI_Model
 							 	'setting_hidden' => ($setting_hidden == TRUE) ? '1' : '0'
 							);				                                
 		$this->db->insert('settings',$insert_fields);
+		
+		// update current settings during this runtime
+		$this->config->set_item($setting_name, $setting_value);
 		
 		return $this->db->insert_id();	
 	}

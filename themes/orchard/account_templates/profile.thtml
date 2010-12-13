@@ -41,25 +41,27 @@ Edit Your Profile - {$smarty.block.parent}
 				<li>
 					<input type="text" class="text required" id="last_name" name="last_name" value="{if $values.last_name}{$values.last_name}{/if}">
 				</li>
-				{foreach $custom_fields as $field}
-				{if $field.type != 'checkbox'}
+				{if $custom_fields}
+					{foreach $custom_fields as $field}
+					{if $field.type != 'checkbox'}
+						<li>
+							<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
+						</li>
+						<li>
+							{custom_field field=$field value=$values[$field.name] default=FALSE}
+						</li>
+					{else}
+						<li>
+							{custom_field field=$field value=$values[$field.name] default=FALSE} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+						</li>
+					{/if}
+					{if $field.help}
 					<li>
-						<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
+						<div class="help">{$field.help}</div>
 					</li>
-					<li>
-						{custom_field field=$field value=$values[$field.name] default=FALSE}
-					</li>
-				{else}
-					<li>
-						{custom_field field=$field value=$values[$field.name] default=FALSE} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
-					</li>
+					{/if}
+					{/foreach}
 				{/if}
-				{if $field.help}
-				<li>
-					<div class="help">{$field.help}</div>
-				</li>
-				{/if}
-				{/foreach}
 			</ul>
 		</fieldset>
 		

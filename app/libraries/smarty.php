@@ -10,8 +10,15 @@
 require_once(APPPATH.'libraries/smarty/Smarty.class.php');
 
 class CI_Smarty extends Smarty {
-	var $CI;
-	var $perpetual_data; // holds data from looping block plugins
+	public $CI;
+	
+	// holds data from looping block plugins
+	private $perpetual_data; 
+	
+	// everytime we update the Smarty library, change this version.
+	// if this date is newer than the current library, all compiled templates
+	// will be deleted
+	private $library_version = '3.06';
 
 	function __construct ($email_parser = FALSE) {
 		parent::__construct();
@@ -26,6 +33,9 @@ class CI_Smarty extends Smarty {
 	function initialize ($email_parser = FALSE) {
 		// store CI within Smarty's object
 		$this->CI =& get_instance();
+		
+		// turn down error reporting (makes templates a lot cleaner)
+		$this->error_reporting = E_ALL & ~E_NOTICE;
 		
 		// specify directories
 		$this->setCompileDir(FCPATH . 'writeable/templates_compile');
@@ -46,6 +56,20 @@ class CI_Smarty extends Smarty {
 		}
 		else {
 			$this->addPluginsDir(setting('path_email_templates') . '/plugins');
+		}
+		
+		// check for a library update
+		$current_library = setting('smarty_library');
+		if (empty($current_library) or version_compare($this->library_version,$current_library,'>') == TRUE) {
+			$this->clearCompiledTemplate();
+			
+			// store setting
+			if (empty($current_library)) {
+				$this->CI->settings_model->new_setting(1, 'smarty_library', $this->library_version, '', 'text','', FALSE, TRUE);
+			}
+			else {
+				$this->CI->settings_model->update_setting('smarty_library', $this->library_version);
+			}
 		}
 		
 		// set global template variables
@@ -120,7 +144,9 @@ class CI_Smarty extends Smarty {
 			$index = $this->loop_data($data_name . '_index');
 		}
 		
-		$this->assign($var_name, $content[$index]);
+		if (isset($content[$index])) {
+			$this->assign($var_name, $content[$index]);
+		}
 		
 		// continue looping?
 		if (isset($content[($index)])) {
@@ -154,7 +180,7 @@ class CI_Smarty extends Smarty {
 	*
 	* @return string MD5 of array
 	*/
-	function loop_data_key ($array) {
+	public function loop_data_key ($array) {
 		$string = '';
 		
 		foreach ($array as $k => $v) {

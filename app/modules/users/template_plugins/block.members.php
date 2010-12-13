@@ -16,7 +16,7 @@
 
 function smarty_block_members ($params, $tagdata, &$smarty, &$repeat){
 	if (!isset($params['var'])) {
-		$smarty->trigger_error('You must specify a "var" parameter for template {members} calls.  This parameter specifies the variable name for the returned array.');
+		show_error('You must specify a "var" parameter for template {members} calls.  This parameter specifies the variable name for the returned array.');
 	}
 	else {
 		$filters = array();
@@ -67,9 +67,9 @@ function smarty_block_members ($params, $tagdata, &$smarty, &$repeat){
 		}
 		
 		// initialize block loop
-		$data_name = $smarty->loop_data_key($filters);
+		$data_name = $smarty->CI->smarty->loop_data_key($filters);
 		
-		if ($smarty->loop_data($data_name) === FALSE) {
+		if ($smarty->CI->smarty->loop_data($data_name) === FALSE) {
 			// make content request
 			$smarty->CI->load->model('users/user_model');
 			$users = $smarty->CI->user_model->get_users($filters);
@@ -86,7 +86,7 @@ function smarty_block_members ($params, $tagdata, &$smarty, &$repeat){
 			$users = FALSE;
 		}
 		
-		$smarty->block_loop($data_name, $users, (string)$params['var'], $repeat);
+		$smarty->CI->smarty->block_loop($data_name, $users, (string)$params['var'], $repeat);
 			
 		echo $tagdata;
 	}

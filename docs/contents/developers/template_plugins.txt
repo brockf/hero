@@ -21,7 +21,7 @@ Designers can also write/include template plugins directly in their theme packag
 *Functions* are template plugins like [span_code]{setting name="site_name"}[/span_code].  They only include on tag and return a string of data (or empty string) upon their call.  Function plugin  are defined in files named [filename]function.yourfunction.php[/filename] and share a common function structure:
 
 [code]
-function smarty_function_yourfunction (array $params, object $smarty, object $template) {
+function smarty_function_yourfunction (array $params, object $smarty) {
 	// function code
 }
 [/code]
@@ -53,7 +53,7 @@ function smarty_block_yourblock (array $params, string $tagdata, object $smarty,
 Within template functions and blocks, you can access the CodeIgniter superobject (and all of its libraries, models, and methods) at [span_code]$smarty->CI[/code].  For example, to make a database call within a template plugin:
 
 [code]
-function smarty_function_myfunction ($params, $smarty, $template) {
+function smarty_function_myfunction ($params, $smarty) {
 	$smarty->CI->db->select('my_id');
 	$result = $smarty->CI->db->get('my_table');
 	

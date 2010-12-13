@@ -12,7 +12,7 @@
 *
 * @return string $setting value
 */
-function smarty_function_paginate ($params, $smarty, $template) {
+function smarty_function_paginate ($params, $smarty) {
 	if (!isset($params['base_url'])) {
 		return 'The "base_url" parameter is required for {paginate}.  You should probably set it to {$current_url}.';
 	}
