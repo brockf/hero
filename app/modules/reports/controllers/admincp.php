@@ -16,13 +16,13 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 				
-		$this->navigation->parent_active('reports');
+		$this->admin_navigation->parent_active('reports');
 	}
 	
 	function cronjob () {
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 		
-		$this->navigation->module_link('Run Cronjob Manually',site_url('cron/update/' . setting('cron_key')));
+		$this->admin_navigation->module_link('Run Cronjob Manually',site_url('cron/update/' . setting('cron_key')));
 		
 		return $this->load->view('cronjob');
 	}
@@ -133,7 +133,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function invoice ($invoice_id) {
-		$this->navigation->module_link('Back to Invoices',site_url('admincp/reports/invoices'));
+		$this->admin_navigation->module_link('Back to Invoices',site_url('admincp/reports/invoices'));
 		
 		$this->load->helper('format_street_address');
 	
@@ -142,7 +142,7 @@ class Admincp extends Admincp_Controller {
 		
 		// refund?
 		if ($invoice['refunded'] == FALSE) {
-			$this->navigation->module_link('Issue Refund',site_url('admincp/reports/do_refund/' . $invoice['id']));
+			$this->admin_navigation->module_link('Issue Refund',site_url('admincp/reports/do_refund/' . $invoice['id']));
 		}
 		
 		// get invoice lines

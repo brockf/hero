@@ -29,10 +29,10 @@ class Users_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('members',10,'Manage Members',site_url('admincp/users'));
-		$this->CI->navigation->child_link('members',20,'Add Member/Administrator',site_url('admincp/users/add'));
-		$this->CI->navigation->child_link('members',30,'Login Records',site_url('admincp/users/logins'));
-		$this->CI->navigation->child_link('members',40,'Member Groups',site_url('admincp/users/groups'));
+		$this->CI->admin_navigation->child_link('members',10,'Manage Members',site_url('admincp/users'));
+		$this->CI->admin_navigation->child_link('members',20,'Add Member/Administrator',site_url('admincp/users/add'));
+		$this->CI->admin_navigation->child_link('members',30,'Login Records',site_url('admincp/users/logins'));
+		$this->CI->admin_navigation->child_link('members',40,'Member Groups',site_url('admincp/users/groups'));
 	}
 	
 	/*

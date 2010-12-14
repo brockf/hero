@@ -16,11 +16,11 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 		
-		$this->navigation->parent_active('members');
+		$this->admin_navigation->parent_active('members');
 	}
 	
 	function index () {
-		$this->navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
+		$this->admin_navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
 		
 		$this->load->library('dataset');
 		
@@ -213,20 +213,20 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// navigation
-		$this->navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
+		$this->admin_navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
 		
-		$this->navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
+		$this->admin_navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
 		
-		$this->navigation->module_link('Edit Profile',site_url('admincp/users/edit/' . $user['id']));
+		$this->admin_navigation->module_link('Edit Profile',site_url('admincp/users/edit/' . $user['id']));
 		
 		if ($user['suspended'] != TRUE) {
-			$this->navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
+			$this->admin_navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
 		}
 		else {
-			$this->navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
+			$this->admin_navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
 		}
 		
-		$this->navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
+		$this->admin_navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
 		
 		// prep data
 		$custom_fields = $this->user_model->get_custom_fields();
@@ -523,7 +523,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function groups () {
-		$this->navigation->module_link('Add New Member Group',site_url('admincp/users/group_add'));
+		$this->admin_navigation->module_link('Add New Member Group',site_url('admincp/users/group_add'));
 		
 		$this->load->library('dataset');
 		
@@ -673,10 +673,10 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function data () {
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 		
-		$this->navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
-		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/1/' . urlencode(base64_encode(site_url('admincp/users/data')))));
+		$this->admin_navigation->module_link('Add Custom Field',site_url('admincp/users/data_add'));
+		$this->admin_navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/1/' . urlencode(base64_encode(site_url('admincp/users/data')))));
 		
 		$this->load->library('dataset');
 		
@@ -771,7 +771,7 @@ class Admincp extends Admincp_Controller {
 	* @return bool Redirects to dataset
 	*/
 	function data_delete ($fields, $return_url) {
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 		
 		$this->load->library('asciihex');
 		

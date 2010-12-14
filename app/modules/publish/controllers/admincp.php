@@ -16,7 +16,7 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 				
-		$this->navigation->parent_active('publish');
+		$this->admin_navigation->parent_active('publish');
 	}
 	
 	function manage	($type_id) {
@@ -31,7 +31,7 @@ class Admincp extends Admincp_Controller {
 		
 		// we'll show all content if they don't pass a $type_id
 		if ($type_id == FALSE) {
-			$this->navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
+			$this->admin_navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
 			
 			$this->load->model('content_type_model');
 			$types = $this->content_type_model->get_content_types();
@@ -120,7 +120,7 @@ class Admincp extends Admincp_Controller {
 				die(show_error('Content type does not exist.'));
 			}
 			
-			$this->navigation->module_link('Publish New ' . $type['singular_name'],site_url('admincp/publish/create_post/' . $type_id));
+			$this->admin_navigation->module_link('Publish New ' . $type['singular_name'],site_url('admincp/publish/create_post/' . $type_id));
 			
 			if ($type['is_standard'] == TRUE) {
 				// standard content, we'll display it as such
@@ -733,7 +733,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function topics () {
-		$this->navigation->module_link('Add Topic',site_url('admincp/publish/topic_add'));
+		$this->admin_navigation->module_link('Add Topic',site_url('admincp/publish/topic_add'));
 		
 		$this->load->library('dataset');
 		
@@ -787,7 +787,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function types () {
-		$this->navigation->module_link('New Content Type',site_url('admincp/publish/type_new'));
+		$this->admin_navigation->module_link('New Content Type',site_url('admincp/publish/type_new'));
 		
 		$this->load->library('dataset');
 		
@@ -973,8 +973,8 @@ class Admincp extends Admincp_Controller {
 			die(show_error('No content type exists with this ID.'));
 		}
 	
-		$this->navigation->module_link('Add Field',site_url('admincp/publish/type_field_add/' . $type['id']));
-		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/' . $type['custom_field_group_id'] . '/' . urlencode(base64_encode(site_url('admincp/publish/type_fields/' . $type['id'])))));
+		$this->admin_navigation->module_link('Add Field',site_url('admincp/publish/type_field_add/' . $type['id']));
+		$this->admin_navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/' . $type['custom_field_group_id'] . '/' . urlencode(base64_encode(site_url('admincp/publish/type_fields/' . $type['id'])))));
 		
 		$this->load->library('dataset');
 		

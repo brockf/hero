@@ -16,9 +16,9 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 		
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 		
-		$this->navigation->module_link('Go Back','javascript:history.go(-1)');
+		$this->admin_navigation->module_link('Go Back','javascript:history.go(-1)');
 	}
 	
 	/**

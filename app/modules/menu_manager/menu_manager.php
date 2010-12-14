@@ -29,7 +29,7 @@ class Menu_manager extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
+		$this->CI->admin_navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
 	}
 	
 	/*

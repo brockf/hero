@@ -11,7 +11,7 @@
 		</div>
 		<div id="navigation">
 			<ul>
-				<?=$this->navigation->display();?>
+				<?=$this->admin_navigation->display();?>
 			</ul>
 			<div style="clear: both"></div>
 		</div>
@@ -23,4 +23,4 @@
 			<div id="box-bottom-left"></div>
 			<div id="box-bottom-right"></div>
 			<div id="box-content">
-			<?=$this->navigation->get_module_links();?>
+			<?=$this->admin_navigation->get_module_links();?>

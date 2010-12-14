@@ -29,7 +29,7 @@ class Search_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('configuration',35,'Search',site_url('admincp/search'));
+		$this->CI->admin_navigation->child_link('configuration',35,'Search',site_url('admincp/search'));
 	}
 	
 	function update ($db_version) {	

@@ -29,7 +29,7 @@ class Paywall_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('configuration',36,'Paywall',site_url('admincp/paywall'));
+		$this->CI->admin_navigation->child_link('configuration',36,'Paywall',site_url('admincp/paywall'));
 	}
 	
 	/*

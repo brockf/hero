@@ -16,14 +16,14 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 		
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 		
-		$this->navigation->module_link('New Email',site_url('admincp/emails/new_email'));
-		$this->navigation->module_link('Edit Global Email Layout',site_url('admincp/emails/email_layout'));
+		$this->admin_navigation->module_link('New Email',site_url('admincp/emails/new_email'));
+		$this->admin_navigation->module_link('Edit Global Email Layout',site_url('admincp/emails/email_layout'));
 	}
 	
 	function send() {
-		$this->navigation->clear_module_links();
+		$this->admin_navigation->clear_module_links();
 	
 		// get usergroups
 		$this->load->model('users/usergroup_model');

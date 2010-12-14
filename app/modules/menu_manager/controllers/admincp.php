@@ -16,7 +16,7 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 				
-		$this->navigation->parent_active('design');
+		$this->admin_navigation->parent_active('design');
 	}
 	
 	function index () {	

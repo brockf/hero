@@ -29,7 +29,7 @@ class Phpbb_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('configuration',65,'phpBB3',site_url('admincp/phpbb'));
+		$this->CI->admin_navigation->child_link('configuration',65,'phpBB3',site_url('admincp/phpbb'));
 	}
 	
 	/*

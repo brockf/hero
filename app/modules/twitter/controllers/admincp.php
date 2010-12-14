@@ -16,7 +16,7 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 		
-		$this->navigation->parent_active('configuration');
+		$this->admin_navigation->parent_active('configuration');
 	}
 	
 	function index() {
@@ -48,8 +48,8 @@ class Admincp extends Admincp_Controller {
 		
 		// Twitter credentials are solid!
 		
-		$this->navigation->module_link('Update Application Credentials',site_url('admincp/twitter/register_application'));
-		$this->navigation->module_link('Update Authorization Tokens',site_url('admincp/twitter/update_oauth'));
+		$this->admin_navigation->module_link('Update Application Credentials',site_url('admincp/twitter/register_application'));
+		$this->admin_navigation->module_link('Update Authorization Tokens',site_url('admincp/twitter/update_oauth'));
 		
 		$this->load->library('admin_form');
 		$form = new Admin_form;

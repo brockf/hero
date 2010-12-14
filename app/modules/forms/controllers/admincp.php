@@ -16,11 +16,11 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 				
-		$this->navigation->parent_active('publish');
+		$this->admin_navigation->parent_active('publish');
 	}
 	
 	function index () {	
-		$this->navigation->module_link('New Form',site_url('admincp/forms/add'));
+		$this->admin_navigation->module_link('New Form',site_url('admincp/forms/add'));
 	
 		$this->load->library('dataset');
 		
@@ -129,7 +129,7 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function response ($form_id, $response_id) {
-		$this->navigation->module_link('Back to Responses','javascript:history.go(-1)');
+		$this->admin_navigation->module_link('Back to Responses','javascript:history.go(-1)');
 	
 		$this->load->model('form_model');
 		
@@ -326,8 +326,8 @@ class Admincp extends Admincp_Controller {
 			die(show_error('No form exists with this ID.'));
 		}
 	
-		$this->navigation->module_link('Add Field',site_url('admincp/forms/field_add/' . $form['id']));
-		$this->navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/' . $form['custom_field_group_id'] . '/' . urlencode(base64_encode(site_url('admincp/forms/fields/' . $form['id'])))));
+		$this->admin_navigation->module_link('Add Field',site_url('admincp/forms/field_add/' . $form['id']));
+		$this->admin_navigation->module_link('Preview &amp; Arrange Fields',site_url('admincp/custom_fields/order/' . $form['custom_field_group_id'] . '/' . urlencode(base64_encode(site_url('admincp/forms/fields/' . $form['id'])))));
 		
 		$this->load->library('dataset');
 		

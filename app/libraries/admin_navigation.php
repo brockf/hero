@@ -1,6 +1,6 @@
 <?php
 
-class Navigation {
+class Admin_navigation {
 	var $navigation; // stores the relational tree
 	var $items; // stores details for each item
 	var $item_count; // stores the increasing unique ID for each item

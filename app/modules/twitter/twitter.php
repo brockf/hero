@@ -29,7 +29,7 @@ class Twitter_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('configuration',60,'Twitter',site_url('admincp/twitter'));
+		$this->CI->admin_navigation->child_link('configuration',60,'Twitter',site_url('admincp/twitter'));
 	}
 	
 	/*

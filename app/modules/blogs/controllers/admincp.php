@@ -16,11 +16,11 @@ class Admincp extends Admincp_Controller {
 	{
 		parent::__construct();
 				
-		$this->navigation->parent_active('publish');
+		$this->admin_navigation->parent_active('publish');
 	}
 	
 	function index () {	
-		$this->navigation->module_link('New Blog/Archive',site_url('admincp/blogs/add'));
+		$this->admin_navigation->module_link('New Blog/Archive',site_url('admincp/blogs/add'));
 	
 		$this->load->library('dataset');
 		

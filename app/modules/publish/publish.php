@@ -29,7 +29,7 @@ class Publish extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('publish',10,'Publish New Content',site_url('admincp/publish/create'));
+		$this->CI->admin_navigation->child_link('publish',10,'Publish New Content',site_url('admincp/publish/create'));
 		
 		// alows for 20 possible content types in the menu - more than enough
 		$weight = 11;
@@ -38,12 +38,12 @@ class Publish extends Module {
 		$this->CI->db->order_by('content_type_friendly_name','ASC');
 		$result = $this->CI->db->get('content_types');
 		foreach ($result->result_array() as $type) {
-			$this->CI->navigation->child_link('publish',$weight,'&#149; Manage ' . $type['content_type_friendly_name'],site_url('admincp/publish/manage/' . $type['content_type_id']));
+			$this->CI->admin_navigation->child_link('publish',$weight,'&#149; Manage ' . $type['content_type_friendly_name'],site_url('admincp/publish/manage/' . $type['content_type_id']));
 			$weight++;
 		}
 		
-		$this->CI->navigation->child_link('publish',50,'Topics',site_url('admincp/publish/topics'));
-		$this->CI->navigation->child_link('publish',60,'Content Types',site_url('admincp/publish/types'));
+		$this->CI->admin_navigation->child_link('publish',50,'Topics',site_url('admincp/publish/topics'));
+		$this->CI->admin_navigation->child_link('publish',60,'Content Types',site_url('admincp/publish/types'));
 	}
 	
 	/*

@@ -29,7 +29,7 @@ class Forms_module extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->navigation->child_link('publish',45,'Forms',site_url('admincp/forms'));
+		$this->CI->admin_navigation->child_link('publish',45,'Forms',site_url('admincp/forms'));
 	}
 	
 	/*

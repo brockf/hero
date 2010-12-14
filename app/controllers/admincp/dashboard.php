@@ -15,7 +15,7 @@ class Dashboard extends Admincp_Controller {
 	function __construct() {
 		parent::__construct();
 		
-		$this->navigation->parent_active('dashboard');
+		$this->admin_navigation->parent_active('dashboard');
 	}
 	
 	function index() {

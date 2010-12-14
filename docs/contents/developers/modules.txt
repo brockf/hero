@@ -103,7 +103,7 @@ class Modulename extends Module {
 	// ... variables, constructor, updator logic, etc...
 	
 	function admin_preload () {
-		$this->CI->navigation->child_link('configuration',60,$this->name . ' Configuration',site_url('admincp/modulename/configuration'));
+		$this->CI->admin_navigation->child_link('configuration',60,$this->name . ' Configuration',site_url('admincp/modulename/configuration'));
 	}
 }
 [/code]
@@ -151,7 +151,7 @@ class Admincp extends Admincp_Controller {
 		// sets the active navigation tab to "publish"
 		// 	other options: storefront, members, reports, design, configuration
 		// you can re-specify or change this within any method, as well
-		$this->navigation->parent_active('publish');
+		$this->admin_navigation->parent_active('publish');
 	}
 }
 [/code]
