@@ -1,0 +1,26 @@
+- Find and replace:
+
+[h1][/h1]
+[APPNAME]
+[code]
+[span_code] (inline code tag)
+[filename]
+[url] (not a real link, just an indication of a hypothetical URL)
+*text* (bold)
+**text** (bold, italics)
+[http://www.link.com](link)  - normal ink
+[devs/classes/admin_form](link text)  - internal link
+* list
+[note][/note]
+
+- Parse [h2]'s as subheading and list as Table of Contents for each article
+
+- Files:
+
+- [devs/classes/admin_form](Administration Form Library) (Admin_form)
+- [devs/classes/dataset](Dataset Listing Library) (Dataset)
+- [devs/classes/notifications](Notification Library) (Notifications)
+- [devs/classes/navigation](Navigation Library) (Navigation)
+- [devs/classes/links](Universal Links Model) (Link_model)
+- [devs/classes/settings](Settings Model) (Settings_model)
+- [devs/classes/custom_fields](Custom Fields Model) (Custom_fields_model)
