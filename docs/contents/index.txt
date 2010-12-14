@@ -3,3 +3,55 @@
 [designers/index](Designers' Guide)
 
 [developers/index](Developers' Guide)
+
+Basic Info
+- Introduction (What is it?  features, etc)
+- App Structure (database vs software)
+- License Agreement
+- Changelog
+
+Installation
+- Server Requirements
+- Installation (include renaming your theme folder if you want to customize, CRONJOB)
+- Upgrading
+- Troubleshooting (.htaccess not uploaded, IonCube loaders, PHP version, MySQL not localhost, wrong license'd domain, server behind firewall with IP license, error but error_reporting is turned off)
+- Mass Deployment (ad for Parachute)
+
+Configuration
+- Settings
+- Payment Gateways
+- Security (force_https, SSL certificates)
+- Search
+- Custom Fields
+- Emails
+- Membership Groups
+- Advanced (config.php stuff)
+
+Publishing
+- Store Collections/Products
+- Topics
+- Content Types
+- RSS Feeds
+- Blogs
+- Forms
+
+Designers
+- Introduction
+- The Smarty Template Engine
+- Themes (what they are how, to release them, etc.)
+- Stylesheets & JavaScript
+- Template Plugins (functions, block plugins, link to Smarty library, where to place plugins, where all plugins are found)
+- Template Variables (looping, foreach, block loops, conditionals, etc., tell how they are defined and how they can be defined)
+- Mapping URL's to Templates (automappings + custom mappings, defining routes, etc.)
+- Reference
+	- Publish
+	- Store
+	- Subscriptions
+	- Access Restrictions/Paywalls (Privileges & Paywall)
+	- Members
+	- Blogs
+	- Menus
+	- Search
+	- Custom Fields
+	- Forms
+	- RSS Feeds

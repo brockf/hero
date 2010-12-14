@@ -25,18 +25,18 @@ class Admincp_Controller extends MY_Controller {
 		}
 	
 		// store dynamically-generated navigation
-		$this->load->library('navigation');
+		$this->load->library('admin_navigation');
 		
 		// add basic navigation categories
-		$this->navigation->parent_link('dashboard','Dashboard');
-		$this->navigation->parent_link('publish','Publish');
-		$this->navigation->parent_link('storefront','Storefront');
-		$this->navigation->parent_link('members','Members');
-		$this->navigation->parent_link('reports','Reports');
-		$this->navigation->parent_link('design','Design');
-		$this->navigation->parent_link('configuration','Configuration');
+		$this->admin_navigation->parent_link('dashboard','Dashboard');
+		$this->admin_navigation->parent_link('publish','Publish');
+		$this->admin_navigation->parent_link('storefront','Storefront');
+		$this->admin_navigation->parent_link('members','Members');
+		$this->admin_navigation->parent_link('reports','Reports');
+		$this->admin_navigation->parent_link('design','Design');
+		$this->admin_navigation->parent_link('configuration','Configuration');
 		
-		$this->navigation->child_link('dashboard',1,'Dashboard',site_url('admincp'));
+		$this->admin_navigation->child_link('dashboard',1,'Dashboard',site_url('admincp'));
 		
 		// admin-specific loading
 		$this->load->helper('admincp/dataset_link');
