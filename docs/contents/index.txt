@@ -5,7 +5,7 @@
 [developers/index](Developers' Guide)
 
 Basic Info
-- Introduction (What is it?  features, etc)
+- Introduction (What is it?  features, etc, emphasize up-and-running in 5 min)
 - App Structure (database vs software)
 - License Agreement
 - Changelog
@@ -23,9 +23,10 @@ Configuration
 - Security (force_https, SSL certificates)
 - Search
 - Custom Fields
-- Emails
+- Emails (including using Smarty code)
 - Membership Groups
-- Advanced (config.php stuff)
+- Branding
+- Advanced (config.php stuff, writable folder)
 
 Publishing
 - Store Collections/Products
@@ -35,6 +36,10 @@ Publishing
 - Blogs
 - Forms
 
+Addons
+- phpBB
+- Twitter
+
 Designers
 - Introduction
 - The Smarty Template Engine
@@ -42,8 +47,10 @@ Designers
 - Stylesheets & JavaScript
 - Template Plugins (functions, block plugins, link to Smarty library, where to place plugins, where all plugins are found)
 - Template Variables (looping, foreach, block loops, conditionals, etc., tell how they are defined and how they can be defined)
-- Mapping URL's to Templates (automappings + custom mappings, defining routes, etc.)
+- Mapping URL's to Templates (setting homepage, automappings + custom mappings, defining routes, etc.)
 - Reference
+	- Global Variables
+	- Global Plugins
 	- Publish
 	- Store
 	- Subscriptions
@@ -55,3 +62,67 @@ Designers
 	- Custom Fields
 	- Forms
 	- RSS Feeds
+	
+Developers
+- Introduction
+- The CodeIgniter Framework (differences between CI and EF: $_GET variables are OK!, MY_Cart, MY_Email, MY_Upload, Admincp_Controller, FrontController, Modules)
+- Best Practices (get_x() vs get_x's(), naming_scheme, etc)
+- Security (XSS Filtering, etc.)
+- Template Plugins (loop_data)
+- Module Development
+- Hooks & Bindings (email data, list all hooks)
+- Cronjobs
+- Forms & Custom Fieldtypes
+- Errors & Logging (turn on logging, format errors, how to use show_error() and log_message())
+- Debug/Profile Mode
+- Reference
+	- Head Assets Library
+	- Dataset Library
+	- Link Model
+	- Payment Gateways
+	- Admin Form Library
+	- Admin Navigation Library
+	- Form Builder Library
+	- Fieldtype Library
+	- App Hooks Library
+	- Array to CSV Library
+	- Array to XML Library
+	- Array to JSON Helper
+	- Clean String Helper
+	- Image Thumb Helper
+	- URL Helper
+	- Setting Helper
+	- Template Files Helper
+	- Time Since Helper
+	- Stats Library
+	- Notices Library
+	- States Model
+	- Custom Fields Model
+	- Invoice Model
+	- Subscription Model
+	- Subscription Plan Model
+	- Blog Model
+	- Coupon Model
+	- Custom Fields Model
+	- Email Model
+	- Form Model
+	- Menu Model
+	- Module Model
+	- Paywall Model
+	- Content Model
+	- Content Type Model
+	- Topic Model
+	- RSS Model
+	- Settings Model
+	- Product Model
+	- Product Collections Model
+	- Cart Model
+	- Order Model
+	- Product Option Model
+	- Products Model
+	- Shipping Model
+	- Taxes Model
+	- Theme Model
+	- User Model
+	- Usergroup Model
+	- Login Model
