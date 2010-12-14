@@ -502,7 +502,7 @@ class User_model extends CI_Model
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
-		$unique_username = ($editing == FALSE) ? 'unique_username|' : '';
+		$unique_username = ($editing == FALSE) ? '|unique_username' : '';
 		$CI->form_validation->set_rules('username','Username','trim|alphanumeric' . $unique_username);
 		
 		if ($editing == FALSE) {
