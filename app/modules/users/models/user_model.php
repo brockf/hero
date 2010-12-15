@@ -911,7 +911,7 @@ class User_model extends CI_Model
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
-		$CI->app_hooks->trigger('member_delete');
+		$CI->app_hooks->trigger('member_delete', $user_id);
 		$CI->app_hooks->reset();
 		
 		return TRUE;
@@ -982,7 +982,7 @@ class User_model extends CI_Model
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
-		$CI->app_hooks->trigger('member_suspend');
+		$CI->app_hooks->trigger('member_suspend', $user_id);
 		$CI->app_hooks->reset();
 		
 		return TRUE;
@@ -1001,7 +1001,7 @@ class User_model extends CI_Model
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
-		$CI->app_hooks->trigger('member_suspend');
+		$CI->app_hooks->trigger('member_unsuspend', $user_id);
 		$CI->app_hooks->reset();
 		
 		return TRUE;

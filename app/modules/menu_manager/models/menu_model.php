@@ -18,6 +18,13 @@ class Menu_model extends CI_Model
 		parent::CI_Model();
 	}
 	
+	/**
+	* Clear Cache
+	*
+	* Menus are cached to limit the number of queries per page.  This method clears that cache and should be run upon menu modifications.
+	*
+	* @return void
+	*/
 	function clear_cache ($menu_id) {
 		$this->load->helper('directory');
 		$files = directory_map($this->config->item('path_writeable') . 'menu_cache');
@@ -28,10 +35,10 @@ class Menu_model extends CI_Model
 			}
 		}
 		
-		return TRUE;
+		return;
 	}
 	
-	/*
+	/**
 	* Create New Menu
 	*
 	* @param string $name
@@ -57,7 +64,7 @@ class Menu_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Add Link to Menu
 	*
 	* @param int $menu_id Which menu does it belong to?
@@ -65,9 +72,9 @@ class Menu_model extends CI_Model
 	* @param string $type Either 'external', 'special', or 'link'
 	* @param int $link_id If it's in the universal link database, what's the link_id?
 	* @param string $text The display text
-	* @param string $special_type If it's a "special" link, give it a name (e.g., "store", "account")
-	* @param string $external_url The full URL for external links
-	* @param array $privileges A serialized array of member groups who can see it
+	* @param string $special_type If it's a "special" link, give it a name (e.g., "store", "account") (default: FALSE)
+	* @param string $external_url The full URL for external links (default: FALSE)
+	* @param array $privileges A serialized array of member groups who can see it (default: array())
 	*
 	* @return int $menu_link_id
 	*/
@@ -101,13 +108,13 @@ class Menu_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update Link
 	*
 	* @param int $menu_link_id The link ID to edit
 	* @param string $text The display text
-	* @param array $privileges A serialized array of member groups who can see it
-	* @param string $class The element CSS class
+	* @param array $privileges A serialized array of member groups who can see it (default: array())
+	* @param string $class The element CSS class (default: FALSE)
 	*
 	* @return int $menu_link_id
 	*/
@@ -123,12 +130,26 @@ class Menu_model extends CI_Model
 		return TRUE;
 	}
 	
+	/**
+	* Remove a link
+	*
+	* @param int $menu_link_id
+	*
+	* @return boolean
+	*/
 	function remove_link ($menu_link_id) {
 		$this->db->delete('menus_links', array('menu_link_id' => $menu_link_id));
 		
 		return TRUE;
 	}
 	
+	/**
+	* Get Menu
+	*
+	* @param int $id
+	*
+	* @return array
+	*/
 	function get_menu ($id) {
 		$menu = $this->get_menus(array('id' => $id));
 		
@@ -139,6 +160,13 @@ class Menu_model extends CI_Model
 		return $menu[0];
 	}
 	
+	/**
+	* Get Menu by Name
+	*
+	* @param string $name
+	*
+	* @return array
+	*/
 	function get_menu_by_name ($name) {
 		$menu = $this->get_menus(array('name' => $name));
 		
@@ -149,12 +177,13 @@ class Menu_model extends CI_Model
 		return $menu[0];
 	}
 		
-	/*
+	/**
 	* Get Menus
 	*
 	* @param int $filters['id']
 	* @param int $filters['name']
 	*
+	* @return array 
 	*/
 	function get_menus ($filters = array()) {
 		if (isset($filters['id'])) {
@@ -182,6 +211,13 @@ class Menu_model extends CI_Model
 		return $menus;
 	}
 	
+	/**
+	* Get Link
+	*
+	* @param int $id 
+	*
+	* @return array 
+	*/
 	function get_link ($id) {
 		$link = $this->get_links(array('id' => $id));
 		
@@ -193,13 +229,11 @@ class Menu_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Get Links
 	*
-	* Get link items
-	*
-	* @param $filters['menu'] Menu ID
-	* @param $filters['parent'] Parent link ID
+	* @param int $filters['menu'] Menu ID
+	* @param int $filters['parent'] Parent link ID
 	*
 	* @return array $links
 	*/

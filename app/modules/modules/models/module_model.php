@@ -7,7 +7,7 @@
 *
 * @author Electric Function, Inc.
 * @package Electric Framework
-
+* @copyright Electric Function, Inc.
 */
 
 class Module_model extends CI_Model {
@@ -26,6 +26,13 @@ class Module_model extends CI_Model {
 		}
 	}
 	
+	/**
+	* Get Module
+	*
+	* @param string $name
+	*
+	* @return array
+	*/
 	function get_module ($name) {
 		if (!isset($this->modules_cache[$name])) {
 			return FALSE;
@@ -34,6 +41,14 @@ class Module_model extends CI_Model {
 		return $this->modules_cache[$name];
 	}
 	
+	/**
+	* New Module
+	*
+	* @param string $name
+	* @param float $version
+	*
+	* @return boolean 
+	*/
 	function new_module ($name, $version) {
 		$insert_fields = array(
 							'module_name' => $name,
@@ -45,6 +60,14 @@ class Module_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/**
+	* Update Version
+	*
+	* @param string $name
+	* @param float $version
+	*
+	* @return boolean 
+	*/
 	function update_version ($name, $version) {
 		$this->db->update('modules',array('module_version' => $version), array('module_name' => $name));
 		

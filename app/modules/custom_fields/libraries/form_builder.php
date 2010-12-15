@@ -30,9 +30,9 @@ class Form_builder {
 	*
 	* Remove/unset all field objects in this form.  Clear validation errors.
 	*
-	* @return void
+	* @return void 
 	*/
-	function reset() {
+	public function reset() {
 		foreach ($this->form as $field) {
 			unset($field);
 		}
@@ -48,9 +48,9 @@ class Form_builder {
 	*
 	* @param int $custom_field_group_id
 	*
-	* @return boolean
+	* @return boolean 
 	*/
-	function build_form_from_group ($custom_field_group_id) {
+	public function build_form_from_group ($custom_field_group_id) {
 		$this->reset();
 		
 		$custom_fields = $this->CI->custom_fields_model->get_custom_fields(array('group' => $custom_field_group_id));
@@ -71,9 +71,9 @@ class Form_builder {
 	*
 	* @param array get_custom_fields array
 	*
-	* @return boolean
+	* @return boolean 
 	*/
-	function build_form_from_array ($custom_fields) {
+	public function build_form_from_array ($custom_fields) {
 		$this->reset();
 		
 		$this->CI->load->library('custom_fields/fieldtype');
@@ -90,9 +90,11 @@ class Form_builder {
 	*
 	* Manually add a fieldtype object to this form
 	*
-	* @param string $type
+	* @param string $type 
+	*
+	* @return object Field object
 	*/
-	function add_field ($type) {
+	public function add_field ($type) {
 		$this->CI->load->library('custom_fields/fieldtype');
 		
 		$field_object = $this->CI->fieldtype->create($type);
@@ -114,7 +116,7 @@ class Form_builder {
 	*
 	* @return boolean TRUE if no errors, FALSE if errors
 	*/
-	function validate_post () {
+	public function validate_post () {
 		// initial rules-based validation
 		$this->CI->load->library('form_validation');
 		reset($this->form);
@@ -151,11 +153,11 @@ class Form_builder {
 	* Return validation errors, either as a paragraph (like CI's validation_errors())
 	* or as an array.
 	*
-	* @param boolean $array Set to TRUE to retrieve only the array.  Default: FALSE.
+	* @param boolean $array Set to TRUE to retrieve only the array.  (default: FALSE).
 	*
-	* @return string|array
+	* @return string|array 
 	*/
-	function validation_errors ($array = FALSE) {
+	public function validation_errors ($array = FALSE) {
 		$return = '';
 		$errors = array();
 		
@@ -188,9 +190,9 @@ class Form_builder {
 	* Each field will have a key in the array and a corresponding value
 	* built by the Fieldtype's post_to_value() method.
 	*
-	* @return array
+	* @return array 
 	*/
-	function post_to_array () {
+	public function post_to_array () {
 		reset($this->form);
 		
 		$array = array();
@@ -213,7 +215,7 @@ class Form_builder {
 	*
 	* @return boolean TRUE
 	*/
-	function set_values ($values = array()) {
+	public function set_values ($values = array()) {
 		reset($this->form);
 		
 		foreach ($this->form as $field) {
@@ -228,16 +230,16 @@ class Form_builder {
 	*
 	* Sometimes, like when we are editing an existing entry, we don't want to use default values.
 	*
-	* @return boolean TRUE
+	* @return void 
 	*/
-	function clear_defaults () {
+	public function clear_defaults () {
 		reset($this->form);
 		
 		foreach ($this->form as $field) {
 			$field->default_value($field->name, FALSE);
 		}
 		
-		return TRUE;
+		return;
 	}
 	
 	/**
@@ -248,7 +250,7 @@ class Form_builder {
 	*
 	* @return string HTML for the form (a series of <li> elements)
 	*/
-	function output_admin () {
+	public function output_admin () {
 		reset($this->form);
 		
 		$return = '';

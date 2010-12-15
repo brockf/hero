@@ -24,9 +24,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return float
+	* @return float 
 	*/
-	function revenue ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function revenue ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -46,9 +46,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return float
+	* @return float 
 	*/
-	function revenue_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function revenue_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -77,9 +77,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function orders ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function orders ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -100,9 +100,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function orders_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function orders_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -132,9 +132,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function subscriptions ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function subscriptions ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -154,9 +154,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function subscriptions_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function subscriptions_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -185,9 +185,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function registrations ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function registrations ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -207,9 +207,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function registrations_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function registrations_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -238,9 +238,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function logins ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function logins ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -260,9 +260,9 @@ class Stats {
 	* @param date $date_start
 	* @param date $date_end (default: TODAY)
 	*
-	* @return int
+	* @return int 
 	*/
-	function logins_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
+	public function logins_by_day ($date_start = '24 hours ago', $date_end = FALSE) {
 		if ($date_end === FALSE) {
 			$date_end = date('Y-m-d H:i:s');
 		}
@@ -285,7 +285,7 @@ class Stats {
 		return $days;
 	}
 	
-	function complete_days ($days, $date_start, $date_end) {
+	private function complete_days ($days, $date_start, $date_end) {
 		$date_start = strtotime($date_start);
 		$date_end = strtotime($date_end);
 		

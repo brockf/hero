@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
 * Custom Fields Model
 *
 * Supports many areas of the app by providing a universal format for custom fields,
@@ -13,12 +13,12 @@
 */
 
 class Custom_fields_model extends CI_Model {
-	/*
+	/**
 	* @var array Holds previous get_custom_fields calls in memory
 	*/
 	var $cache;
 	
-	/*
+	/**
 	* @var string The full path to upload custom file uploads to
 	*/
 	var $upload_directory;
@@ -30,36 +30,34 @@ class Custom_fields_model extends CI_Model {
 		$this->upload_directory = setting('path_custom_field_uploads');
 	}
 	
-	/*
+	/**
 	* Reset Order for a Field Group
 	*
 	* @param int $custom_field_group
 	*
 	*/
-	
-	function reset_order ($custom_field_group) {
+	public function reset_order ($custom_field_group) {
 		$this->db->update('custom_fields',array('custom_field_order' => '0'), array('custom_field_group' => $custom_field_group));
 	}
 	
-	/*
+	/**
 	* Update Order
 	*
 	* @param int $field_id
 	* @param int $new_order
 	*/
-	
-	function update_order ($field_id, $new_order) {
+	public function update_order ($field_id, $new_order) {
 		$this->db->update('custom_fields',array('custom_field_order' => $new_order), array('custom_field_id' => $field_id));
 	}
 	
-	/*
+	/**
 	* Get Custom Field
 	*
 	* @param int $custom_field_id
 	*
-	* @return boolean|array $custom_field or FALSE
+	* @return array $custom_field or FALSE
 	*/
-	function get_custom_field($custom_field_id) {
+	public function get_custom_field($custom_field_id) {
 		$return = $this->get_custom_fields(array('id' => $custom_field_id));
 		
 		if (empty($return)) {
@@ -70,17 +68,17 @@ class Custom_fields_model extends CI_Model {
 		}
 	}
 	
-	/*
+	/**
 	* Get Custom Fields
 	*
 	* Retrieves custom fields ordered by custom_field_order, with caching
 	* 
-	* @param $filters['group'] The custom field group
-	* @param $filters['id'] A custom field ID
+	* @param int $filters['group'] The custom field group
+	* @param int $filters['id'] A custom field ID
 	*
 	* @return array $fields The custom fields
 	*/
-	function get_custom_fields ($filters = array()) {
+	public function get_custom_fields ($filters = array()) {
 		if (isset($this->cache[base64_encode(serialize($filters))])) {
 			return $this->cache[base64_encode(serialize($filters))];
 		}
@@ -122,7 +120,7 @@ class Custom_fields_model extends CI_Model {
 		return $fields;
 	}
 	
-	/*
+	/**
 	* New Custom Field
 	*
 	* Create new custom field record and modify the database
@@ -130,18 +128,18 @@ class Custom_fields_model extends CI_Model {
 	* @param int $group The field group id
 	* @param string $name The label used for the field (will be converted automatically to a system-friendly name)
 	* @param string $type Either "text", "textarea", "password", "wysiwyg", "select", "multiselect", "radio", "checkbox", or "file"
-	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc.
-	* @param string $default Default selected value
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $help A string of help text
-	* @param boolean $required TRUE to require the field for submission
-	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain
-	* @param string|boolean $db_table The database table to add the field to, else FALSE
-	* @param array $data Array of additional data which should be associated with this field
+	* @param array|string $options A string of newline-separated values like (test=value\nvalue2, etc.) or an array like array(array(name => 'test', value => 'test2')) etc. (default: array())
+	* @param string $default Default selected value (default: '')
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: '')
+	* @param string $help A string of help text (default: '')
+	* @param boolean $required TRUE to require the field for submission (default: FALSE)
+	* @param array $validators One or more validators values in an array: whitespace, email, alphanumeric, numeric, domain (default: array())
+	* @param string|boolean $db_table The database table to add the field to, else FALSE (default: FALSE)
+	* @param array $data Array of additional data which should be associated with this field (default: array())
 	*
 	* @return int $custom_field_id
 	*/
-	function new_custom_field ($group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
+	public function new_custom_field ($group, $name, $type, $options = array(), $default = '', $width = '', $help = '', $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
 		$options = $this->format_options($options);
 		
 		// calculate system name
@@ -192,14 +190,14 @@ class Custom_fields_model extends CI_Model {
 		return $insert_id;
 	}
 	
-	/*
+	/**
 	* Get appropriate database field type
 	*
 	* @param string $type
 	*
 	* @return string database field type
 	*/
-	function get_type ($type) {
+	private function get_type ($type) {
 		$CI =& get_instance();
 		
 		$CI->load->library('custom_fields/fieldtype');
@@ -209,7 +207,7 @@ class Custom_fields_model extends CI_Model {
 		return $db_type;
 	}
 	
-	/*
+	/**
 	* Update Custom Field
 	*
 	* Updates custom field records as well as modifies the appropriate database
@@ -229,7 +227,7 @@ class Custom_fields_model extends CI_Model {
 	*
 	* @return boolean TRUE
 	*/
-	function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
+	public function update_custom_field ($custom_field_id, $group, $name, $type, $options = array(), $default, $width, $help, $required = FALSE, $validators = array(), $db_table = FALSE, $data = array()) {
 		$options = $this->format_options($options);
 		
 		// we may need the old system name
@@ -269,17 +267,17 @@ class Custom_fields_model extends CI_Model {
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete Custom Field
 	*
 	* Delete custom field record and modify database
 	*
 	* @param int $id The ID of the field
-	* @param string|boolean The database table to reflect the changes, else FALSE
+	* @param string|boolean $db_table The database table to reflect the changes, else FALSE
 	*
 	* @return boolean TRUE
 	*/
-	function delete_custom_field ($id, $db_table = FALSE) {
+	public function delete_custom_field ($id, $db_table = FALSE) {
 		if ($db_table != FALSE) {
 			$this->load->dbforge();
 			
@@ -293,7 +291,7 @@ class Custom_fields_model extends CI_Model {
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get System Name
 	*
 	* Gets the system name for a field, by ID
@@ -302,7 +300,7 @@ class Custom_fields_model extends CI_Model {
 	*
 	* @return string The custom field system/table name
 	*/
-	function get_system_name ($id) {
+	public function get_system_name ($id) {
 		$this->db->select('custom_field_name');
 		$this->db->where('custom_field_id',$id);
 		$result = $this->db->get('custom_fields');
@@ -317,7 +315,7 @@ class Custom_fields_model extends CI_Model {
 		}
 	}
 	
-	/*
+	/**
 	* New Custom Field Group
 	*
 	* Creates a custom field group
@@ -326,7 +324,7 @@ class Custom_fields_model extends CI_Model {
 	*
 	* @return int $custom_field_group_id
 	*/
-	function new_group ($name) {
+	public function new_group ($name) {
 		$insert_fields = array(
 								'custom_field_group_name' => $name
 							);
@@ -336,28 +334,28 @@ class Custom_fields_model extends CI_Model {
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Delete Group
 	*
 	* Deletes the custom field group as well as all fields in it
 	*
 	* @param int $group_id
 	*/
-	function delete_group ($id) {
+	public function delete_group ($id) {
 		$this->db->delete('custom_field_groups',array('custom_field_group_id' => $id));
 		$this->db->delete('custom_fields',array('custom_field_group' => $id));
 		
-		return TRUE;
+		return;
 	}
 	
-	/*
+	/**
 	* Format the options array
 	*
 	* @param string|array $options Either a newline-separated field of values, or an array of pre-formatted values
 	* 
 	* @return array Array of options with a series of array(name=>value) arrays holding each option
 	*/
-	function format_options ($options) {
+	private function format_options ($options) {
 		// format $options into a series of name/value child arrays
 		if (is_array($options)) {
 			// we'll trust it's in good order

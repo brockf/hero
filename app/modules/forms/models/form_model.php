@@ -18,7 +18,7 @@ class Form_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* Create New Form
 	*
 	* @param string $title
@@ -26,11 +26,11 @@ class Form_model extends CI_Model
 	* @param string $text
 	* @param string $button_text
 	* @param string $redirect (relative URL string)
-	* @param string $email
-	* @param array $privileges Array of usergroup ID's who can access it, else FALSE or an empty array
-	* @param string $template Output template file
+	* @param string $email (default: '')
+	* @param array $privileges Array of usergroup ID's who can access it, else FALSE or an empty array (default: array())
+	* @param string $template Output template file (default: form.thtml)
  	*
- 	* @return $form_id
+ 	* @return int $form_id
  	*/ 										
 	function new_form ($title, $url_path, $text, $button_text, $redirect, $email = '', $privileges = array(), $template = 'form.thtml') {
 		$this->load->helper('clean_string');
@@ -81,7 +81,7 @@ class Form_model extends CI_Model
 		return $form_id;
 	}
 	
-	/*
+	/**
 	* Update Form
 	*
 	* @param int $form_id
@@ -90,11 +90,11 @@ class Form_model extends CI_Model
 	* @param string $text
 	* @param string $button_text
 	* @param string $redirect (relative URL string)
-	* @param string $email
-	* @param array $privileges Array of usergroup ID's who can access it, else FALSE or an empty array
-	* @param string $template Output template file
+	* @param string $email (default: '')
+	* @param array $privileges Array of usergroup ID's who can access it, else FALSE or an empty array (default: array())
+	* @param string $template Output template file (default: form.thtml)
  	*
- 	* @return $form_id
+ 	* @return int $form_id
  	*/ 										
 	function update_form ($form_id, $title, $url_path, $text, $button_text, $redirect, $email = '', $privileges = array(), $template = 'form.thtml') {
 		$form = $this->get_form($form_id);
@@ -131,7 +131,7 @@ class Form_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete Form
 	*
 	* @param int $form_id
@@ -159,9 +159,9 @@ class Form_model extends CI_Model
 	*
 	* Returns form ID from a URL_path
 	*
-	* @param $url_path
+	* @param string $url_path
 	* 
-	* @return boolean|int The form ID, or FALSE
+	* @return int The form ID, or FALSE
 	*/
 	function get_form_id($url_path) {
 		$this->db->select('form_id');
@@ -178,12 +178,12 @@ class Form_model extends CI_Model
 		return $form['form_id'];
 	}
 	
-	/*
+	/**
 	* Get Form
 	*
 	* @param int $form_id
 	*
-	* @return array
+	* @return array 
 	*/
 	function get_form ($form_id) {
 		$form = $this->get_forms(array('id' => $form_id));
@@ -203,11 +203,13 @@ class Form_model extends CI_Model
 		return $form[0];
 	}
 	
-	/*
+	/**
 	* Get Forms
+	*
 	* @param int $filters['id']
 	* @param string $filters['title']
 	*
+	* @return array 
 	*/
 	function get_forms ($filters = array()) {
 		if (isset($filters['id'])) {
@@ -254,14 +256,14 @@ class Form_model extends CI_Model
 		return $forms;
 	}
 	
-	/*
+	/**
 	* New Response
 	*
 	* @param int $form_id
-	* @param int $user_id
-	* @param array $custom_fields
+	* @param int $user_id (default: FALSE)
+	* @param array $custom_fields (default: array())
 	*
-	* @return $response_id
+	* @return int $response_id
 	*/
 	function new_response($form_id, $user_id = FALSE, $custom_fields = array()) {
 		$form = $this->get_form($form_id);
@@ -363,7 +365,7 @@ class Form_model extends CI_Model
 	* @param int $form_id
 	* @param int $response_id
 	*
-	* @return array|boolean response
+	* @return array response
 	*/
 	function get_response ($form_id, $response_id) {
 		$response = $this->get_responses(array('form_id' => $form_id, 'response_id' => $response_id));
@@ -378,14 +380,14 @@ class Form_model extends CI_Model
 	/**
 	* Get Responses
 	*
-	* @param int $filters['form_id'] (REQUIRED)
-	* @param int $filters['limit]
+	* @param int $filters['form_id'] - Required
+	* @param int $filters['limit']
 	* @param int $filters['response_id']
 	* @param string $filters['start_date']
 	* @param string $filters['end_date']
 	* @param string $filters['username']
 	*
-	* @return array|boolean responses
+	* @return array responses
 	*/
 	function get_responses ($filters = array()) {
 		if (!isset($filters['form_id'])) {

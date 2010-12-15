@@ -11,7 +11,7 @@
 *
 * @return string Web path to image thumbnail
 */
-function image_thumb ($image_path, $height = FALSE, $width = FALSE)
+function image_thumb ($image_path, $height, $width)
 {
 	if (!file_exists($image_path)) {
 		die(show_error('Image file does not exist for thumb: "' . $image_path . '".'));

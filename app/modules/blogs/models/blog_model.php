@@ -20,23 +20,24 @@ class Blog_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* Create New Blog
-	* @param int $content_type_id
+	*
+	* @param int $content_type_id Each blog displays content of only one type, specified here
  	* @param string $title Blog title
  	* @param string $url_path
  	* @param string $description Blog description
- 	* @param array $filter_author The user ID(s) to filter by
- 	* @param array $filter_topic The topic ID(s) to filter by
- 	* @param string $summary_field The column name to use for the summary
- 	* @param string $sort_field The column name to sort by
- 	* @param string $sort_dir Sort direction
- 	* @param boolean $auto_trim Should we auto trim the summary field in listings?
- 	* @param string $template The filename of the template in the theme directory to use for output
- 	* @param int $per_page How many items to show per page?
- 	* @param string Standard privileges array of member group ID's
+ 	* @param array $filter_author The user ID(s) to filter by (default: array())
+ 	* @param array $filter_topic The topic ID(s) to filter by (default: array())
+ 	* @param string $summary_field The column name to use for the summary (default: FALSE)
+ 	* @param string $sort_field The column name to sort by (default: FALSE)
+ 	* @param string $sort_dir Sort direction (default: FALSE)
+ 	* @param boolean $auto_trim Should we auto trim the summary field in listings? (default: FALSE)
+ 	* @param string $template The filename of the template in the theme directory to use for output (default: blog.html)
+ 	* @param int $per_page How many items to show per page? (default: 25)
+ 	* @param string Standard privileges array of member group ID's (default: array())
  	*
- 	* @return $blog_id
+ 	* @return int $blog_id
  	*/
 	function new_blog ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25, $privileges = array()) {
 		$this->load->helper('clean_string');
@@ -66,25 +67,25 @@ class Blog_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update Blog
 	*
 	* @param int $blog_id
-	* @param int $content_type_id
+	* @param int $content_type_id Each blog displays content of only one type, specified here
  	* @param string $title Blog title
  	* @param string $url_path
  	* @param string $description Blog description
- 	* @param array $filter_author The user ID(s) to filter by
- 	* @param array $filter_topic The topic ID(s) to filter by
- 	* @param string $summary_field The column name to use for the summary
- 	* @param string $sort_field The column name to sort by
- 	* @param string $sort_dir Sort direction
- 	* @param boolean $auto_trim Should we auto trim the summary field in listings?
- 	* @param string $template The filename of the template in the theme directory to use for output
- 	* @param int $per_page How many items to show per page?
- 	* @param string $privileges Standard privileges array of member group ID's
+ 	* @param array $filter_author The user ID(s) to filter by (default: array())
+ 	* @param array $filter_topic The topic ID(s) to filter by (default: array())
+ 	* @param string $summary_field The column name to use for the summary (default: FALSE)
+ 	* @param string $sort_field The column name to sort by (default: FALSE)
+ 	* @param string $sort_dir Sort direction (default: FALSE)
+ 	* @param boolean $auto_trim Should we auto trim the summary field in listings? (default: FALSE)
+ 	* @param string $template The filename of the template in the theme directory to use for output (default: blog.html)
+ 	* @param int $per_page How many items to show per page? (default: 25)
+ 	* @param string Standard privileges array of member group ID's (default: array())
  	*
- 	* @return TRUE
+ 	* @return boolean
  	*/
 	function update_blog ($blog_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = FALSE, $sort_dir = FALSE, $auto_trim = TRUE, $template = 'blog.thtml', $per_page = 25, $privileges = array()) {
 		$blog = $this->get_blog($blog_id);
@@ -123,7 +124,7 @@ class Blog_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete Blog
 	*
 	* @param int $blog_id
@@ -146,9 +147,9 @@ class Blog_model extends CI_Model
 	*
 	* Returns blog ID from a URL_path
 	*
-	* @param $url_path
+	* @param string $url_path
 	* 
-	* @return boolean|int The blog ID, or FALSE
+	* @return int $blog_id
 	*/
 	function get_blog_id($url_path) {
 		$this->db->select('blog_id');
@@ -171,9 +172,9 @@ class Blog_model extends CI_Model
 	* Retrieves content for a specific blog
 	*
 	* @param int $blog_id
-	* @param int $page
+	* @param int $page (default: 0)
 	*
-	* @return array|boolean Array of content else FALSE
+	* @return array Array of content else FALSE
 	*/
 	function get_blog_content ($blog_id, $page = 0) {
 		$blog = $this->get_blog($blog_id);
@@ -232,8 +233,8 @@ class Blog_model extends CI_Model
 	* Generates Pagination HTML for a blog when given the current page
 	*
 	* @param int $blog_id
-	* @param string $base_url
-	* @param int $page (Default: 0)
+	* @param string $base_url The full URL to the blog on which pagination will be built
+	* @param int $page (default: 0)
 	*
 	* @return string HTML
 	*/
@@ -287,12 +288,12 @@ class Blog_model extends CI_Model
 		return $links;
 	}
 	
-	/*
+	/**
 	* Get Blog
 	*
 	* @param int $blog_id
 	*
-	* @return array
+	* @return array Blog details
 	*/
 	function get_blog ($blog_id) {
 		// available in cache?
@@ -313,12 +314,14 @@ class Blog_model extends CI_Model
 		return $blog[0];
 	}
 	
-	/*
+	/**
 	* Get Blogs
+	*
 	* @param int $filters['id']
 	* @param int $filters['type']
 	* @param string $filters['title']
 	*
+	* @return array Blogs
 	*/
 	function get_blogs ($filters = array()) {
 		if (isset($filters['id'])) {

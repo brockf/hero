@@ -1,4 +1,5 @@
 <?php
+
 /**
 * Email Model 
 *
@@ -21,6 +22,8 @@ class Email_model extends CI_Model
 	
 	/**
 	* Send Mail from the Queue
+	*
+	* @return void 
 	*/
 	function mail_queue () {
 		$CI =& get_instance();
@@ -116,6 +119,8 @@ class Email_model extends CI_Model
 			
 			$this->db->delete('mail_queue', array('mail_queue_id' => $mail['mail_queue_id']));
 		}
+		
+		return;
 	}
 	
 	/**
@@ -124,6 +129,8 @@ class Email_model extends CI_Model
 	* Updates the main email_layout.thtml template.  It will be created if it doesn't exist,
 	*
 	* @param string $html
+	*
+	* @return void 
 	*/
 	function update_layout ($html) {
 		$this->load->helper('file');
@@ -147,6 +154,19 @@ class Email_model extends CI_Model
 		}
 	}
 	
+	/**
+	* Create New Email
+	*
+	* @param string $hook
+	* @param array $parameters Additional parameters that must be met (default: array())
+	* @param array $to Who to send the mail to (can include "member", "admin", and any other emails) (default: array())
+	* @param array $bcc Who to BCC the mail to (can include "member", "admin", and any other emails) (default: array())
+	* @param string $subject The email subject, including Smarty tags
+	* @param string $body The email subject, including Smarty tags
+	* @param boolean $is_html Set to TRUE to send as HTML email
+	*
+	* @return int $email_id
+	*/
 	function new_email ($hook, $parameters = array(), $to = array(), $bcc = array(), $subject, $body, $is_html = TRUE) {
 		$insert_fields = array(
 							'hook_name' => $hook,
@@ -192,6 +212,20 @@ class Email_model extends CI_Model
 		return $email_id;
 	}
 	
+	/**
+	* Update Email
+	*
+	* @param int $email_id
+	* @param string $hook
+	* @param array $parameters Additional parameters that must be met (default: array())
+	* @param array $to Who to send the mail to (can include "member", "admin", and any other emails) (default: array())
+	* @param array $bcc Who to BCC the mail to (can include "member", "admin", and any other emails) (default: array())
+	* @param string $subject The email subject, including Smarty tags
+	* @param string $body The email subject, including Smarty tags
+	* @param boolean $is_html Set to TRUE to send as HTML email
+	*
+	* @return void
+	*/
 	function update_email ($email_id, $hook, $parameters = array(), $to = array(), $bcc = array(), $subject, $body, $is_html = TRUE) {
 		$update_fields = array(
 							'hook_name' => $hook,
@@ -220,12 +254,26 @@ class Email_model extends CI_Model
 		return TRUE;
 	}
 	
+	/**
+	* Delete Email
+	*
+	* @param int $email_id
+	*
+	* @return void
+	*/
 	function delete_email ($email_id) {
 		$this->db->update('emails', array('email_deleted' => '1'), array('email_id' => $email_id));
 		
-		return TRUE;
+		return;
 	}
 	
+	/**
+	* Get Email
+	*
+	* @param int $email_id
+	* 
+	* @return array 
+	*/
 	function get_email ($email_id) {
 		if (isset($this->cache[$email_id])) {
 			return $this->cache[$email_id];
@@ -241,6 +289,14 @@ class Email_model extends CI_Model
 		return $email[0];
 	}
 	
+	/**
+	* Get Emails
+	*
+	* @param int $filters['id'] The email ID
+	* @param string $filters['hook'] The hook the emails are bound to
+	*
+	* @return array
+	*/
 	function get_emails ($filters = array()) {
 		if (isset($filters['hook'])) {
 			$this->db->where('hook_name', $filters['hook']);

@@ -11,6 +11,11 @@
 * 	- data($type, $id) passes data for emails.  e.g., data('member', $user_id) makes member data available.
 *	- data_var($name, $value) passes non-standard data for emails.  e.g., data_var('download_link', $download_link);
 *	- bind($class, $method) binds code to a hook.  this class:method() will be called with whatever parameters are available.
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 
 class App_hooks {
@@ -88,7 +93,7 @@ class App_hooks {
 		}
 	}
 	
-	function assign_defaults () {
+	private function assign_defaults () {
 		$settings = $this->CI->config->config;
 		
 		$this->CI->smarty_email->assign('setting', $settings);
@@ -108,7 +113,7 @@ class App_hooks {
 	*
 	* @return int $bind_id
 	*/
-	function bind ($hook, $class = FALSE, $method, $filename) {
+	public function bind ($hook, $class = FALSE, $method, $filename) {
 		if (!isset($this->hooks[$hook])) {
 			die(show_error('Attempting to bind to a non-existant hook, "' . $hook . '"'));
 		}
@@ -139,7 +144,7 @@ class App_hooks {
 	*
 	* @return array Hooks
 	*/
-	function get_hooks () {
+	public function get_hooks () {
 		ksort($this->hooks);
 		return $this->hooks;
 	}
@@ -151,7 +156,7 @@ class App_hooks {
 	*
 	* @return array Hooks
 	*/
-	function get_hook ($name) {
+	public function get_hook ($name) {
 		return $this->hooks[$name];
 	}
 	
@@ -167,7 +172,7 @@ class App_hooks {
 	*
 	* @return int $hook_id
 	*/
-	function register ($name, $description = '', $email_data = array(), $other_email_data = array()) {
+	public function register ($name, $description = '', $email_data = array(), $other_email_data = array()) {
 		$insert_fields = array(
 							'hook_name' => $name,
 							'hook_email_data' => (empty($email_data)) ? '' : serialize((array)$email_data),
@@ -201,7 +206,7 @@ class App_hooks {
 	*
 	* @return boolean TRUE
 	*/
-	function data ($type, $id) {
+	public function data ($type, $id) {
 		if ($type == 'member') {
 			// check for cross-reference
 			if ($this->member == $id) {
@@ -357,7 +362,7 @@ class App_hooks {
 	* @param string $name
 	* @param string $value
 	*/
-	function data_var ($name, $value) {
+	public function data_var ($name, $value) {
 		$this->data[$name] = $value;
 	}
 	
@@ -370,7 +375,7 @@ class App_hooks {
 	* @param string $name
 	* @params [...$optional_params...]
 	*/
-	function trigger ($name) {
+	public function trigger ($name) {
 		// check that hook exists
 		if (!isset($this->hooks[$name])) {
 			die(show_error('Trigger: Invalid hook call, "' . $name . '".'));
@@ -495,7 +500,7 @@ class App_hooks {
 	/**
 	* Clear All Data and Variables from Hook
 	*/
-	function reset () {
+	public function reset () {
 		$this->CI->smarty_email->clearAllAssign();
 		$this->smarty_assigned = FALSE;
 		
@@ -519,7 +524,7 @@ class App_hooks {
 	* 
 	* @param array $email A standard email array from email_model::get_emails()
 	*/
-	function send_email ($email) {
+	private function send_email ($email) {
 		$this->CI->load->library('email');
 		
 		// dynamic config

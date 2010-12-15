@@ -62,10 +62,6 @@ class Fieldtype {
 		$this->CI =& get_instance();
 	}
 	
-	function db_column() {
-		return $this->db_column;
-	}
-	
 	/**
 	* Super Methods
 	*
@@ -87,7 +83,7 @@ class Fieldtype {
 	*
 	* @return object Field object
 	*/
-	function create ($type) {
+	public function create ($type) {
 		if (!$this->load_type($type)) {
 			return FALSE;
 		}
@@ -107,12 +103,12 @@ class Fieldtype {
 	* It creates the field object and assigns all known parameters to it automatically.
 	* The field object is returned for further manipulation.
 	*
-	* @param $field_data Either an ID of a custom_field or an array of custom field data from get_custom_fields().
+	* @param int|array $field_data Either an ID of a custom_field or an array of custom field data from get_custom_fields().
 	*					 This can also just be passed an array to generate a field on the fly (say, in a module).
 	*
 	* @return boolean|object Field object or FALSE
 	*/
-	function load ($field_data) {
+	public function load ($field_data) {
 		if (!is_array($field_data)) {
 			// get array
 			$this->CI->load->model('custom_fields_model');
@@ -155,7 +151,7 @@ class Fieldtype {
 	*
 	* @return string The expected, formatted class name for this type
 	*/
-	function class_name_from_type ($type) {
+	private function class_name_from_type ($type) {
 		$class_name = ucfirst($type) . '_fieldtype';
 		
 		return $class_name;
@@ -173,7 +169,7 @@ class Fieldtype {
 	*
 	* @return boolean TRUE upon successful load
 	*/
-	function load_type ($type) {
+	public function load_type ($type) {
 		$class = $this->class_name_from_type($type);
 		
 		if (!class_exists($class)) {
@@ -205,7 +201,7 @@ class Fieldtype {
 	*
 	* @return boolean TRUE upon success
 	*/
-	function load_all_types () {
+	public function load_all_types () {
 		$files = $this->get_fieldtype_filenames();
 		
 		foreach ($files as $file) {
@@ -223,7 +219,7 @@ class Fieldtype {
 	*
 	* @return array $options in form array('type' => 'fieldtype_name')
 	*/
-	function get_fieldtype_options () {
+	public function get_fieldtype_options () {
 		$this->load_all_types();
 		
 		$options = array();
@@ -241,7 +237,7 @@ class Fieldtype {
 	*
 	* @return array $files
 	*/
-	function get_fieldtype_filenames () {
+	private function get_fieldtype_filenames () {
 		$this->CI->load->helper('directory');
 		
 		$files = directory_map(APPPATH . '/modules/custom_fields/libraries/fieldtypes/');
@@ -264,13 +260,22 @@ class Fieldtype {
 	*/
 	
 	/**
+	* DB Column
+	*
+	* @return string 
+	*/
+	public function db_column() {
+		return $this->db_column;
+	}
+	
+	/**
 	* Set ID
 	*
 	* @param string $id
 	*
 	* @return object $fieldtype_object
 	*/
-	function id ($id) {
+	public function id ($id) {
 		$this->id = $id;
 		
 		return $this;
@@ -283,7 +288,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function type ($type) {
+	public function type ($type) {
 		$this->type = $type;
 		
 		return $this;
@@ -296,7 +301,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function default_value ($default) {
+	public function default_value ($default) {
 		$this->default = $default;
 		
 		return $this;
@@ -309,7 +314,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function options ($options) {
+	public function options ($options) {
 		$this->options = $options;
 		
 		return $this;
@@ -322,7 +327,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function data ($data) {
+	public function data ($data) {
 		$this->data = $data;
 		
 		return $this;
@@ -335,7 +340,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function value ($value) {
+	public function value ($value) {
 		$this->value = $value;
 		
 		return $this;
@@ -348,7 +353,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function label ($label) {
+	public function label ($label) {
 		$this->label = $label;
 		
 		return $this;
@@ -361,7 +366,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function name ($name) {
+	public function name ($name) {
 		$this->name = $name;
 		
 		return $this;
@@ -374,7 +379,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function width ($width) {
+	public function width ($width) {
 		$this->width = $width;
 		
 		return $this;
@@ -387,7 +392,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function help ($help) {
+	public function help ($help) {
 		$this->help = $help;
 		
 		return $this;
@@ -400,7 +405,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function placeholder ($placeholder) {
+	public function placeholder ($placeholder) {
 		$this->placeholder = $placeholder;
 		
 		return $this;
@@ -413,7 +418,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function required ($required = TRUE) {
+	public function required ($required = TRUE) {
 		$this->required = $required;
 		
 		return $this;
@@ -426,7 +431,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function validators ($validators = array()) {
+	public function validators ($validators = array()) {
 		$this->validators = $validators;
 		
 		return $this;
@@ -440,7 +445,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function li_attribute ($name, $value = FALSE) {
+	public function li_attribute ($name, $value = FALSE) {
 		if (is_array($name)) {
 			// we were passed an array, not two parameters
 			foreach ($name as $key => $value) {
@@ -461,7 +466,7 @@ class Fieldtype {
 	*
 	* @return object $fieldtype_object
 	*/
-	function field_class ($name) {
+	public function field_class ($name) {
 		if (is_array($name)) {
 			// we were passed an array, not just one
 			foreach ($name as $value) {
@@ -485,7 +490,7 @@ class Fieldtype {
 	*
 	* @return string $attributes_line
 	*/
-	function compile_attributes ($attributes = array()) {
+	private function compile_attributes ($attributes = array()) {
 		$return = '';
 		
 		foreach ($attributes as $k => $v) {

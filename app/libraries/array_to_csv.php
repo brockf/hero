@@ -4,6 +4,11 @@
 *
 * Converts an array (including multi-dimensional arrays) into 
 * a CSV formatted string.
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
 */
 
 class Array_to_csv {
@@ -11,12 +16,24 @@ class Array_to_csv {
 	var $headers;
 	var $parsed_data;
 	
+	/**
+	* Input Data
+	*
+	* @param array $array
+	*
+	* @return void
+	*/
 	public function input ($array = array()) {
 		$this->data = $array;
 		$this->headers = array();
 		$this->parsed_data = array();
 	}
 	
+	/**
+	* Output CSV
+	*
+	* @return string 
+	*/
 	public function output () {
 		// get headers based on the item with the most data
 		foreach ($this->data as $datum) {
