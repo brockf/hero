@@ -490,7 +490,7 @@ class Fieldtype {
 	*
 	* @return string $attributes_line
 	*/
-	private function compile_attributes ($attributes = array()) {
+	public function compile_attributes ($attributes = array()) {
 		$return = '';
 		
 		foreach ($attributes as $k => $v) {

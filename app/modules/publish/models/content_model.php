@@ -328,7 +328,7 @@ class Content_model extends CI_Model
 	* @param string $filters['sort_dir']
 	* @param int $filters['limit']
 	* @param int $filters['offset']
-	* @param boolean $counting Set to TRUE to simplify the query and receive a result suitable for counting total records
+	* @param boolean $counting Set to TRUE to simplify the query and receive a result suitable for counting total records (default: FALSE)
 	*
 	* @return array Array of content, or FALSE
 	*/

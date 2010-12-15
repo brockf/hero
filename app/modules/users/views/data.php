@@ -81,7 +81,7 @@ if (!empty($this->dataset->data)) {
 								), (isset($row['billing_equiv'])) ? $row['billing_equiv'] : '');?></td>
 			<td><?=form_checkbox('admin_only', '1', (isset($row['admin_only']) and $row['admin_only'] == TRUE) ? TRUE : FALSE);?></td>
 			<td><?=form_checkbox('registration_form', '1', (isset($row['registration_form']) and $row['registration_form'] == FALSE) ? FALSE : TRUE);?></td>
-			<td class="options"><a href="<?=site_url('admincp/users/data_edit/' . $row['id']);?>">edit</a></td>
+			<td class="options"><a href="<?=site_url('admincp/users/data_edit/' . $row['custom_field_id']);?>">edit</a></td>
 		</tr>
 	<?
 	}
