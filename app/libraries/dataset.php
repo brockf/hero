@@ -44,13 +44,14 @@ class Dataset {
 		$this->CI->head_assets->stylesheet('css/dataset.css');
     }
     
-    /*
+    /**
     * Set Datasource
     *
     * Sets the model and method to retrieve the data from
     *
     * @param string $data_model The model
     * @param string $data_function The method
+    * @param array $data_filters Default filters to pass to the get_X() method (default: none)
     *
     * @return boolean TRUE
     */
@@ -62,12 +63,13 @@ class Dataset {
     	return TRUE;
     }
     
-    /*
+    /**
     * Total Rows
     *
     * Set total rows so we don't have to try and fish it from the method with a double call
     *
     * @param int $total_rows
+    *
     * @return boolean TRUE;
     */
     function total_rows ($total_rows) {
@@ -84,7 +86,8 @@ class Dataset {
     *
     * @param string $name The name of the action for the button
     * @param string $link The link (e.g. /customers/delete) to pass the variable to (e.g. /customers/delete/39f32432849340923849234)
-    * @return bool True upon success
+    *
+    * @return bool TRUE upon success
     */
     function action ($name, $link) {
     	$this->actions[] = array(
@@ -95,7 +98,7 @@ class Dataset {
     	return TRUE;
     }
     
-    /*
+    /**
     * Set Rows Per Page
     *
     * How many rows to show per page?
@@ -108,7 +111,7 @@ class Dataset {
     	$this->rows_per_page = $rows_per_page;
     }
     
-    /*
+    /**
     * Sets the base URL
     *
     * This URL is used to post all dataset actions to
@@ -224,9 +227,9 @@ class Dataset {
     *
     * Initializes the dataset with previously set data configuration, column specs
     *
-    * @param boolean $paginate_now Automatically initialize pagination, otherwise this::initialize_pagination() must be invoked after this
+    * @param boolean $paginate_now Automatically initialize pagination, otherwise this::initialize_pagination() must be invoked after this (default: TRUE)
     *
-    * @return bool True upon successful initialization
+    * @return boolean TRUE upon successful initialization
     */
     function initialize ($paginate_now = TRUE) {
     	// get filter values
@@ -300,6 +303,8 @@ class Dataset {
     * Initializes pagination manually.  This is useful if the CP method wants to use the $this->params value generated
     * in this::initialize() to manually pass a total_rows value via this::total_rows()
     *
+    * @return boolean TRUE
+    *
     */
     function initialize_pagination () {
     	// if we weren't told how many rows are in the dataset yet, we will
@@ -366,7 +371,7 @@ class Dataset {
     	}
     }
         
-    /*
+    /**
     * Define visible Dataset columns
     *
     * Defines the columns with width, sort, filtering, name

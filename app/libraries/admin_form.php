@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
 * Admin Form Library
 *
 * This class will generate a proper administration panel form
@@ -27,13 +27,16 @@ class Admin_form {
 		$this->fieldset = 0;
 	}
 	
-	/*
+	/**
 	* Add Value Row
 	*
 	* Adds a row that is just a <label></label> Value row
 	*
 	* @param string $label What to put in the <label>
 	* @param string $value What to put as the value
+	* @param boolean $full
+	*
+	* @return void 
 	*/
 	function value_row ($label, $value, $full = FALSE) {
 		if ($this->fieldset == 0) {
@@ -59,6 +62,8 @@ class Admin_form {
 	*
 	* @param string $name
 	* @param string $value
+	*
+	* @return void 
 	*/
 	function hidden ($name, $value) {
 		$this->fields[$this->fieldset][] = array(
@@ -68,19 +73,21 @@ class Admin_form {
 											);
 	}
 	
-	/*
+	/**
 	* Add Text Field
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
-	* @param string $value Current value of the field
-	* @param string $help A piece of help text
-	* @param boolean $required Is the field required for submission?
-	* @param boolean $mark_empty Should the field have an "empty" default value?
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $li_id The ID of the LI element containing the field
-	* @param array $classes Additional classes to apply to the element
+	* @param string $value Current value of the field (default: '')
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param boolean $mark_empty Should the field have an "empty" default value? (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 250px)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	* @param array $classes Additional classes to apply to the element (default: FALSE)
+	* 
+	* @return void 
 	*/
 	function text ($label, $name, $value = '', $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
 		if ($this->fieldset == 0) {
@@ -102,16 +109,18 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Password Field
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
-	* @param string $help A piece of help text
-	* @param boolean $required Is the field required for submission?
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $li_id The ID of the LI element containing the field
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 250px)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void
 	*/
 	function password ($label, $name, $help = FALSE, $required = FALSE, $full = FALSE, $width = '250px', $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -130,7 +139,7 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Names Fields
 	*
 	* Adds a horizontal First Name / Last Name field with names "first_name" and "last_name"
@@ -138,10 +147,12 @@ class Admin_form {
 	* @param string $label The human friendly form label
 	* @param string $first_value Value of first name
 	* @param string $last_value Value of last name
-	* @param string $help A piece of help text
-	* @param boolean $required Is the field required for submission?
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $li_id The ID of the LI element containing the field
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 250px)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void 
 	*/
 	function names ($label, $first_value, $last_value, $help = FALSE, $required = FALSE, $width = '250px', $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -160,19 +171,21 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Textarea Field
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
-	* @param string $value Current value of the field
-	* @param string $help A piece of help text
-	* @param boolean $required Is the field required for submission?
-	* @param boolean|string FALSE for no WYSIWYG, or the name of the toolbar class to load with ckEditor (e.g., "complete", "basic")
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $height The complete style:height element definition
-	* @param string $li_id The ID of the LI element containing the field
+	* @param string $value Current value of the field (default: '')
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param boolean|string FALSE for no WYSIWYG, or the name of the toolbar class to load with ckEditor (e.g., "complete", "basic") (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 300px)
+	* @param string $height The complete style:height element definition (default: 100px)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void 
 	*/
 	function textarea ($label, $name, $value = '', $help = FALSE, $required = FALSE, $wysiwyg = FALSE, $full = FALSE, $width = '300px', $height = '150px', $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -193,18 +206,20 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Select Dropdown
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
 	* @param array $options The select options in the form of array(value1 => display1, value2 => display2)
-	* @param string|array $selected The selected value(s).  A string for selects, an array for multiselects
-	* @param boolean $multiselect Is this a multiselect?
-	* @param boolean $required Is the field required for submission?
-	* @param string $help A piece of help text
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $li_id The ID of the LI element containing the field
+	* @param string|array $selected The selected value(s).  A string for selects, an array for multiselects (default: FALSE)
+	* @param boolean $multiselect Is this a multiselect? (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void 
 	*/
 	function dropdown ($label, $name, $options, $selected = FALSE, $multiselect = FALSE, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -233,17 +248,19 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Radio Buttons
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
 	* @param array $options The select options in the form of array(value1 => display1, value2 => display2)
 	* @param string $selected The selected value
-	* @param boolean $required Is the field required for submission?
-	* @param string $help A piece of help text
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $li_id The ID of the LI element containing the field
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void 
 	*/
 	function radio ($label, $name, $options, $selected, $required = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -263,16 +280,18 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add Checkbox
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
 	* @param string $value The value of the field, when checked
-	* @param boolean $checked TRUE to check the box
-	* @param string $help A piece of help text
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $li_id The ID of the LI element containing the field
+	* @param boolean $checked TRUE to check the box (default: FALSE)
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void 
 	*/
 	function checkbox ($label, $name, $value, $checked = FALSE, $help = FALSE, $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -291,14 +310,16 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add File Upload
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $full Should the field take up the entire pane?
-	* @param string $li_id The ID of the LI element containing the field
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 250px)
+	* @param string $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	*
+	* @return void
 	*/
 	function file ($label, $name, $width = '250px', $full = FALSE, $li_id = '') {
 		if ($this->fieldset == 0) {
@@ -315,19 +336,21 @@ class Admin_form {
 										);
 	}
 	
-	/*
+	/**
 	* Add Date Field
 	*
 	* @param string $label The human friendly form label
 	* @param string $name Field name
 	* @param string $value Current value of the field
-	* @param string $help A piece of help text
-	* @param boolean $required Is the field required for submission?
-	* @param boolean $mark_empty Should the field have an "empty" default value?
-	* @param boolean $full Should the field take up the entire pane?
-	* @param string $width The complete style:width element definition (e.g., "250px" or "50%")
-	* @param string $li_id The ID of the LI element containing the field
-	* @param array $classes Additional classes to apply to the element
+	* @param string $help A piece of help text (default: FALSE)
+	* @param boolean $required Is the field required for submission? (default: FALSE)
+	* @param boolean $mark_empty Should the field have an "empty" default value? (default: FALSE)
+	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
+	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 250px)
+	* @param string $li_id The ID of the LI element containing the field (default: '')
+	* @param array $classes Additional classes to apply to the element (default: FALSE)
+	*
+	* @return void
 	*/
 	function date ($label, $name, $value, $help = FALSE, $required = FALSE, $mark_empty = FALSE, $full = FALSE, $width = '250px', $li_id = '', $classes = FALSE) {
 		if ($this->fieldset == 0) {
@@ -349,12 +372,15 @@ class Admin_form {
 							);
 	}
 	
-	/*
+	/**
 	* Add New Fieldset
 	*
 	* Adds a fieldset to the form, breaking up the form
 	*
-	* @param string $legend The fieldset legend
+	* @param string $legend The fieldset legend (default: '')
+	* @param array $ul_classes (default: FALSE)
+	*
+	* @return void 
 	*/
 	function fieldset($legend = '', $ul_classes = array()) {
 		$this->fieldset++;
@@ -365,14 +391,16 @@ class Admin_form {
 												);
 	}
 	
-	/*
+	/**
 	* Import Custom Fields
 	*
 	* Imports a standard array of custom fields from the custom_fields_model into the form
 	*
 	* @param array $custom_fields The standard custom_fields array generated from get_custom_fields() or equivalent method
-	* @param array $values The array of current values, if there are any (e.g, when editing)
-	* @param boolean $no_defaults Do not use default values for empty fields (i.e., when editing an existing record)
+	* @param array $values The array of current values, if there are any (e.g, when editing) (default: FALSE)
+	* @param boolean $no_defaults Do not use default values for empty fields (i.e., when editing an existing record) (default: FALSE)
+	*
+	* @return void
 	*/
 	function custom_fields ($custom_fields = array(), $values = array(), $no_defaults = FALSE) {
 		$CI =& get_instance();
@@ -408,10 +436,10 @@ class Admin_form {
 													);
 		}
 		
-		return TRUE;
+		return;
 	}
 	
-	/*
+	/**
 	* Display the form
 	*
 	* @return string Form HTML

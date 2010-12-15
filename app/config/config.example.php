@@ -16,16 +16,12 @@
 */
 $config['base_url']	= "http://www.example.com/";
 
-/*
-|--------------------------------------------------------------------------
-| Billing Config
-|--------------------------------------------------------------------------
-|
-*/
 $config['max_recurring_days_from_today'] = 1095;
+
+// do not edit either of these unless you plan on also modifying lots of core files
 $config['query_result_default_limit'] = 100;
 $config['recurring_charge_failures_allowed'] = 1;
-$config['cron_key'] = '0000000000000000';
+
 
 // rewrite base URL to SSL if accessed via SSL
 if ($_SERVER["SERVER_PORT"] == "443" or (isset($_SERVER['https']) and $_SERVER['HTTPS'] == 'on')) {
@@ -42,6 +38,7 @@ if ($_SERVER["SERVER_PORT"] == "443" or (isset($_SERVER['https']) and $_SERVER['
 |
 */
 $config['encryption_key'] = "10101010101010101010101010";
+$config['cron_key'] = '0000000000000000';
 
 /* END MANDATORY CONFIGURATION */
 

@@ -26,7 +26,7 @@ class Link_model extends CI_Model {
 									);
 	}
 	
-	/*
+	/**
 	* Create New Link
 	*
 	* @param string $url_path The path to the content
@@ -36,9 +36,9 @@ class Link_model extends CI_Model {
 	* @param string $module The module name in the modules/ folder
 	* @param string $controller The controller to initiate
 	* @param string $method The method to instantiate and pass the $url_path string to via mod_rewrite
-	* @param string $parameter Some functions - like URLs mapped to templates - require a parameter to identify what to load at this URL
+	* @param string $parameter Some functions - like URLs mapped to templates - require a parameter to identify what to load at this URL (default: '')
 	*
-	* @return $link_id
+	* @return int $link_id
 	*/
 	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method, $parameter = '') {
 		$url_path = $this->prep_url_path($url_path);
@@ -65,10 +65,10 @@ class Link_model extends CI_Model {
 		return $link_id;
 	}
 	
-	/*
+	/**
 	* Delete Inactive Link
 	*
-	* @param $link_id
+	* @param int $link_id
 	*
 	* @return boolean TRUE
 	*/
@@ -81,6 +81,14 @@ class Link_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/**
+	* Update Link Title
+	*
+	* @param int $link_id
+	* @param string $title
+	*
+	* @return boolean TRUE
+	*/
 	function update_title ($link_id, $title) {
 		$update_fields = array('link_title' => $title);
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
@@ -88,6 +96,14 @@ class Link_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/**
+	* Update Link URL
+	*
+	* @param int $link_id
+	* @param string $url_path
+	*
+	* @return boolean TRUE
+	*/
 	function update_url ($link_id, $url_path) {
 		$url_path = $this->prep_url_path($url_path);
 		
@@ -100,6 +116,14 @@ class Link_model extends CI_Model {
 		return TRUE;
 	}
 	
+	/**
+	* Update Link Topics
+	*
+	* @param int $link_id
+	* @param array $topics
+	*
+	* @return boolean TRUE
+	*/
 	function update_topics ($link_id, $topics) {
 		$update_fields = array('link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '');
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
@@ -107,7 +131,7 @@ class Link_model extends CI_Model {
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Prep URL Path
 	*
 	* @param string $url_path
@@ -139,7 +163,7 @@ class Link_model extends CI_Model {
 	*
 	* @param string $url_path
 	*
-	* @return boolean
+	* @return boolean TRUE if unique
 	*/
 	function is_unique ($url_path) {
 		$this->db->where('link_url_path',$url_path);
@@ -154,7 +178,7 @@ class Link_model extends CI_Model {
 		}
 	}
 	
-	/*
+	/**
 	* Get Unique URL Path
 	*
 	* Checks a string to make sure it's a unique URL path in the system.
@@ -193,7 +217,7 @@ class Link_model extends CI_Model {
 		return $url_path;
 	}
 	
-	/*
+	/**
 	* Get Universal Content Links
 	*
 	* @param string $filters['url_path']
@@ -203,7 +227,7 @@ class Link_model extends CI_Model {
 	* @param $filters['offset']
 	* @param $filters['limit']
 	*
-	* @return array|boolean
+	* @return array|boolean Links
 	*/
 	function get_links ($filters = array()) {
 		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'links.link_title';
@@ -246,7 +270,7 @@ class Link_model extends CI_Model {
 		return $links;
 	}
 	
-	/*
+	/**
 	* Create Routes File
 	*
 	* Generates a CodeIgniter routes declaration file included in /app/config/routes.php from

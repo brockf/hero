@@ -1,5 +1,15 @@
 <?php
 
+/**
+* Admin Navigation Library
+*
+* This class generates the navigation throughout the control panel.
+*
+* @author Electric Function, Inc.
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+*
+*/
 class Admin_navigation {
 	var $navigation; // stores the relational tree
 	var $items; // stores details for each item
@@ -11,6 +21,14 @@ class Admin_navigation {
 		$this->item_count = 0;
 	}
 	
+	/**
+	* Parent Link
+	*
+	* @param string $system_name
+	* @param string $name
+	*
+	* @return void 
+	*/
 	function parent_link ($system_name, $name) {
 		$this->navigation[$system_name] = array();
 		
@@ -20,6 +38,16 @@ class Admin_navigation {
 								);
 	}
 	
+	/**
+	* Child Link
+	*
+	* @param string $parent
+	* @param int $weight
+	* @param string $name
+	* @param string $link
+	*
+	* @return void 
+	*/
 	function child_link ($parent, $weight, $name, $link) {
 		$item_id = $this->take_id();
 		
@@ -31,6 +59,14 @@ class Admin_navigation {
 									);
 	}
 	
+	/**
+	* Module Link
+	*
+	* @param string $name
+	* @param string $link
+	*
+	* @return void 
+	*/
 	function module_link ($name, $link) {
 		$this->module_links[] = array(
 									'name' => $name,
@@ -38,6 +74,11 @@ class Admin_navigation {
 								);
 	}
 	
+	/**
+	* Get Module Links
+	*
+	* @return string HTML 
+	*/
 	function get_module_links () {
 		if (empty($this->module_links)) {
 			return '';
@@ -54,10 +95,22 @@ class Admin_navigation {
 		return $return;
 	}
 	
+	/**
+	* Set Parent Active
+	*
+	* @param string $system_name
+	*
+	* @return void 
+	*/
 	function parent_active ($system_name) {
 		$this->active_parent = $system_name;
 	}
 	
+	/**
+	* Display Nav
+	*
+	* @return string HTML
+	*/
 	function display () {
 		// sort by weight
 		foreach ($this->navigation as $parent_id => $children) {
@@ -104,10 +157,20 @@ class Admin_navigation {
 		return $return;
 	}
 	
+	/**
+	* Clear Module Links
+	*
+	* @return void 
+	*/
 	function clear_module_links () {
 		$this->module_links = array();
 	}
 	
+	/**
+	* Increment the ID
+	*
+	* @return void 
+	*/
 	function take_id () {
 		$this->item_count++;
 		
