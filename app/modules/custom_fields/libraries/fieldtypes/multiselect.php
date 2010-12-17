@@ -258,7 +258,7 @@ class Multiselect_fieldtype extends Fieldtype {
 		// $options will be automatically serialized by the custom_fields_model::new_custom_field() method
 		
 		// we may need to serialize the default options
-		if (strpos($this->CI->input->post('default')) !== FALSE) {
+		if (strpos($this->CI->input->post('default'),"\n") !== FALSE) {
 			$defaults = explode("\n", $this->CI->input->post('default'));
 			$final_defaults = array();
 			foreach ($defaults as $default) {

@@ -1,7 +1,7 @@
-<?=$this->head_assets->stylesheet('css/menu_manager.css');?>'));?>
+<?=$this->head_assets->stylesheet('css/menu_manager.css');?>
 <?=$this->head_assets->javascript('js/jquery-ui-1.8.2.min.js');?>
 <?=$this->head_assets->javascript('js/jquery.quicksearch.js');?>
-<?=$this->head_assets->javascript('js/menu_manager.js');?>'));?>
+<?=$this->head_assets->javascript('js/menu_manager.js');?>
 
 <?=$this->load->view(branded_view('cp/header'));?>
 

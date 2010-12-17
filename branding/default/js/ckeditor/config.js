@@ -21,7 +21,7 @@ CKEDITOR.editorConfig = function( config )
     config.filebrowserFlashBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
         
     // force plain text
-    config.forcePasteAsPlainText = true;
+    //config.forcePasteAsPlainText = true;
    
     // remove upload tab
     config.filebrowserUploadUrl = null;
@@ -46,7 +46,7 @@ CKEDITOR.editorConfig = function( config )
 	config.toolbar_Basic =
 	[
 	    ['Source','-',],
-	    ['Cut','Copy','Paste','PasteText'],
+	    ['Cut','Copy','Paste','PasteText','PasteFromWord'],
 	    ['Undo','Redo','-','RemoveFormat'],
 	    ['NumberedList','BulletedList','-','Outdent','Indent','Blockquote'],
 	    ['JustifyLeft','JustifyCenter','JustifyRight','JustifyBlock'],

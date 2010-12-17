@@ -57,6 +57,7 @@ class Text_fieldtype extends Fieldtype {
 		$attributes = array(
 						'type' => 'text',
 						'name' => $this->name,
+						'id' => $this->name,
 						'value' => $this->value,
 						'placeholder' => $this->placeholder,
 						'style' => 'width: ' . $this->width,
