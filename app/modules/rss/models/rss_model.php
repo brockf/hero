@@ -18,20 +18,21 @@ class Rss_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* Create New RSS Feed
+	*
 	* @param int $content_type_id
  	* @param string $title Feed title
  	* @param string $url_path
  	* @param string $description Feed description
- 	* @param array $filter_author The user ID(s) to filter by
- 	* @param array $filter_topic The topic ID(s) to filter by
- 	* @param string $summary_field The column name to use for the summary
- 	* @param string $sort_field The column name to sort by
- 	* @param string $sort_dir Sort direction
- 	* @param string $template The template file to use for output
+ 	* @param array $filter_author The user ID(s) to filter by (default: array())
+ 	* @param array $filter_topic The topic ID(s) to filter by (default: array())
+ 	* @param string $summary_field The column name to use for the summary (default: FALSE)
+ 	* @param string $sort_field The column name to sort by (default: '')
+ 	* @param string $sort_dir Sort direction (default: '')
+ 	* @param string $template The template file to use for output (default: rss_feed.txml)
  	*
- 	* @return $feed_id
+ 	* @return int $feed_id
  	*/
 	function new_feed ($content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = '', $sort_dir = '', $template = 'rss_feed.txml') {
 		$this->load->helper('clean_string');
@@ -58,7 +59,7 @@ class Rss_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update RSS Feed
 	*
 	* @param int $feed_id
@@ -66,14 +67,14 @@ class Rss_model extends CI_Model
  	* @param string $title Feed title
  	* @param string $url_path
  	* @param string $description Feed description
- 	* @param array $filter_author The user ID(s) to filter by
- 	* @param array $filter_topic The topic ID(s) to filter by
- 	* @param string $summary_field The column name to use for the summary
- 	* @param string $sort_field The column name to sort by
- 	* @param string $sort_dir Sort direction
- 	* @param string $template The template file to use for output
+ 	* @param array $filter_author The user ID(s) to filter by (default: array())
+ 	* @param array $filter_topic The topic ID(s) to filter by (default: array())
+ 	* @param string $summary_field The column name to use for the summary (default: FALSE)
+ 	* @param string $sort_field The column name to sort by (default: '')
+ 	* @param string $sort_dir Sort direction (default: '')
+ 	* @param string $template The template file to use for output (default: rss_feed.txml)
  	*
- 	* @return TRUE
+ 	* @return void 
  	*/
 	function update_feed ($feed_id, $content_type_id, $title, $url_path, $description, $filter_author = array(), $filter_topic = array(), $summary_field = FALSE, $sort_field = '', $sort_dir = '', $template = 'rss_feed.txml') {
 		$feed = $this->get_feed($feed_id);
@@ -109,10 +110,10 @@ class Rss_model extends CI_Model
 							
 		$this->db->update('rss_feeds',$update_fields,array('rss_id' => $feed_id));
 		
-		return TRUE;
+		return;
 	}
 	
-	/*
+	/**
 	* Delete RSS Feed
 	*
 	* @param int $feed_id
@@ -135,9 +136,9 @@ class Rss_model extends CI_Model
 	*
 	* Returns feed ID from a URL_path
 	*
-	* @param $url_path
+	* @param string $url_path
 	* 
-	* @return boolean|int The feed ID, or FALSE
+	* @return int The feed ID, or FALSE
 	*/
 	function get_feed_id($url_path) {
 		$this->db->select('rss_id');
@@ -154,7 +155,7 @@ class Rss_model extends CI_Model
 		return $feed['rss_id'];
 	}
 	
-	/*
+	/**
 	* Get RSS Feed
 	*
 	* @param int $feed_id
@@ -178,7 +179,7 @@ class Rss_model extends CI_Model
 	*
 	* @param int $feed_id
 	*
-	* @return array|boolean Array of content else FALSE
+	* @return array Array of content else FALSE
 	*/
 	function get_feed_content ($feed_id) {
 		$feed = $this->get_feed($feed_id);
@@ -229,12 +230,14 @@ class Rss_model extends CI_Model
 		return $contents;
 	}
 	
-	/*
+	/**
 	* Get RSS Feeds
+	*
 	* @param int $filters['id']
 	* @param int $filters['type']
 	* @param string $filters['title']
 	*
+	* @return array
 	*/
 	function get_feeds ($filters = array()) {
 		if (isset($filters['id'])) {

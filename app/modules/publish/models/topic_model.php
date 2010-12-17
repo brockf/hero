@@ -18,12 +18,12 @@ class Topic_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* New Topic
 	*
 	* @param string $name
-	* @param string $description
-	* @param int $parent
+	* @param string $description (default: '')
+	* @param int $parent (default: 0)
 	*
 	* @return int $topic_id
 	*/
@@ -40,13 +40,13 @@ class Topic_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update Topic
 	*
 	* @param int $topic_id
 	* @param string $name
-	* @param string $description
-	* @param int $parent
+	* @param string $description (default: '')
+	* @param int $parent (default: 0)
 	*
 	* @return boolean TRUE
 	*/
@@ -62,7 +62,7 @@ class Topic_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete Topic
 	*
 	* @param int $topic_id
@@ -94,7 +94,7 @@ class Topic_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get Tiered Topics
 	*
 	* Gets an array of all topics, tiered nicely in a hierarchical structure
@@ -103,6 +103,8 @@ class Topic_model extends CI_Model
 	* returns: Shoes
 	*		   Shoes > Adidas
 	*          Shoes > Adidas > Crosstrainers
+	*
+	* @param array $filters equivalent to get_topics()
 	*
 	* @return array Topics
 	*/
@@ -159,12 +161,12 @@ class Topic_model extends CI_Model
 		return $tiers;
 	}
 	
-	/*
+	/**
 	* Get Topic
 	*
 	* @param int $topic_id
 	*
-	* @return array|boolean Array of data, else FALSE
+	* @return array Array of data, else FALSE
 	*/
 	function get_topic($topic_id) {
 		$topic = $this->get_topics(array('id' => $topic_id), TRUE);
@@ -177,10 +179,16 @@ class Topic_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Get Topics
 	*
-	* @param array $filters
+	* @param int $filters['parent']
+	* @param int $filters['id']
+	* @param string $filters['name']
+	* @param string $filters['sort'] Sort column
+	* @param string $filters['sort_dir'] Sort direction
+	* @param int $filters['limit'] Result limit
+	* @param int $filters['offset'] Result offset
 	*
 	* @return array $topics
 	*/

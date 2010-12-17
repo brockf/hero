@@ -20,7 +20,7 @@ class Settings_model extends CI_Model
 		$this->set_settings();
 	}
 	
-	/*
+	/**
 	* Make Writeable Folder
 	*
 	* This function creates a writeable folder and places a blank index.html file into it
@@ -28,6 +28,8 @@ class Settings_model extends CI_Model
 	*
 	* @param string $path The filepath
 	* @param boolean $no_access Set to TRUE to write a .htaccess file which will deny all access to this folder directly
+	*
+	* @return boolean
 	*/
 	function make_writeable_folder ($path = '', $no_access = FALSE) {
 		if (!is_dir($path)) {
@@ -60,7 +62,7 @@ class Settings_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Auto-set Settings
 	*
 	* Takes all settings from the `settings` table and places them in the active
@@ -78,13 +80,15 @@ class Settings_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Update Setting
 	*
 	* Updates a setting's value by name
 	*
 	* @param string $name The current name
 	* @param string $value The new setting value
+	*
+	* @return boolean
 	*/
 	function update_setting ($name, $value) {
 		if (empty($name)) {
@@ -94,12 +98,12 @@ class Settings_model extends CI_Model
 		$this->db->update('settings',array('setting_value' => $value), array('setting_name' => $name));
 		
 		// update current settings during this runtime
-		$this->config->set_item($setting_name, $setting_value);
+		$this->config->set_item($name, $value);
 		
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* New Setting
 	*
 	* Creates a new setting
@@ -107,11 +111,11 @@ class Settings_model extends CI_Model
 	* @param int $setting_group The setting group ID
 	* @param string $setting_name The name of the setting
 	* @param string $setting_value The default value of the setting
-	* @param string $setting_help The help text for the setting
-	* @param string $setting_type The type of setting it is (options: toggle, textarea, text)
-	* @param string $setting_options A serialized array of options for toggle settings
-	* @param date $setting_time The time of the creation of the setting
-	* @param boolean $setting_hidden Is the setting hidden from the normal Settings manager?
+	* @param string $setting_help The help text for the setting (default: '')
+	* @param string $setting_type The type of setting it is (options: toggle, textarea, text) (default: text)
+	* @param string $setting_options A serialized array of options for toggle settings (default: '')
+	* @param date $setting_time The time of the creation of the setting (default: FALSE)
+	* @param boolean $setting_hidden Is the setting hidden from the normal Settings manager? (default: FALSE)
 	*
 	* @return int $setting_id
 	*/
@@ -134,7 +138,7 @@ class Settings_model extends CI_Model
 		return $this->db->insert_id();	
 	}
 	
-	/*
+	/**
 	* Get Setting
 	*
 	* Gets a setting by name
@@ -156,14 +160,14 @@ class Settings_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Get Settings
 	*
-	* @param $filters['group_id'] Setting group ID
-	* @param $filters['name'] The setting name
+	* @param int $filters['group_id'] Setting group ID
+	* @param string $filters['name'] The setting name
 	* @param boolean $filters['show_hidden'] Show hidden settings?  Default: TRUE
-	* @param $filters['sort'] Field to sort by
-	* @param $filters['sort_dir'] ASC or DESC
+	* @param string $filters['sort'] Field to sort by
+	* @param string $filters['sort_dir'] ASC or DESC
 	*
 	* @return array $settings
 	*/
@@ -213,11 +217,11 @@ class Settings_model extends CI_Model
 		return $settings;
 	}
 	
-	/*
+	/**
 	* Get Setting Groups
 	*
-	* @param $filters['sort'] Field to sort by
-	* @param $filters['sort_dir'] ASC or DESC
+	* @param string $filters['sort'] Field to sort by
+	* @param string $filters['sort_dir'] ASC or DESC
 	*
 	* @return array $groups
 	*/

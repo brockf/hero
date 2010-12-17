@@ -128,7 +128,7 @@ class Form_builder {
 			}
 		}
 		
-		if ($this->CI->form_validation->run() === FALSE) {
+		if (!empty($rules) and $this->CI->form_validation->run() === FALSE) {
 			$this->validation_errors = array_merge($this->validation_errors(TRUE),explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors())));
 		}
 		

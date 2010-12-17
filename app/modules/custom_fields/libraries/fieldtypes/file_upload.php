@@ -89,6 +89,11 @@ class File_upload_fieldtype extends Fieldtype {
 		// create text that appears after the upload box
 		$after_box = '<input type="button" class="button" onclick="javascript:$(\'#ftp_notes_' . $this->name . '\').modal(); void(0);" name="" value="Upload via FTP" />';
 		
+		// show current file
+		if (!empty($this->value)) {
+			$after_box .= '&nbsp;&nbsp;&nbsp;<a href="' . site_url($this->value) . '">current file</a>';
+		}
+		
 		// build HTML
 		// we can track an already-uploaded filename with a hidden field so, if we
 		// don't have a new upload, we stick with the file we already have

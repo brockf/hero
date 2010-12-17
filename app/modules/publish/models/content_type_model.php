@@ -19,17 +19,17 @@ class Content_type_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* Create New Content Type
 	*
 	* Creates a new content type, including the associated table and custom field group
 	*
 	* @param string $name
-	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown?
-	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown?
-	* @param boolean $is_module Should this be treated as an automatic content type?  Or is there another admin module which will manage this content type?
-	* @param string $template The filename of the template in the theme directory to use for output
-	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url.
+	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown? (default: FALSE)
+	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown? (default: FALSE)
+	* @param boolean $is_module Should this be treated as an automatic content type?  Or is there another admin module which will manage this content type? (default: FALSE)
+	* @param string $template The filename of the template in the theme directory to use for output (default: content.thtml)
+	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url. (default: '')
 	*
 	* @return int $content_type_id
 	*/
@@ -86,19 +86,19 @@ class Content_type_model extends CI_Model
 		return $content_type_id;
 	}
 	
-	/*
+	/**
 	* Update Content Type
 	*
 	* Updates a content type
 	*
 	* @param int $content_type_id
 	* @param string $name
-	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown?
-	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown?
-	* @param string $template The filename of the template in the theme directory to use for output
-	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url.
+	* @param boolean $is_standard Include Title, URL Path, and Topic dropdown? (default: FALSE)
+	* @param boolean $is_privileged Include Restrict Access to Member Group(s) Dropdown? (default: FALSE)
+	* @param string $template The filename of the template in the theme directory to use for output (default: content.thtml)
+	* @param string $base_url If this will be managed with the standard content module, we can pre-populate the URL string with this base_url. (default: '')
 	*
-	* @return boolean TRUE
+	* @return void
 	*/
 	function update_content_type ($content_type_id, $name, $is_standard = TRUE, $is_privileged = FALSE, $template = 'content.thtml', $base_url) {
 		// prep base url
@@ -115,10 +115,10 @@ class Content_type_model extends CI_Model
 						
 		$this->db->update('content_types', $update_fields, array('content_type_id' => $content_type_id));
 		
-		return TRUE;
+		return;
 	}
 	
-	/*
+	/**
 	* Delete Content Type
 	*
 	* @param int $content_type_id
@@ -205,10 +205,10 @@ class Content_type_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get Content Type
 	*
-	* @param $content_type_id
+	* @param int $content_type_id
 	*
 	* @return array $content_type
 	*/
@@ -227,25 +227,28 @@ class Content_type_model extends CI_Model
 		return $type[0];
 	}
 	
-	/*
+	/**
 	* Get Content Types
 	*
 	* @param int $filters['id']
-	* @param int $filters['is_standard'] Either 1 or 0
-	* @param int $filters['is_module']
+	* @param boolean $filters['is_standard']
+	* @param boolean $filters['is_module']
 	*
+	* @return array
 	*/
 	function get_content_types ($filters = array()) {
 		if (isset($filters['id'])) {
 			$this->db->where('content_type_id',$filters['id']);
 		}
 		if (isset($filters['is_standard'])) {
+			$filters['is_standard'] = (!empty($filters['is_standard'])) ? TRUE : FALSE;
 			$this->db->where('content_type_is_standard',$filters['is_standard']);
 		}
 		if (isset($filters['system_name'])) {
 			$this->db->where('content_type_system_name',$filters['system_name']);
 		}
 		if (isset($filters['is_module'])) {
+			$filters['is_module'] = (!empty($filters['is_module'])) ? TRUE : FALSE;
 			$this->db->where('content_type_is_module',$filters['is_module']);
 		}
 	
