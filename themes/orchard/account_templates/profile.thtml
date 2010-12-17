@@ -45,7 +45,7 @@ Edit Your Profile - {$smarty.block.parent}
 					{foreach $custom_fields as $field}
 					{if $field.type != 'checkbox'}
 						<li>
-							<label class="full" for="field_{$field.name}">{$field.friendly_name}</label>
+							<label class="full" for="{$field.name}">{$field.friendly_name}</label>
 						</li>
 						<li>
 							{custom_field field=$field value=$values[$field.name] default=FALSE}
