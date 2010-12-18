@@ -57,6 +57,10 @@ class Form_builder {
 		
 		$this->CI->load->library('custom_fields/fieldtype');
 	
+		if (empty($custom_fields)) {
+			return FALSE;
+		}
+	
 		foreach ($custom_fields as $field) {
 			$this->form[] =& $this->CI->fieldtype->load($field);
 		}
@@ -75,6 +79,10 @@ class Form_builder {
 	*/
 	public function build_form_from_array ($custom_fields) {
 		$this->reset();
+		
+		if (empty($custom_fields)) {
+			return FALSE;
+		}
 		
 		$this->CI->load->library('custom_fields/fieldtype');
 	
