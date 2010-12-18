@@ -54,7 +54,7 @@ class Login_model extends CI_Model
 	* @param int $filters['limit'] How many records to retrieve
 	* @param int $filters['offset'] Start records retrieval at this record
 	*
-	* @return array|boolean Login records, else FALSE
+	* @return array Login records, else FALSE
 	*/
 	function get_logins ($filters = array()) {
 		if (isset($filters['id'])) {

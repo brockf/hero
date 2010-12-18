@@ -18,7 +18,7 @@ class Usergroup_model extends CI_Model
 		parent::CI_Model();
 	}
 	
-	/*
+	/**
 	* New Usergroup
 	*
 	* @param string $name The usergroup name
@@ -35,7 +35,7 @@ class Usergroup_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update Usergroup
 	*
 	* @param int $group_id The group ID
@@ -53,7 +53,7 @@ class Usergroup_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Make Default Group
 	*
 	* Sets the default usergroup for new registrations
@@ -70,7 +70,7 @@ class Usergroup_model extends CI_Model
 		return TRUE;	
 	}
 	
-	/*
+	/**
 	* Delete Usergroup
 	*
 	* @param int $group_id
@@ -88,7 +88,7 @@ class Usergroup_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get Default Usergroup
 	*
 	* @return int $group_id The default usergroup ID
@@ -104,7 +104,7 @@ class Usergroup_model extends CI_Model
 		return $group['usergroup_id'];
 	}
 	
-	/*
+	/**
 	* Get Usergroup
 	* 
 	* @param int $group_id The usergroup ID to retrieve
@@ -122,12 +122,12 @@ class Usergroup_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Get Usergroups
 	*
 	* @param $filters['id'] The group ID
 	*
-	* return array|boolean Array of group data, else FALSE
+	* return array Array of group data, else FALSE
 	*/
 	function get_usergroups ($filters = array()) {
 		if (isset($filters['id'])) {

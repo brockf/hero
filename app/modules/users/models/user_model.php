@@ -82,7 +82,7 @@ class User_model extends CI_Model
 	*
 	* @return boolean
 	*/
-	function in_admin () {
+	private function in_admin () {
 		if ($this->in_admin != null) {
 			return $this->in_admin;
 		}
@@ -101,18 +101,18 @@ class User_model extends CI_Model
 		return $this->in_admin;
 	}
 	
-	/*
+	/**
 	* Login User
 	*
 	* Logs a user in, sets the $_SESSION, updates the user's last login, and tracks login
 	*
 	* @param string $username Either the username or email of the user
 	* @param string $password Their password
-	* @param boolean $remember Remember the user with a cookie to re-log them in at future visits
+	* @param boolean $remember Remember the user with a cookie to re-log them in at future visits (default: FALSE)
 	*
 	* @return boolean FALSE upon failure, TRUE upon success
 	*/
-	function login ($username, $password, $remember = FALSE) {
+	public function login ($username, $password, $remember = FALSE) {
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
 		$this->db->where('user_password',md5($password));
 		$this->db->where('user_suspended','0');
@@ -170,6 +170,8 @@ class User_model extends CI_Model
     * Login by ID
     *
     * @param int $user_id
+    *
+    * @return boolean 
     */
     function login_by_id ($user_id, $password = FALSE) {
     	$CI =& get_instance();
@@ -200,7 +202,7 @@ class User_model extends CI_Model
 		return TRUE;
     }
     
-    /*
+    /**
     * User Logout
     *
     * @return boolean TRUE upon success
@@ -223,7 +225,7 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
-    /*
+    /**
     * Set Active User
     *
     * Sets the active user by ID, loads user data into array
@@ -242,7 +244,7 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
-    /*
+    /**
     * Is User an Admin?
     *
     * @return boolean TRUE if the current user is an administrator
@@ -255,7 +257,7 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
-    /*
+    /**
     * Is user logged in?
     *
     * @return boolean TRUE if user is logged in
@@ -269,14 +271,14 @@ class User_model extends CI_Model
     	}
     }
     
-    /*
+    /**
     * Is user in this group?
     *
     * Returns TRUE if the user is in the usergroup(s) or the privileges are open to all (i.e., array is empty or contains "0"). 
     * To check if the user is logged out, send "-1" by itself or in an array.  It's return TRUE if the user is logged out.
     *
-    * @param int|array A group ID, or array of group ID's (they must be in one of the groups)
-    * @param int $user_id (Optional) Specify the user.  Default: Current User
+    * @param int|array $group A group ID, or array of group ID's (they must be in one of the groups)
+    * @param int $user_id (Optional) Specify the user.  (default: FALSE)
     *
     * @return boolean TRUE if in the group
     */
@@ -332,7 +334,7 @@ class User_model extends CI_Model
     	return FALSE;
     }
     
-    /*
+    /**
     * Is user NOT in this group?
     *
     * @param int|array A group ID, or array of group ID's (they must NOT be in any of the groups)
@@ -377,7 +379,7 @@ class User_model extends CI_Model
     	return TRUE;
     }
     
-    /*
+    /**
     * Get user data
     *
     * @param string $parameter The name of the piece of user data (e.g., email)
@@ -393,14 +395,14 @@ class User_model extends CI_Model
     	}
     }
     
-    /*
+    /**
     * Get Active Subscriptions
     *
     * Gets active subscriptions for a user
     *
     * @param int $user_id The user id
     *
-    * @param boolean|array Array of active subscriptions, else FALSE if none exist
+    * @return array Array of active subscriptions, else FALSE if none exist
     */
     
     function get_active_subscriptions ($user_id) {
@@ -411,14 +413,14 @@ class User_model extends CI_Model
     	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id));
     }
     
-    /*
+    /**
     * Get Subscriptions
     *
     * Gets active and cancelled subscriptions for a user
     *
     * @param int $user_id The user id
     *
-    * @param boolean|array Array of subscriptions, else FALSE if none exist
+    * @param array Array of subscriptions, else FALSE if none exist
     */
     
     function get_subscriptions ($user_id) {
@@ -427,7 +429,7 @@ class User_model extends CI_Model
     	return $this->subscription_model->get_subscriptions(array('user_id' => $user_id), TRUE);
     }
     
-    /*
+    /**
     * Get Customer ID
     * 
     * Sometimes, we just need this, so let's not do a full blown query.
@@ -481,15 +483,15 @@ class User_model extends CI_Model
     	return TRUE;
     }
 	
-	/*
+	/**
 	* Validation
 	*
 	* Validates POST data to be acceptable for creating a new user
 	*
-	* @param boolean $editing Set to TRUE if this is an edited user (i.e., password can be blank)
-	* @param boolean $error_array Return errors in an array or HTML formatted string (TRUE for array)
+	* @param boolean $editing Set to TRUE if this is an edited user (i.e., password can be blank) (default: FALSE)
+	* @param boolean $error_array Return errors in an array or HTML formatted string (TRUE for array) (default: TRUE)
 	*
-	* @return array|boolean If errors, returns an array of individual errors, else returns TRUE
+	* @return array If errors, returns an array of individual errors, else returns TRUE
 	*/
 	function validation ($editing = FALSE, $error_array = TRUE) {	
 		$CI =& get_instance();
@@ -594,7 +596,7 @@ class User_model extends CI_Model
 		return $address;
 	}
 	
-	/*
+	/**
 	* Is email address unique?
 	*
 	* @param string $email The email address being tested
@@ -615,7 +617,7 @@ class User_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Is username unique?
 	*
 	* @param string $username The username being tested
@@ -642,15 +644,14 @@ class User_model extends CI_Model
 		}
 	}
 	
-	/*
+	/**
 	* Add a Usergroup
 	*
 	* @param int $user_id
 	* @param int $group_id
 	*
 	* @return array New usergroup array
-	*/
-	
+	*/	
 	function add_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
 		
@@ -668,7 +669,7 @@ class User_model extends CI_Model
 		return $usergroups;
 	}
 	
-	/*
+	/**
 	* Remove a Usergroup
 	*
 	* @param int $user_id
@@ -676,7 +677,6 @@ class User_model extends CI_Model
 	*
 	* @return array New usergroup array
 	*/
-	
 	function remove_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
 		
@@ -693,7 +693,7 @@ class User_model extends CI_Model
 		return $usergroups;
 	}
 	
-	/*
+	/**
 	* New User
 	*
 	* Create a new user, including custom fields
@@ -703,11 +703,11 @@ class User_model extends CI_Model
 	* @param string $username Username
 	* @param string $first_name First name
 	* @param string $last_name Last name
-	* @param array $groups Array of group ID's to be entered into
-	* @param int $affiliate Affiliate ID of referrer
-	* @param boolean $is_admin Check to make an administrator
-	* @param array $custom_fields An array of custom field data, matching in name
-	* @param boolean $require_validation Should we require email validation?
+	* @param array $groups Array of group ID's to be entered into (default: FALSE)
+	* @param int $affiliate Affiliate ID of referrer (default: FALSE)
+	* @param boolean $is_admin Check to make an administrator (default: FALSE)
+	* @param array $custom_fields An array of custom field data, matching in name (default: array())
+	* @param boolean $require_validation Should we require email validation? (default: FALSE)
 	*
 	* @return int $user_id
 	*/
@@ -809,7 +809,7 @@ class User_model extends CI_Model
 		return $user_id;
 	}
 	
-	/*
+	/**
 	* Update User
 	*
 	* Updates a user, including custom fields
@@ -820,9 +820,9 @@ class User_model extends CI_Model
 	* @param string $username Username
 	* @param string $first_name First name
 	* @param string $last_name Last name
-	* @param array $groups Array of group ID's to be entered into
-	* @param boolean $is_admin Check to make an administrator
-	* @param array $custom_fields An array of custom field data, matching in name
+	* @param array $groups Array of group ID's to be entered into (default: FALSE)
+	* @param boolean $is_admin Check to make an administrator (default: FALSE)
+	* @param array $custom_fields An array of custom field data, matching in name (default: array())
 	*
 	* @return int $user_id
 	*/
@@ -873,9 +873,10 @@ class User_model extends CI_Model
 	/**
 	* Update Billing Address
 	*
-	* @param $address_fields New Address
+	* @param int $user_id
+	* @param array $address_fields New Address
 	*
-	* @return TRUE
+	* @return boolean 
 	*/
 	function update_billing_address ($user_id, $address_fields) {
 		$CI =& get_instance();
@@ -898,12 +899,12 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete User
 	*
 	* @param int $user_id The user ID #
 	*
-	* @param boolean TRUE
+	* @return boolean TRUE
 	*/
 	function delete_user ($user_id) {
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
@@ -923,7 +924,7 @@ class User_model extends CI_Model
 	* @param int $user_id
 	* @param string $new_password
 	*
-	* @return TRUE
+	* @return boolean 
 	*/
 	function update_password ($user_id, $new_password) {
 		$this->db->update('users',array('user_password' => md5($new_password)),array('user_id' => $user_id));
@@ -969,12 +970,12 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Suspend User
 	*
 	* @param int $user_id The user ID #
 	*
-	* @param boolean TRUE
+	* @return boolean  
 	*/
 	function suspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '1'),array('user_id' => $user_id));
@@ -988,12 +989,12 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Unsuspend User
 	*
 	* @param int $user_id The user ID #
 	*
-	* @param boolean TRUE
+	* @return boolean TRUE
 	*/
 	function unsuspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '0'),array('user_id' => $user_id));
@@ -1007,12 +1008,13 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get User
 	*
 	* @param int $user_id The user ID #
+	* @param boolean $any_status Should even deleted records be retrieved?
 	*
-	* @param array User fields
+	* @return array User fields
 	*/
 	function get_user ($user_id, $any_status = FALSE) {
 		$filters = array('id' => $user_id);
@@ -1027,11 +1029,18 @@ class User_model extends CI_Model
 		}
 	}
 	
+	/**
+	* Count Users
+	*
+	* @param array $filters In same format as get_users()
+	*
+	* @return int Number of users matching filters
+	*/
 	function count_users ($filters) {
 		return $this->get_users($filters, FALSE, TRUE);
 	}
 	
-	/*
+	/**
 	* Get Users
 	*
 	* @param int $filters['id'] The user ID to select
@@ -1039,6 +1048,11 @@ class User_model extends CI_Model
 	* @param int $filters['suspended'] Set to 1 to retrieve suspended users
 	* @param string $filters['email'] The email address to filter by
 	* @param string $filters['name'] Search by first and last name
+	* @param string $filters['username'] Member username
+	* @param string $filters['first_name'] Search by first name
+	* @param string $filters['last_name'] Search by last name
+	* @param date $filters['signup_start_date'] Select after this signup date
+	* @param date $filters['signup_end_date'] Select before this signup date
 	* @param string $filters['keyword'] Search by ID, Name, Email, or Username
 	* @param string $filters['sort'] Field to sort by
 	* @param string $filters['sort_dir'] ASC or DESC
@@ -1203,15 +1217,15 @@ class User_model extends CI_Model
 		return $users;
 	}
 	
-	/*
+	/**
 	* New User Custom Field
 	*
 	* Creates the user-field-specific custom field record
 	*
 	* @param int $custom_field_id
-	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
-	* @param boolean $admin_only Is this an admin-only field?
-	* @param boolean $registration_form Should we show this in the registration form?
+	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company (default: '')
+	* @param boolean $admin_only Is this an admin-only field? (default: FALSE)
+	* @param boolean $registration_form Should we show this in the registration form? (default: TRUE)
 	*
 	* @return int $custom_field_id
 	*/
@@ -1230,15 +1244,15 @@ class User_model extends CI_Model
 		return $this->db->insert_id();
 	}
 	
-	/*
+	/**
 	* Update User Custom Field
 	*
 	* Updates the user_fields table with user custom field-specific information
 	*
 	* @param int $user_field_id The custom field ID to edit
-	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company
-	* @param boolean $admin_only Is this an admin-only field?
-	* @param boolean $registration_form Should we show this in the registration form?
+	* @param string $billing_equiv If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1/2, state, country, postal_code, company (default: '')
+	* @param boolean $admin_only Is this an admin-only field? (default: FALSE)
+	* @param boolean $registration_form Should we show this in the registration form? (default: TRUE)
 	*
 	* @return boolean TRUE
 	*/
@@ -1266,13 +1280,13 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Delete User Custom Field
 	*
 	* ge custom field record and modify database
 	*
 	* @param int $id The ID of the field
-	* @param string|boolean The database table to reflect the changes, else FALSE
+	* @param string The database table to reflect the changes, else FALSE
 	*
 	* @return boolean TRUE
 	*/
@@ -1288,12 +1302,12 @@ class User_model extends CI_Model
 		return TRUE;
 	}
 	
-	/*
+	/**
 	* Get User Custom Field
 	*
 	* @param int $custom_field_id
 	*
-	* @return boolean|array $custom_field or FALSE
+	* @return boolean $custom_field or FALSE
 	*/
 	function get_custom_field ($id) {
 		$return = $this->get_custom_fields(array('id' => $id));
@@ -1305,7 +1319,7 @@ class User_model extends CI_Model
 		return $return[0];
 	}
 	
-	/*
+	/**
 	* Get User Custom Fields
 	*
 	* Retrieves custom fields ordered by custom_field_order
