@@ -35,7 +35,7 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// by default, the first theme to edit is the existing theme
-		$theme = setting('frontend_theme');
+		$theme = setting('theme');
 		
 		$data = array(
 						'themes' => $options,

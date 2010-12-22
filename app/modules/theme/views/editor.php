@@ -3,7 +3,7 @@
 
 <?=$this->load->view(branded_view('cp/header'));?>
 <div class="sidebar" style="width: 30%">
-	<h2 style="margin-bottom: 0">Theme Files: <?=form_dropdown('theme_directory', $themes, $theme);?></h2>
+	<h2 style="margin-bottom: 0">Theme Files <?=$theme;?>: <?=form_dropdown('theme_directory', $themes, $theme);?></h2>
 	<div id="file_list_options">
 		<input class="button tooltip" type="button" id="new_file" name="" value="&#43; New File" title="create a new file in this theme folder" />
 		<? //<input class="button tooltip" type="button" id="export_theme" name="" value="Export Theme" title="export all theme files as a ZIP file" /> ?>

@@ -217,6 +217,13 @@ class Text_fieldtype extends Fieldtype {
 	    	 ->height('80px')
 	    	 ->help('This help text will be displayed beneath the field.  Use it to guide the user in responding correctly.');
 	    	 
+	   	$width = $this->CI->form_builder->add_field('text');
+	   	$width->label('Width')
+	   	 	  ->name('width')
+	   	 	  ->width('75px')
+	   	 	  ->default_value('250px')
+	   		  ->help('Enter the width of this field.');
+	    	 
 	    $required = $this->CI->form_builder->add_field('checkbox');
 	    $required->label('Required Field')
 	    	  ->name('required')
@@ -244,6 +251,7 @@ class Text_fieldtype extends Fieldtype {
 	    	$help->value($field['help']);
 	    	$validators->value($field['validators']);
 	    	$required->value($field['required']);
+	    	$width->value($field['width']);
 	    }	  
 	          
 		return $this->CI->form_builder->output_admin();      
@@ -270,7 +278,8 @@ class Text_fieldtype extends Fieldtype {
 					'default' => $this->CI->input->post('default'),
 					'help' => $this->CI->input->post('help'),
 					'validators' => $this->CI->input->post('validators'),
-					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE
+					'required' => ($this->CI->input->post('required')) ? TRUE : FALSE,
+					'width' => $this->CI->input->post('width')
 				);
 	}
 }
