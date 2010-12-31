@@ -166,6 +166,7 @@ class Checkbox_fieldtype extends Fieldtype {
 		$default = $this->CI->form_builder->add_field('select');
 		$default->label('Default State')
 	          ->name('default')
+	          ->default_value('unchecked')
 	          ->options(array(
 	          				array('value' => 'checked', 'name' => 'Checked'),
 							array('value' => 'unchecked', 'name' => 'Unchecked')

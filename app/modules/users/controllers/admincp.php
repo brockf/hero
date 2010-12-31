@@ -230,7 +230,9 @@ class Admincp extends Admincp_Controller {
 		
 		// prep data
 		$custom_fields = $this->user_model->get_custom_fields();
-		$subscriptions = $this->user_model->get_subscriptions($user['id']);
+		
+		$this->load->model('billing/subscription_model');
+		$subscriptions = $this->subscription_model->get_subscriptions_friendly(array(), $user['id']);
 		
 		// prep $show_usergroups
 		$this->load->model('usergroup_model');

@@ -38,7 +38,7 @@
 			<td><?=setting('currency_symbol');?><?=$subscription['amount'];?></td>
 			<td><? if ($subscription['next_charge_date']) { ?><?=date('d-M-Y',strtotime($subscription['next_charge_date']));?><? } ?></td>
 			<td><?=date('d-M-Y',strtotime($subscription['start_date']));?></td>
-			<td><? if ($subscription['active'] == FALSE) { ?><?=date('d-M-Y',strtotime($subscription['cancel_date']));?><? } else { ?><?=date('d-M-Y',strtotime($subscription['end_date']));?><? } ?></td>
+			<td><?=date('d-M-Y',strtotime($subscription['end_date']));?></td>
 			<td><? if ($subscription['active'] == TRUE) { ?>active<? } else { ?>inactive<? } ?></td>
 			<td>
 				<form method="post" action="<?=site_url('admincp/users/profile_actions/');?>" />

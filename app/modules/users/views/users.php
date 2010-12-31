@@ -40,7 +40,7 @@ if (!empty($this->dataset->data)) {
 else {
 ?>
 <tr>
-	<td colspan="4">No members match your filters.</td>
+	<td colspan="8">No members match your filters.</td>
 </tr>
 <? } ?>
 <?=$this->dataset->table_close();?>

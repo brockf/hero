@@ -554,14 +554,35 @@ class Admincp extends Admincp_Controller {
 		
 		$this->load->model('content_model');
 		
-		// get values for topics/publish date
-		$this->load->library('custom_fields/form_builder');
-		$this->form_builder->reset();
-		$this->form_builder->add_field('multicheckbox')->name('topics')->label('Topics');
-		$this->form_builder->add_field('multicheckbox')->name('privileges')->label('Member Access Groups');
-		$this->form_builder->add_field('datetime')->name('date')->label('Publish Date')->default_value(date('Y-m-d H:i:s'));
+		if ($type['is_standard'] == TRUE) {
+			// get values for topics/publish date if standard
+			$this->load->library('custom_fields/form_builder');
+			$this->form_builder->reset();
+			$this->form_builder->add_field('multicheckbox')->name('topics')->label('Topics');
+			$this->form_builder->add_field('datetime')->name('date')->label('Publish Date')->default_value(date('Y-m-d H:i:s'));
+			
+			$form_builder_data = $this->form_builder->post_to_array();
+			
+			$topics = unserialize($form_builder_data['topics']);
+			$date = $form_builder_data['date'];
+		}
+		else {
+			$topics = array();
+			$date = FALSE;
+		}
 		
-		$form_builder_data = $this->form_builder->post_to_array();
+		if ($type['is_privileged'] == TRUE) {
+			$this->load->library('custom_fields/form_builder');
+			$this->form_builder->reset();
+			$this->form_builder->add_field('multicheckbox')->name('privileges')->label('Member Access Groups');
+
+			$form_builder_data = $this->form_builder->post_to_array();
+			
+			$privileges = unserialize($form_builder_data['privileges']);
+		}
+		else {
+			$privileges = array();
+		}
 		
 		// gather custom field data
 		$this->load->library('custom_fields/form_builder');
@@ -587,9 +608,9 @@ class Admincp extends Admincp_Controller {
 													$this->user_model->get('id'),
 													$this->input->post('title'),
 													$this->input->post('url_path'),
-													unserialize($form_builder_data['topics']),
-													unserialize($form_builder_data['privileges']),
-													$form_builder_data['date'],
+													$topics,
+													$privileges,
+													$date,
 													$custom_fields
 												);
 				
@@ -602,9 +623,9 @@ class Admincp extends Admincp_Controller {
 											$id,
 											$this->input->post('title'),
 											$this->input->post('url_path'),
-											unserialize($form_builder_data['topics']),
-											unserialize($form_builder_data['privileges']),
-											$form_builder_data['date'],
+											$topics,
+											$privileges,
+											$date,
 											$custom_fields
 										);
 			

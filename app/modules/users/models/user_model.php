@@ -655,9 +655,13 @@ class User_model extends CI_Model
 	function add_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
 		
-		if (in_array($group_id, $user['usergroups'])) {
+		if (is_array($user['usergroups']) and !empty($user['usergroups']) and in_array($group_id, $user['usergroups'])) {
 			// already a member
 			return FALSE;
+		}
+		
+		if ($user['usergroups'] == FALSE) {
+			$user['usergroups'] = array();
 		}
 		
 		$user['usergroups'][] = $group_id;
@@ -680,15 +684,17 @@ class User_model extends CI_Model
 	function remove_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
 		
-		foreach ($user['usergroups'] as $key => $val) {
-			if ($val == $group_id) {
-				unset($user['usergroups'][$key]);
+		if (is_array($user['usergroups']) and !empty($user['usergroups'])) {
+			foreach ($user['usergroups'] as $key => $val) {
+				if ($val == $group_id) {
+					unset($user['usergroups'][$key]);
+				}
 			}
+			
+			$usergroups = '|' . implode('|',$user['usergroups']) . '|';
+			
+			$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
 		}
-		
-		$usergroups = '|' . implode('|',$user['usergroups']) . '|';
-		
-		$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
 		
 		return $usergroups;
 	}
@@ -1058,7 +1064,8 @@ class User_model extends CI_Model
 	* @param string $filters['sort_dir'] ASC or DESC
 	* @param int $filters['limit'] How many records to retrieve
 	* @param int $filters['offset'] Start records retrieval at this record
-	* @param boolean $any_status Set to TRUE to allow for deleted users, as well
+	* @param boolean $any_status Set to TRUE to allow for deleted users, as well (default: FALSE)
+	* @param boolean $counting Should we just count the number of users that match the filters? (default: FALSE)
 	*
 	* @return array Each user in an array of users
 	*/
@@ -1101,8 +1108,7 @@ class User_model extends CI_Model
 				// we are passed a member id
 				$this->db->where('users.user_id',$filters['name']);
 			} else {
-				$this->db->like('user_first_name',$filters['name']);
-				$this->db->or_like('user_last_name',$filters['name']);
+				$this->db->where('(`user_first_name` LIKE \'%' . $filters['name'] . '%\' OR `user_last_name` LIKE \'%' . $filters['name'] . '%\')');
 			}
 		}
 		
