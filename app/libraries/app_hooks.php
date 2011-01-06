@@ -136,6 +136,8 @@ class App_hooks {
 								'filename' => $filename
 							); 
 		
+		log_message('debug', 'Bind: ' . $class . '::' . $method . ' (' . $filename . ') bound to "' . $hook . '"');
+		
 		return $bind_id;
 	}
 	
@@ -190,6 +192,8 @@ class App_hooks {
 								'email_data' => (empty($email_data)) ? '' : (array)$email_data,
 								'other_email_data' => (empty($other_email_data)) ? '' : (array)$other_email_data
 							);
+		
+		log_message('debug', 'Hook: "' . $name . '" registered.');
 							
 		return $hook_id;
 	}
@@ -351,6 +355,8 @@ class App_hooks {
 			$this->subscription_plan = $subscription_plan['id'];
 		}
 		
+		log_message('debug', 'Hook: ' . $type . ' (#' . $id . ') data registered to active hook.');
+		
 		return TRUE;
 	}
 	
@@ -361,9 +367,15 @@ class App_hooks {
 	*
 	* @param string $name
 	* @param string $value
+	*
+	* @return void
 	*/
 	public function data_var ($name, $value) {
 		$this->data[$name] = $value;
+		
+		log_message('debug', 'Hook: "' . $name . '" => "' . $value . '" data registered to active hook.');
+		
+		return;
 	}
 	
 	/**
@@ -376,9 +388,12 @@ class App_hooks {
 	* @params [...$optional_params...]
 	*/
 	public function trigger ($name) {
+		log_message('debug', 'Trigger called: ' . $name);
+	
 		// check that hook exists
 		if (!isset($this->hooks[$name])) {
-			die(show_error('Trigger: Invalid hook call, "' . $name . '".'));
+			log_message('debug', 'Trigger failed: does not exist.');
+			die(show_error('Trigger failed: Invalid hook call, "' . $name . '".'));
 		}
 		
 		// load hook
@@ -388,7 +403,8 @@ class App_hooks {
 		if (is_array($hook['email_data'])) {
 			foreach ($hook['email_data'] as $data) {
 				if (!isset($this->$data)) {
-					die(show_error('Trigger: "' . $data . '" data not available at hook call.'));
+					log_message('debug', 'Trigger failed: "' . $data . '" not available at hook call.');
+					die(show_error('Trigger failed: "' . $data . '" data not available at hook call.'));
 				}
 			}
 		}
@@ -396,7 +412,8 @@ class App_hooks {
 		if (is_array($hook['other_email_data'])) {
 			foreach ($hook['other_email_data'] as $data) {
 				if (!isset($this->data[$data])) {
-					die(show_error('Trigger: "' . $data . '" data variable not available at hook call.'));
+					log_message('debug', 'Trigger failed: "' . $data . '" data variable not available at hook call.');
+					die(show_error('Trigger failed: "' . $data . '" data variable not available at hook call.'));
 				}
 			}
 		}
@@ -417,9 +434,12 @@ class App_hooks {
 			$args = array();
 		}
 		
+		log_message('debug', 'Trigger additional arguments: ' . implode(' ', $args));
+		
 		// execute code latched to hook
 		if (isset($this->binds[$hook['name']]) and !empty($this->binds[$hook['name']])) {
 			// we have binds
+			log_message('debug', 'Bindings found for trigger');
 			
 			foreach ($this->binds[$hook['name']] as $bind) {
 				$class = $bind['class'];
@@ -429,16 +449,21 @@ class App_hooks {
 				if (!empty($class)) {
 					if (isset($this->CI->$lower_class) and is_object($this->CI->$lower_class)) {
 						// it's in the CI superobject
+						log_message('debug', 'Binding called (superobject): ' . $lower_class . '::' . $method);
 						
 						call_user_func_array(array($this->CI->$lower_class, $method), $args);
 					}
 					elseif (class_exists($class)) {
 						// the class exists, but no in the CI superobject
+						log_message('debug', 'Binding called (class): ' . $class . '::' . $method);
+						
 						$bind_class = new $class;
 						call_user_func_array(array($bind_class,$method),$args);
 					}
 					else {
 						// the class isn't loaded, we'll call the file and load it
+						log_message('debug', 'Binding called (class in file): ' . $class . '::' . $method . ' (' . $bind['filename'] . ')');
+						
 						include(FCPATH . $bind['filename']);
 						$bind_class = new $class;
 						call_user_func_array(array($bind_class,$method), $args);
@@ -447,10 +472,14 @@ class App_hooks {
 				else {
 					// it's a non-class-bound function
 					if (function_exists($method)) {
+						log_message('debug', 'Binding called (function loaded): ' . $method);
+						
 						// the function exists, call it
 						call_user_func_array($method, $args);
 					}
 					else {
+						log_message('debug', 'Binding called (function): ' . $method . ' (' . $bind['filename'] . ')');
+						
 						// file hasn't been loaded, load and call it
 						include(FCPATH . $bind['filename']);
 						call_user_func_array($method, $args);
@@ -465,6 +494,8 @@ class App_hooks {
 		
 		if (!empty($emails)) {
 			foreach ($emails as $key => $email) {
+				log_message('debug', 'Loaded email bound to hook: ' . $email['id']);
+			
 				$send_email = TRUE;
 				
 				// do we have parameters to meet?
@@ -480,6 +511,8 @@ class App_hooks {
 						}
 						
 						$param = trim($param);
+						
+						log_message('debug', 'Parameter to check: ' . $param . ' ' . $operator . ' ' . $value);
 					
 						if ($operator == '==' and $this->$param != $value) {
 							$send_email = FALSE;
@@ -491,7 +524,12 @@ class App_hooks {
 				}
 				
 				if ($send_email == TRUE) {
+					log_message('debug', 'Sending hook email.');
+					
 					$this->send_email($email);
+				}
+				else {
+					log_message('debug', 'Parameter match(es) failed.  Email not sent.');
 				}
 			}
 		}
