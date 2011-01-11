@@ -480,11 +480,16 @@ class Content_model extends CI_Model
 		// standard ordering and limiting
 		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'content.content_id';
 		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'DESC';
-		$this->db->order_by($order_by, $order_dir);
 		
-		if (isset($filters['limit'])) {
-			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
-			$this->db->limit($filters['limit'], $offset);
+		// are we going to limit in the subquery?  this is more efficient, but not possible if we haven't JOINed the content table
+		// we'll check to see if we are sorting by a content field
+		if (strpos($order_by, 'content_') === 0) {
+			$this->db->order_by($order_by, $order_dir);
+		
+			if (isset($filters['limit'])) {
+				$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+				$this->db->limit($filters['limit'], $offset);
+			}
 		}
 		
 		$this->db->from('content');
@@ -511,6 +516,18 @@ class Content_model extends CI_Model
 		// this filter has to be applied late, because the users table needs to be joined
 		if (isset($filters['author_like'])) {
 			$this->db->like('users.user_username',$filters['author_like']);
+		}
+		
+		// let's check to see if we should order by/limit this query
+		// this only happens if we didn't limit in the subquery (above), i.e., if we are sorting by a content-specific
+		// field
+		if (strpos($order_by, 'content_') === FALSE) {
+			$this->db->order_by($order_by, $order_dir);
+			
+			if (isset($filters['limit'])) {
+				$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+				$this->db->limit($filters['limit'], $offset);
+			}
 		}
 		
 		$this->db->join('users','users.user_id = content.user_id','left');

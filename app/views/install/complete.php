@@ -7,7 +7,7 @@
 <p>Automated processes like emails and recurring charges require the daily execution of two cronjobs.  Please use
 a crontab manager (either in your cPanel/Plesk control panel or via SSH) to setup the following crontabs, exactly as so:</p>
 <ul>
-	<li>*/5 * 	* 	* 	* wget -q <?=site_url('cron/update/' . $cron_key);?> > /dev/null 2>&1</li>
+	<li>*/5 * 	* 	* 	* wget -q -O /dev/null <?=site_url('cron/update/' . $cron_key);?> > /dev/null 2>&1</li>
 </ul>
 <h2>Control Panel</h2>
 <ul>
