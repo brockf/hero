@@ -394,8 +394,19 @@ class Content_model extends CI_Model
 				// either a LIKE or FULLTEXT
 				if (isset($filters['keyword']) and $content_count > 10) {
 					$search_fields = array();
+					// load fieldtype library for below dbcolumn checks
+					$CI =& get_instance();
+					$CI->load->library('custom_fields/fieldtype');
+					
+					$search_fields = array();
 					foreach ($custom_fields as $field) {
-						$search_fields[] = '`' . $field['name'] . '`';
+						// we will only index fields that are VARCHAR, or TEXT
+						$CI->fieldtype->load_type($field['type']);
+						$db_column = $CI->fieldtype->$field['type']->db_column;
+					
+						if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
+							$search_fields[] = '`' . $field['name'] . '`';
+						}
 					}
 					reset($custom_fields);
 					
@@ -483,7 +494,7 @@ class Content_model extends CI_Model
 		
 		// are we going to limit in the subquery?  this is more efficient, but not possible if we haven't JOINed the content table
 		// we'll check to see if we are sorting by a content field
-		if (strpos($order_by, 'content_') === 0) {
+		if (strpos($order_by, 'content') === 0) {
 			$this->db->order_by($order_by, $order_dir);
 		
 			if (isset($filters['limit'])) {
@@ -521,7 +532,7 @@ class Content_model extends CI_Model
 		// let's check to see if we should order by/limit this query
 		// this only happens if we didn't limit in the subquery (above), i.e., if we are sorting by a content-specific
 		// field
-		if (strpos($order_by, 'content_') === FALSE) {
+		if (strpos($order_by, 'content') === FALSE) {
 			$this->db->order_by($order_by, $order_dir);
 			
 			if (isset($filters['limit'])) {

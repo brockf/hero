@@ -176,9 +176,17 @@ class Content_type_model extends CI_Model
 		$this->load->model('custom_fields_model');
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		
+		// load fieldtype library for below dbcolumn checks
+		$CI =& get_instance();
+		$CI->load->library('custom_fields/fieldtype');
+		
 		$search_fields = array();
 		foreach ($custom_fields as $field) {
-			if ($field['type'] != 'date') {
+			// we will only index fields that are VARCHAR, or TEXT
+			$CI->fieldtype->load_type($field['type']);
+			$db_column = $CI->fieldtype->$field['type']->db_column;
+		
+			if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
 				$search_fields[] = '`' . $field['name'] . '`';
 			}
 		}

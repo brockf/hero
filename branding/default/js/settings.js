@@ -85,7 +85,7 @@ $(document).ready(function () {
 			var setting_name = $(this).parent().parent().children('td.name').html();
 			
 			$.post(post_url, form.serialize(), function (data) {
-				value_td.html(constrain(data, 250) + '<textarea style="display:none" class="value" name="' + setting_name + '">' + data + '</textarea>');
+				value_td.html(constrain(data, 250) + '<textarea style="display:none" class="value" name="'+setting_name+'" id="' + setting_name + '">' + data + '</textarea>');
 				
 				notice_ok('Setting saved successfully.');
 			});

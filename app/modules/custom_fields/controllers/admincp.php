@@ -212,6 +212,9 @@ class Admincp extends Admincp_Controller {
 						 ->where('custom_field_group_id', $this->input->post('custom_field_group_id'))
 						 ->get();
 						 
+			// build search index
+			$this->load->model('publish/content_type_model');
+			$this->content_type_model->build_search_index($result->row()->content_type_id);
 						 
 			redirect('admincp/publish/type_fields/' . $result->row()->content_type_id);
 		}
