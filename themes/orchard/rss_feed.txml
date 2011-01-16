@@ -36,5 +36,6 @@
         
     {/foreach}
     
-    </channel></rss> 
+    </channel>
+</rss> 
 
