@@ -176,7 +176,7 @@ class Phpbb_functions {
 			return FALSE;
 		}
 
-		$result = $this->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
+		$result = $this->CI->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
 		$user = $result->row_array();
 		
 		$this->_fix_groups($user['user_id']);		
@@ -187,7 +187,7 @@ class Phpbb_functions {
 			return FALSE;
 		}
 		
-		$result = $this->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
+		$result = $this->CI->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
 		$user = $result->row_array();
 		
 		$this->_fix_groups($user['user_id']);
