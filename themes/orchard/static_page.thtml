@@ -7,7 +7,7 @@
 	
 	<div class="article">
 	
-	{$body}
+	{$body|parse_as_template}
 		
 		
 	</div>

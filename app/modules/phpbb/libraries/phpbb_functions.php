@@ -176,7 +176,18 @@ class Phpbb_functions {
 			return FALSE;
 		}
 
-		$result = $this->CI->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
+		$result = $this->CI->db->select('user_id')
+							   ->from('subscriptions')
+							   ->where('subscription_id',$subscription_id)
+							   ->join('users','users.customer_id = subscriptions.customer_id')
+							   ->limit(1)
+							   ->get();
+							   
+		if ($result->num_rows() == 0) {
+			log_message('debug','Failed to move user into phpBB usergroup because we couldn\'t find a user_id for subscription #' . $subscription_id);
+			return FALSE;
+		}
+							   
 		$user = $result->row_array();
 		
 		$this->_fix_groups($user['user_id']);		
@@ -187,7 +198,18 @@ class Phpbb_functions {
 			return FALSE;
 		}
 		
-		$result = $this->CI->db->select('user_id')->from('subscriptions')->where('subscription_id',$subscription_id)->limit(1)->get();
+		$result = $this->CI->db->select('user_id')
+							   ->from('subscriptions')
+							   ->where('subscription_id',$subscription_id)
+							   ->join('users','users.customer_id = subscriptions.customer_id')
+							   ->limit(1)
+							   ->get();
+							   
+		if ($result->num_rows() == 0) {
+			log_message('debug','Failed to move user out of phpBB usergroup because we couldn\'t find a user_id for subscription #' . $subscription_id);
+			return FALSE;
+		}
+							   
 		$user = $result->row_array();
 		
 		$this->_fix_groups($user['user_id']);

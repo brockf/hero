@@ -177,7 +177,7 @@ class Content_model extends CI_Model
 						
 		if (is_array($custom_fields)) {					
 			foreach ($custom_fields as $name => $value) {
-				$update_fields[$name] = $value;
+				$update_fields[$type['system_name'] . '.' . $name] = $value;
 			}
 		}
 		

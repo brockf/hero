@@ -9,7 +9,7 @@
 	<li><span class="tag">Email</span> <?=$user['email'];?></li>
 	<li><span class="tag">Member Groups</span><?=$user['show_usergroups'];?></li>
 	<? if (is_array($custom_fields)) { foreach ($custom_fields as $field) { ?>
-		<li><span class="tag"><?=$field['friendly_name'];?></span> <? if ($field['type'] == 'checkbox') { ?><? if (!empty($user[$field['name']])) { ?>Yes<? } else { ?>No<? } } else { ?><?=$user[$field['name']];?><? } ?></li>
+		<li><span class="tag"><?=$field['friendly_name'];?></span> <? if ($field['type'] == 'checkbox') { ?><? if (!empty($user[$field['name']])) { ?>Yes<? } else { ?>No<? } } elseif (@is_array(unserialize($user[$field['name']]))) { ?><?=implode(', ', $user[$field['name']]);?><? } else { ?><?=$user[$field['name']];?><? } ?></li>
 	<? } } ?>
 	<li><span class="tag">&nbsp;</span> <a href="<?=site_url('admincp/users/edit/' . $user['id']);?>">edit profile</a></li>
 </ul>
