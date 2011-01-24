@@ -8,8 +8,6 @@
 <script type="text/javascript" src="{url path="themes/_common/jquery-1.4.2.min.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/universal.js"}"></script>
 <script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
-<script type="text/javascript" src="{theme_url path="js/box_layout.js"}"></script>
-<script type="text/javascript" src="{theme_url path="js/brock_bar.js"}"></script>
 {block name="head_includes"}
 {/block}
 </head>
@@ -18,53 +16,75 @@
 
 <div class="container">
 	<div id="header">
-		<a id="logo" href="{url}"><img src="{theme_url path="images/logo.gif"}" alt="Inside Music Media" /></a>
-		<div id="topnav">
-			{if $logged_in}
-				<a href="{url path="users"}">my account</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="{url path="users/logout"}">logout</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			{else}
-				<a href="{url path="users/login"}">login</a>&nbsp;&nbsp;&nbsp;&nbsp;
-				<a href="{url path="users/register"}">subscribe</a>&nbsp;&nbsp;&nbsp;&nbsp;
-			{/if}
-			<a href="{url path="store/cart"}">cart ({cart_items})</a>
-		</div>
+		<a class="logo" href="{url}">
+			<img src="{theme_url path="images/logo.jpg"}" alt="{setting name="site_name"}" />
+			
+			<div class="logo_text">
+				{setting name="site_name"}
+				
+				<div class="slogan">
+					Orchard, a simple theme for business
+				</div>
+			</div>
+		</a>
 
-		<div id="search"><form method="get" action="{url path="search"}" class="validate"><input type="text" class="text required mark_empty" rel="search query" name="q" /></form></div>
+		<div class="date">
+			{has_cart}
+				<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a> | 
+			{/has_cart}
+			{$smarty.now|date_format:"%A, %B %e, %Y"}
+		</div>
+		
+		<div class="search">
+			<form method="get" action="{url path="search"}" class="validate">
+				<input type="text" class="text required mark_empty" rel="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
+			</form>
+		</div>
 	</div>
-</div>
-<div id="boxtop"></div>
-<div id="box">
-	<div class="container">
-		<div id="nav">
-			{*
-			<ul>
-				<li><a class="active current" href="{url}">Frontpage</a></a></li>
-				<li><a class="jerry" href="{url path="about"}">About Jerry</a></li>
-
-				<li><a class="subscribe" href="{url path="subscriptions"}">Subscribe</a></li>
-				<li><a class="archives" href="{url path="archives"}">Archives</a></li>
-				<li><a class="favorites" href="{url path="favorites"}">Favorite Things</a></li>
-				<li><a class="store" href="{url path="store"}">Store</a></li>
-				<li><a class="events" href="#">Conferences</a></li>
-				<li><a class="app" href="#">App</a></li>
-
-				<li><a class="contact" href="{url path="contact"}">Contact Jerry</a></li>
-				<li><a class="tipster" href="#">Tipster</a></li>
+	
+	<div id="navigation">
+		{menu name="main" show_sub_menus="yes"}
+		<div style="clear:both"></div>
+	</div>
+	
+	<div id="banner">
+		<img src="{theme_url path="images/banner.jpg"}" alt="" />
+	</div>
+	
+	<div id="content">
+		<div class="sidebar">
+			<h3>Latest News</h3>
+			
+			<ul class="news">
+				<li>
+					<span class="date">December 23, 2010</span>
+					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
+				</li>
+				<li>
+					<span class="date">December 23, 2010</span>
+					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
+				</li>
+				<li>
+					<span class="date">December 23, 2010</span>
+					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
+				</li>
+				<li>
+					<span class="date">December 23, 2010</span>
+					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
+				</li>
 			</ul>
-			*}
-			{menu name="main" show_sub_menus="off"}
 		</div>
-		<div id="content">
+		
+		<div class="inner_content">
 			{block name="content"}No content has been sent to this block{/block}
 		</div>
+		
 		<div style="clear:both"></div>
 	</div>
 </div>
-<div id="boxbot"></div>
 
 <div class="container footer">
-	Copyright &copy; 2007-2010, Jerry Del Colliano LLC.  All Rights Reserved.  Designed and developed by <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.
+	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
 </div>
 </body>
 </html>

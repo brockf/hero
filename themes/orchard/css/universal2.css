@@ -460,66 +460,6 @@ h4.date {
 	padding: 0;
 }
 
-div.pagination a, div.pagination b {
-	margin-right: 5px;
-}
-
-div#search_form {
-	background-color: #f0f0f0;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-	padding: 5%;
-}
-
-div#search_form input#query {
-	font-size: 14pt;
-	width: 75%;
-}
-
-div#search_form input#submit {
-	font-size: 14pt;
-	width: 18%;
-}
-
-div.num_results {
-	background-color: #ccc;
-	color: #000;
-	margin: 15px 0px;
-	padding: 5px 10px;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	border-radius: 10px;
-}
-
-ul.search_results {
-	list-style-type: none;
-	margin: 0;
-	padding: 0;
-}
-
-ul.search_results li {
-	clear: both;
-	margin-bottom: 15px;
-}
-
-ul.search_results li a {
-	font-weight: bold;
-}
-
-ul.search_results li span.relevance {
-	font-size: 7pt;
-	color: #ccc;
-}
-
-ul.search_results p {
-	padding-left: 25px;
-	color: #444;
-}
-
-ul.search_results span.price {
-	font-weight: bold;
-}
 
 /* forms */
 form.form {
