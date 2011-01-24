@@ -315,7 +315,7 @@ class Form_model extends CI_Model
 						$value = 'no upload';
 					}
 					else {
-						$value = $custom_fields[$field['name']] . ' (Download: ' . site_url('writeable/custom_uploads/' . $custom_fields[$field['name']]);
+						$value = $custom_fields[$field['name']] . ' (Download: ' . site_url($custom_fields[$field['name']]);
 					}
 				}
 				else {

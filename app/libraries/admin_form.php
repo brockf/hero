@@ -179,7 +179,7 @@ class Admin_form {
 	* @param string $value Current value of the field (default: '')
 	* @param string $help A piece of help text (default: FALSE)
 	* @param boolean $required Is the field required for submission? (default: FALSE)
-	* @param boolean|string FALSE for no WYSIWYG, or the name of the toolbar class to load with ckEditor (e.g., "complete", "basic") (default: FALSE)
+	* @param boolean|string $wysiwyg FALSE for no WYSIWYG, or the name of the toolbar class to load with ckEditor (e.g., "complete", "basic") (default: FALSE)
 	* @param boolean $full Should the field take up the entire pane? (default: FALSE)
 	* @param string $width The complete style:width element definition (e.g., "250px" or "50%") (default: 300px)
 	* @param string $height The complete style:height element definition (default: 100px)
@@ -199,6 +199,7 @@ class Admin_form {
 								'value' => $value,
 								'width' => $width,
 								'help' => $help,
+								'height' => $height,
 								'required' => $required,
 								'wysiwyg' => $wysiwyg,
 								'full' => $full,
