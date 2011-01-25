@@ -586,7 +586,7 @@ class Content_model extends CI_Model
 			// are we loading in all content data?
 			if (isset($custom_fields) and !empty($custom_fields)) {
 				foreach ($custom_fields as $field) {
-					$this_content[$field['name']] = $content[$field['name']];
+					@$this_content[$field['name']] = $content[$field['name']];
 				}
 				reset($custom_fields);
 			}

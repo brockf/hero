@@ -38,7 +38,8 @@ My Shopping Cart - {$smarty.block.parent}
 				</tr>
 				{/foreach}
 				<tr>
-					<td colspan="3" class="sub_total">Cart Subtotal</td>
+					<td colspan="2"><input type="submit" class="button" name="update" value="Update Cart" /></td>
+					<td class="sub_total">Cart Subtotal</td>
 					<td class="sub_total_price">{setting name="currency_symbol"}{$cart_total}</td>
 					<td><input type="submit" class="button" name="checkout_button" value="Checkout" /></td>
 				</tr>
@@ -49,8 +50,6 @@ My Shopping Cart - {$smarty.block.parent}
 				{/if}
 			</tbody>
 		</table>
-		
-		<input type="submit" class="button" name="update" value="Update Cart" />
 		</form>			
 	</div>
 {/block}

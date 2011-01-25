@@ -16,7 +16,7 @@ class Custom_fields_model extends CI_Model {
 	/**
 	* @var array Holds previous get_custom_fields calls in memory
 	*/
-	var $cache;
+	public $cache;
 	
 	/**
 	* @var string The full path to upload custom file uploads to
@@ -341,9 +341,21 @@ class Custom_fields_model extends CI_Model {
 	*
 	* @param int $group_id
 	*/
-	public function delete_group ($id) {
+	public function delete_group ($id, $db_table = FALSE) {
+		// delete fields, if possible
+		if (!empty($db_table)) {
+			$fields = $this->get_custom_fields(array('group' => $id));
+			if (!empty($fields)) {
+				foreach ($fields as $field) {
+					$this->delete_custom_field($field['id'], $db_table);
+				}
+			}
+		}
+		else {
+			$this->db->delete('custom_fields',array('custom_field_group' => $id));
+		}
+		
 		$this->db->delete('custom_field_groups',array('custom_field_group_id' => $id));
-		$this->db->delete('custom_fields',array('custom_field_group' => $id));
 		
 		return;
 	}

@@ -1058,3 +1058,47 @@ ul.recipients li {
 span.light {
 	color: #888;
 }
+
+ul.themes {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.themes li {
+	display: block;
+	float: left;
+	width: 19%;
+	margin-right: 1%;
+}
+
+ul.themes img {
+	border: 1px solid #999;
+}
+
+ul.themes div.info {
+	padding: 8px 0;
+}
+
+ul.themes div.info p {
+	margin: 0;
+}
+
+ul.themes h4 {
+	font-weight: bold;
+	font-size: 14pt;
+	margin-bottom: 10px;
+}
+
+ul.themes p.already {
+	background-color: #ededed;
+	color: #000;
+	font-size: 9pt;
+	display: inline;
+	padding: 4px 10px;
+	font-style: italic;
+}
+
+ul.themes form {
+	margin: 5px 0 0 0;
+}

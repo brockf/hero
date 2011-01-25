@@ -175,6 +175,20 @@ div.footer {
 	font-size: 9pt;
 }
 
+div.footer ul.menu {
+	list-style-type: none;
+	margin: 5px 0 0 0 ;
+	padding: 0;
+}
+
+div.footer ul.menu li {
+	display: inline;
+}
+
+div.footer ul.menu li a {
+	display: inline;
+}
+
 /**
 * Sidebar ##############################################################
 */
@@ -215,7 +229,19 @@ div.sidebar ul.news li span.date {
 	font-size: 8pt;
 }
 
-div.sidebar ul.news li a {
+div.sidebar a.rss {
+	background-color: #e53b26;
+	color: #fff;
+	display: block;
+	width: 60px;
+	padding: 5px 10px;
+	margin: 10px;
+	font-size: 8pt;
+	text-transform: uppercase;
+}
+
+div.sidebar a.rss:hover {
+	background-color: #000;
 }
 
 /**
@@ -226,6 +252,7 @@ h1 {
 	font-size: 20pt;
 	letter-spacing: -1px;
 	font-weight: bold;
+	line-height: 1.1em;
 }
 
 div.inner_content {
@@ -270,6 +297,50 @@ ul.frontpage_products li a {
 
 ul.frontpage_products li p {
 	margin: 5px 0;
+}
+
+div.byline {
+	margin: 10px 0 0 0;
+}
+
+div.byline span.date {
+	background-color: #ccc;
+	color: #fff;
+	font-style: italic;
+	padding: 3px 8px;
+}
+
+div.summary {
+	font-weight: bold;
+	font-size: 12pt;
+}
+
+ul.blog {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.blog li {
+	display: block;
+	margin-bottom: 35px;
+}
+
+ul.blog li a.title {
+	font-size: 17pt;
+	clear: left;
+	display: block;
+	margin-top: 10px;
+	line-height: 1em;
+}
+
+ul.blog li h4.date {
+	background-color: #ccc;
+	color: #fff;
+	font-weight: normal;
+	font-style: italic;
+	padding: 3px 8px;
+	display: inline;
 }
 
 /**
@@ -425,6 +496,8 @@ div.store ul.collections p {
 div.store ul.collections li {
 	width: 225px;
 	padding: 10px;
+	float: left;
+	display: block;
 }
 
 div.store ul.collections a.name {
@@ -506,6 +579,22 @@ div.product div.cart_form {
 	text-align: center;
 }
 
+div.product div.cart_form span.price {
+	font-size: 16pt;
+	font-weight: bold;
+	margin-bottom: 7px;
+}
+
+div.product div.cart_form ul.options {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+div.product div.cart_form ul.options li {
+	padding: 5px 0;
+}
+
 div.product div.cart_form input.button {
 	margin-top: 6px;
 }
@@ -579,8 +668,8 @@ form.form fieldset {
 }
 
 form.form legend {
-	background-color: #fbecff;
-	color: #333;
+	background-color: #222;
+	color: #ededed;
 	font-size: 8pt;
 	text-transform: uppercase;
 	padding: 7px 155px 7px 15px;
@@ -678,3 +767,19 @@ input.button.hover {
 /**
 * Tables ###############################################################
 */
+
+table.table {
+	width: 100%;
+}
+
+table thead td {
+	background-color: #ededed;
+	color: #222;
+	font-weight: bold;
+	text-shadow: 0px 1px #fff;
+	padding: 3px 10px;
+}
+
+table tbody td {
+	padding: 10px;
+}

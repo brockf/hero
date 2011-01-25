@@ -43,7 +43,7 @@
 	</div>
 	
 	<div id="navigation">
-		{menu name="main" show_sub_menus="yes"}
+		{menu name="main_menu" show_sub_menus="yes"}
 		<div style="clear:both"></div>
 	</div>
 	
@@ -56,23 +56,15 @@
 			<h3>Latest News</h3>
 			
 			<ul class="news">
+				{content var="news" type="news" limit="5"}
 				<li>
-					<span class="date">December 23, 2010</span>
-					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
+					<span class="date">{$news.date|date_format: "%B %e, %Y"}</span>
+					<a href="{$news.url}">{$news.title}</a>
 				</li>
-				<li>
-					<span class="date">December 23, 2010</span>
-					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
-				</li>
-				<li>
-					<span class="date">December 23, 2010</span>
-					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
-				</li>
-				<li>
-					<span class="date">December 23, 2010</span>
-					<a href="#">Company XYZ partners with Antemedia to bring the States their first ever 243 story all-glass building - no support beams or anything!</a>
-				</li>
+				{/content}
 			</ul>
+			
+			<a class="rss" href="{url path="news_rss"}">RSS Feed</a>
 		</div>
 		
 		<div class="inner_content">
@@ -85,6 +77,7 @@
 
 <div class="container footer">
 	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
+	{menu name="footer_menu" class="menu"}
 </div>
 </body>
 </html>

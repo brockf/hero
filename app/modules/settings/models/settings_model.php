@@ -104,6 +104,20 @@ class Settings_model extends CI_Model
 	}
 	
 	/**
+	* Delete Setting
+	*
+	* Deletes a setting
+	*
+	* @param string $name
+	*
+	* @return void
+	*/
+	function delete_setting ($name) {
+		$this->db->delete('settings', array('setting_name' => $name));
+		$this->config->set_item($name, FALSE);
+	}
+	
+	/**
 	* New Setting
 	*
 	* Creates a new setting

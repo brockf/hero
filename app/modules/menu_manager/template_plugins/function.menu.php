@@ -196,7 +196,7 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 					
-					if ($link['parent_menu_link_id'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
+					if ($smarty->CI->user_model->logged_in() and $link['parent_menu_link_id'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
 						// add children						
 						$menu_children[$link['id']][] = 'profile';
 						$menu_children[$link['id']][] = 'password';

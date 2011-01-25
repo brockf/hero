@@ -80,7 +80,7 @@ class Menu_model extends CI_Model
 	*/
 	function add_link ($menu_id, $parent_link = FALSE, $type, $link_id = FALSE, $text, $special_type = FALSE, $external_url = FALSE, $privileges = array()) {
 		// get next order
-		$links = $this->get_links(array('menu' => $menu_id));
+		$links = $this->get_links(array('menu' => $menu_id), TRUE);
 		if (is_array($links)) {
 			// get last item
 			$last_link = end($links);
@@ -230,19 +230,34 @@ class Menu_model extends CI_Model
 	}
 	
 	/**
+	* Delete Menu
+	*
+	* @param int $menu_id
+	*
+	* @return void
+	*/
+	function delete_menu ($menu_id) {
+		$this->db->delete('menus',array('menu_id' => $menu_id));
+		$this->db->delete('menus_links',array('menu_id' => $menu_id));
+		
+		return;
+	}
+	
+	/**
 	* Get Links
 	*
 	* @param int $filters['menu'] Menu ID
 	* @param int $filters['parent'] Parent link ID
+	* @param boolean $no_cache Don't use cache (default: FALSE)
 	*
 	* @return array $links
 	*/
-	function get_links ($filters = array()) {
+	function get_links ($filters = array(), $no_cache = FALSE) {
 		// caching
 		// we'll only cache for calls with a filter menu as all frontend calls
 		// have this parameter
 		
-		if (isset($filters['menu'])) {
+		if (isset($filters['menu']) and $no_cache == FALSE) {
 			$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
 			$directory = $this->config->item('path_writeable') . 'menu_cache/';
 			

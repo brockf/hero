@@ -1,4 +1,11 @@
 $(document).ready(function () {
+	// login or create account?
+	$('input[name="password"]').keyup(function () {
+		$('input#existing_account').attr('checked','checked');
+	});
+
+	// billing and shipping address showing
+	
 	billing_address();
 	shipping_address();
 	

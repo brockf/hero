@@ -4,24 +4,7 @@
 {/block}
 {block name="content"}
 	<h1>{$title}</h1>
-	<div class="byline">
-
-		<span class="date">{$date|date_format:"%A, %B %e, %Y"}</span>
-	</div>
 	<div class="article">
-		<span class="author">By {$author_first_name} {$author_last_name}</span>
-		
-		{jerry_thumbnail id=$id img_src="true"}
-		
 		{$body}
-		
-		{include file="brock_bar.thtml" share_content_id=$id}
 	</div>
-	
-	{content var="article" type="2" limit="1" date_format="l, F j, Y"}
-	<h1 class="secondary">{$article.title}</h1>
-	<div class="article">
-		{$article.body}
-	</div>
-	{/content}
 {/block}

@@ -30,6 +30,15 @@ function image_thumb ($image_path, $height, $width)
 		$width = str_replace('px','',$width);
 	}
 	
+	// are the height and width already OK?
+	list($current_width, $current_height, $current_type, $current_attr) = getimagesize($image_path);
+	
+	if ($current_width == $width and $current_height == $height) {
+		// strip base path from path
+		$image_path = str_replace(FCPATH, '', $image_path);
+		return site_url($image_path);
+	}
+	
 	// get modification date of the source file
 	$last_modified = filemtime($image_path);
 	
@@ -46,11 +55,11 @@ function image_thumb ($image_path, $height, $width)
 		$CI->load->helper('get_available_image_library');
 		
 		// configuration
-		$config['image_library']	= get_available_image_library();
+		$config['image_library'] = get_available_image_library();
 		$config['library_path'] = $CI->config->item('image_library_path');
-		$config['source_image']		= $image_path;
-		$config['new_image']		= $image_thumb;
-		$config['maintain_ratio']	= TRUE;
+		$config['source_image']	= $image_path;
+		$config['new_image'] = $image_thumb;
+		$config['maintain_ratio'] = TRUE;
 		if ($height) {
 			$config['height'] = $height;
 		}
@@ -59,7 +68,9 @@ function image_thumb ($image_path, $height, $width)
 		}
 		
 		$CI->image_lib->initialize($config);
-		$CI->image_lib->resize();
+		if (!$CI->image_lib->resize()) {		
+			die(show_error($CI->image_lib->display_errors()));
+		}
 		$CI->image_lib->clear();
 	}
 	

@@ -29,7 +29,8 @@ class Theme extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->admin_navigation->child_link('design',10,'Theme Editor',site_url('admincp/theme'));
+		$this->CI->admin_navigation->child_link('design',10,'Theme Editor',site_url('admincp/theme/editor'));
+		$this->CI->admin_navigation->child_link('design',1,'Themes',site_url('admincp/theme'));
 	}
 	
 	function update($db_version) {

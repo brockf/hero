@@ -21,7 +21,7 @@ class MY_URI extends CI_URI {
 		// strip out the real query_string
 		if (isset($_SERVER['REQUEST_URI']) and strpos($_SERVER["REQUEST_URI"],'?') !== FALSE) {
 			$url = parse_url($_SERVER["REQUEST_URI"]);
-			$query_string = $url['query'];
+			$query_string = (isset($url['query'])) ? $url['query'] : '';
 			$path = $url['path'];
 			
 			// we need to remove the path of the URL that's part of the subfolder Caribou may be installed in

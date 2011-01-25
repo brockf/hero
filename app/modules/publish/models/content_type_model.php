@@ -42,7 +42,10 @@ class Content_type_model extends CI_Model
 		$this->load->helper('clean_string');
 		$system_name = clean_string($name);
 		
-		// make sure table doesn't already exist
+		// make sure table doesn't already exist, after we clear the cache
+		// we clear the cache because, when theme installs run, we don't want to run into errors about
+		// non-existant table conflicts
+		$this->db->data_cache = array();
 		if ($this->db->table_exists($system_name)) {
 			die(show_error('There is already a table in the database by the name of ' . $system_name . '.  You should rename your content type to avoid a conflict.'));
 		}
@@ -134,10 +137,10 @@ class Content_type_model extends CI_Model
 		
 		// delete custom field group
 		$this->load->model('custom_fields_model');
-		$this->custom_fields_model->delete_group($type['custom_field_group_id']);
+		$this->custom_fields_model->delete_group($type['custom_field_group_id'], $type['system_name']);
 		
 		// delete content from content database
-		$this->load->model('content_model');
+		$this->load->model('publish/content_model');
 		$content = $this->content_model->get_contents(array('type' => $type['id']));
 		foreach ((array)$content as $item) {
 			$this->content_model->delete_content($item['id']);

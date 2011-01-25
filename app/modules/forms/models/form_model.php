@@ -147,6 +147,10 @@ class Form_model extends CI_Model
 		$this->load->model('link_model');
 		$this->link_model->delete_link($form['link_id']);
 		
+		// delete custom fields
+		$this->load->model('custom_fields_model');
+		$this->custom_fields_model->delete_group($form['custom_field_group_id']);
+		
 		// delete table
 		$this->load->dbforge();
 		$this->dbforge->drop_table($form['table_name']);

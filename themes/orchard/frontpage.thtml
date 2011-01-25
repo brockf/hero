@@ -5,60 +5,17 @@
 	
 	<h1>Our Products</h1>
 	<ul class="frontpage_products">
+		{collections var="collection"}
 		<li>
 			<div class="image">
-				<a href="#"><img src="themes/orchard/images/placeholders/blueberries.jpg" alt="" /></a>
+				<a href="{$collection.url}"><img src="{$collection.image}" alt="{$collection.name}" /></a>
 			</div>
 			<div class="collection">
-				<a href="#">Blueberries</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
+				<a href="{$collection.url}">{$collection.name}</a>
+				<p>{$collection.description}.</p>
 			</div>
 		</li>
-		<li>
-			<div class="image">
-				<img src="themes/orchard/images/placeholders/cherries.jpg" alt="" />
-			</div>
-			<div class="collection">
-				<a href="#">Cherries</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
-			</div>
-		</li>
-		<li>
-			<div class="image">
-				<img src="themes/orchard/images/placeholders/apples.jpg" alt="" />
-			</div>
-			<div class="collection">
-				<a href="#">Apples</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
-			</div>
-		</li>
-		<li>
-			<div class="image">
-				<img src="themes/orchard/images/placeholders/oranges.jpg" alt="" />
-			</div>
-			<div class="collection">
-				<a href="#">Oranges</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
-			</div>
-		</li>
-		<li>
-			<div class="image">
-				<img src="themes/orchard/images/placeholders/pears.jpg" alt="" />
-			</div>
-			<div class="collection">
-				<a href="#">Pears</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
-			</div>
-		</li>
-		<li>
-			<div class="image">
-				<img src="themes/orchard/images/placeholders/strawberries.jpg" alt="" />
-			</div>
-			<div class="collection">
-				<a href="#">Strawberries</a>
-				<p>Our delicious blend of blueberries are picked right off the trees, like all other blueberries.</p>
-			</div>
-		</li>
+		{/collections}
 	</ul>
 	<div style="clear:both"></div>
 {/block}

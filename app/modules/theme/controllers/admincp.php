@@ -17,15 +17,204 @@ class Admincp extends Admincp_Controller {
 		parent::__construct();
 		
 		$this->admin_navigation->parent_active('design');
-		
-		$this->admin_navigation->module_link('Change Default Theme',site_url('admincp/theme/switcher'));
 	}
 	
 	function index () {
-		redirect('admincp/theme/editor');
+		$this->load->model('theme/theme_model');
+		$themes = $this->theme_model->get_themes();
+		
+		$data = array(
+						'themes' => $themes
+					);
+					
+		$this->load->view('themes', $data);
 	}
 	
+	function install ($theme) {
+		$this->admin_navigation->module_link('Back to Themes',site_url('admincp/theme'));
+		
+		$this->load->model('theme/theme_model');
+		$themes = $this->theme_model->get_themes();
+		
+		if (empty($theme) or !in_array($theme, $themes)) {
+			die(show_error('Invalid theme selection.'));
+		}
+		
+		if (file_exists(FCPATH . 'themes/' . $theme . '/install.php')) {
+			$install_file = TRUE;
+		}
+		else {
+			$install_file = FALSE;
+		}
+		
+		$data = array(
+					'theme' => $theme,
+					'install_file' => $install_file
+				);
+				
+		$this->load->view('install_confirm', $data);
+	}
+	
+	function complete_install () {
+		$theme = $this->input->post('theme');
+		
+		// the deadliest code in the application!
+		// wipes everything clean
+		if ($this->input->post('reset') == 'yes') {
+			// perform reset
+			
+			// Content, content types, forms, blogs, topics, RSS feeds, products,
+			// collections, product options, subscriptions, and menus WILL be erased.
+			
+			// content & conte types
+			$this->load->model('publish/content_type_model');
+			$types = $this->content_type_model->get_content_types();
+			
+			if (!empty($types)) {
+				foreach ($types as $type) {
+					$this->content_type_model->delete_content_type($type['id']);
+				}
+			}
+			
+			// forms
+			$this->load->model('forms/form_model');
+			$forms = $this->form_model->get_forms();
+			
+			if (!empty($forms)) {
+				foreach ($forms as $form) {
+					$this->form_model->delete_form($form['id']);
+				}
+			}
+			
+			// blogs
+			$this->load->model('blogs/blog_model');
+			$blogs = $this->blog_model->get_blogs();
+			
+			if (!empty($blogs)) {
+				foreach ($blogs as $blog) {
+					$this->blog_model->delete_blog($blog['id']);
+				}
+			}
+			
+			// rss feeds
+			$this->load->model('rss/rss_model');
+			$feeds = $this->rss_model->get_feeds();
+			
+			if (!empty($feeds)) {
+				foreach ($feeds as $feed) {
+					$this->rss_model->delete_feed($feed['id']);
+				}
+			}
+			
+			// topics
+			$this->load->model('publish/topic_model');
+			$topics = $this->topic_model->get_topics();
+			
+			if (!empty($topics)) {
+				foreach ($topics as $topic) {
+					$this->topic_model->delete_topic($topic['id']);
+				}
+			}
+			
+			// products
+			$this->load->model('store/products_model');
+			$products = $this->products_model->get_products();
+			
+			if (!empty($products)) {
+				foreach ($products as $product) {
+					$this->products_model->delete_product($product['id']);
+				}
+			}
+			
+			// collections
+			$this->load->model('store/collections_model');
+			$collections = $this->collections_model->get_collections();
+			
+			if (!empty($collections)) {
+				foreach ($collections as $collection) {
+					$this->collections_model->delete_collection($collection['id']);
+				}
+			}
+			
+			// product options
+			$this->load->model('store/product_option_model');
+			$options = $this->product_option_model->get_options();
+			
+			if (!empty($options)) {
+				foreach ($options as $option) {
+					$this->product_option_model->delete_option($option['id']);
+				}
+			}
+			
+			// subscriptions
+			$this->load->model('billing/subscription_plan_model');
+			$subscriptions = $this->subscription_plan_model->get_plans();
+			
+			if (!empty($subscriptions)) {
+				foreach ($subscriptions as $plan) {
+					$this->subscription_plan_model->delete_plan($plan['id']);
+				}
+			}
+			
+			// menus
+			$this->load->model('menu_manager/menu_model');
+			$menus = $this->menu_model->get_menus();
+			
+			if (!empty($menus)) {
+				foreach ($menus as $menu) {
+					$this->menu_model->delete_menu($menu['id']);
+				}
+			}
+			
+			// custom fields
+			$this->load->model('custom_fields_model');
+			
+			// custom fields - products
+			
+			if ($this->config->item('products_custom_field_group')) {
+				$group = $this->config->item('products_custom_field_group');
+				$this->custom_fields_model->delete_group($group, 'products');
+				$this->settings_model->delete_setting('products_custom_field_group');
+			}
+			
+			// custom fields - collections
+			if ($this->config->item('collections_custom_field_group')) {
+				$group = $this->config->item('collections_custom_field_group');
+				$this->custom_fields_model->delete_group($group, 'collections');
+				$this->settings_model->delete_setting('collections_custom_field_group');
+			}	
+			
+			// clear custom fields cache
+			$this->custom_fields_model->cache = array();
+		}
+		
+		// pause to let MySQL have a break
+		sleep(1);
+		
+		// reload settings
+		$this->settings_model->set_settings();
+		
+		if ($this->input->post('default_content') == 'yes') {
+			// check for default content
+			$install_file = FCPATH . 'themes/' . $theme . '/install.php';
+			
+			if (file_exists($install_file)) {
+				include($install_file);
+			}
+			else {
+				die(show_error('Unable to locate installation file.'));
+			}
+		}
+		
+		// set setting
+		$this->settings_model->update_setting('theme', $theme);
+		
+		$this->load->view('install_complete');
+	}	
+	
 	function editor () {
+		$this->admin_navigation->module_link('Change Site Theme',site_url('admincp/theme'));
+		
 		$this->load->model('theme/theme_model');
 		$themes = $this->theme_model->get_themes();
 		
