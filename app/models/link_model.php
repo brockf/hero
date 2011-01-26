@@ -284,15 +284,20 @@ class Link_model extends CI_Model {
 		$links = $this->get_links();
 		
 		$routes = array();
-		foreach ($links as $link) {
-			$routes[$link['url_path']] = $link['module'] . '/' . $link['controller'] . '/' . $link['method'] . '/' . $link['url_path'];
+		
+		if (!empty($links)) {
+			foreach ($links as $link) {
+				$routes[$link['url_path']] = $link['module'] . '/' . $link['controller'] . '/' . $link['method'] . '/' . $link['url_path'];
+			}
 		}
 		
 		// generate PHP file
 		$file = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n\n";
 		
-		foreach ($routes as $route => $path) {
-			$file .= '$route[\'' . $route . '\'] = \'' . $path . '\';' . "\n";
+		if (!empty($routes)) {
+			foreach ($routes as $route => $path) {
+				$file .= '$route[\'' . $route . '\'] = \'' . $path . '\';' . "\n";
+			}
 		}
 		
 		write_file(FCPATH . 'writeable/routes.php',$file,'w');

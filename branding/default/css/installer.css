@@ -20,6 +20,20 @@ body {
 	position: relative;
 }
 
+div#logo {
+	position: absolute;
+	top: 13px;
+	font-size: 10pt;
+	text-decoration: none;
+	color: #666;
+}
+
+div#logo span {
+	display: block;
+	font-size: 20pt;
+	color: #000;
+}
+
 #nav {
 	position: absolute;
 	background-color: #dedede;

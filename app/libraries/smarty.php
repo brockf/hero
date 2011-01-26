@@ -31,6 +31,12 @@ class CI_Smarty extends Smarty {
 	*							   This overrides certain features of the parser.
 	*/
 	function initialize ($email_parser = FALSE) {
+		// if these folders don't exist, we're probably not finished installing yet...
+		// let's stop so we don't throw errors
+		if (!file_exists(FCPATH . 'writeable/templates_compile')) {
+			return FALSE;
+		}
+	
 		// store CI within Smarty's object
 		$this->CI =& get_instance();
 		

@@ -35,7 +35,7 @@ class Theme extends Module {
 	
 	function update($db_version) {
 		if ($db_version < 1.0) {
-			$this->CI->settings_model->new_setting(5, 'theme', 'orchard', 'This is the name of the folder in /themes/ in which to access your template files.','text');
+			$this->CI->settings_model->new_setting(5, 'theme', '', 'This is the name of the folder in /themes/ in which to access your template files.','text');
 			$this->CI->settings_model->new_setting(5, 'frontpage_template', 'frontpage', 'Which template should be loaded when someone access the homepage?','text');
 		}
 		

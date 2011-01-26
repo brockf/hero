@@ -12,7 +12,7 @@
 * @package Electric Framework
 */
 
-class Error extends Front_Controller {
+class Error extends Controller {
 	function __construct () {
 		parent::__construct();
 	}

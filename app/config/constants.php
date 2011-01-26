@@ -36,6 +36,26 @@ define('FOPEN_READ_WRITE_CREATE', 				'a+b');
 define('FOPEN_WRITE_CREATE_STRICT', 			'xb');
 define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 
+/*
+| -------------------------------------------------------------------
+|  Auto-load Base Controllers with Native _autoload
+| -------------------------------------------------------------------
+| 
+|  Loads Admincp_Controller and Public_Controller automatically when extended
+|
+*/
+
+function __autoload($class)
+{
+	if (strpos($class, 'CI_') !== 0) {
+		if (is_file($location = APPPATH.'libraries/controllers/'.$class.EXT)) {
+			include_once $location;
+		}
+		elseif (is_file($location = APPPATH.'core/'.$class.EXT)) {
+			include_once $location;
+		}
+	}
+}
 
 /* End of file constants.php */
 /* Location: ./system/opengateway/config/constants.php */

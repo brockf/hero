@@ -51,6 +51,7 @@ $config['cron_key'] = '0000000000000000';
 $config['app_name'] = 'Caribou CMS';
 $config['app_link'] = 'http://www.cariboucms.com/';
 $config['app_support'] = 'http://www.cariboucms.com/support';
+$config['default_theme'] = 'orchard';
 
 /*
 |--------------------------------------------------------------------------
@@ -398,27 +399,6 @@ $config['rewrite_short_tags'] = TRUE;
 |
 */
 $config['proxy_ips'] = '';
-
-/*
-| -------------------------------------------------------------------
-|  Auto-load Base Controllers with Native _autoload
-| -------------------------------------------------------------------
-| 
-|  Loads Admincp_Controller and Public_Controller automatically when extended
-|
-*/
-
-function __autoload($class)
-{
-	if (strpos($class, 'CI_') !== 0) {
-		if (is_file($location = APPPATH.'libraries/controllers/'.$class.EXT)) {
-			include_once $location;
-		}
-		elseif (is_file($location = APPPATH.'core/'.$class.EXT)) {
-			include_once $location;
-		}
-	}
-}
 
 /* End of file config.php */
 /* Location: ./system/opengateway/config/config.php */

@@ -12,6 +12,11 @@
 	<div id="notices"></div>
 	<div id="wrapper">
 		<div id="header">
+			<div id="logo">
+				<?=$this->config->item('app_name');?>
+				<span>Installation Wizard</span>
+			</div>
+		
 			<div id="nav">
 				<ol>
 					<li<? if ($this->router->fetch_method() == 'index') { ?> class="active"<? } ?>>Configuration</li>

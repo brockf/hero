@@ -21,8 +21,8 @@
 		</ul>
 	</li>
 	<li>
-		<input type="radio" name="default_content" value="yes" /> Yes, install default content.<br />
-		<input type="radio" name="default_content" value="no" checked="checked" /> No, do not install default content.
+		<input type="radio" name="default_content" value="yes" <? if (setting('theme') == FALSE) { ?> checked="checked" <? } ?> /> Yes, install default content.<br />
+		<input type="radio" name="default_content" value="no" <? if (setting('theme') != FALSE) { ?> checked="checked" <? } ?> /> No, do not install default content.
 	</li>
 	<li>
 		<h2 style="margin-top: 15px">System Reset</h2>
@@ -36,9 +36,9 @@
 		</ul>
 	</li>
 	<li>
-		<input type="radio" name="reset" value="yes" /> Yes, reset my platform.  This includes deleting all content, content types,
+		<input type="radio" name="reset" value="yes" <? if (setting('theme') == FALSE) { ?> checked="checked" <? } ?> /> Yes, reset my platform.  This includes deleting all content, content types,
 		custom fields, products, collections, forms, blogs &amp; archives, topics, and menus.<br />
-		<input type="radio" name="reset" value="no" checked="checked" /> No, do not perform a system reset.
+		<input type="radio" name="reset" value="no" <? if (setting('theme') != FALSE) { ?> checked="checked" <? } ?> /> No, do not perform a system reset.
 	</li>
 </ul>
 <? } ?>
