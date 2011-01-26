@@ -45,14 +45,17 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 |
 */
 
-function __autoload($class)
-{
-	if (strpos($class, 'CI_') !== 0) {
-		if (is_file($location = APPPATH.'libraries/controllers/'.$class.EXT)) {
-			include_once $location;
-		}
-		elseif (is_file($location = APPPATH.'core/'.$class.EXT)) {
-			include_once $location;
+// because some people have this function in their config, we have to not break those sites
+if (!function_exists('__autoload')) {
+	function __autoload($class)
+	{
+		if (strpos($class, 'CI_') !== 0) {
+			if (is_file($location = APPPATH.'libraries/controllers/'.$class.EXT)) {
+				include_once $location;
+			}
+			elseif (is_file($location = APPPATH.'core/'.$class.EXT)) {
+				include_once $location;
+			}
 		}
 	}
 }
