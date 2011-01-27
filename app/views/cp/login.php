@@ -44,7 +44,7 @@
 		</div>
 	</div>
 	<div id="copyright">
-		Powered by <a href="<?=setting('app_link');?>"><?=setting('app_name');?></a>.  Copyright &copy; 2007-<?=date('Y');?>, <a href="http://www.electricfunction.com">Electric Function, Inc.</a>.  All Rights Reserved.
+		Powered by <a href="<?=setting('app_link');?>"><?=setting('app_name');?></a>.  All Rights Reserved.
 	</div>
 </body>
 </html>
