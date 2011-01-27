@@ -25,8 +25,17 @@ class MY_URI extends CI_URI {
 			$path = $url['path'];
 			
 			// we need to remove the path of the URL that's part of the subfolder Caribou may be installed in
-			$sub_folder = parse_url($this->config->item('base_url'));
-			$sub_folder = $sub_folder['path'];
+			if (strpos($this->config->item('base_url'),'example.com') === FALSE) {
+				$sub_folder = parse_url($this->config->item('base_url'));
+				$sub_folder = $sub_folder['path'];
+			}
+			else {
+				// we aren't installed yet, so if this is the "error" controller, we'll just manually set that
+				if (preg_match('/^[a-z0-9\-\\/_]*\/error/s', $path)) {
+					$path = 'error';
+					$sub_folder = '/';
+				}
+			}
 			
 			// isolate path from sub_folder, unless the sub_folder is just a "/"!
 			if ($sub_folder != "/" and !empty($sub_folder)) {
