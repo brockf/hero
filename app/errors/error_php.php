@@ -16,9 +16,6 @@
 <p>Filename: <?php echo $filepath; ?></p>
 <p>Line Number: <?php echo $line; ?></p>
 
-<p></p>
-<p><a href="javascript:history.go(-1)">Go back</a></p>
-
 </div>
 
 <?php } ?>

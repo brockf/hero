@@ -29,8 +29,6 @@ margin: 			0 0 4px 0;
 	<div id="content">
 		<h1><?php echo $heading; ?></h1>
 		<?php echo $message; ?>
-		
-		<p><a href="javascript:history.go(-1)">Go back</a></p>
 	</div>
 </body>
 </html>
