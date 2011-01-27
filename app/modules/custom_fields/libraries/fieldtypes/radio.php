@@ -62,7 +62,7 @@ class Radio_fieldtype extends Fieldtype {
 	* @return string $return The HTML to be included in a form
 	*/
 	function output_admin () {
-		if (empty($this->value) and $this->CI->input->post($this->name) == FALSE) {
+		if ($this->value === FALSE and $this->CI->input->post($this->name) == FALSE) {
 			$this->value($this->default);
 		}
 	
@@ -93,7 +93,7 @@ class Radio_fieldtype extends Fieldtype {
 	* @return string $return The HTML to be included in a form.
 	*/
 	function output_frontend () {
-		if (empty($this->value)) {
+		if ($this->value === FALSE) {
 			if (empty($_POST)) {
 				$this->value($this->default);
 			}

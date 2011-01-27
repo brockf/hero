@@ -37,7 +37,7 @@ class Fieldtype {
 	// field values
 	public $id;
 	public $type;
-	public $value;
+	public $value = FALSE;
 	public $label = FALSE;
 	public $name;
 	public $help = FALSE;
