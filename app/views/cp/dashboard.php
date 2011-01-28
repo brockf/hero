@@ -31,7 +31,7 @@
 		<span class="title">
 			Revenue
 		</span>
-		<a class="more" href="<?=site_url('admincp/reports/invoice');?>">
+		<a class="more" href="<?=site_url('admincp/reports/invoices');?>">
 			View all invoices &gt;
 		</a>
 		</div>
