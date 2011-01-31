@@ -58,7 +58,6 @@ class Admincp extends Admincp_Controller {
 	
 	function save_toggle ()
 	{
-		die();
 		$current = $this->settings_model->get_setting($this->input->post('name'));
 		
 		$new_value = ($current['value'] == '1') ? '0' : '1';
