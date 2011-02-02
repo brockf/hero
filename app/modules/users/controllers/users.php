@@ -17,7 +17,7 @@ class Users extends Front_Controller {
 	function __construct() {
 		parent::__construct();
 		
-		$this->public_methods = array('password_reset','login','post_login','forgot_password','post_forgot_password','register','post_registration');
+		$this->public_methods = array('validate','password_reset','login','post_login','forgot_password','post_forgot_password','register','post_registration');
 		
 		if (!in_array($this->router->fetch_method(), $this->public_methods) and $this->user_model->logged_in() == FALSE) {
 			redirect('users/login?return=' . query_value_encode(current_url()));
@@ -350,7 +350,7 @@ class Users extends Front_Controller {
 	}
 	
 	function validate ($key) {
-		// logout so that they go the login after validating
+		// logout so that they go to the login after validating
 		$this->user_model->logout();
 	
 		$this->db->select('user_id');

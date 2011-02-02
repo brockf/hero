@@ -700,6 +700,39 @@ class User_model extends CI_Model
 	}
 	
 	/**
+	* Resend Validation Email
+	*
+	* Resends the validation email, unless there's no email to be sent
+	*
+	* @param int $user_id
+	*
+	* @return TRUE
+	*/
+	function resend_validation_email ($user_id) {
+		$user = $this->get_user($user_id);
+		
+		if (empty($user)) {
+			return FALSE;
+		}
+
+		if (!empty($user['validate_key'])) {
+			$validation_link = site_url('users/validate/' . $user['validate_key']);
+			
+			$CI =& get_instance();
+			$CI->app_hooks->data('member', $user['id']);
+			
+			$CI->app_hooks->data_var('validation_link', $validation_link);
+			$CI->app_hooks->data_var('validation_code', $user['validate_key']);
+			
+			$CI->app_hooks->trigger('member_validate_email');
+			
+			return TRUE;
+		}
+		
+		return FALSE;
+	}
+	
+	/**
 	* New User
 	*
 	* Create a new user, including custom fields

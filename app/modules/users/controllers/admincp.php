@@ -134,8 +134,22 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'products') {
 			header('Location: ' . dataset_link('admincp/reports/products', array('member_name' => $user['id'])));
 		}
+		elseif ($action == 'validate_email') {
+			redirect('admincp/users/resend_validate_email/' . $user['id']);
+		}
 		
 		return TRUE;
+	}
+	
+	function resend_validate_email ($user_id) {
+		if ($this->user_model->resend_validation_email($user_id)) {
+			$this->notices->SetNotice('Validation email resent successfully.');
+		}
+		else {
+			$this->notices->SetError('There was an error resending the validation email.');
+		}
+		
+		redirect($_SERVER['HTTP_REFERER']);
 	}
 	
 	function delete ($users, $return_url) {
@@ -371,6 +385,8 @@ class Admincp extends Admincp_Controller {
 		$custom_fields = $this->form_builder->post_to_array();
 			
 		if ($action == 'new') {
+			$validation = (setting('validate_emails') == '1') ? TRUE : FALSE;
+			
 			$user_id = $this->user_model->new_user(
 													$this->input->post('email'),
 													$this->input->post('password'),
@@ -380,7 +396,8 @@ class Admincp extends Admincp_Controller {
 													$this->input->post('usergroups'),
 													FALSE,
 													($this->input->post('is_admin') == '1') ? TRUE : FALSE,
-													$custom_fields
+													$custom_fields,
+													$validation
 												);
 			
 			$this->notices->SetNotice('User added successfully.');

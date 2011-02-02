@@ -24,6 +24,9 @@ if (!empty($this->dataset->data)) {
 					<option value="subscriptions">subscriptions</option>
 					<option value="products">product orders</option>
 					<option value="logins">login history</option>
+					<? if (!empty($row['validate_key'])) { ?>
+						<option value="validate_email">resend validation email</option>
+					<? } ?>
 					<? if ($row['suspended'] == TRUE) { ?>
 						<option value="unsuspend">unsuspend user</option>
 					<? } else { ?>
