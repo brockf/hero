@@ -156,7 +156,7 @@ function rtrim ( str, charlist ) {
 }
 
 function isValidEmail(str) {
-   return (str.indexOf(".") > 2) && (str.indexOf("@") > 0);
+   return (str.indexOf("@") > 0);
 }	
 
 function isNumeric(sText) {
