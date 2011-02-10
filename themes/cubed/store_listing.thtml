@@ -3,13 +3,16 @@
 {if $title}{$title}{elseif $collection}{$collection.name}{/if} - {$smarty.block.parent}
 {/block}
 {block name="content"}
-	<h1>Browse Our Store</h1>
+	<h1>Shop</h1>
 	
 	<div class="store">
 		{if $collections}
 			<ul class="collections">
 			{foreach $collections as $collection}
 				<li>
+					{if $collection.image}
+					<img src="{$collection.image}" alt="{$collection.name}" />
+					{/if}
 					<a class="name" href="{$collection.url}">{$collection.name}</a>
 					{if $collection.description}<div class="description">{$collection.description}</div>{/if}
 				</li>

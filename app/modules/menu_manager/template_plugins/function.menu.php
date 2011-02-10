@@ -61,12 +61,14 @@ function smarty_function_menu ($params, $smarty) {
 				foreach ($menu_children[$id] as $key) {
 					$item_child = $menu_items[$key];
 					
-					// set parent active if it's child is active
-					if ($item_child['active'] == TRUE) {
-						$item['active'] = TRUE;
+					if (!empty($menu_items[$key])) {
+						// set parent active if it's child is active
+						if ($item_child['active'] == TRUE) {
+							$item['active'] = TRUE;
+						}
+						
+						$children_items[] = li_html($item_child);
 					}
-					
-					$children_items[] = li_html($item_child);
 				}
 			}
 		}

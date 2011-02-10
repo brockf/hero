@@ -37,7 +37,7 @@ My Shopping Cart - {$smarty.block.parent}
 					<td><a href="{$item.remove_link}">Remove</a></td>
 				</tr>
 				{/foreach}
-				<tr>
+				<tr class="totals">
 					<td colspan="2"><input type="submit" class="button" name="update" value="Update Cart" /></td>
 					<td class="sub_total">Cart Subtotal</td>
 					<td class="sub_total_price">{setting name="currency_symbol"}{$cart_total}</td>

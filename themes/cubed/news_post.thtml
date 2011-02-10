@@ -3,7 +3,7 @@
 {$title} - {$smarty.block.parent}
 {/block}
 {block name="content"}
-	<a href="{url path="news"}">&lt; News Archives</a>
+	<a href="{url}">&lt; Back to Frontpage</a>
 	<div class="byline">
 		<span class="date">{$date|date_format:"%A, %B %e, %Y"}</span>
 	</div>

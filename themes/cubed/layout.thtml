@@ -24,11 +24,11 @@
 			{setting name="site_name"}
 			
 			<div class="slogan">
-				Witty tagline here
+				A demo membership website about business
 			</div>
 		</a>
 		
-		<div class="top_box account">
+		<div class="top_box account {if !$logged_in}logged_out{/if}">
 			{if $logged_in}
 				<h4>Welcome, {$member.first_name}</h4>
 				<ul>
@@ -38,7 +38,16 @@
 				</ul>
 			{else}
 				<h4>My Account</h4>
-				Login or Register box
+				{login_form var="login" return=$return}
+				    <form method="post" action="{$login.form_action}">
+				        <input type="hidden" name="return" value="{$login.return}">
+				     
+				        <input type="text" class="text mark_empty required" rel="Username" id="username" name="username" value="{$login.username}"><br />
+				        <input type="password" class="text mark_empty" rel="password" id="password" name="password" /><br />
+				        <input type="submit" class="button small" name="login" value="Login" />&nbsp;&nbsp;<a class="small_link" href="{url path="account/register"}">Register now</a>
+				        </ul>
+				    </form>
+				{/login_form}
 			{/if}
 		</div>
 
@@ -47,13 +56,13 @@
 			<form method="get" action="{url path="search"}" class="validate">
 				<input type="text" class="text required mark_empty" rel="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
 			</form>
-			<a class="advanced_search" href="{url path="search"}">Advanced Search</a>
+			<a class="small_link" href="{url path="search"}">Advanced Search</a>
 		</div>
 		
 		<div class="top_box cart">
 			<h4>Shopping Cart</h3>
 			{has_cart}
-				<a href="{url path="store/cart"}">You have {cart_items} in your shopping cart</a>
+				<a href="{url path="store/cart"}">You have {cart_items} items in your shopping cart</a>
 			{/has_cart}
 			{no_cart}
 				<a href="{url path="store/cart"}">Your shopping cart is currently empty</a>
@@ -69,32 +78,19 @@
 	</div>
 	
 	<div id="content">
-		<div class="sidebar">
-			<h3>Latest News</h3>
-			
-			<ul class="news">
-				{content var="news" type="news" limit="5"}
-				<li>
-					<span class="date">{$news.date|date_format: "%B %e, %Y"}</span>
-					<a href="{$news.url}">{$news.title}</a>
-				</li>
-				{/content}
-			</ul>
-			
-			<a class="rss" href="{url path="news_rss"}">RSS Feed</a>
-		</div>
-		
-		<div class="inner_content">
-			{block name="content"}No content has been sent to this block{/block}
-		</div>
-		
-		<div style="clear:both"></div>
+		{block name="content"}No content has been sent to this block{/block}
 	</div>
+	
+	<div style="clear:both"></div>
 </div>
 
 <div class="container footer">
+	<img id="corner" src="{theme_url path="images/footer_corner.gif"}" alt="" />
+	
+	{menu name="footer_menu" class="menu" show_sub_menus="no"}
+	
 	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
-	{menu name="footer_menu" class="menu"}
+	{menu name="footer_menu_2" class="menu_2"}
 </div>
 </body>
 </html>

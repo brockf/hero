@@ -35,7 +35,7 @@ class Blog_model extends CI_Model
  	* @param boolean $auto_trim Should we auto trim the summary field in listings? (default: FALSE)
  	* @param string $template The filename of the template in the theme directory to use for output (default: blog.html)
  	* @param int $per_page How many items to show per page? (default: 25)
- 	* @param string Standard privileges array of member group ID's (default: array())
+ 	* @param array $privileges array of member group ID's (default: array())
  	*
  	* @return int $blog_id
  	*/
@@ -83,7 +83,7 @@ class Blog_model extends CI_Model
  	* @param boolean $auto_trim Should we auto trim the summary field in listings? (default: FALSE)
  	* @param string $template The filename of the template in the theme directory to use for output (default: blog.html)
  	* @param int $per_page How many items to show per page? (default: 25)
- 	* @param string Standard privileges array of member group ID's (default: array())
+ 	* @param array $privileges array of member group ID's (default: array())
  	*
  	* @return boolean
  	*/
