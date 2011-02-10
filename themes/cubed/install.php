@@ -81,7 +81,6 @@ $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Store', 'store');
 $CI->menu_model->add_link($menu, FALSE, 'link', $blog['link_id'], 'News');
 $CI->menu_model->add_link($menu, FALSE, 'link', $about['link_id'], 'About Us');
 $CI->menu_model->add_link($menu, FALSE, 'link', $form['link_id'], 'Contact Us');
-$CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'My Account', 'my_account');
 
 $menu = $CI->menu_model->new_menu('footer_menu');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Control Panel', 'control_panel');

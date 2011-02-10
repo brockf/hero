@@ -41,7 +41,7 @@ a:hover {
 
 div#header {
 	position: relative;
-	height: 125px;
+	height: 115px;
 }
 
 div#header img.logo_mark {
@@ -74,7 +74,7 @@ div.top_box {
 	width: 150px;
 	position: absolute;
 	border-left: 1px solid #dedede;
-	padding: 15px;
+	padding: 10px 15px 15px 15px;
 	margin-top: 20px;
 	font-size: 9pt;
 	height: 55px;
@@ -92,6 +92,17 @@ div.top_box.account {
 
 div.top_box.account h4 {
 	background-image: url(../images/icon_account.png);
+}
+
+div.top_box.account ul {
+	margin: 0;
+	padding: 0;
+	list-style-type: none;
+}
+
+div.top_box.account ul li {
+	background:url(../images/bullet_black.png) 0px 1px no-repeat; 
+	padding-left: 17px;
 }
 
 div.top_box.search {
@@ -174,9 +185,6 @@ div#navigation ul.children {
 	left: -1px;
 	top: 53px;
 	background-color: #222;
-	border: 1px solid #000;
-	border-top: 0;
-	border-bottom: 0;
 }
 
 div#navigation ul.children li a {
@@ -185,7 +193,7 @@ div#navigation ul.children li a {
 	width: 140px;
 	text-align: left;
 	text-shadow: none;
-	padding: 4px 10px;
+	padding: 5px 10px;
 	font-size: 9pt;
 	color: #f0f0f1;
 	background-color: #333;
