@@ -1,0 +1,17 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<a href="{url path="news"}">&lt; News Archives</a>
+	<div class="byline">
+		<span class="date">{$date|date_format:"%A, %B %e, %Y"}</span>
+	</div>
+	<h1>{$title}</h1>
+	<div class="summary">
+		{$summary}
+	</div>
+	<div class="article">
+		{$body}
+	</div>
+{/block}

@@ -1,0 +1,96 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	<div id="archive_toolbar">
+		<form class="validate" method="get" action="{$url}">
+		<h3>Filters</h3>
+		
+		{* let's use whatever filters may be passed *}
+			{if $smarty.get.keyword and $smarty.get.keyword != ""}
+				{assign var="filter_keyword" value=$smarty.get.keyword}
+			{else}
+				{assign var="filter_keyword" value=FALSE}
+			{/if}
+			{if $smarty.get.topic and $smarty.get.topic != ""}
+				{assign var="filter_topic" value=$smarty.get.topic}
+			{else}
+				{assign var="filter_topic" value=FALSE}
+			{/if}
+			{if $smarty.get.sort and $smarty.get.sort == "newest"}
+				{assign var="filter_sort" value="content_date"}
+				{assign var="filter_sort_dir" value="DESC"}
+			{elseif $smarty.get.sort and $smarty.get.sort == "oldest"}
+				{assign var="filter_sort" value="content_date"}
+				{assign var="filter_sort_dir" value="ASC"}
+			{elseif $smarty.get.sort and $smarty.get.sort == "popularity"}
+				{assign var="filter_sort" value="content_hits"}
+				{assign var="filter_sort_dir" value="DESC"}
+			{else}
+				{assign var="filter_sort" value="content_date"}
+				{assign var="filter_sort_dir" value="DESC"}
+			{/if}
+		{* end filter preparation *}
+		
+		<ul>
+			<li>
+				<h4>Keyword</h4>
+				<input type="text" class="text mark_empty" rel="enter keyword(s)" name="keyword" value="{$filter_keyword}" />
+			</li>
+			<li>
+				<h4>Topic</h4>
+				<select name="topic">
+					<option value="" {if !$filter_topic}selected="selected"{/if}>All Topics</option>
+					{topics var="topic"}<option value="{$topic.id}">{$topic.name}</option>{/topics}
+				</select>
+			</li>
+			<li>
+				<h4>Sort By</h4>
+				<select name="sort">
+					<option value="newest" {if $smarty.get.sort == "newest"}selected="selected"{/if}>Newest First</option>
+					<option value="oldest" {if $smarty.get.sort == "oldset"}selected="selected"{/if}>Oldest First</option>
+					<option value="popularity" {if $smarty.get.sort == "popularity"}selected="selected"{/if}>Popularity</option>
+				</select>
+			</li>
+			<li class="submit">
+				<input type="submit" class="button" value="Find" />
+			</li>
+			<li class="submit">
+				<a href="{$url}">Clear Filters</a>
+			</li>
+		</ul>
+		
+		</form>
+	</div>
+	
+	<div class="archives">
+		
+		<ul class="archives">
+		
+		{* compute offset *}
+		{if $smarty.get.p}
+		{assign var="offset" value=$smarty.get.p}
+		{/if}
+		{* end compute offset *}
+		
+		{content var="article" type="1" limit="25" offset=$offset keyword=$filter_keyword topic=$filter_topic sort=$filter_sort sort_dir=$filter_sort_dir}
+			<li>
+				<div class="archive_date">
+					{$article.date|date_format: "%b.%d.%Y"}
+				</div>
+				
+				<a class="title" href="{$article.url}">{$article.title}</a>
+			</li>
+		{/content}
+		
+		{if $content_total_count == 0}
+		<p>No archive items match your filters.</p>
+		{/if}
+		
+		</ul>
+		
+		{paginate base_url="$current_url" total_rows=$content_total_count per_page=25 variable="p"}
+	</div>
+{/block}

@@ -1,0 +1,15 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	
+	<div class="article">
+	
+	{$body|parse_as_template}
+		
+		
+	</div>
+	
+{/block}

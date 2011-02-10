@@ -1,0 +1,8 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Thank you! - {$smarty.block.parent}{/block}
+{block name="step_header"}Thank you!  Your order is complete{/block}
+{block name="complete_step"}class="active"{/block}
+{block name="checkout_content"}
+	<p>You have successfully completed your order!  {if $totals.order_total and $totals.order_total != '0.00'}You have been charged {setting name="currency_symbol"}{$totals.order_total}.{/if}</p>
+	<p><a href="{url}">Continue to the {setting name="site_name"} homepage</a>.</p>
+{/block}
