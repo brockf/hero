@@ -1,0 +1,37 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Confirm your free order - {$smarty.block.parent}{/block}
+{block name="step_header"}Please confirm your free order{/block}
+{block name="payment_step"}class="active"{/block}
+{block name="checkout_content"}
+	<form class="form validate" method="post" action="{url path="checkout/post_free_confirm"}">
+	<fieldset>
+		<legend>Review Your Order</legend>
+		<ul class="form">
+			<li>
+				<label>Subtotal</label>
+				{setting name="currency_symbol"}{$totals.order_sub_total}
+			</li>
+			<li>
+				<label>Tax</label>
+				{setting name="currency_symbol"}{$totals.order_tax}
+			</li>
+			<li>
+				<label>Today's Total</label>
+				{setting name="currency_symbol"}{$totals.order_total}
+			</li>
+			{if $totals.recurring_sub_total}
+				<li>
+					<label>Recurring Charge</label>
+					{setting name="currency_symbol"}{$totals.recurring_total}
+				</li>
+			{/if}
+			<li class="indent">
+				<p>Your order is free and does not require any payment information.</p>
+			</li>
+			<li class="indent">
+				<input type="submit" name="continue" class="button submit" value="Confirm &amp; Complete My Order" />
+			</li>
+		</ul>
+	</fieldset>
+	</form>
+{/block}
