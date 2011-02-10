@@ -28,7 +28,7 @@ class Search extends Front_Controller {
 		if ($this->input->get('q', TRUE) != FALSE) {
 			// have we waited long enough before searches?
 			if (setting('search_delay') != 0 and $this->session->userdata('last_search') != FALSE and ((time() - $this->session->userdata('last_search')) < setting('search_delay'))) {
-				die(show_error('You must wait ' . setting('search_delay') . ' between searches.  <a href="javascript:location.reload(true)">Refresh and try again</a>.'));
+				die(show_error('You must wait ' . setting('search_delay') . ' seconds between searches.  <a href="javascript:location.reload(true)">Refresh and try again</a>.'));
 			}
 		
 			$searching = TRUE;
