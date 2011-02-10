@@ -3,19 +3,19 @@
 */
 
 html, body {
-	margin: 10px 0;
+	margin: 0;
 	padding: 0;
-	font-family: "helvetica", "arial", sans-serif;
+	font-family: "tahoma", "verdana", sans-serif;
 	font-size: 10pt;
-	background-color: #f0f0f1;
+	background-color: #483b39;
 }
 
 div.container {
-	width: 930px; /* 960px, with padding */
+	width: 960px;
 	margin: 0 auto;
-	padding: 15px;
 	background-color: #fff;
-	-moz-box-shadow: 0 0 3px #CFCFCF;
+	background-image: url(../images/sideleft.gif);
+	background-repeat: repeat-y;
 }
 
 /**
@@ -27,13 +27,12 @@ img {
 }
 
 a {
-	color: #e53b26;
-	text-decoration: none;
+	color: #8abd4a;
+	text-decoration: underline;
 }
 
 a:hover {
-	background-color: #e53b26;
-	color: #fff;
+	color: #000;
 }
 
 /**
@@ -42,35 +41,26 @@ a:hover {
 
 div#header {
 	position: relative;
-	height: 100px;
+	height: 125px;
+}
+
+div#header img.logo_mark {
+	position: absolute;
+	left: 15px;
+	top: 34px;
 }
 
 div#header a.logo {
 	display: block;
 	position: absolute;
-	top: 10px;
-	left: 0;
-	width: 550px;
+	top: 29px;
+	left: 74px;
+	width: 350px;
 	height: 72px;
 	text-decoration: none;
-}
-
-div#header a.logo:hover {
-	background-color: transparent;
-}
-
-div#header a.logo img {
-	float: left;
-	margin-right: 10px;
-}
-
-div#header a.logo div.logo_text {
-	float: left;
-	color: #e53b26;
-	font-size: 29pt;
-	font-weight: bold;
-	letter-spacing: -3px;
-	padding-top: 10px;
+	font-family: "georgia", "times new roman", serif;
+	font-size: 26pt;
+	color: #4c125d;
 }
 
 div#header a.logo div.slogan {
