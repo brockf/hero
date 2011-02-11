@@ -1,0 +1,24 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<div class="sidebar left">
+		<h3>Member Resources</h3>
+		
+		<div class="content">
+			<ul>
+			{content var="post" type="members_content" limit="10"}
+				<li><a href="{$post.url}">{$post.title}</a></li>
+			{/content}
+			</ul>
+		</div>
+	</div>
+	
+	<div class="content_with_sidebar left">
+		<h1>{$title}</h1>
+		<div class="article">
+			{$body}
+		</div>
+	</div>
+{/block}

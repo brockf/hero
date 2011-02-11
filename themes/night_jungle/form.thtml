@@ -1,0 +1,41 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	{if $text}{$text}{/if}
+	<form class="form validate" enctype="multipart/form-data" method="post" action="{url path="forms/form/submit"}">
+		<input type="hidden" name="form_id" value="{$id}" />
+		
+		{if $validation_errors}
+			<div class="errors">
+				{$validation_errors}
+			</div>
+		{/if}
+		
+		<ul class="form">
+			{foreach $custom_fields as $field}
+			{if $field.type != 'checkbox'}
+				<li>
+					<label class="full" for="{$field.name}">{$field.friendly_name}</label>
+				</li>
+				<li>
+					{custom_field field=$field value=$values[$field.name]}
+				</li>
+			{else}
+				<li>
+					{custom_field field=$field value=$values[$field.name]} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+				</li>
+			{/if}
+			{if $field.help}
+				<li>
+					<div class="help flush">{$field.help}</div>
+				</li>
+			{/if}
+			{/foreach}
+		</ul>
+
+		<input type="submit" class="button" name="go" value="{$button_text}" />
+	</form>
+{/block}

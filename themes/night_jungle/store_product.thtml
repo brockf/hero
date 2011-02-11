@@ -1,0 +1,72 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$name} - {$smarty.block.parent}
+{/block}
+{block name="head_includes"}
+	<link rel="stylesheet" type="text/css" href="{url path="themes/_common/shadowbox/shadowbox.css"}" />
+	<script type="text/javascript" src="{url path="themes/_common/shadowbox/shadowbox.js"}"></script>
+	<script type="text/javascript">
+		Shadowbox.init();
+	</script>
+	{$smarty.block.parent}
+{/block}
+{block name="content"}
+	<div class="sidebar">
+		<h3>Add to Cart</h3>
+		
+		<div class="content cart_form">
+			{if $track_inventory and !$inventory_allow_oversell and $inventory < 1}
+				<p>Unfortunately, this product is sold out.  Please check back again later.</p>
+			{else}
+				<span class="price">{setting name="currency_symbol"}{$price}</span>
+				
+				<form method="post" action="{url path="store/add_to_cart"}">
+					<input type="hidden" name="product_id" value="{$id}" />
+					
+					{if $options}
+						<ul class="options">
+						{foreach $options as $option}
+							<li>
+								<select name="option_{$option}">
+									{if $product_options[$option]['options']}
+										{foreach $product_options[$option]['options'] as $value}
+											<option value="{$value.label}">{$value.label}{if $value.price != "0"} ({setting name="currency_symbol"}{money_format value=$value.price}){/if}</option>
+										{/foreach}
+									{/if}
+								</select>
+							</li>
+						{/foreach}
+						</ul>
+					{/if}
+					
+					Quantity: <input type="text" style="width: 40px" name="quantity" value="1" /><br />
+					<input type="submit" class="button" name="add_to_cart" value="Add to Cart" />
+				</form>
+			{/if}
+		</div>
+	</div>
+	
+	<div class="content_with_sidebar">
+		<h1>{$name}</h1>
+		
+		<div class="product">
+			{if $images}
+				<div class="images">
+					<a rel="shadowbox[product_images]" href="{$feature_image_url}" class="feature_image"><img src="{thumbnail path=$feature_image height="165" width="165"}" alt="{$name}" /></a>
+					<ul>
+						{foreach $images as $image}
+							{* we don't want to show the feature image twice *}
+							{if $image.path != $feature_image}
+								{assign var="image_id" value=$image.id}
+								<li><a rel="shadowbox[product_images]" href="{$image.url}"><img src="{thumbnail path=$image.path height="50" width="50"}" alt="click to enlarge" title="click to enlarge" /></a>
+							{/if}
+						{/foreach}
+					</ul>
+				</div>
+			{/if}
+			<div class="description {if !$images}full{/if}">
+				{$description}
+			</div>
+		</div>
+	</div>
+{/block}
