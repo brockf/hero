@@ -196,6 +196,7 @@ div#navigation ul.children {
 	left: -1px;
 	top: 53px;
 	background-color: #80B341;
+	z-index: 1;
 }
 
 div#navigation ul.children li a {

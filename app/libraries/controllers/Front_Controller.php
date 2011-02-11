@@ -33,7 +33,6 @@ class Front_Controller extends MY_Controller {
 			die();
 		}
 		
-		
 		// init hooks
 		$this->load->library('app_hooks');
 		
@@ -44,6 +43,10 @@ class Front_Controller extends MY_Controller {
 		$modules = directory_map($directory);
 		
 		// load each module definition file, for admincp navigation
+		
+		// first, reset module definitions so that we run them all as a "frontend" call and their preloads get called
+		$this->module_definitions = new stdClass();
+		
 		foreach ($modules as $module => $module_folder) {
 			MY_Loader::define_module($module . '/');
 		}

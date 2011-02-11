@@ -294,11 +294,16 @@ class MY_Loader extends CI_Loader
 			
 			$module = strtolower($module);
 			
-			if (is_dir(APPPATH . 'modules/' . $module)) {
+			$CI =& get_instance();
+			
+			// make sure the module_definitions var exists
+			if (!isset($CI->module_definitions)) {
+				$CI->module_definitions = new stdClass();
+			}
+			
+			if (!isset($CI->module_definitions->$module) and is_dir(APPPATH . 'modules/' . $module)) {
 				// this is a module
 				if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
-					$CI =& get_instance();
-					
 					include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
 					
 					// because of a name conflict, this may be called Modulename_module

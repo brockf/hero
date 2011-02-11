@@ -1,59 +1,22 @@
 {extends file="layout.thtml"}
 {block name="content"}
-	<p class="intro">Welcome to <b>{$setting.site_name}</b>!  Subscribe today for access to the best (fake) business resources!</p>
+	<h1>Welcome to {$setting.site_name}</h1>
 	
-	<div class="frontpage_features">
-		<ul>
-			<li>
-				<div class="image">
-					<img src="{theme_url path="images/placeholders/front_content.png"}" alt="" /></a>
-				</div>
-				<div class="text">
-					<p>Award winning content.</p>
-				</div>
-			</li>
-			<li>
-				<div class="image">
-					<img src="{theme_url path="images/placeholders/front_money.png"}" alt="" /></a>
-				</div>
-				<div class="text">
-					<p>Tips to increase revenue.</p>
-				</div>
-			</li>
-			<li>
-				<div class="image">
-					<img src="{theme_url path="images/placeholders/front_lock.png"}" alt="" /></a>
-				</div>
-				<div class="text">
-					<p>Exclusively for paid subscribers.</p>
-				</div>
-			</li>
-			<li>
-				<div class="image">
-					<img src="{theme_url path="images/placeholders/front_talk.png"}" alt="" /></a>
-				</div>
-				<div class="text">
-					<p>The best op-ed pieces.</p>
-				</div>
-			</li>
-		</ul>
-		<div style="clear:both"></div>
-		
-		<a class="frontpage_subscribe" href="{url path="subscriptions"}">Subscribe Now!</a>
-	</div>
-	<div class="frontpage_blog">
-		<h2>Site News</h2>
-		
-		<ul>
-		{content var="item" type="news" limit="5" sort_dir="DESC" sort="content.content_date"}
-			<li>
-				<a class="title" href="{$item.url}">{$item.title}</a>
-				<h4 class="date">{$item.date|date_format:"%b %e"}<br />{$item.date|date_format:"%Y"}</h4>
-				{$item.summary}
-			</li>
-		{/content}
-		</ul>
-	</div>
+	<img src="{theme_url path="images/tiger.jpg"}" alt="tiger" style="float:right; margin: 0 0 15px 15px; border: 1px solid #555" />
+	
+	<p>This site has been setup to look like a non-profit organization (that has something to do with jungles...).</p>
+	
+	<p>It features a <a href="{url path="members"}">private members area</a> that is only available to subscribers (i.e., supporters of our cause).</p>
+	
+	<p>It also includes a <a href="{url path="store"}">store</a> so that people can buy items (stuffed tigers, T-shirts, etc.) that support
+	our cause.</p>
+	
+	<p>This would make a nice place for you to talk about your site or organization.</p>
+	
+	<p>Isn't {$setting.app_name} wonderful?</p>
+	
+	<p><i>- {$setting.site_name}</i></p>
+	
 	
 	<div style="clear:both"></div>
 {/block}

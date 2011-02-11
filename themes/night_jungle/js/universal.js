@@ -4,13 +4,15 @@ $(document).ready(function () {
 		var children = $(this).children('ul.children');
 		
 		if (children.length > 0) {
-			children.stop(true,true).slideDown('fast');
+			children.stop(true,true).fadeIn('fast');
+			$(this).children('a').addClass('hover');
 		}
 	}, function () { 
 		var children = $(this).children('ul.children');
 		
 		if (children.length > 0) {
-			children.delay(1).stop(true,true).slideUp('fast');
+			children.delay(1).stop(true,true).fadeOut('fast');
+			$(this).children('a').removeClass('hover');
 		}
 	});
 	

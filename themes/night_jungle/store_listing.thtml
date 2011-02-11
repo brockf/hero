@@ -3,7 +3,7 @@
 {if $title}{$title}{elseif $collection}{$collection.name}{/if} - {$smarty.block.parent}
 {/block}
 {block name="content"}
-	<h1>Shop</h1>
+	<h1>Shop <a class="back_link" href="javascript:history.go(-1)">go back</a></h1>
 	
 	<div class="store">
 		{if $collections}
@@ -11,7 +11,7 @@
 			{foreach $collections as $collection}
 				<li>
 					{if $collection.image}
-					<img src="{$collection.image}" alt="{$collection.name}" />
+						<a href="{$collection.url}"><img src="{$collection.image}" alt="{$collection.name}" /></a>
 					{/if}
 					<a class="name" href="{$collection.url}">{$collection.name}</a>
 					{if $collection.description}<div class="description">{$collection.description}</div>{/if}
