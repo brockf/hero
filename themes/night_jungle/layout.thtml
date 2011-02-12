@@ -84,12 +84,17 @@
 		{block name="content"}No content has been sent to this block{/block}
 	</div>
 	
+	<div id="did_you_know">
+		<h3>Did you know?</h3>
+		{content var="fact" type="did_you_know" sort="RAND()" limit="1"}
+			{$fact.fact}
+		{/content}
+	</div>
+	
 	<div style="clear:both"></div>
 </div>
 
 <div class="container footer">
-	<img id="corner" src="{theme_url path="images/footer_corner.gif"}" alt="" />
-	
 	{menu name="footer_menu" class="menu" show_sub_menus="no"}
 	
 	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.

@@ -11,7 +11,6 @@ html, body {
 	background-image: url(../images/back.jpg);
 	background-repeat: no-repeat;
 	background-position: top center;
-	background-attachment: fixed;
 }
 
 div.container {
@@ -147,7 +146,7 @@ div#navigation ul.children li a {
 }
 
 div#navigation ul.children li a:hover {
-	background-color: #000;
+	background-color: #b10000;
 	color: #fff !important;
 }
 
@@ -183,15 +182,12 @@ div#side_login input.text {
 */
 
 div.footer {
-	display: none;
 	color: #666;
 	font-size: 9pt;
 	padding: 20px;
 	position: relative;
 	width: 920px;
 	margin-bottom: 15px;
-	border-top: 1px solid #dedede;
-	background-color: #f0f0f0;
 	text-align: center;
 }
 
@@ -221,9 +217,8 @@ div.footer ul.menu li {
 
 div.footer ul.menu li a {
 	display: inline;
-	background-color: #ccc;
-	color: #222;
-	text-shadow: 0px 1px #f0f0f1;
+	background-color: #333;
+	color: #f0f0f0;
 	padding: 2px 9px;
 	-moz-border-radius: 4px;
 	-webkit-border-radius: 4px;
@@ -234,7 +229,8 @@ div.footer ul.menu li a {
 }
 
 div.footer ul.menu li a:hover {
-	background-color: #ddd;
+	background-color: #b10000;
+	color: #fff;
 }
 
 div.footer img#corner {
@@ -247,7 +243,27 @@ div.footer img#corner {
 * Sidebar ##############################################################
 */
 
+div#did_you_know {
+	float: left;
+	width: 155px;
+	margin-left: 15px;
+	margin-top: 80px;
+	font-family: "georgia", "times new roman", serif;
+	color: #dedede;
+	background-image: url(../images/translucent.png);
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	border-radius: 5px;
+	padding: 10px;
+	border: 1px solid #333;
+}
 
+div#did_you_know h3 {
+	color: #b4b567;
+	text-shadow: 1px 1px #000;
+	margin: 0 0 5px 0;
+	padding: 0;
+}
 
 /**
 * Content ##############################################################
@@ -300,8 +316,13 @@ h1 a.back_link {
 	line-height: normal;
 }
 
+h1 a.back_link.members {
+	width: 80px;
+}
+
 h1 a.back_link:hover {
-	background-color: #dedede;
+	background-color: #b10000;
+	color: #fff;
 }
 
 h2 {
@@ -362,12 +383,12 @@ ul.blog li a.title {
 	font-size: 17pt;
 	clear: left;
 	display: block;
-	margin: 10px 0 5px 0;
+	margin: 10px 0 10px 0;
 	line-height: 1em;
 }
 
 ul.blog li h4.date {
-	background-color: #ccc;
+	background-color: #333;
 	color: #fff;
 	font-weight: normal;
 	font-style: italic;

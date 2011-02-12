@@ -108,7 +108,7 @@ $CI->menu_model->add_link($menu, FALSE, 'link', $projects['link_id'], 'Current P
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Shop', 'store');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Become a Member', 'subscriptions');
 $CI->menu_model->add_link($menu, FALSE, 'link', $blog['link_id'], 'Members Area', FALSE, FALSE, array($usergroup));
-$CI->menu_model->add_link($menu, FALSE, 'specia', FALSE, 'My Account', 'account', FALSE, array(1));
+$CI->menu_model->add_link($menu, FALSE, 'specia', FALSE, 'My Account', 'my_account', FALSE, array(1));
 $CI->menu_model->add_link($menu, FALSE, 'link', $about['link_id'], 'Our Story');
 $CI->menu_model->add_link($menu, FALSE, 'link', $form['link_id'], 'Contact Us');
 
@@ -120,7 +120,7 @@ $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Become a Member', 'su
 $CI->menu_model->add_link($menu, FALSE, 'link', $blog['link_id'], 'Members Area', FALSE, FALSE, array($usergroup));
 $CI->menu_model->add_link($menu, FALSE, 'link', $about['link_id'], 'Our Story');
 $CI->menu_model->add_link($menu, FALSE, 'link', $form['link_id'], 'Contact Us');
-$CI->menu_model->add_link($menu, FALSE, 'external', FALSE, 'RSS Feed', FALSE, 'news_rss');
+$CI->menu_model->add_link($menu, FALSE, 'link', $feed['link_id'], 'RSS Feed');
 
 $menu = $CI->menu_model->new_menu('footer_menu_2');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Control Panel', 'control_panel');
