@@ -3,7 +3,7 @@
 		</div>
 	</div>
 	<div id="footer">
-		Powered by <a href="<?=$this->config->item('app_url');?>"><?=$this->config->item('app_name');?></a> v<?=$this->config->item('app_version');?>.<?
+		Powered by <a href="<?=$this->config->item('app_url');?>"><?=$this->config->item('app_name');?></a> v<?=$this->config->item('app_version');?>. <?
 		
 			if (defined("_LICENSENUMBER")) {
 				echo 'License Number: ' . _LICENSENUMBER;
