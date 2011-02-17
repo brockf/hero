@@ -1,3 +1,10 @@
+// IE doesn't natively support trim()...
+if(typeof String.prototype.trim !== 'function') {
+  String.prototype.trim = function() {
+    return this.replace(/^\s+|\s+$/g, ''); 
+  }
+}
+
 $(document).ready(function () {
 	$('div.setting_group a.cat').click(function () {
 		$('table.settings').hide();

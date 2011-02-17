@@ -18,8 +18,8 @@
 	<? } ?>
 	
 	<? /* load essential javascript routines */ ?>
-	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/tiptip.min.js');?>"></script>
+	<script type="text/javascript" src="<?=branded_include('js/universal.js');?>"></script>
 	<script type="text/javascript" src="<?=branded_include('js/form.js');?>"></script>
 	
 	<? /* previously, this was an ugly $head_files print.  now we use a class. */ ?>

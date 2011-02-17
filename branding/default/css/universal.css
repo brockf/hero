@@ -38,7 +38,7 @@ a:hover {
 	top: 5px;
 	margin-left: -200px;
 	width: 400px;
-	z-index: 1;
+	z-index: 995;
 }
 
 #notices div.error {
@@ -186,7 +186,7 @@ a:hover {
 	border-radius: 6px;
 	-moz-border-radius: 6px;
 	-webkit-border-radius: 6px;
-	z-index: 1000;
+	z-index: 999;
 	padding: 6px 6px 0px 6px;
 	width: 190px;
 }
@@ -324,7 +324,7 @@ ul.module_links a:hover {
 	position: absolute;
 	bottom: 0px;
 	left: 0px;
-	z-index: 6;
+	z-index: 600;
 }
 
 #box-bottom-right {
@@ -335,7 +335,7 @@ ul.module_links a:hover {
 	position: absolute;
 	bottom: 1px;
 	right: 0px;
-	z-index: 5;
+	z-index: 500;
 }
 
 #box-bottom {
@@ -346,7 +346,7 @@ ul.module_links a:hover {
 	background-image: url(../images/box-bottom.gif);
 	background-repeat: repeat-x;
 	background-position: bottom;
-	z-index: 7;
+	z-index: 700;
 }
 
 #box-content {
@@ -569,7 +569,7 @@ div.simplemodal-wrap {
 	position: absolute;
 	top: 0;
 	left: 0;
-	z-index: 99999;
+	z-index: 9999;
 }
 
 #tiptip_holder.tip_top {

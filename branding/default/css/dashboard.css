@@ -2,6 +2,8 @@ div#dash_stats {
 	padding-bottom: 20px;
 	border-bottom: 1px solid #ededed;
 	margin-bottom: 20px;
+	position: relative;
+	z-index: 90;
 }
 
 div#date_selector {
@@ -51,6 +53,7 @@ span.stat {
 	text-shadow: 0px 1px #000;
 	color: #11727b;
 	position: relative;
+	z-index: 100;
 }
 
 span.chart {

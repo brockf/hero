@@ -196,7 +196,7 @@ div#navigation ul.children {
 	left: -1px;
 	top: 53px;
 	background-color: #80B341;
-	z-index: 1;
+	z-index: 995;
 }
 
 div#navigation ul.children li a {
@@ -871,7 +871,7 @@ form.form {
 form.form fieldset {
 	display: block;
 	margin: 0;
-	padding: 15px 0px 15px 0px;
+	padding: 0px 0px 15px 0px;
 	border: 0;
 	border-top: 1px solid #f0f0f1;
 	margin-bottom: 15px;
@@ -884,11 +884,10 @@ form.form legend {
 	text-transform: uppercase;
 	padding: 7px 155px 7px 15px;
 	position: relative;
-	left: 100px;
 }
 
 ul.form {
-	margin: 0;
+	margin: 15px 0 0 0;
 	padding: 0;
 }
 

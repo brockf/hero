@@ -97,7 +97,7 @@ textarea#editor_body {
 	font-size: 1em;
 	margin: 0 0 0 1%;
 	overflow: scroll;
-	white-space: nowrap;
+	white-space: pre;
 	border: 0;
 }
 
