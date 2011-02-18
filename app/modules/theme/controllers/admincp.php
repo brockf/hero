@@ -242,6 +242,19 @@ class Admincp extends Admincp_Controller {
 		
 		$path = FCPATH . 'themes/' . $theme . '/' . $filename;
 		
+		// they can only write to the themes directory!
+		$path = realpath($path);
+		
+		if (strpos($path, FCPATH . 'themes/') === FALSE) {
+			return FALSE;
+		}
+		
+		// you can only write certain filetypes
+		$extension = end(explode('.',$path));
+		if (!in_array($extension, array('html','thtml','txml','trss','xml','rss','js','css'))) {
+			return FALSE;
+		}
+				
 		if (file_exists($path) and !is_really_writable($path)) {
 			return FALSE;
 		}

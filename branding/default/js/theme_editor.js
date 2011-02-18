@@ -100,7 +100,7 @@ $(document).ready(function () {
 				}
 			}
 			else {
-				alert('File save failed!  Your changes were not saved.  Please check the file permissions.');
+				alert('File save failed!  Your changes were not saved.  Please check the file permissions.\n\nAlso, your file must be located in your /themes/ folder and be a non-executable filetype.');
 			}
 		});
 		
