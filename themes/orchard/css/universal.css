@@ -655,6 +655,13 @@ div.notices {
 	color: #999;
 }
 
+input::-webkit-input-placeholder {
+    color:    #999;
+}
+input:-moz-placeholder {
+    color:    #999;
+}
+
 form.form {
 	line-height: normal;
 }
