@@ -107,7 +107,7 @@ function MarkEmpty () {
 	if (has_placeholder_support == false) {
 		$('*[placeholder]').each(function() {
 			$(this).addClass('mark_empty');
-			$(this).attr('rel') = $(this).attr('placeholder');
+			$(this).attr('rel',$(this).attr('placeholder'));
 		});
 	}
 	
