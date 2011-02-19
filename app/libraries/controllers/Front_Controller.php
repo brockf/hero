@@ -16,23 +16,6 @@ class Front_Controller extends MY_Controller {
 		$this->load->library('smarty');
 		$this->smarty->initialize();
 		
-		// if we don't have a theme, we'll setup the default theme
-		// we do it after Smarty because some module definitions reference the Smarty library
-		if (setting('theme') == FALSE and setting('default_theme')) {
-			$this->settings_model->update_setting('theme',setting('default_theme'));
-			
-			// install the default theme
-			$install_file = FCPATH . 'themes/' . setting('default_theme') . '/install.php';
-			
-			if (file_exists($install_file)) {
-				include($install_file);
-			}
-			
-			// redirect to home page
-			redirect('/');
-			die();
-		}
-		
 		// init hooks
 		$this->load->library('app_hooks');
 		
@@ -49,6 +32,23 @@ class Front_Controller extends MY_Controller {
 		
 		foreach ($modules as $module => $module_folder) {
 			MY_Loader::define_module($module . '/');
+		}
+		
+		// if we don't have a theme, we'll setup the default theme
+		// we do it after Smarty because some module definitions reference the Smarty library
+		if (setting('theme') == FALSE and setting('default_theme')) {
+			$this->settings_model->update_setting('theme',setting('default_theme'));
+			
+			// install the default theme
+			$install_file = FCPATH . 'themes/' . setting('default_theme') . '/install.php';
+			
+			if (file_exists($install_file)) {
+				include($install_file);
+			}
+			
+			// redirect to home page
+			redirect('/');
+			die();
 		}
 	}
 }
