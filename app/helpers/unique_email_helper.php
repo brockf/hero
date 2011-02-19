@@ -7,7 +7,7 @@ function unique_email ($email) {
 		return TRUE;
 	}
 	else {
-		$CI->form_validation->set_message('unique_email', 'The email you have selected is unavailable.');
+		$CI->form_validation->set_message('unique_email', 'The Email you have selected is unavailable.');
 		return FALSE;
 	}
 }
