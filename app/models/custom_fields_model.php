@@ -12,6 +12,9 @@
 *
 */
 
+// define the module for updates
+include_once(APPPATH . 'modules/custom_fields/custom_fields.php');
+
 class Custom_fields_model extends CI_Model {
 	/**
 	* @var array Holds previous get_custom_fields calls in memory
