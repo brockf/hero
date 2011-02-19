@@ -505,11 +505,11 @@ class User_model extends CI_Model
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
 		$unique_username = ($editing == FALSE) ? '|unique_username' : '';
-		$CI->form_validation->set_rules('username','Username','trim|min_length[4]|alphanumeric' . $unique_username);
+		$CI->form_validation->set_rules('username','Username','trim|min_length[3]|alphanumeric' . $unique_username);
 		
 		if ($editing == FALSE) {
 			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
-			$CI->form_validation->set_rules('password2','Repeat Password');
+			$CI->form_validation->set_rules('password2','Repeat Password','required');
 		}
 		
 		if ($CI->form_validation->run() === FALSE) {
