@@ -96,7 +96,7 @@ class Emails extends Module {
 		}
 		
 		if ($db_version < 1.06) {
-			$this->CI->settings_model->new_setting(1, 'mail_queue_limit', '450', 'How many emails should be processed from the mail queue every 5 minutes?', 'text', '', FALSE, FALSE);
+			$this->CI->settings_model->new_setting(1, 'mail_queue_limit', '250', 'How many emails should be processed from the mail queue every 5 minutes?', 'text', '', FALSE, FALSE);
 		}
 		
 		if ($db_version < 1.07) {
