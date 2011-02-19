@@ -15,6 +15,7 @@ $type_pages = $CI->content_type_model->get_content_type($type_pages);
 
 // content type custom fields
 $CI->load->model('custom_fields_model');
+$CI->load->library('custom_fields/fieldtype'); // hack that triggers update to the custom_fields module
 $CI->custom_fields_model->new_custom_field($type_news['custom_field_group_id'], 'Summary', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_news['system_name']);
 $CI->custom_fields_model->new_custom_field($type_news['custom_field_group_id'], 'Body', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_news['system_name']);
 $CI->custom_fields_model->new_custom_field($type_members['custom_field_group_id'], 'Summary', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_members['system_name']);

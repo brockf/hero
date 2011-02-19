@@ -45,8 +45,7 @@ if (file_exists(APPPATH . 'config/database.php')) {
 								   'auto_updater',
 								   'module',
 								   'email',
-								   'response', // for OpenGateway compatibility
-								   'custom_fields' // because the custom_fields model doesn't trigger it
+								   'response' // for OpenGateway compatibility
 								);
 }
 else {
