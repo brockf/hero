@@ -780,6 +780,9 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->datasource('topic_model','get_tiered_topics');
 		$this->dataset->base_url(site_url('admincp/publish/topics'));
 		
+		// we don't have limits or pagination here, because get_tiered_topics() doesnt have limits or offsets
+		$this->dataset->rows_per_page = 10000;
+		
 		// initialize the dataset
 		$this->dataset->initialize();
 
