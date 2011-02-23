@@ -109,6 +109,16 @@ class Topic_model extends CI_Model
 	* @return array Topics
 	*/
 	function get_tiered_topics ($filters = array()) {
+		// no limit or offset will be passed
+		// it doesn't work when tiering
+		if (isset($filters['limit'])) {
+			unset($filters['limit']);
+		}
+		
+		if (isset($filters['offset'])) {
+			unset($filters['offset']);
+		}
+	
 		$result = $this->get_topics($filters);
 		
 		if (!$result) {
