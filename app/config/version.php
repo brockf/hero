@@ -1,3 +1,3 @@
 <?php
 
-$config['app_version'] = '3.03';
+$config['app_version'] = '3.1';
