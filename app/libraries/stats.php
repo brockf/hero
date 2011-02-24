@@ -37,7 +37,7 @@ class Stats {
 						   ->where('timestamp <=',date('Y-m-d H:i:s', strtotime($date_end)))
 						   ->get();
 						   
-		return money_format("%!i", $result->row()->revenue);
+		return money_format("%!^i", $result->row()->revenue);
 	}
 	
 	/**
@@ -63,7 +63,7 @@ class Stats {
 		
 		$days = array();				   
 		foreach ($result->result_array() as $day) {
-			$days[$day['date']] = money_format("%!i", $day['revenue']);
+			$days[$day['date']] = money_format("%!^i", $day['revenue']);
 		}
 		
 		$days = $this->complete_days($days, $date_start, $date_end);

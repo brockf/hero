@@ -36,7 +36,7 @@ else {
 
 <div class="total">
 	<h2>Total Taxes Received</h2>
-	<p><?=$this->config->item('currency_symbol');?><?=money_format("%i",$total_amount);?></p>
+	<p><?=$this->config->item('currency_symbol');?><?=money_format("%!^i",$total_amount);?></p>
 </div>
 
 <?=$this->load->view(branded_view('cp/footer'));?>

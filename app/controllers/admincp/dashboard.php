@@ -142,7 +142,7 @@ class Dashboard extends Admincp_Controller {
 						   
 		foreach ($result->result_array() as $order) {
 			$purchase_or_sub = (!empty($order['subscription_id'])) ? ' made a subscription payment of ' : ' made a purchase from the store for ';
-			$activity[strtotime($order['timestamp'])] = '<a href="' . site_url('admincp/reports/invoice/' . $order['order_id']) . '">' . $order['user_first_name'] . ' ' . $order['user_last_name'] . $purchase_or_sub . setting('currency_symbol') . money_format("%i",$order['amount']) . '.</a>';
+			$activity[strtotime($order['timestamp'])] = '<a href="' . site_url('admincp/reports/invoice/' . $order['order_id']) . '">' . $order['user_first_name'] . ' ' . $order['user_last_name'] . $purchase_or_sub . setting('currency_symbol') . money_format("%!^i",$order['amount']) . '.</a>';
 		}
 		
 		// ... logins
