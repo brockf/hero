@@ -272,7 +272,7 @@ class Admincp extends Admincp_Controller {
 		
 		$data = array(
 					'hook' => $hook,
-					'variables' => $this->email_variables($hook['email_data']),
+					'variables' => $this->email_variables($hook['email_data'], $hook['other_email_data']),
 					'products' => $products,
 					'plans' => $plans,
 					'form_title' => 'Create New Email',
@@ -287,11 +287,12 @@ class Admincp extends Admincp_Controller {
 	*
 	* Return a list of possible email variables
 	*
-	* @param array $email_data from get_hook().  The "email_data" array stored for the hook,
+	* @param array $email_data from get_hook().  The "email_data" array stored for the hook
+	* @param array $other_email_data The "other_email_data" array stored for the hook
 	*
 	* @return array sorted alphabetically
 	*/
-	function email_variables ($email_data) {
+	function email_variables ($email_data, $other_email_data = array()) {
 		$vars = array();
 		
 		if (in_array('member', $email_data)) {
@@ -413,6 +414,12 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$subscription_plan.demotion}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$subscription_plan.description}', 'type' => 'string');
 			$vars[] = array('tag' => '{$subscription_plan.add_to_cart}', 'type' => 'url');
+		}
+		
+		if (!empty($other_email_data)) {
+			foreach ($other_email_data as $data) {
+				$vars[] = array('tag' => '{$' . $data . '}', 'type' => 'unknown');
+			}
 		}
 		
 		return $vars;
@@ -540,7 +547,7 @@ class Admincp extends Admincp_Controller {
 		
 		$data = array(
 					'hook' => $hook,
-					'variables' => $this->email_variables($hook['email_data']),
+					'variables' => $this->email_variables($hook['email_data'], $hook['other_email_data']),
 					'products' => $products,
 					'plans' => $plans,
 					'form' => $email,
