@@ -98,6 +98,10 @@ $config['secure_modules'] = array('users','checkout');
 // useful information upon each page load
 $config['debug_profiler'] = FALSE;
 
+// the earliest time to run the billing cron job for subscription maintenance
+// 24 hour clock, no leading zero, uses system time
+$config['billing_cron_time'] = 9;
+
 /*
 |--------------------------------------------------------------------------
 | Index File
