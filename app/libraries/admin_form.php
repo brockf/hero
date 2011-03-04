@@ -228,7 +228,8 @@ class Admin_form {
 		}
 		
 		if ($multiselect == TRUE and !is_array($selected)) {
-			show_error($name . ': This is a multiselect field but was passed a string for $selected.');
+			//show_error($name . ': This is a multiselect field but was passed a string for $selected.');
+			$selected = array();
 		}
 		
 		if ($multiselect == TRUE and substr($name, -2, 2) != '[]') {
