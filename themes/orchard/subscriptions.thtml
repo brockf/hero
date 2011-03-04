@@ -12,7 +12,7 @@ Choose Your Subscription - {$smarty.block.parent}
 		{foreach $plans as $plan}
 		<li>
 			<form method="get" style="margin-top:15px" action="{$plan.add_to_cart}">
-			<b>{$plan.name} - ${$plan.amount|regex_replace:"/\.00/i":""}</b>
+			<b>{$plan.name} - {$setting.currency_symbol}{$plan.amount|regex_replace:"/\.00/i":""}</b>
 			<input type="submit" class="button" name="add_to_cart" value="Subscribe Now" />
 			</form>
 			<p>{$plan.description}</p>
