@@ -80,7 +80,7 @@ class Textarea_fieldtype extends Fieldtype {
 						'style' => 'width: ' . $this->width . '; height: ' . $this->data['height'],
 						'class' => implode(' ', $this->field_classes)
 						);
-		
+						
 		// compile attributes
 		$attributes = $this->compile_attributes($attributes);
 		

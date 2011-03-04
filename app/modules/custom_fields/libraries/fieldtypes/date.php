@@ -77,7 +77,7 @@ class Date_fieldtype extends Fieldtype {
 		$attributes = array(
 						'type' => 'text',
 						'name' => $this->name,
-						'value' => date('Y-m-d',strtotime($this->value)),
+						'value' => (!empty($this->value)) ? date('Y-m-d',strtotime($this->value)) : '',
 						'placeholder' => $this->placeholder,
 						'style' => 'width: ' . $this->width,
 						'class' => implode(' ', $this->field_classes)
@@ -216,7 +216,7 @@ class Date_fieldtype extends Fieldtype {
 			return date('Y-m-d', strtotime($this->CI->input->post($this->name . '_year') . '-' . $this->CI->input->post($this->name . '_month') . '-' . $this->CI->input->post($this->name . '_day')));
 		}
 		else {
-			$this->CI->input->post($this->name);
+			return $this->CI->input->post($this->name);
 		}
 	}
 	

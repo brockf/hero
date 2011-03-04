@@ -421,7 +421,7 @@ class Admincp extends Admincp_Controller {
 			$custom_fields = FALSE;
 		}
 		else {
-			$custom_fieldset->fieldset('Custom Product Data');
+			$custom_fieldset->fieldset('Custom Fields');
 			$custom_fieldset->custom_fields($custom_fields);
 			$custom_fields = $custom_fieldset->display();
 		}
