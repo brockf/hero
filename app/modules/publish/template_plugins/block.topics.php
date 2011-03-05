@@ -32,6 +32,11 @@ function smarty_block_topics ($params, $tagdata, &$smarty, &$repeat){
 		$filters['sort_dir'] = $params['sort_dir'];
 	}
 	
+	// param: parent
+	if (isset($params['parent'])) {
+		$filters['parent'] = $params['parent'];
+	}
+	
 	// param: limit
 	if (isset($params['limit'])) {
 		$filters['limit'] = $params['limit'];

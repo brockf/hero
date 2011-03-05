@@ -204,7 +204,7 @@ class Topic_model extends CI_Model
 	*/
 	function get_topics ($filters = array(), $any_status = FALSE) {
 		if (isset($filters['parent'])) {
-			$this->db->where('topic_parent',$filters['parent']);
+			$this->db->where('topic_parent_id',$filters['parent']);
 		}
 		if (isset($filters['id'])) {
 			$this->db->where('topic_id',$filters['id']);
