@@ -77,8 +77,6 @@ function image_thumb ($image_path, $height, $width)
 			$config['width'] = $width;
 		}
 		
-		mail('brock@cariboucms.com','thumb config',print_r($config,true));
-		
 		$CI->image_lib->initialize($config);
 		if (!$CI->image_lib->resize()) {		
 			die(show_error($CI->image_lib->display_errors()));
