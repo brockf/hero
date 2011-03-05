@@ -22,12 +22,22 @@ function image_thumb ($image_path, $height, $width)
 	$CI->load->helper('file_extension');
 	
 	// take off "px" from $height and $width
-	if (strstr($height,'px')) {
+	if (!empty($height) and strstr($height,'px')) {
 		$height = str_replace('px','',$height);
 	}
 	
-	if (strstr($width, 'px')) {
+	if (!empty($width) and strstr($width, 'px')) {
 		$width = str_replace('px','',$width);
+	}
+	
+	// we NEED a height and width for the maintain ratio measure to work
+	// set it to some very high measure so that it is ignored
+	if (empty($height)) {
+		$height = '15000';
+	}
+	
+	if (empty($width)) {
+		$width = '15000';
 	}
 	
 	// are the height and width already OK?
@@ -60,12 +70,14 @@ function image_thumb ($image_path, $height, $width)
 		$config['source_image']	= $image_path;
 		$config['new_image'] = $image_thumb;
 		$config['maintain_ratio'] = TRUE;
-		if ($height) {
+		if (!empty($height)) {
 			$config['height'] = $height;
 		}
-		if ($width) {
+		if (!empty($width)) {
 			$config['width'] = $width;
 		}
+		
+		mail('brock@cariboucms.com','thumb config',print_r($config,true));
 		
 		$CI->image_lib->initialize($config);
 		if (!$CI->image_lib->resize()) {		
