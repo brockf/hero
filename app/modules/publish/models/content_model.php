@@ -56,6 +56,11 @@ class Content_model extends CI_Model
 		if (empty($publish_date)) {
 			$publish_date = date('Y-m-d H:i:s');
 		}
+		elseif ((time() - strtotime($publish_date)) < (60*30)) {
+			// published in last 30 minutes, we'll set it to be published now
+			// this allows the Twitter poster to work properly and is more accurate
+			$publish_date = date('Y-m-d H:i:s');
+		}
 		else {
 			$publish_date = date('Y-m-d H:i:s',strtotime($publish_date));
 		}
