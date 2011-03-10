@@ -29,6 +29,9 @@ class File_upload_fieldtype extends Fieldtype {
 		
 		// configuration
 		$this->upload_directory = setting('path_custom_field_uploads');
+		
+		// we need to detect file extensions in places
+		$this->CI->load->helper('file_extension');
 	}
 	
 	/**
@@ -46,7 +49,7 @@ class File_upload_fieldtype extends Fieldtype {
 		}
 		
 		// prep classes
-		if ($this->required == TRUE and empty($this->value)) {
+		if ($this->required == TRUE) {
 			$this->field_class('required');
 		}
 		
@@ -91,7 +94,15 @@ class File_upload_fieldtype extends Fieldtype {
 		
 		// show current file
 		if (!empty($this->value)) {
-			$after_box .= '&nbsp;&nbsp;&nbsp;<a href="' . site_url($this->value) . '">current file</a>';
+			if (in_array(file_extension($this->value), array('jpg','jpeg','gif','bmp','png'))) {
+				$this->CI->load->helper('image_thumb');
+				$after_box .= '<br /><a href="' . site_url($this->value) . '"><img style="margin-left: 150px" src="' . image_thumb(FCPATH . $this->value, 100, 100) . '" alt="preview" /></a>';
+			}
+			else {
+				$after_box .= '&nbsp;&nbsp;&nbsp;<a href="' . site_url($this->value) . '">current file</a>';
+			}
+			
+			$after_box .= '<br /><input style="margin-left: 150px" type="checkbox" name="delete_file_' . $this->name . '" value="1" /> <span style="font-style: italic; color: #ff6464">Delete current ' . $this->label . '</span>';
 		}
 		
 		// build HTML
@@ -181,8 +192,6 @@ class File_upload_fieldtype extends Fieldtype {
 	* @return boolean
 	*/
 	function validate_post () {
-		$this->CI->load->helper('file_extension');
-		
 		if (isset($this->data['filetypes']) and !empty($this->data['filetypes'])) {
 			if (in_array('jpg', $this->data['filetypes'])) {
 				$this->data['filetypes'][] = 'jpeg';
@@ -191,7 +200,7 @@ class File_upload_fieldtype extends Fieldtype {
 				$this->data['filetypes'][] = 'jpg';
 			}
 		
-			if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
+			if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name']) and !empty($this->data['filetypes']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
 				$this->validation_error = $this->label . ' is not of the proper filetype.';
 			
 				return FALSE;
@@ -219,6 +228,18 @@ class File_upload_fieldtype extends Fieldtype {
 	* @return string $db_value
 	*/
 	function post_to_value () {
+		// do we have a file to delete?
+		if ($this->CI->input->post('delete_file_' . $this->name) == '1') {
+			// we want to delete this file!
+			// though it may get overwritten below if something new is being uploaded... but that's great!
+			$post_value = '';
+			
+			// let's try to delete it, but just gently
+			if (!empty($this->value)) {
+				@unlink(FCPATH . $this->value);
+			}
+		}
+	
 		if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name'])) {
 			$this->CI->settings_model->make_writeable_folder($this->upload_directory,FALSE);
 			
@@ -250,7 +271,7 @@ class File_upload_fieldtype extends Fieldtype {
 		elseif ($this->CI->input->post($this->name . '_ftp')) {
 			$post_value = str_replace(FCPATH,'',$this->upload_directory . $this->CI->input->post($this->name . '_ftp'));
 		}
-		elseif ($this->CI->input->post($this->name . '_uploaded')) {
+		elseif ($this->CI->input->post($this->name . '_uploaded') and !isset($post_value)) {
 			$post_value = $this->CI->input->post($this->name . '_uploaded');
 		}
 		else {
