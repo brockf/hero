@@ -229,7 +229,7 @@ class Content_model extends CI_Model
 	function add_hit ($content_id) {
 		$return = $this->db->select('content_hits')->where('content_id',$content_id)->from('content')->get();
 		
-		if (!is_object($return)) {
+		if (!is_object($return) or $return->num_rows() === 0) {
 			return;
 		}
 		
