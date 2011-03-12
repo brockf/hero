@@ -64,7 +64,7 @@ class Admincp_Controller extends MY_Controller {
 		}
 		
 		// define WYSIWYG session variables for file uploading
-		session_start();
+		@session_start();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = FALSE;
 		
