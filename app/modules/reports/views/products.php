@@ -26,9 +26,9 @@ if (!empty($this->dataset->data)) {
 			<td><input type="radio" class="shipped_no" rel="<?=$row['order_products_id'];?>" name="shipped_<?=$row['order_products_id'];?>" <? if ($row['shipped'] == FALSE) { ?>checked="checked"<? } ?>value="0" /> No  <input type="radio" class="shipped_yes" rel="<?=$row['order_products_id'];?>" <? if ($row['shipped'] == TRUE) { ?>checked="checked"<? } ?> name="shipped_<?=$row['order_products_id'];?>" value="1" /> Yes</td>
 			<td>
 				<? if (!empty($row['shipping_address'])) { ?>
-					<a href="#" class="show_shipping">show address</a>
-					<a href="#" class="hide_shipping">hide address</a>
-					<div class="shipping_address"><?=format_street_address($row['shipping_address']);?></div>
+					<a href="#" class="show_shipping">show details</a>
+					<a href="#" class="hide_shipping">hide details</a>
+					<div class="shipping_address"><i>Ship via <b><?=$row['shipping_name'];?></b> to:</i><br /><?=format_street_address($row['shipping_address']);?></div>
 				<? } else { ?>
 				none
 				<? } ?>

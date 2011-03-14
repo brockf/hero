@@ -237,7 +237,7 @@ class Admincp extends Admincp_Controller {
 							'filter' => 'shipped'
 							),
 						array(
-							'name' => 'Shipping Address',
+							'name' => 'Shipping Details',
 							'width' => '15%'
 							),
 						array(

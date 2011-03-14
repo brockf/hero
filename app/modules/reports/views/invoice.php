@@ -53,6 +53,12 @@
 			<td colspan="3" style="text-align: right">Tax: <?=$invoice['tax_name'];?> (<?=$invoice['tax_rate'];?>%)</td>
 			<td><?=setting('currency_symbol');?><?=$invoice['tax_paid'];?></td>
 		</tr>
+		<? if (!empty($invoice['shipping_charge'])) { ?>
+			<tr>
+				<td colspan="3" style="text-align: right">Shipping: <?=$invoice['shipping_name'];?></td>
+				<td><?=setting('currency_symbol');?><?=$invoice['shipping_charge'];?></td>
+			</tr>
+		<? } ?>
 	</tbody>
 </table>
 

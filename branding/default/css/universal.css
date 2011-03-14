@@ -1109,3 +1109,7 @@ ul.themes p.already {
 ul.themes form {
 	margin: 5px 0 0 0;
 }
+
+div.shipping_address {
+	font-weight: normal !important;
+}

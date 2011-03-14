@@ -21,9 +21,11 @@ Quantity	Price		Description
 {$line.quantity}		{setting name="currency_symbol"}{$line.sub_total}		{$line.line}
 {/foreach}
 --------------------------------------------------------------------------------------
-	Tax:	{setting name="currency_symbol"}{$invoice.tax_paid}
-     ---------------------					
-	TOTAL:	{setting name="currency_symbol"}{$invoice.amount}
+  Tax:	{setting name="currency_symbol"}{$invoice.tax_paid}
+{if $invoice.shipping_charge}  Shipping:	{setting name="currency_symbol"}{$invoice.shipping_charge} ({$invoice.shipping_name})
+{/if}
+  --------------------					
+  TOTAL:	{setting name="currency_symbol"}{$invoice.amount}
 </pre>
 </body>
 </html>
