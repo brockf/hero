@@ -31,7 +31,7 @@ class User_model extends CI_Model
 		
 		if ($this->in_admin()) {
 			// let's use a different session token so that we can independent sessions
-			$this->session_name = 'admin_id';
+			$this->make_admin_session();
 		}
 		
 		// check for session
@@ -99,6 +99,28 @@ class User_model extends CI_Model
 		}
 		
 		return $this->in_admin;
+	}
+	
+	/**
+	* Make Admin Session
+	*
+	* Forces the model into an admin session
+	*
+	* @return void 
+	*/
+	function make_admin_session () {
+		$this->session_name = 'admin_id';
+	}
+	
+	/**
+	* Make Frontend Session
+	*
+	* Forces the model into a user session
+	*
+	* @return void 
+	*/
+	function make_frontend_session () {
+		$this->session_name = 'user_id';
 	}
 	
 	/**

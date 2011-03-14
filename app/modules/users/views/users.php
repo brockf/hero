@@ -32,6 +32,7 @@ if (!empty($this->dataset->data)) {
 					<? } else { ?>
 						<option value="suspend">suspend user</option>
 					<? } ?>
+					<option value="login_to_account">login to account</option>
 				</select>
 				&nbsp;
 				<input type="submit" rel="admincp/users/user_actions" class="action button" name="go_action" value="Go" />

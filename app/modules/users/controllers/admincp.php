@@ -137,8 +137,20 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'validate_email') {
 			redirect('admincp/users/resend_validate_email/' . $user['id']);
 		}
+		elseif ($action == 'login_to_account') {
+			redirect('admincp/users/login_to_account/' . $user['id']);
+		}
 		
 		return TRUE;
+	}
+	
+	function login_to_account ($user_id) {
+		// temporarily set the session name to "user_id" for a frontend login
+		$this->user_model->make_frontend_session();
+		$this->user_model->login_by_id($user_id);
+		$this->user_model->make_admin_session();
+		
+		return redirect('/');
 	}
 	
 	function resend_validate_email ($user_id) {

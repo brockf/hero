@@ -34,7 +34,6 @@ class Publish extends Module {
 		// alows for 20 possible content types in the menu - more than enough
 		$weight = 11;
 		
-		$this->CI->db->_reset_select();
 		$this->CI->db->where('content_type_is_module','0');
 		$this->CI->db->order_by('content_type_friendly_name','ASC');
 		$result = $this->CI->db->get('content_types');

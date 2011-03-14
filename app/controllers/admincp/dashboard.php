@@ -69,6 +69,7 @@ class Dashboard extends Admincp_Controller {
 		// top 3 content types (for quick publish)
 		$content_types = $this->db->select('content_type_friendly_name')
 								  ->select('content_types.content_type_id')
+								  ->select('COUNT(content.content_type_id) AS posts')
 								  ->from('content')
 								  ->join('content_types','content_types.content_type_id = content.content_type_id')
 								  ->group_by('content.content_type_id')
