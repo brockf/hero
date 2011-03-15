@@ -31,33 +31,54 @@
 
 
 <div style="float: left; width: 70%;">
-	<form class="form validate" method="post" action="<?=site_url('admincp/emails/post_send');?>">
+		<form class="form validate" method="post" action="<?=site_url('admincp/emails/post_send');?>">
 		<ul class="form">
 			<li>
 				<label for="recipients" class="full">Recipients</label>
 			</li>
 			<li>
 				<ul class="final_recipients">
-					<li class="empty">No recipients, yet.  Select your recipients in the dialog to the left.</li>
+					<li class="empty">No recipients, yet.  Select your recipients in the dialog to the left (or enter an email below).</li>
+					<li>Add Recipient Email: <input type="text" placeholder="email@example.com" name="email_address" value="" /> <input type="submit" id="add_email" name="" value="Add" /></li>
 				</ul>
 			</li>
+		
+			<? if (!empty($templates)) { ?>
+			
+			<li>
+				<label class="full" for="templates">Use Template</label>
+			</li>
+			<li>
+				<select name="templates">
+					<option value=""></option>
+					<? foreach ($templates as $template) { ?>
+						<option value="<?=$template['id'];?>"><?=$template['name'];?></option>
+					<? } ?>
+				</select>
+			</li>
+				
+			<? } ?>
+			
 			<li>
 				<label for="subject" class="full">Subject</label>
 			</li>
 			<li>
-				<input type="text" class="text full required" name="subject" value="" />
+				<input type="text" class="text full required" id="subject" name="subject" value="" />
 			</li>
 			<li>
 				<label for="body" class="full">Body</label>
 			</li>
 			<li>
-				<textarea name="body" class="full required"></textarea>
+				<textarea name="body" id="body" class="full required"></textarea>
 			</li>
 			<li>
 				<div class="help" style="margin: 0; padding: 0;">You may use the tags <b>[MEMBER_FIRST_NAME]</b>, <b>[MEMBER_LAST_NAME]</b>, and <b>[MEMBER_EMAIL]</b> in the email body and subject.  They will be replaced with the appropriate values for each member.</div>
 			</li>
 			<li>
-				<label>Send as HTML mail?</label> <input type="checkbox" name="html" value="1" />
+				<input type="checkbox" name="html" value="1" /> <b>This email is formatted with HTML tags</b>
+			</li>
+			<li>
+				<input type="checkbox" name="new_template" value="1" /> <b>Save this email as a template</b> <input type="text" class="text" placeholder="Enter Template Name" name="new_template_name" value="" />
 			</li>
 		</ul>
 		<div class="submit">

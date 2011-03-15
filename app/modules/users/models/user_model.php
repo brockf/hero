@@ -1164,7 +1164,7 @@ class User_model extends CI_Model
 				// we are passed a member id
 				$this->db->where('users.user_id',$filters['name']);
 			} else {
-				$this->db->where('(`user_first_name` LIKE \'%' . $filters['name'] . '%\' OR `user_last_name` LIKE \'%' . $filters['name'] . '%\')');
+				$this->db->where('(`user_first_name` LIKE \'%' . mysql_real_escape_string($filters['name']) . '%\' OR `user_last_name` LIKE \'%' . mysql_real_escape_string($filters['name']) . '%\')');
 			}
 		}
 		

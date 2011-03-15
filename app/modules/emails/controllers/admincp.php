@@ -29,8 +29,13 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('users/usergroup_model');
 		$usergroups = $this->usergroup_model->get_usergroups();
 		
+		// get templates
+		$this->load->model('emails/email_template_model');
+		$templates = $this->email_template_model->get_templates();
+		
 		$data = array(
-					'usergroups' => $usergroups
+					'usergroups' => $usergroups,
+					'templates' => $templates
 					);
 	
 		$this->load->view('send', $data);
@@ -74,6 +79,12 @@ class Admincp extends Admincp_Controller {
 				if (!empty($member)) {
 					$recipients[] = array('email' => $member['email'], 'first_name' => $member['first_name'], 'last_name' => $member['last_name']);
 				}
+			}
+		}
+		
+		if (!empty($_POST['recipient_emails'])) {
+			foreach ($_POST['recipient_emails'] as $email) {
+				$recipients[] = array('email' => $email, 'first_name' => 'FirstName', 'last_name' => 'LastName');
 			}
 		}
 		
@@ -124,6 +135,12 @@ class Admincp extends Admincp_Controller {
 			$sent[] = $recipient['email'];
 		}
 		
+		// save as new template?
+		if ($this->input->post('new_template')) {
+			$this->load->model('emails/email_template_model');
+			$this->email_template_model->new_template($this->input->post('new_template_name'), $this->input->post('subject'), $this->input->post('body'), $is_html);
+		}
+		
 		$this->notices->SetNotice('Email sent successfully to ' . count($sent) . ' members.');
 		
 		return redirect('admincp/emails/send');
@@ -147,6 +164,28 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		return print(array_to_json($results));
+	}
+	
+	function load_template_subject () {
+		$this->load->model('emails/email_template_model');
+		$template = $this->email_template_model->get_template($this->input->post('template_id'));
+		
+		if (empty($template)) {
+			return '';
+		}
+		
+		return print($template['subject']);
+	}
+	
+	function load_template_body () {
+		$this->load->model('emails/email_template_model');
+		$template = $this->email_template_model->get_template($this->input->post('template_id'));
+		
+		if (empty($template)) {
+			return '';
+		}
+		
+		return print($template['body']);
 	}
 	
 	/**

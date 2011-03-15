@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.07';
+	var $version = '1.08';
 	var $name = 'emails';
 
 	function __construct () {
@@ -102,6 +102,17 @@ class Emails extends Module {
 		if ($db_version < 1.07) {
 			$this->CI->db->query('ALTER TABLE `mail_queue` ADD COLUMN `from_name` VARCHAR(250) AFTER `to`');
 			$this->CI->db->query('ALTER TABLE `mail_queue` ADD COLUMN `from_email` VARCHAR(250) AFTER `from_name`');
+		}
+		
+		if ($db_version < 1.08) {
+			$this->CI->db->query('CREATE TABLE `email_templates` (
+								  `email_template_id` int(11) NOT NULL auto_increment,
+								  `email_template_name` varchar(100) NOT NULL,
+								  `email_template_subject` text NOT NULL,
+								  `email_template_body` text NOT NULL,
+								  `email_template_is_html` tinyint(1) NOT NULL,
+								  PRIMARY KEY  (`email_template_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		return $this->version;

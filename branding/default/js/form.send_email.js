@@ -1,4 +1,5 @@
 $(document).ready(function () {
+	// bind add
 	$('ul.recipients input.member').live('click', function() {
 		$('ul.final_recipients').append('<li>Member: ' + $(this).attr('rel') + ' (<a rel="' + $(this).attr('rel') + '" href="#" class="remove member">remove</a>) <input type="hidden" name="recipient_members[]" value="' + $(this).val() + '" /></li>');
 		$(this).parent().remove();
@@ -13,6 +14,21 @@ $(document).ready(function () {
 		$('ul.final_recipients li.empty').hide();
 	});
 	
+	$('input#add_email').click(function () {
+		var email_address = $('input[name="email_address"]').val();
+		
+		if (email_address == '') {
+			return false;
+		}
+	
+		$('ul.final_recipients').append('<li>Email: ' + email_address + ' (<a rel="' + email_address + '" href="#" class="remove email">remove</a>) <input type="hidden" name="recipient_emails[]" value="' + email_address + '" /></li>');
+		$(this).find('input[name="email_address"]').val('');
+		
+		$('ul.final_recipients li.empty').hide();
+		
+		return false;
+	});
+	
 	// bind remove
 	$('a.remove').live('click',function() {
 		if ($(this).hasClass('member')) {
@@ -25,6 +41,9 @@ $(document).ready(function () {
 			var id = $(this).parent().children('input').val();
 			$('ul.groups').prepend('<li><input type="checkbox" class="group" rel="' + $(this).attr('rel') + '" value="' + id + '" /> ' + $(this).attr('rel') + '</li>');
 			
+			$(this).parent().remove();
+		}
+		else if ($(this).hasClass('email')) {
 			$(this).parent().remove();
 		}
 		
@@ -77,5 +96,41 @@ $(document).ready(function () {
 			},
 			'json');
 		}, 100);
+	});
+	
+	// save as template
+	if ($('input[name="new_template"]:checked').length > 0) {
+		$('input[name="new_template_name"]').show();
+	}
+	else {
+		$('input[name="new_template_name"]').hide();
+	}
+	
+	$('input[name="new_template"]').click(function () {
+		if ($('input[name="new_template"]:checked').length > 0) {
+			$('input[name="new_template_name"]').show();
+		}
+		else {
+			$('input[name="new_template_name"]').hide();
+		}
+	});
+	
+	$('select[name="templates"]').change(function () {
+		if ($(this).val() != '') {
+			var base_url = $('#base_url').html();
+			var template_id = $(this).val();
+			
+			$(this).after('<span id="load_template_loading">Loading...</span>');
+			
+			$.post(base_url + 'emails/load_template_subject', { "template_id" : template_id }, function(data) {
+				$('input[name="subject"]').val(data);
+				$('span#load_template_loading').remove();
+			});
+			
+			$.post(base_url + 'emails/load_template_body', { "template_id" : template_id }, function(data) {
+				$('textarea[name="body"]').val(data);
+				$('span#load_template_loading').remove();
+			});
+		}
 	});
 });
