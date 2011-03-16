@@ -21,6 +21,7 @@ class Admincp extends Admincp_Controller {
 	
 	function index () {
 		$this->admin_navigation->module_link('Add Member/Administrator',site_url('admincp/users/add'));
+		$this->admin_navigation->module_link('Configure Member List',site_url('admincp/users/configure_list'));
 		
 		$this->load->library('dataset');
 		
@@ -32,55 +33,29 @@ class Admincp extends Admincp_Controller {
 	    	$options[$group['id']] = $group['name'];
 	    }
 	    $usergroups = $options;
-	    				
-		$columns = array(
-						array(
-							'name' => 'ID #',
-							'type' => 'id',
-							'width' => '3%',
-							'filter' => 'id'
-							),
-						array(
-							'name' => 'Username',
-							'type' => 'text',
-							'filter' => 'username',
-							'sort_column' => 'user_username',
-							'width' => '15%'
-							),
-						array(
-							'name' => 'Email',
-							'type' => 'text',
-							'filter' => 'email',
-							'sort_column' => 'user_email',
-							'width' => '18%'
-							),
-						array(
-							'name' => 'Full Name',
-							'type' => 'text',
-							'filter' => 'name',
-							'sort_column' => 'user_last_name',
-							'width' => '16%'
-							),
-						array(
-							'name' => 'Usergroup(s)',
-							'type' => 'select',
-							'filter' => 'group',
-							'options' => $options,
-							'width' => '14%'
-							),
-						array(
-							'name' => 'Status',
-							'width' => '10%',
-							'type' => 'select',
-							'filter' => 'suspended',
-							'options' => array('0' => 'Active', '1' => 'Suspended')
-							),
-						array(
-							'name' => '',
-							'width' => '19%'
-							)
+	    
+	    $columns = array();
+	    $columns[] = array(
+						'name' => 'ID #',
+						'type' => 'id',
+						'width' => '3%',
+						'filter' => 'id'
 					);
-						
+		
+		$configuration = $this->config->item('member_list_configuration');
+		$configuration = unserialize($configuration);
+		
+		$list_options = $this->_member_list_options();
+		
+		foreach ($configuration as $field) {
+			$columns[] = $list_options[$field];
+		}
+		
+		$columns[] = array(
+						'name' => '',
+						'width' => '19%'
+					);			
+											
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('user_model','get_users');
 		$this->dataset->base_url(site_url('admincp/users/index'));
@@ -99,8 +74,97 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->action('Delete','admincp/users/delete');
 		
 		$data = array('usergroups' => $usergroups);
+		$data['configuration'] = $configuration;
+		$data['list_options'] = $list_options;
 		
 		$this->load->view('users.php', $data);
+	}
+	
+	function configure_list () {
+		$configuration = $this->config->item('member_list_configuration');
+		$configuration = unserialize($configuration);
+		
+		// get options
+		$options = $this->_member_list_options();
+		
+		$data = array(
+					'configuration' => $configuration,
+					'options' => $options,
+					'form_action' => site_url('admincp/users/post_configure_list')
+				);
+		
+		$this->load->view('member_list_config', $data);
+	}
+	
+	function post_configure_list () {
+		// build configuration
+		$configuration = array();
+		
+		for ($i = 1; $i <= 7; $i++) {
+			if ($this->input->post('column_' . $i) != '') {
+				$configuration[] = $this->input->post('column_' . $i);
+			}
+		}
+		
+		$configuration = serialize($configuration);
+		
+		$this->settings_model->update_setting('member_list_configuration', $configuration);
+		
+		$this->notices->SetNotice('Member list re-configured successfully.');
+		
+		return redirect('admincp/users');
+	}
+	
+	function _member_list_options () {
+		$this->load->model('usergroup_model');			
+	    $usergroups = $this->usergroup_model->get_usergroups();
+	    
+	    $options = array();
+	    foreach ($usergroups as $group) {
+	    	$options[$group['id']] = $group['name'];
+	    }
+	    $usergroups = $options;
+	    unset($options);
+	    
+		$options = array();
+		$options['username'] = array('name' => 'Username', 'type' => 'text', 'filter' => 'username', 'sort_column' => 'user_username');
+		$options['full_name'] = array('name' => 'Full Name', 'type' => 'text', 'filter' => 'name', 'sort_column' => 'user_last_name');
+		$options['email'] = array('name' => 'Email', 'type' => 'text', 'filter' => 'email', 'sort_column' => 'user_email');
+		$options['groups'] = array('name' => 'Groups', 'type' => 'select', 'options' => $usergroups, 'filter' => 'group');
+		$options['status'] = array('name' => 'Status', 'type' => 'select', 'filter' => 'suspended', 'options' => array('0' => 'Active', '1' => 'Suspended'));
+		$options['signup_date'] = array('name' => 'Signup Date', 'type' => 'date', 'sort_column' => 'user_signup_date', 'filter' => 'timestamp', 'field_start_date' => 'signup_start_date', 'field_end_date' => 'signup_end_date');
+		
+		// custom fields
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => '1'));
+		
+		foreach ($custom_fields as $field) {
+			$this_option = array();
+			$this_option['name'] = $field['friendly_name'];
+			$this_option['filter'] = $field['name'];
+			
+			if (!in_array($field['type'], array('text','select','multiselect','radio'))) {
+				continue;
+			}
+			elseif ($field['type'] == 'text') {
+				$this_option['sort_column'] = $field['name'];
+				$this_option['type'] = 'text';
+			}
+			else {
+				$this_option['sort_column'] = $field['name'];
+				$this_option['type'] = 'select';
+				
+				$select_options = array();
+				foreach ($field['options'] as $option) {
+					$select_options[$option['value']] = $option['value'];
+				}
+				
+				$this_option['options'] = $select_options;
+			}
+			
+			$options[$field['name']] = $this_option;
+		}
+		
+		return $options;
 	}
 	
 	function user_actions ($action, $id) {

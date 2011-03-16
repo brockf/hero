@@ -889,6 +889,12 @@ class User_model extends CI_Model
 	* @return int $user_id
 	*/
 	function update_user($user_id, $email, $password, $username, $first_name, $last_name, $groups = FALSE, $is_admin = FALSE, $custom_fields = array()) {
+		$old_user = $this->get_user($user_id);
+		
+		if (empty($old_user)) {
+			return FALSE;
+		}
+		
 		$update_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
 								'user_groups' => '|' . implode('|',$groups) . '|',
@@ -928,6 +934,12 @@ class User_model extends CI_Model
 		if (!empty($customer)) {
 			$this->db->update('customers', $customer, array('internal_id' => $user_id));
 		}
+		
+		// hook call
+		$CI =& get_instance();
+		$CI->app_hooks->data('member', $user_id);
+		$CI->app_hooks->trigger('member_update', $user_id, $old_user);
+		$CI->app_hooks->reset();
 		
 		return TRUE;
 	}

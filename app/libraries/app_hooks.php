@@ -434,7 +434,7 @@ class App_hooks {
 			$args = array();
 		}
 		
-		log_message('debug', 'Trigger additional arguments: ' . implode(' ', $args));
+		//log_message('debug', 'Trigger additional arguments: ' . implode(' ', $args));
 		
 		// execute code latched to hook
 		if (isset($this->binds[$hook['name']]) and !empty($this->binds[$hook['name']])) {
