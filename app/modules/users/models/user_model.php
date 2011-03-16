@@ -525,7 +525,7 @@ class User_model extends CI_Model
 		$CI->form_validation->set_rules('first_name','First Name','trim|required');
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
-		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email');
+		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
 		$unique_username = ($editing == FALSE) ? '|unique_username' : '';
 		$CI->form_validation->set_rules('username','Username','trim|min_length[3]|alphanumeric' . $unique_username);
 		
