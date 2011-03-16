@@ -22,7 +22,7 @@ class Relationship_fieldtype extends Fieldtype {
 		$this->fieldtype_name = 'Content Relationship';
 		$this->fieldtype_description = 'Select one or more content items (of any content type) from a list.';
 		$this->validation_error = '';
-		$this->db_column = 'INT(11)';
+		$this->db_column = 'TEXT';
 	}
 	
 	/**
@@ -141,7 +141,18 @@ class Relationship_fieldtype extends Fieldtype {
 	* @return string $db_value
 	*/
 	function post_to_value () {
-		return $this->CI->input->post($this->name);
+		if ($this->data['allow_multiple'] == TRUE) {
+			$array = $this->CI->input->post($this->name);
+		
+			if (!is_array($array)) {
+				$array = array($array);
+			}
+			
+			return serialize($array);
+		}
+		else {
+			return $this->CI->input->post($this->name);
+		}	
 	}
 	
 	/**
