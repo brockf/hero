@@ -26,6 +26,19 @@ table.dataset thead td{
 	font-weight: bold;
 	text-transform: uppercase;
 	font-size: 9pt;
+	position: relative;
+}
+
+table.dataset thead td a {
+	padding-bottom: 1px;
+	border-bottom: 1px dashed #f0f0f0 !important;
+	color: #fff !important;
+	text-decoration: none !important;
+}
+
+table.dataset span.sorting {
+	color: #ededed;
+	text-transform: lowercase !important;
 }
 
 table.dataset tbody td {

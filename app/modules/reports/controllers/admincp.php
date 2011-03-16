@@ -44,7 +44,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '10%',
 							'filter' => 'id'),
@@ -207,7 +206,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'Invoice #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '7%',
 							'filter' => 'invoice'),
@@ -285,7 +283,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '7%',
 							'filter' => 'id'),
@@ -401,7 +398,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '7%',
 							'filter' => 'id'),
@@ -470,7 +466,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '7%',
 							'filter' => 'id'),
@@ -624,7 +619,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'Member ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '7%',
 							'filter' => 'id'),
@@ -700,7 +694,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'Content ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '10%',
 							'filter' => 'id'),

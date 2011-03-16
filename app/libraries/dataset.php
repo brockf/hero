@@ -30,6 +30,8 @@ class Dataset {
 	var $total_rows; // these are how many rows are in the total dataset, either calculated automatically or given by total_rows()
 	var $base_url; // the base URL of the dataset, the basis of all URL strings
 	var $pagination; // stores the HTML for pagination links
+	var $sort_column;
+	var $sort_dir;
 	
     function __construct() {
     	$this->CI =& get_instance();
@@ -248,6 +250,19 @@ class Dataset {
     	
     	$this->params_filters = array();
     	
+    	// sorting?
+    	if ($this->CI->input->get('sort_column')) {
+    		$this->sort_column = $this->CI->input->get('sort_column');
+    		$this->sort_dir = $this->CI->input->get('sort_dir');
+    		
+    		if (empty($this->sort_dir) or !in_array($this->sort_dir, array('asc','desc'))) {
+    			$this->sort_dir = 'asc';
+    		}
+    	
+    		$this->params_filters['sort'] = $this->sort_column;
+    		$this->params_filters['sort_dir'] = $this->sort_dir;
+    	}
+    	
     	if ($this->available_filters == TRUE) {
     		foreach ($this->columns as $column) {
     			if ($column['filters'] == TRUE) {
@@ -321,7 +336,7 @@ class Dataset {
     	}
     	
     	// initialize pagination
-		$config['base_url'] = $this->base_url . '?filters=' . $this->get_encoded_filters() . '&limit=' . $this->limit;
+		$config['base_url'] = $this->base_url . '?filters=' . $this->get_encoded_filters() . '&sort_dir=' . $this->sort_dir . '&sort_column=' . $this->sort_column . '&limit=' . $this->limit;
 		$config['total_rows'] = $this->total_rows;
 		$config['per_page'] = $this->rows_per_page;
 		$config['num_links'] = '10';
@@ -436,6 +451,8 @@ class Dataset {
     				<input type="hidden" name="limit" value="' . $this->limit . '" />
     				<input type="hidden" id="filters" name="filters" value="' . $this->get_encoded_filters() . '" />
     				<input type="hidden" id="export" name="export" value="" />
+    				<input type="hidden" id="sort_column" name="sort_column" value="' . $this->sort_column . '" />
+    				<input type="hidden" id="sort_dir" name="sort_dir" value="' . $this->sort_dir . '" />
     				<div class="pagination">';
     	$output .= $this->pagination;
     	
@@ -468,6 +485,29 @@ class Dataset {
     	
     	// add column headers
     	while (list($key,$column) = each($this->columns)) {
+    		if (isset($column['sort_column']) and !empty($column['sort_column'])) {
+    			if ($this->sort_column == $column['sort_column'] and $this->sort_dir == 'asc') {
+    				$direction = 'desc';
+    				$title = 'sort descending';
+    				
+    				$post_name = ' <span class="sorting">asc</span>';
+    			}
+    			else {
+    				$direction = 'asc';
+    				$title = 'sort ascending';
+    				
+    				if ($this->sort_column == $column['sort_column']) {
+    					$post_name = '<span class="sorting">desc</span>';
+    				}
+    				else {
+    					$post_name = '';
+    				}
+    			}
+    			
+    			$column['name'] = '<a class="sort_column tooltip" title="' . $title . '" rel="' . $column['sort_column'] . '" direction="' . $direction . '" href="#">' . $column['name'] . '</a> ' . $post_name;
+    			
+    		}
+    	
    			$output .= '<td style="width:' . $column['width'] . '">' . $column['name'] . '</td>';
     	}
     	reset($this->columns);

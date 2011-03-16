@@ -67,6 +67,17 @@ $(document).ready(function() {
 	
 	/* DATASET LIBRARY ACCOMPANYING JAVASCRIPT */
 	
+	// sorting
+	$('a.sort_column').click(function () {
+		var column = $(this).attr('rel');
+		$('input#sort_column').val(column);
+		
+		var direction = $(this).attr('direction');
+		$('input#sort_dir').val(direction);
+		
+		$('form#dataset_form').submit();
+	});
+	
 	// delete confirmations
 	$('input[value="Delete"]').click(function() { 
 		var confirmed = confirm('Are you sure you want to do this?');

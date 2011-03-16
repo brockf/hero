@@ -57,7 +57,7 @@ class Admincp extends Admincp_Controller {
 								'width' => '25%',
 								'filter' => 'title',
 								'type' => 'text',
-								'sort_column' => 'content.title'
+								'sort_column' => 'content.content_title'
 								),
 							array(
 								'name' => 'Author',
@@ -139,7 +139,7 @@ class Admincp extends Admincp_Controller {
 									'width' => '30%',
 									'filter' => 'title',
 									'type' => 'text',
-									'sort_column' => 'content.title'
+									'sort_column' => 'content.content_title'
 									),
 								array(
 									'name' => 'Author',
@@ -205,7 +205,6 @@ class Admincp extends Admincp_Controller {
 				$columns[] = array(
 								'name' => 'ID #',
 								'type' => 'id',
-								'sort_column' => 'id',
 								'width' => '5%',
 								'filter' => 'text'
 								);
