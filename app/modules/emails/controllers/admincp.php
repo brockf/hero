@@ -200,7 +200,6 @@ class Admincp extends Admincp_Controller {
 		$columns = array(
 						array(
 							'name' => 'ID #',
-							'sort_column' => 'id',
 							'type' => 'id',
 							'width' => '5%',
 							'filter' => 'id'),
