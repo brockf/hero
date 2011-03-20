@@ -15,6 +15,7 @@ class User_model extends CI_Model
 {
 	public $active_user;  // the logged-in use
 	public $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
+	public $failed_due_to_duplicate_login; // if the login failed because someone is already logged in, this == TRUE
 	
 	// this will change if we are in the control panel, as we want to have independent sessions foreach
 	// so a user can be logged in the CP but no the frontend (helps for testing - eases confusion)
@@ -145,6 +146,16 @@ class User_model extends CI_Model
 			$user = $query->row_array();
 			$user = $this->get_user($user['user_id']);
 			
+			// let's make sure someone isn't logged into the account right now
+			$this->db->where('user_id',$user['id']);
+			$this->db->where('user_activity_date >',date('Y-m-d H:i:s', time() - 60));
+			$result = $this->db->get('user_activity');
+			if ($result->num_rows() > 0) {
+				$this->failed_due_to_duplicate_login = TRUE;
+				
+				return FALSE;
+			}
+			
 			// let's make sure they are activated if it's been more than 1 day
 			if (!empty($user['validate_key']) and ((time() - strtotime($user['signup_date'])) > (60*60*24))) {
 				$this->failed_due_to_activation = TRUE;
@@ -207,6 +218,9 @@ class User_model extends CI_Model
 		
 		$this->set_active($user_id);
 		
+		// track activity
+		$this->db->insert('user_activity', array('user_id' => $user_id, 'user_activity_date' => date('Y-m-d H:i:s')));
+		
 		// cart functions
 		$CI =& get_instance();
 		$CI->load->model('store/cart_model');
@@ -230,8 +244,13 @@ class User_model extends CI_Model
     * @return boolean TRUE upon success
     */
     function logout () {
+    	// delete activity
+    	$this->db->delete('user_activity', array('user_id' => $this->get('id')));
+    	
+    	// unset user_id session and login_time
     	$this->session->unset_userdata($this->session_name,'login_time');
     	
+    	// delete cookie
 		$CI =& get_instance();
 		$CI->load->helper('cookie');
 		delete_cookie('user_remember_key');
@@ -240,8 +259,8 @@ class User_model extends CI_Model
 		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
 		// app_hooks like the other controllers
 		$CI->load->library('app_hooks');
-		$CI->app_hooks->data('member', $this->Get('id'));
-		$CI->app_hooks->trigger('member_logout', $this->Get('id'));
+		$CI->app_hooks->data('member', $this->get('id'));
+		$CI->app_hooks->trigger('member_logout', $this->get('id'));
 		$CI->app_hooks->reset();
     	
     	return TRUE;

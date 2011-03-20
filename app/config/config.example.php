@@ -102,6 +102,9 @@ $config['debug_profiler'] = FALSE;
 // 24 hour clock, no leading zero, uses system time
 $config['billing_cron_time'] = 9;
 
+// should we make sure that only one user is logged into an account at the same time?
+$config['duplicate_login_check'] = 'yes';
+
 /*
 |--------------------------------------------------------------------------
 | Index File

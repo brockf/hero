@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.10';
+	var $version = '1.11';
 	var $name = 'users';
 
 	function __construct () {
@@ -42,6 +42,12 @@ class Users_module extends Module {
 	*/
 	function front_preload () {
 		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/users/template_plugins/');
+		
+		// track user activity
+		if ($this->CI->config->item('duplicate_login_check') != 'no') {
+			include(APPPATH . 'modules/users/template_plugins/outputfilter.user_activity.php');
+			$this->CI->smarty->registerFilter('output', 'smarty_outputfilter_user_activity');
+		}
 	}
 	
 	/*
@@ -161,6 +167,15 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.10) {
 			$this->CI->settings_model->new_setting(3, 'member_list_configuration', 'a:5:{i:0;s:8:"username";i:1;s:5:"email";i:2;s:9:"full_name";i:3;s:6:"groups";i:4;s:6:"status";}', '', 'text','', FALSE, TRUE);
+		}
+		
+		if ($db_version < 1.11) {
+			$this->CI->db->query('CREATE TABLE `user_activity` (
+								  `user_activity_id` int(11) NOT NULL auto_increment,
+								  `user_id` int(11) NOT NULL,
+								  `user_activity_date` DATETIME NOT NULL,
+								  PRIMARY KEY  (`user_activity_id`)
+								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
 		
 		// return current version

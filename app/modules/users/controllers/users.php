@@ -335,6 +335,9 @@ class Users extends Front_Controller {
 			if ($this->user_model->failed_due_to_activation == TRUE) {
 				$this->session->set_flashdata('login_errors','<p>Login failed.  Your account email has not been activated yet.  Please click the link in your activation email to activate your account.  If you cannot find the email in your inbox or junk folders, contact website support for assistance.');
 			}
+			elseif ($this->user_model->failed_due_to_duplicate_login == TRUE) {
+				$this->session->set_flashdata('login_errors','<p>Login failed.  Someone is already logged in with this account.  If you believe this is in error, wait 1 minute and try again.  Otherwise, ensure that you are not logged in the site on another device before continuing.');			
+			}
 			else {
 				$this->session->set_flashdata('login_errors','<p>Login failed.  Please verify your username/email and password.');
 			}
