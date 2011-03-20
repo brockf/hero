@@ -2,6 +2,10 @@
 
 function smarty_outputfilter_user_activity ($output, &$smarty) {
 	$url = site_url('users/user_activity');
+	
+	if ($smarty->CI->config->item('ssl_certificate') == '1') {
+		$url = secure($url);
+	}
 
 	$code = '
 	<script type="text/javascript">
