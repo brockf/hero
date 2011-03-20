@@ -49,7 +49,7 @@ class File_upload_fieldtype extends Fieldtype {
 		}
 		
 		// prep classes
-		if ($this->required == TRUE) {
+		if ($this->required == TRUE and empty($this->value)) {
 			$this->field_class('required');
 		}
 		
@@ -63,6 +63,7 @@ class File_upload_fieldtype extends Fieldtype {
 		
 		// prep final attributes	
 		$attributes = array(
+						'id' => $this->name,
 						'type' => 'file',
 						'name' => $this->name,
 						'style' => 'width: ' . $this->width,
