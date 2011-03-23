@@ -93,6 +93,16 @@ class CI_Smarty extends Smarty {
 			// assign current URL to variable
 			$this->assign('current_url',current_url());
 			
+			// assign uri segments
+			$uri_segments = array();
+			$count = 1;
+			foreach ($this->CI->uri->segments as $segment) {
+				$uri_segments[$count] = $segment;
+				$count++;
+			}
+			$this->assign('uri_segment',$uri_segments);
+			$this->assign('uri_segments',$uri_segments);
+			
 			// are we loggedin
 			$this->assign('logged_in',($this->CI->user_model->logged_in() ? TRUE : FALSE));
 			
