@@ -184,13 +184,17 @@ class Content_type_model extends CI_Model
 		$CI->load->library('custom_fields/fieldtype');
 		
 		$search_fields = array();
+		$fields = 1;
 		foreach ($custom_fields as $field) {
-			// we will only index fields that are VARCHAR, or TEXT
-			$CI->fieldtype->load_type($field['type']);
-			$db_column = $CI->fieldtype->$field['type']->db_column;
-		
-			if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
-				$search_fields[] = '`' . $field['name'] . '`';
+			if ($fields < 16) {		
+				// we will only index fields that are VARCHAR, or TEXT
+				$CI->fieldtype->load_type($field['type']);
+				$db_column = $CI->fieldtype->$field['type']->db_column;
+			
+				if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
+					$search_fields[] = '`' . $field['name'] . '`';
+					$fields++;
+				}
 			}
 		}
 		
