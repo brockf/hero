@@ -146,10 +146,10 @@ class Date_fieldtype extends Fieldtype {
 		$options = array();
 		
 		if (isset($this->data['future_only']) and $this->data['future_only'] == TRUE) {
-			$start = date('Y') - 100;
+			$start = date('Y');
 		}
 		else {
-			$start = date('Y');
+			$start = date('Y') - 100;
 		}
 		$end = date('Y') + 100;
 		for ($i = $start; $i <= $end; $i++) {
