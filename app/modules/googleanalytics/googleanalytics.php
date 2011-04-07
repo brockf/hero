@@ -24,7 +24,7 @@ class Googleanalytics extends Module {
 	
 	function admin_preload ()
 	{
-		$this->CI->admin_navigation->child_link('configuration',65,'Google Analytics',site_url('admincp/googleanalytics'));
+		$this->CI->admin_navigation->child_link('configuration',63,'Google Analytics',site_url('admincp/googleanalytics'));
 	}
 	
 	function front_preload () {
