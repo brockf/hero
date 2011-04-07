@@ -19,7 +19,7 @@ class Multicheckbox_fieldtype extends Fieldtype {
 	 
 		$this->compatibility = array('publish','users','products','collections','forms');
 		$this->enabled = TRUE;
-		$this->fieldtype_name = 'Multicheckbox Dropdown';
+		$this->fieldtype_name = 'Multicheckbox Options';
 		$this->fieldtype_description = 'Check one or many options in a list of checkboxes.';
 		$this->validation_error = '';
 		$this->db_column = 'TEXT';
