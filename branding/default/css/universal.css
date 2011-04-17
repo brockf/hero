@@ -469,6 +469,7 @@ form.form textarea.full {
 
 form.form div.submit {
 	padding-top: 10px;
+	clear:both;
 }
 
 form.form div.submit input {
