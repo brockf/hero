@@ -1,34 +1,30 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 class MY_Input extends CI_Input {
-	function __construct () {
-		parent::__construct();
-	}
-	
 	/**
-	* Modified get
+	* Constructor
 	*
-	* Allows us to access a real Query_String as created by our MY_URI class
-	* and stored in the MY_QUERY_STRING constant.
+	* We replaced this to set the GET array to always be used.
 	*/
-	function get($index = '', $xss_clean = FALSE)
-	{
-		if (!defined('MY_QUERY_STRING')) {
-			// no $_GET data exists
-			
-			return FALSE;
+	function __construct () {
+		log_message('debug', "Input Class Initialized");
+
+		$this->_allow_get_array	= TRUE;
+		$this->_enable_xss		= (config_item('global_xss_filtering') === TRUE);
+		$this->_enable_csrf		= (config_item('csrf_protection') === TRUE);
+
+		global $SEC;
+		$this->security =& $SEC;
+
+		// Do we need the UTF-8 class?
+		if (UTF8_ENABLED === TRUE)
+		{
+			global $UNI;
+			$this->uni =& $UNI;
 		}
-	
-		// do we have a query string?
-		$my_query_string = unserialize(MY_QUERY_STRING);
-		if (is_array($my_query_string)) {
-			$_TEMP_GET = $my_query_string;
-		}
-		else {
-			$_TEMP_GET = array();
-		}
-		
-		return $this->_fetch_from_array($_TEMP_GET, $index, $xss_clean);
+
+		// Sanitize global arrays
+		$this->_sanitize_globals();
 	}
 	
 	/**
