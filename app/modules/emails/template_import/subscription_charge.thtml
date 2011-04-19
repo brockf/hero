@@ -1,0 +1,11 @@
+{extends file="email_layout.thtml"}
+		
+{block name="body"}
+
+<p>Hi {$member.first_name},</p>
+
+<p>Thanks for your subscription payment!{if $invoice.id}  You were billed {$setting.currency_symbol}{$invoice.amount} on {$invoice.date|date_format:"%B %d, %Y"}.{/if}</p>
+
+<p>If you would like to view your invoices, manage your subscriptions, or update your account, please visit {url path="users/"}.</p>
+
+{/block}

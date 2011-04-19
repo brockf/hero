@@ -1,0 +1,31 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<base href="{url}" />
+<title>Invoice #{$invoice.id} - {setting name="site_name"}</title>
+</head>
+<body>
+<pre>
+{setting name="site_name"}
+======================================================================================
+INVOICE
+#{$invoice.id}								{$invoice.date|date_format:"%B %d, %Y"}
+
+Bill To:
+{$formatted_address}
+
+Quantity	Price		Description						
+--------------------------------------------------------------------------------------
+{foreach $lines as $line}
+{$line.quantity}		{setting name="currency_symbol"}{$line.sub_total}		{$line.line}
+{/foreach}
+--------------------------------------------------------------------------------------
+  Tax:		{setting name="currency_symbol"}{$invoice.tax_paid}
+{if $invoice.shipping_charge}  Shipping:	{setting name="currency_symbol"}{$invoice.shipping_charge} ({$invoice.shipping_name})
+{/if}
+  --------------------					
+  TOTAL:	{setting name="currency_symbol"}{$invoice.amount}
+</pre>
+</body>
+</html>

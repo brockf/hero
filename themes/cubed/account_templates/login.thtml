@@ -1,0 +1,50 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Account Login - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	{login_form var="login" return=$return username=$username}
+		<h1>Account Login</h1>
+		<form class="form validate" method="post" action="{$login.form_action}">
+			<input type="hidden" name="return" value="{$login.return}">
+			
+			{if $validation_errors}
+				<div class="errors">
+					{$validation_errors}
+				</div>
+			{/if}
+			
+			{if $notices}
+				<div class="notices">
+					{$notices}
+				</div>
+			{/if}
+		
+			<ul class="form">
+				<li>
+					<label for="username">Username/Email</label>
+					<input type="text" class="text required" id="username" name="username" value="{$login.username}">
+				</li>
+				<li>
+					<label for="password">Password</label>
+					<input type="password" class="text required" id="password" name="password" />
+				</li>
+				<li class="indent">
+					<input type="checkbox" value="1" name="remember" /> Remember me for future visits?
+				</li>
+				<li class="indent">
+					<input type="submit" class="button" name="login" value="Login" />
+				</li>
+			</ul>
+			
+			<ul class="login_form_links">
+				<li>
+					<a href="{url path="users/register"}">Don't have an account? Click here to register.</a>
+				</li>
+				<li>
+					<a href="{url path="users/forgot_password"}">Forgot your password?</a>
+				</li>
+			</ul>
+		</form>
+	{/login_form}
+{/block}

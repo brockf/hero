@@ -1,0 +1,118 @@
+#login_form {
+	margin: 0 auto;
+	width: 475px;
+	padding: 20px;
+	margin-top: 120px;
+	background-image: url(../images/login.gif);
+	height: 298px;
+	position: relative;
+}
+
+h1 {
+	font-size: 11pt;
+	color: #dedede;
+	text-align: center;
+	font-style: helvetica, arial;
+	position: absolute;
+	left: 35px;
+	top: 40px;
+	margin: 0;
+	padding: 0;
+}
+
+h1 span.app_name {
+	color: #fff;
+}
+
+#login_form ul.form {
+	list-style-type: none;
+	display: block;
+	position: absolute;
+	top: 88px;
+	left: 35px;
+	margin: 0;
+	padding: 0;
+	padding-top: 20px;
+	padding-left: 15px;
+}
+
+#login_form ul.form li {
+	clear: both;
+	display: block;
+	margin-bottom: 15px;
+}
+
+label {
+	display: block;
+	float: left;
+	width: 120px;
+	color: #8b8b8b;
+	text-align: right;
+	margin-right: 12px;
+	font-size: 18pt;
+	font-weight: 100;
+	padding-top: 4px;
+}
+
+#username, #password {
+	float: left;
+	border-radius: 5px;
+	border: 1px solid #ccc;
+	padding: 4px;
+	font-family: arial;
+	font-size: 18pt;
+	width: 250px;
+}
+
+li.submit input {
+	position: relative;
+	left: 132px;
+}
+
+/*submit button */
+input.button {
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	background: url(../images/button.gif) repeat-x scroll left top #DDDDDD;
+	border-color: #CCCCCC #BBBBBB #AAAAAA;
+	border-left: 1px solid #BBBBBB;
+	border-right: 1px solid #BBBBBB;
+	border-style: solid;
+	border-width: 1px;
+	color: #3A3A3A;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 4px 6px;
+	text-shadow: 0 1px 1px #FFFFFF;
+}
+
+div.links {
+	position: absolute;
+	bottom: 25px;
+	right: 40px;
+}
+
+ul.links {
+	list-style-type: none;
+}
+
+ul.links li {
+	display: inline;
+}
+
+ul.links a {
+	display: block;
+	text-align: right;
+	width: 200px;
+	font-size: 8pt;
+	margin-bottom: 5px;
+}
+
+div#copyright {
+	margin: 0 auto;
+	width: 485px;
+	padding: 0px 10px;
+	color: #999;
+	font-size: 8pt;
+	text-align: center;
+}

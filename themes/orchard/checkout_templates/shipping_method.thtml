@@ -1,0 +1,24 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Shipping Options - {$smarty.block.parent}{/block}
+{block name="step_header"}Choose Your Shipping Method{/block}
+{block name="billing_shipping_step"}class="active"{/block}
+{block name="checkout_content"}
+	<form class="form validate" method="post" action="{url path="checkout/post_shipping_method"}">
+	<fieldset>
+		<legend>Shipping Methods</legend>
+			<ul class="form">
+				<li>
+					<label for="shipping_method">Select Your Rate</label>
+					<select name="shipping_method" id="shipping_method">
+						{foreach $shipping_rates as $id => $rate}
+							<option value="{$id}">{$rate.name} - {setting name="currency_symbol"}{$rate.total_rate}</option>
+						{/foreach}
+					</select>
+				</li>
+				<li class="indent">
+					<input type="submit" name="continue" class="button submit" value="Continue to Payment" />
+				</li>
+			</ul>
+	</fieldset>
+	</form>
+{/block}

@@ -1,0 +1,15 @@
+{extends file="email_layout.thtml"}
+		
+{block name="body"}
+
+<p>Hi {$member.first_name},</p>
+
+<p>To download your purchased product, {$product.name}, please <a href="{$download_link}">click here</a> or enter the URL below in your browser:</p>
+
+<p>{$download_link}</p>
+
+<p>Note: This link will expire once used, so don't forget to save your download in a safe place.</p>
+
+<p>If you would like to view your invoices or update your account, please visit {url path="users/"}.</p>
+
+{/block}

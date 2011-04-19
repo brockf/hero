@@ -1,0 +1,32 @@
+{extends file="email_layout.thtml"}
+		
+{block name="body"}
+
+<p>Hi {$member.first_name},</p>
+
+<p>Thanks for your order from {$site_name}!  You were billed {$setting.currency_symbol}{$invoice.amount} on {$invoice.date|date_format:"%B %d, %Y"}.</p>
+
+<p>Your shopping cart:</p>
+
+<ul>
+{if $products}
+	{foreach $products as $product}
+	     <li>({$product.quantity}) {$product.name}</li>
+	{/foreach}
+{/if}
+{if $subscription_plan}
+     <li>{$subscription_plan.name}</li>
+{/if}
+</ul>
+
+{if $shipping_address}
+<p>You have entered the following shipping address:</p>
+
+<p>{$shipping_address}</p>
+
+<p>* If this address is incorrect, please contact us immediately to change it *</p>
+{/if}
+
+<p>If you would like to view your invoices or update your account, please visit {url path="users/"}.</p>
+
+{/block}

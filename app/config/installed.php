@@ -1,0 +1,1 @@
+<?php /* App is installed */ ?>

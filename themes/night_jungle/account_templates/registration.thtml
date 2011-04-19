@@ -1,0 +1,101 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Create an Account - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	{registration_form var="form" return=$return}
+		<h1>Create an Account</h1>
+		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
+		{if $setting.validate_emails == "1"}
+			<p>You will be required to validate your email address before your account is fully activated.</p>
+		{/if}
+		<form class="form validate" enctype="multipart/form-data" method="post" action="{$form.form_action}">
+			<input type="hidden" name="return" value="{$form.return}">
+			
+			{if $validation_errors}
+				<div class="errors">
+					{$validation_errors}
+				</div>
+			{/if}
+		
+			<fieldset>
+				<legend>Access Information</legend>
+				<ul class="form">
+					<li>
+						<label for="username">Username</label>
+						<input type="text" class="text required" id="username" name="username" value="{if $values.username}{$values.username}{/if}">
+					</li>
+					<li>
+						<label for="email">Email</label>
+						<input type="email" class="text required" id="email" name="email" value="{if $values.email}{$values.email}{/if}" />
+					</li>
+					<li>
+						<div class="help">After registering, you will be able to login with either your username or your email.</div>
+					</li>
+					<li>
+						<label for="password">Password</label>
+						<input type="password" class="text required" id="password" name="password" />
+					</li>
+					<li>
+						<div class="help">Passwords must be greater than 6 characters in length.</div>
+					</li>
+					<li>
+						<label for="password2">Repeat Password</label>
+						<input type="password" class="text required" id="password2" name="password2" />
+					</li>
+				</ul>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Profile Information</legend>
+				<ul class="form">
+					<li>
+						<label class="full" for="first_name">First Name</label>
+					</li>
+					<li>
+						<input type="text" class="text required" id="first_name" name="first_name" value="{if $values.first_name}{$values.first_name}{/if}">
+					</li>
+					<li>
+						<label class="full" for="last_name">Last Name</label>
+					</li>
+					<li>
+						<input type="text" class="text required" id="last_name" name="last_name" value="{if $values.last_name}{$values.last_name}{/if}">
+					</li>
+					{foreach $custom_fields as $field}
+						{if $field.name}
+							{if $field.type != 'checkbox'}
+								<li>
+									<label class="full" for="{$field.name}">{$field.friendly_name}</label>
+								</li>
+								<li>
+									{custom_field value=$values[$field.name] field=$field}
+								</li>
+							{else}
+								<li>
+									{custom_field value=$values[$field.name] field=$field} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+								</li>
+							{/if}
+							{if $field.help}
+							<li>
+								<div class="help flush">{$field.help}</div>
+							</li>
+							{/if}
+						{/if}
+					{/foreach}
+				</ul>
+			</fieldset>
+			
+			{if $setting.require_tos == "1"}
+			<fieldset>
+				<legend>Terms &amp; Conditions</legend>
+				<textarea style="width: 85%; height: 200px" class="text">{$setting.terms_of_service}</textarea>
+				<p>
+					<input type="checkbox" value="1" name="agree_tos" /> I agree to the terms and conditions above.
+				</p>
+			</fieldset>
+			{/if}
+			
+			<input type="submit" class="button" name="go" value="Create Account" />
+		</form>
+	{/registration_form}
+{/block}

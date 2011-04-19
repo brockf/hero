@@ -1,0 +1,55 @@
+{extends file="layout.thtml"}
+{block name="title"}
+My Shopping Cart - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>My Shopping Cart</h1>
+	
+	<div class="cart">
+		<form method="post" action="{url path="store/update_cart"}">
+		<table class="table" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<td style="width: 35%">Product</td>
+					<td style="width: 15%">Item Price</td>
+					<td style="width: 15%">Quantity</td>
+					<td style="width: 15%">Price</td>
+					<td style="width: 20%"></td>
+				</tr>
+			</thead>
+			<tbody>
+				{if $cart}
+				{foreach $cart as $item}
+				<tr>
+					<td>
+						{$item.name}
+						{if $item.options}
+							<span class="options">
+								{foreach $item.options as $label => $value}
+									{$label}: {$value}&nbsp;&nbsp;
+								{/foreach}
+							</span>
+						{/if}
+					</td>
+					<td>{setting name="currency_symbol"}{$item.price}</td>
+					<td>{if $item.is_subscription == FALSE}<input type="text" style="width: 50px" name="qty_{$item.rowid}" value="{$item.qty}" />{else}{$item.qty}{/if}</td>
+					<td>{setting name="currency_symbol"}{$item.subtotal}</td>
+					<td><a href="{$item.remove_link}">Remove</a></td>
+				</tr>
+				{/foreach}
+				<tr class="totals">
+					<td colspan="2"><input type="submit" class="button" name="update" value="Update Cart" /></td>
+					<td class="sub_total">Cart Subtotal</td>
+					<td class="sub_total_price">{setting name="currency_symbol"}{$cart_total}</td>
+					<td><input type="submit" class="button" name="checkout_button" value="Checkout" /></td>
+				</tr>
+				{else}
+				<tr>
+					<td colspan="5">You don't have any products in your cart.  <a href="{url path="store"}">Continue shopping</a>.
+				</tr>
+				{/if}
+			</tbody>
+		</table>
+		</form>			
+	</div>
+{/block}

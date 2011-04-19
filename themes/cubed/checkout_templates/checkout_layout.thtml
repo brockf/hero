@@ -1,0 +1,34 @@
+{extends file="layout.thtml"}
+{block name="title"}Checkout - {$smarty.block.parent}{/block}
+{block name="head_includes"}
+<script type="text/javascript" src="{theme_url path="js/checkout.js"}"></script>
+{/block}
+{block name="content"}
+	<div class="checkout_steps">
+		<ul>
+			<li {block name="account_step"}{/block}>Account</li>
+			<li {block name="billing_shipping_step"}{/block}>Billing{if $requires_shipping == TRUE} &amp; Shipping{/if}</li>
+			<li {block name="payment_step"}{/block}>Payment</li>
+			<li {block name="complete_step"}{/block}>Complete</li>
+		</ul>
+	</div>
+	
+	<h1>{block name="step_header"}Checkout{/block}</h1>
+	
+	{if $errors}
+		<div class="errors">
+			{$errors}
+		</div>
+	{/if}
+	{if $notices}
+		<div class="notices">
+			{$notices}
+		</div>
+	{/if}
+	
+	<div class="checkout">
+		{block name="checkout_content"}
+			System Error
+		{/block}
+	</div>
+{/block}

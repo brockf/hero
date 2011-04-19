@@ -1,0 +1,159 @@
+table.dataset {
+	width: 100%;
+}
+
+table.dataset.spaced {
+	margin: 15px 0;
+}
+
+table.dataset td {
+	padding: 6px;
+}
+
+table.dataset tr.highlight td {
+	font-weight: bold;
+}
+
+table.dataset tr.hovered td {
+	background-color: #dedede !important;
+}
+
+table.dataset thead td{
+	background-color: #00858d;
+	border-bottom: 1px solid #006369;
+	border-top: 1px solid #006369;
+	color: #fff;
+	font-weight: bold;
+	text-transform: uppercase;
+	font-size: 9pt;
+	position: relative;
+}
+
+table.dataset thead td a {
+	padding-bottom: 1px;
+	border-bottom: 1px dashed #f0f0f0 !important;
+	color: #fff !important;
+	text-decoration: none !important;
+}
+
+table.dataset span.sorting {
+	color: #ededed;
+	text-transform: lowercase !important;
+}
+
+table.dataset tbody td {
+	border-bottom: 1px solid #dedede;
+}
+
+table.dataset tbody tr.odd td {
+	background-color: #f0f0f0;
+}
+
+table.dataset td.label {
+	color: #999;
+}
+
+table.dataset tbody td.ok {
+	background-image: url(../images/ok.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+table.dataset tbody td.failed {
+	background-image: url(../images/failed.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+table.dataset tbody td.refunded {
+	background-image: url(../images/refunded.png);
+	background-position: center;
+	background-repeat: no-repeat;
+}
+
+table.dataset tbody tr.selected td {
+	background-color: #f9fcca;
+}
+
+table.dataset tbody td.options {
+	white-space: nowrap;
+}
+
+table.dataset tbody td.options a {
+	background-color: #23565c;
+	padding: 2px 8px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	color: #fff;
+	font-size: 9pt;
+	text-decoration: none;
+	margin: 0px 5px;
+}
+
+table.dataset tbody td.options a:hover {
+	background-color: #000;
+}
+
+div.pagination {
+	padding: 6px;
+	text-align: center;
+	position: relative;
+	height: 25px;
+}
+
+div.pagination a {
+	text-decoration: none;
+	padding: 3px;
+}
+
+div.pagination b {
+	background-color: #333;
+	color: #fff;
+	padding: 3px;
+}
+
+table.dataset input.text {
+	width: 100%;
+}
+
+table.dataset input.date_start {
+	width: 45%;
+	margin-right: 2%;
+}
+
+table.dataset input.date_end {
+	width: 45%;
+}
+
+table.dataset td.options {
+	text-align: center;
+}
+
+div.apply_filters {
+	position: absolute;
+	right: 0px;
+	top: 5px;
+}
+
+div.dataset_actions {
+	position: absolute;
+	top: 5px;
+	left: 0px;
+}
+
+div.dataset_stats {
+	font-size: 9pt;
+	color: #222;
+	float: left;
+	position: absolute;
+	top: 5px;
+	left: 5px;
+	text-align: left;
+}
+
+div.dataset_stats b {
+	padding: 0;
+	background-color: transparent;
+	color: #222;
+}

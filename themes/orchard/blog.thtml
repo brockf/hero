@@ -1,0 +1,20 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	
+	<ul class="blog">
+	{foreach $content as $item}
+		<li>
+			<h4 class="date">{$item.date|date_format:"%A, %B %e, %Y"}</h4>
+			<a class="title" href="{$item.url}">{$item.title}</a>
+			{$item.summary}
+		</li>
+	{/foreach}
+	</ul>
+	
+	{$pagination}
+	
+{/block}

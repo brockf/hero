@@ -1,0 +1,174 @@
+body {
+	font-family: arial, helvetica, sans-serif;
+	font-size: 10pt;
+	margin: 0;
+	padding: 0;
+	background-color: #f0f0f0;
+}
+
+#wrapper {
+	margin: 15px auto;
+	width: 740px;
+	background-color: #fff;
+	padding: 10px;
+}
+
+#header {
+	height: 73px;
+	background-repeat: no-repeat;
+	background-position: top left;
+	position: relative;
+}
+
+div#logo {
+	position: absolute;
+	top: 13px;
+	font-size: 10pt;
+	text-decoration: none;
+	color: #666;
+}
+
+div#logo span {
+	display: block;
+	font-size: 20pt;
+	color: #000;
+}
+
+#nav {
+	position: absolute;
+	background-color: #dedede;
+	width: 200px;
+	right: 0px;
+	height: 73px;
+}
+
+#nav ol {
+	margin: 0;
+	padding: 0;
+	margin-left: 32px;
+	margin-top: 7px;
+}
+
+#nav ol li {
+	font-size: 11pt;
+	color: #999;
+}
+
+#nav ol li.active {
+	font-weight: bold;
+	color: #000;
+}
+
+#footer {
+	color: #999;
+	font-size: 8pt;
+	border-top: 1px solid #f0f0f1;
+	padding-top: 10px;
+	margin-top: 15px;
+}
+
+h1 {
+	background-color: #d0f0f2;
+	color: #006b6e;
+	font-weight: bold;
+	padding: 10px;
+	margin-top: 10px;
+	font-weight: 15pt;
+}
+
+p.error {
+	color: #c0113a;
+}
+
+fieldset {
+	border: 0;
+	padding: 0;
+	margin-bottom: 10px;
+}
+
+legend, h2 {
+	font-weight: bold;
+	font-size: 12pt;
+	margin: 0;
+	padding: 0;
+	background-color: #fef4e0;
+	padding: 5px;
+	color: #b75813;
+	display: block;
+}
+
+form.form {
+	margin-left: 20px;
+}
+
+form ol {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+form label {
+	font-weight: bold;
+	display: block;
+	clear: both;
+}
+
+form li {
+	clear: both;
+	font-weight: normal;
+	list-style-type: none;
+	padding: 5px;
+}
+
+input.text {
+	width: 300px;
+}
+
+input.emptyfield {
+	color: #666;
+}
+
+div.submit {
+	padding: 5px;
+}
+
+#notices {
+}
+
+#notices div {
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	padding: 4px 15px 4px 15px;
+	text-align: center;
+	display: inline;
+	position: absolute;
+	left: 50%;
+	top: 5px;
+	margin-left: -200px;
+	width: 400px;
+	z-index: 1;
+}
+
+#notices div.error {
+	background-color: #b60000;
+	color: #fff;
+}
+
+#notices div.notice {
+	background-color: #52ad40;
+	color: #fff;
+}
+
+#first_name, #last_name {
+	width: 200px;
+}
+
+#postal_code {
+	width: 150px;
+}
+
+div.help {
+	color: #666;
+	font-size: 9pt;
+}

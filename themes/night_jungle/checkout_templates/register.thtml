@@ -1,0 +1,89 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Create an Account - {$smarty.block.parent}{/block}
+{block name="step_header"}Create an Account{/block}
+{block name="account_step"}class="active"{/block}
+{block name="checkout_content"}
+	{registration_form var="form" return=$return}
+		<p>Complete the fields below to create your account at {setting name="site_name"}.</p>
+		<form class="form validate" enctype="multipart/form-data" method="post" action="{$form.form_action}">
+			<input type="hidden" name="return" value="{$form.return}">
+			
+			<fieldset>
+				<legend>Access Information</legend>
+				<ul class="form">
+					<li>
+						<label for="username">Username</label>
+						<input type="text" class="text required" id="username" name="username" value="">
+					</li>
+					<li>
+						<label for="email">Email</label>
+						<input type="email" class="text required" id="email" name="email" value="{$email}" />
+					</li>
+					<li>
+						<div class="help">After registering, you will be able to login with either your username or your email.</div>
+					</li>
+					<li>
+						<label for="password">Password</label>
+						<input type="password" class="text required" id="password" name="password" />
+					</li>
+					<li>
+						<div class="help">Passwords must be greater than 6 characters in length.</div>
+					</li>
+					<li>
+						<label for="password2">Repeat Password</label>
+						<input type="password" class="text required" id="password2" name="password2" />
+					</li>
+				</ul>
+			</fieldset>
+			
+			<fieldset>
+				<legend>Profile Information</legend>
+				<ul class="form">
+					<li>
+						<label class="full" for="first_name">First Name</label>
+					</li>
+					<li>
+						<input type="text" class="text required" id="first_name" name="first_name" value="">
+					</li>
+					<li>
+						<label class="full" for="last_name">Last Name</label>
+					</li>
+					<li>
+						<input type="text" class="text required" id="last_name" name="last_name" value="">
+					</li>
+					{foreach $custom_fields as $field}
+					{if $field.type != 'checkbox'}
+						<li>
+							<label class="full" for="{$field.name}">{$field.friendly_name}</label>
+						</li>
+						<li>
+							{custom_field field=$field value=$values[$field.name]}
+						</li>
+					{else}
+						<li>
+							{custom_field field=$field value=$values[$field.name]} <label style="display: inline; float: none" for="field_{$field.name}">{$field.friendly_name}</label>
+						</li>
+					{/if}
+					{if $field.help}
+					<li>
+						<div class="help flush">{$field.help}</div>
+					</li>
+					{/if}
+					{/foreach}
+				</ul>
+			</fieldset>
+			
+			{if $setting.require_tos == "1"}
+			<fieldset>
+				<legend>Terms &amp; Conditions</legend>
+				<textarea style="width: 85%; height: 200px" class="text">{$setting.terms_of_service}</textarea>
+				<p>
+					<input type="checkbox" value="1" name="agree_tos" /> I agree to the terms and conditions above.
+				</p>
+			</fieldset>
+			{/if}
+			
+			<input type="submit" class="button" name="go" value="Create Account &amp; Continue with Checkout" />
+		</form>
+	{/registration_form}
+{/block}

@@ -1,0 +1,41 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	
+	<div id="search_form">
+	<form method="get" action="{url path="search"}" class="validate">
+	<input id="query" class="text mark_empty required" rel="search keyword(s)" name="q" value="{if $query}{$query}{/if}" />&nbsp;<input id="submit" class="button" type="submit" name="go" value="Search" />
+	</form>
+	</div>
+	
+	{if $searching == TRUE}
+		<div class="num_results">{$num_results} Results</div>
+		
+		{if $num_results == 0}
+			<p>Your search did not return any results.</p>
+		{else}
+			<ul class="search_results">
+			{foreach $results as $result}
+				{if $result.result_type == "content"}
+					<li>
+						<a href="{$result.url}">{$result.title}</a>{if $result.relevance != 0} <span class="relevance">relevance: {$result.relevance}</span>{/if}
+						{if $result.summary}<br /><p>{$result.summary}</p>{/if}
+					</li>
+				{elseif $result.result_type == "product"}
+					<li>
+						<a href="{$result.url}">{$result.name}</a> {setting name="currency_symbol"}<span class="price">{$result.price}</span> <span class="relevance">relevance: {$result.relevance}</span>
+						{if $result.summary}<br /><p>{$result.summary}</p>{/if}
+					</li>
+				{/if}
+			{/foreach}
+			</ul>
+			
+			{$pagination}
+		{/if}
+	{else}
+		<p>Enter your keyword(s) above to search {setting name="site_name"}.</p>
+	{/if}
+{/block}

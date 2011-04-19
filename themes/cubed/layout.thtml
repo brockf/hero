@@ -1,0 +1,96 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<base href="{url}" />
+<title>{block name="title"}{setting name="site_name"}{/block}</title>
+<link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{url path="themes/_common/jquery-1.4.2.min.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/universal.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
+{block name="head_includes"}
+{/block}
+</head>
+<body>
+<div id="notices"></div>
+
+<div class="container">
+	<div id="header">
+		<a href="{url}">
+			<img class="logo_mark" src="{theme_url path="images/logo.jpg"}" alt="{setting name="site_name"}" />
+		</a>
+	
+		<a class="logo" href="{url}">
+			{setting name="site_name"}
+			
+			<div class="slogan">
+				A demo membership website about business
+			</div>
+		</a>
+		
+		<div class="top_box account {if !$logged_in}logged_out{/if}">
+			{if $logged_in}
+				<h4>Welcome, {$member.first_name}</h4>
+				<ul>
+					<li><a href="{url path="users"}">Account Manager</a></li>
+					<li><a href="{url path="users/profile"}">Edit My Profile</a></li>
+					<li><a href="{url path="users/logout"}">Logout</a></li>
+				</ul>
+			{else}
+				<h4>My Account</h4>
+				{login_form var="login" return=$return}
+				    <form method="post" action="{$login.form_action}">
+				        <input type="hidden" name="return" value="{$login.return}">
+				     
+				        <input type="text" class="text mark_empty required" rel="Username" id="username" name="username" value="{$login.username}"><br />
+				        <input type="password" class="text mark_empty" rel="password" id="password" name="password" /><br />
+				        <input type="submit" class="button small" name="login" value="Login" />&nbsp;&nbsp;<a class="small_link" href="{url path="users/register"}">Register now</a>
+				        </ul>
+				    </form>
+				{/login_form}
+			{/if}
+		</div>
+
+		<div class="top_box search">
+			<h4>Site Search</h4>
+			<form method="get" action="{url path="search"}" class="validate">
+				<input type="text" class="text required mark_empty" rel="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
+			</form>
+			<a class="small_link" href="{url path="search"}">Advanced Search</a>
+		</div>
+		
+		<div class="top_box cart">
+			<h4>Shopping Cart</h3>
+			{has_cart}
+				<a href="{url path="store/cart"}">You have {cart_items} items in your shopping cart</a>
+			{/has_cart}
+			{no_cart}
+				<a href="{url path="store/cart"}">Your shopping cart is currently empty</a>
+			{/no_cart}
+		</div>
+	</div>
+	
+	<div id="navigation">
+		<div class="menu_items">
+			{menu name="main_menu" show_sub_menus="yes"}
+			<div style="clear:both"></div>
+		</div>
+	</div>
+	
+	<div id="content">
+		{block name="content"}No content has been sent to this block{/block}
+	</div>
+	
+	<div style="clear:both"></div>
+</div>
+
+<div class="container footer">
+	<img id="corner" src="{theme_url path="images/footer_corner.gif"}" alt="" />
+	
+	{menu name="footer_menu" class="menu" show_sub_menus="no"}
+	
+	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
+	{menu name="footer_menu_2" class="menu_2"}
+</div>
+</body>
+</html>

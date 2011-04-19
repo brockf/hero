@@ -1,0 +1,71 @@
+div.setting_group {
+	margin-bottom: 15px;
+}
+
+div.setting_group a.cat {
+	display: block;
+	color: #fff;
+	background-color: #222;
+	font-size: 14pt;
+	border-radius: 10px;
+	-moz-border-radius: 10px;
+	-webkit-border-radius: 10px;
+	padding: 8px 8px 8px 38px;
+	background-image: url(../images/bricks.png);
+	background-repeat: no-repeat;
+	background-position: 12px 7px;
+	text-decoration: none;
+}
+
+div.setting_group a.cat:hover {
+	background-color: #333;
+}
+
+table.settings {
+	width: 100%;
+	display: none;
+}
+
+table.settings tr.odd td {
+	background-color: #f0f0f1;
+}
+
+table.settings td {
+	padding: 10px;
+	border-bottom: 1px solid #dedede;
+}
+
+table.settings td.name {
+	width: 20%;
+	font-weight: bold;
+	padding-left: 38px;
+}
+
+table.settings td.help {
+	width: 30%;
+	color: #444;
+	font-style: italic;
+}
+
+table.settings td.value {
+	width: 40%;
+}
+
+table.settings td.edit {
+	width: 10%;
+	text-align: right;
+}
+
+table.settings td.edit a {
+	background-color: #05727a;
+	padding: 4px 10px;
+	border-radius: 4px;
+	-moz-border-radius: 4px;
+	-webkit-border-radius: 4px;
+	color: #fff;
+	text-decoration: none;
+}
+
+table.settings td.edit a:hover {
+	background-color: #000;
+}

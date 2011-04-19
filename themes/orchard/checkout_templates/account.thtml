@@ -1,0 +1,30 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Account - {$smarty.block.parent}{/block}
+{block name="step_header"}Login or Create an Account{/block}
+{block name="account_step"}class="active"{/block}
+{block name="checkout_content"}
+	<form class="form validate" method="post" action="{url path="checkout/post_account"}">
+	<fieldset>
+		<legend>Your Account</legend>
+		<ul class="form">
+			<li>
+				<label for="email">Your Email:</label>
+				<input type="text" class="text required" name="email" id="email" value="{$email}" />
+			</li>
+			<li class="indent">
+				<input type="radio" name="type" value="new_account" id="new_account" {if $email == ""}checked="checked"{/if} />&nbsp;<label for="new_account">I don't have an account at {setting name="site_name"}</label>
+			</li>
+			<li class="indent">
+				<input type="radio" name="type" value="existing_account" id="existing_account" {if $email != ""}checked="checked"{/if} />&nbsp;<label for="existing_account">I already have an account and my password is:</label>
+				<input type="password" class="text" name="password" style="margin-left: 30px;margin-top: 7px" />
+			</li>
+			<li class="indent">
+				<input type="submit" class="button" name="continue" value="Continue with Checkout" />
+			</li>
+			<li class="indent">
+				<a href="{url path="users/forgot_password"}">Forgotten your password?</a>
+			</li>
+		</ul>
+	</fieldset>
+	</form>
+{/block}

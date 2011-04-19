@@ -1,0 +1,59 @@
+{extends file="layout.thtml"}
+{block name="content"}
+	<p class="intro">Welcome to <b>{$setting.site_name}</b>!  Subscribe today for access to the best (fake) business resources!</p>
+	
+	<div class="frontpage_features">
+		<ul>
+			<li>
+				<div class="image">
+					<img src="{theme_url path="images/placeholders/front_content.png"}" alt="" /></a>
+				</div>
+				<div class="text">
+					<p>Award winning content.</p>
+				</div>
+			</li>
+			<li>
+				<div class="image">
+					<img src="{theme_url path="images/placeholders/front_money.png"}" alt="" /></a>
+				</div>
+				<div class="text">
+					<p>Tips to increase revenue.</p>
+				</div>
+			</li>
+			<li>
+				<div class="image">
+					<img src="{theme_url path="images/placeholders/front_lock.png"}" alt="" /></a>
+				</div>
+				<div class="text">
+					<p>Exclusively for paid subscribers.</p>
+				</div>
+			</li>
+			<li>
+				<div class="image">
+					<img src="{theme_url path="images/placeholders/front_talk.png"}" alt="" /></a>
+				</div>
+				<div class="text">
+					<p>The best op-ed pieces.</p>
+				</div>
+			</li>
+		</ul>
+		<div style="clear:both"></div>
+		
+		<a class="frontpage_subscribe" href="{url path="subscriptions"}">Subscribe Now!</a>
+	</div>
+	<div class="frontpage_blog">
+		<h2>Site News</h2>
+		
+		<ul>
+		{content var="item" type="news" limit="5" sort_dir="DESC" sort="content.content_date"}
+			<li>
+				<a class="title" href="{$item.url}">{$item.title}</a>
+				<h4 class="date">{$item.date|date_format:"%b %e"}<br />{$item.date|date_format:"%Y"}</h4>
+				{$item.summary}
+			</li>
+		{/content}
+		</ul>
+	</div>
+	
+	<div style="clear:both"></div>
+{/block}

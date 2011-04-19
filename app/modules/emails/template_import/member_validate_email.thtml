@@ -1,0 +1,12 @@
+{extends file="email_layout.thtml"}
+		
+{block name="body"}
+<p>Hi {$member.first_name},</p>
+
+<p>Before your account is fully activated, you must validate your email address.  You only have to do this once so that we know that we have your proper email address linked to your account.</p>
+
+<p>To validate your email and activate your account, please go to:</p>
+
+{$validation_link}
+
+{/block}

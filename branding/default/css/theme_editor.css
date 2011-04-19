@@ -1,0 +1,135 @@
+div#file_list_options {
+	background-color: #ccc;
+	padding: 6px;
+	text-align: center;
+}
+
+div#file_list {
+	font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+	font-size: 1.05em;
+	padding-left: 20px;
+}
+
+div#file_list ul {
+	margin: 0 0 0 25px;
+	padding: 0;
+}
+
+div#file_list a {
+	color: #222;
+	text-decoration: none;
+	position: relative;
+	bottom: 2px;
+}
+
+div#file_list a:hover {
+	color: #000;
+	text-decoration: underline;
+}
+
+div#file_list a.folder_link {
+	font-weight: bold;
+}
+
+div#file_list li.folder {
+	list-style-image: url(../images/folder.png);
+}
+
+div#file_list li.file {
+	list-style-image: url(../images/file.png);
+	color: #777;
+}
+
+div#file_list li.editable {
+	color: #222;
+}
+
+div#file_list li.image {
+	list-style-image: url(../images/image.png);
+}
+
+div#file_list li.css {
+	list-style-image: url(../images/css.png);
+}
+
+div#file_list li.template {
+	list-style-image: url(../images/template.png);
+}
+
+div#file_list li.home {
+	list-style-image: url(../images/home.png) !important;
+}
+
+div#file_list li.php, div#file_list li.javascript {
+	list-style-image: url(../images/php.png);
+}
+
+div#editor_head {
+	background-color: #dedede;
+	padding: 1%;
+	width: 98%;
+}
+
+div#options {
+	float: left;
+	width: 50%;
+	text-align: right;
+}
+
+div#filename {
+	float: left;
+	width: 50%;
+}
+
+div#filename input {
+	width: 100%;
+}
+
+div#theme_editor {
+	display: none;
+	border: 3px solid #ccc;
+}
+
+textarea#editor_body {
+	width: 99%;
+	height: 580px;
+	font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace;
+	font-size: 1em;
+	margin: 0 0 0 1%;
+	overflow: scroll;
+	white-space: pre;
+	border: 0;
+}
+
+div#success_note {
+	background-color: #5ca131;
+	color: #fff;
+	font-weight: bold;
+	padding: 2%;
+	width: 96%;
+	display: none;
+}
+
+div#not_writable {
+	background-color: #c40000;
+	color: #fff;
+	font-weight: bold;
+	padding: 2%;
+	width: 96%;
+	display: none;
+}
+
+div#editor_loading {
+	background-color: #666;
+	text-align: center;
+	padding: 2%;
+	width: 96%;
+	display: none;
+}
+
+div#set_frontpage_help {
+	display: none;
+	text-align: center;
+	font-weight: bold;
+	padding: 10px;
+}

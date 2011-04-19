@@ -1,0 +1,31 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$content.title} - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>{$content.title}</h1>
+	
+	{if $content.summary}
+		{$content.summary}
+	{/if}
+	
+	<div class="paywall">
+		<h2>You do not have permission to access this content.</h2>
+		<p>This content is restricted for <b>subscribers only</b>.</p>
+		<p><b>Not a subscriber?</b>  <a href="{url path="subscriptions"}">Click here to subscribe</a>.</p>
+		{if !$logged_in}
+			<p><b>Already a subscriber?</b> Login Below.</p>
+			{login_form var="login" return=$content.url_path}
+			    <form method="post" action="{$login.form_action}">
+			        <input type="hidden" name="return" value="{$login.return}">
+			     
+			        <input type="text" id="username" class="text mark_empty" rel="Username" name="username" value="{$login.username}">
+			        <input type="password" class="text mark_empty" rel="password" id="password" name="password" />
+			        <input type="submit" name="login" value="Login" />
+			    </form>
+			{/login_form}
+		{else}
+			<p>You are currently logged in as {$member.username} ({$member.email}).</p>
+		{/if}
+	</div>
+{/block}
