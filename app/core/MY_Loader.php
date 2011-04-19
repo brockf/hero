@@ -4,6 +4,41 @@
 require APPPATH."third_party/MX/Loader.php";
 
 class MY_Loader extends MX_Loader {
+	/**
+	* Customized loader methods, which will use define_module
+	* to load the module definition file if necessary.
+	*/
+	function helper ($helper) {
+		if (!is_array($helper)) {
+			self::define_module($helper);
+		}	
+		
+		return parent::helper($helper);
+	}
+	
+	function library ($library, $params = NULL, $object_name = NULL) {
+		if (!is_array($library)) {
+			self::define_module($library);
+		}	
+		
+		return parent::library($library, $params, $object_name);
+	}
+	
+	function model ($model, $object_name = NULL, $connect = FALSE) {
+		if (!is_array($model)) {
+			self::define_module($model);
+		}	
+		
+		return parent::model($model, $object_name, $connect);
+	}
+	
+	function plugin ($plugin) {
+		if (!is_array($plugin)) {
+			self::define_module($plugin);
+		}	
+		
+		return parent::plugin($plugin);
+	}
 
 	/*
 	* Define Module
