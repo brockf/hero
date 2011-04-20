@@ -227,6 +227,11 @@ class Admincp extends Admincp_Controller {
 						 
 			redirect('admincp/forms/fields/' . $result->row()->form_id);
 		}
+		elseif ($this->session->userdata('customfield_add_redirect')) {
+			// added this little trick so that other modules can tap into this
+			// method without being a part of this if/else flow
+			redirect($this->session->userdata('customfield_add_redirect'));
+		}
 		
 		return TRUE;
 	}
