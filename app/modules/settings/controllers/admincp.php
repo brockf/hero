@@ -54,7 +54,6 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		echo $value;
-		die();
 	}
 	
 	function save_toggle ()
