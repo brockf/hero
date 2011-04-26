@@ -266,7 +266,7 @@ class Blog_model extends CI_Model
 			$this->db->where_in('topic_id', $blog['filter_topics']);
 		}
 		
-		$this->db->join('topic_maps','topic_maps.content_id = content.content_id');
+		$this->db->join('topic_maps','topic_maps.content_id = content.content_id', 'left');
 		$this->db->group_by('content.content_id');
 		
 		$result = $this->db->get('content');
@@ -281,7 +281,7 @@ class Blog_model extends CI_Model
 		$this->pagination->initialize($config);
 		
 		$links = $this->pagination->create_links();
-		
+
 		// we may have cases of ?& because of CodeIgniter thinking we have universally enabled query strings
 		$links = str_replace('?&amp;','?', $links);
 		

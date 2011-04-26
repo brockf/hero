@@ -17,7 +17,7 @@
 *
 */
 
-function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
+function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) { 
 	if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
 		show_error('You must specify a "type" parameter for template {content} calls if you are not specifying an "id" parameter.');
 	}
@@ -80,7 +80,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 		}
 		
 		// param: limit
-		if (isset($params['limit']) and !empty($params['limit'])) {
+		if (isset($params['limit']) and !empty($params['limit'])) { 
 			$filters['limit'] = $params['limit'];
 		}
 		
