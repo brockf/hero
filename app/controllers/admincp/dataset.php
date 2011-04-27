@@ -9,7 +9,7 @@
 * @package Electric Framework
 
 */
-class Dataset extends Controller {
+class Dataset extends CI_Controller {
 
 	function __construct()
 	{
