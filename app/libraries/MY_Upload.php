@@ -6,7 +6,7 @@
 
 class MY_Upload extends CI_Upload {
 	function __construct ($config = array()) {
-		parent::CI_Upload($config);
+		parent::__construct($config);
 	}
 
 	/**
