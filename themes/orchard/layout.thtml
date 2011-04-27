@@ -56,7 +56,7 @@
 			<h3>Latest News</h3>
 			
 			<ul class="news">
-				{content var="news" type="news" limit="5"}
+				{content var="news" type="news" limit="5" sort="content.content_date" sort_dir="desc"}
 				<li>
 					<span class="date">{$news.date|date_format: "%B %e, %Y"}</span>
 					<a href="{$news.url}">{$news.title}</a>

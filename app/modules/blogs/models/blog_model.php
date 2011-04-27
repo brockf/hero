@@ -203,7 +203,8 @@ class Blog_model extends CI_Model
 		}
 		
 		if (!empty($page)) {
-			$filters['offset'] = ($blog['per_page'] * $page);
+			$filters['offset'] = (int)$page;
+			$filters['offset'] = ($filters['offset'] < 0) ? 0 : $filters['offset'];
 		}
 		
 		$filters['limit'] = $blog['per_page'];
