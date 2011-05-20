@@ -119,7 +119,7 @@ class Admincp extends Admincp_Controller {
 			// Create the users
 			
 			// we may need to generate a password
-			$this->load->helper('random_string');
+			$this->load->helper('string');
 			
 			foreach ($imports as $row)
 			{

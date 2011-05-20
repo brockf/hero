@@ -14,7 +14,7 @@
 		<table class="dataset" cellpadding="0" cellspacing="0">
 			<?php foreach ($error_users as $user) :?>
 			<tr>
-				<td style="font-weight: bold; color: red"
+				<td style="font-weight: bold; color: red">
 				<?
 					if ($user['error'] == 'missing_info') {
 						echo 'Missing required info';
