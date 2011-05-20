@@ -32,6 +32,10 @@ class Paywall_module extends Module {
 		$this->CI->admin_navigation->child_link('configuration',36,'Paywall',site_url('admincp/paywall'));
 	}
 	
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/paywall/template_plugins/');
+	}
+	
 	/*
 	* Module update
 	*
