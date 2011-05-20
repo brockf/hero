@@ -51,7 +51,7 @@ class Admincp extends Admincp_Controller {
 					// encrypt it and save it to /writable.
 					$content = $this->encrypt->encode($content);
 					
-					write_file('./writeable/csv_upload.csv', $content, 'w+');
+					write_file($this->config->item('path_writeable') . 'csv_upload.csv', $content, 'w+');
 					return redirect(site_url('admincp/import/fields'));
 				}
 			}
@@ -153,7 +153,7 @@ class Admincp extends Admincp_Controller {
 		}
 	
 		// Delete the import file
-		unlink(FCPATH .'writeable/csv_upload.csv');
+		unlink($this->config->item('path_writeable') . 'csv_upload.csv');
 	
 		$data['error_users']	= $error_users;
 		$data['total_imports']	= $total_imports;
