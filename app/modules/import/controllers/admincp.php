@@ -40,15 +40,20 @@ class Admincp extends Admincp_Controller {
 		{
 			if (isset($_FILES['userfile']) && isset($_FILES['userfile']['tmp_name']) && is_uploaded_file($_FILES['userfile']['tmp_name']))
 			{ 
-				$this->load->library('Encrypt');
+				$this->load->library('encrypt');
 				$this->load->helper('file');
 				
-				// Read the file in, encrypt it and save it to /writable.
+				// Read the file in
 				$content = read_file($_FILES['userfile']['tmp_name']);
-				$content = $this->encrypt->encode($content);
 				
-				write_file('./writeable/csv_upload.csv', $content, 'w+');
-				redirect(site_url('admincp/import/fields'));
+				// is this a CSV file?
+				if (strpos($content, ',') !== FALSE) {				
+					// encrypt it and save it to /writable.
+					$content = $this->encrypt->encode($content);
+					
+					write_file('./writeable/csv_upload.csv', $content, 'w+');
+					return redirect(site_url('admincp/import/fields'));
+				}
 			}
 		}
 		
@@ -96,17 +101,14 @@ class Admincp extends Admincp_Controller {
 			$records = $this->read_csv_file();
 
 			// Map each of our fields for importing.
-			foreach ($records as $record)
-			{
+			foreach ($records as $record) {
 				// Split into each field
 				$row_fields = explode(',', $record);
 				$new_record = array();
 
 				$count = count($row_fields);
-				for ($i=0; $i < $count; $i++)
-				{ 
-					if (!empty($_POST['db_field'][$i]))
-					{
+				for ($i=0; $i < $count; $i++) { 
+					if (!empty($_POST['db_field'][$i])) {
 						$new_record[$_POST['db_field'][$i]] = $row_fields[$i];  
 					}
 				}
@@ -114,7 +116,11 @@ class Admincp extends Admincp_Controller {
 				$imports[] = $new_record;
 			}
 			
-			// Create the users.
+			// Create the users
+			
+			// we may need to generate a password
+			$this->load->helper('random_string');
+			
 			foreach ($imports as $row)
 			{
 				$email = isset($row['user_email']) ? $row['user_email'] : '';
@@ -122,17 +128,26 @@ class Admincp extends Admincp_Controller {
 				$last_name = isset($row['user_last_name']) ? $row['user_last_name'] : '';
 				$password = isset($row['user_password']) ? $row['user_password'] : '';
 				$username = isset($row['user_username']) ? $row['user_username'] : '';
+				
+				// populate username from email if empty
+				if (empty($username) and !empty($email)) {
+					$username = $email;
+				}
+				
+				// generate password if empty
+				if (empty($password)) {
+					$password = random_string('alnum', 8);
+				}
 
+				// create custom fields array
 				$custom_fields = $row;
+				// remove standard form elements from the custom fields array
 				unset($custom_fields['user_email'], $custom_fields['user_first_name'], $custom_fields['user_last_name'], $custom_fields['user_password'], $custom_fields['user_username']);
 			
-				if (empty($email) || empty($first_name) || empty($last_name) || 
-					$this->user_model->new_user($email, $password, $username, $first_name, $last_name, false, false, false, $custom_fields) === false)
-				{
+				if (empty($email) || empty($first_name) || empty($last_name) || $this->user_model->new_user($email, $password, $username, $first_name, $last_name, false, false, false, $custom_fields) === false) {
 					$error_users[] = $row;
-				} else
-				{
-					++$total_imports;
+				} else {
+					$total_imports++;
 				}
 			}
 		}
