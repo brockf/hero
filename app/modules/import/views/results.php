@@ -14,7 +14,23 @@
 		<table class="dataset" cellpadding="0" cellspacing="0">
 			<?php foreach ($error_users as $user) :?>
 			<tr>
-				<?php foreach ($user as $value) :?>
+				<td style="font-weight: bold; color: red"
+				<?
+					if ($user['error'] == 'missing_info') {
+						echo 'Missing required info';
+					}
+					elseif ($user['error'] == 'duplicate_username') {
+						echo 'Username already taken';
+					}
+					elseif ($user['error'] == 'duplicate_email') {
+						echo 'Email already taken';
+					}
+					else {
+						echo 'General error';
+					}
+				?>
+				</td>
+				<?php foreach ($user['data'] as $value) :?>
 				<td><?php echo $value ?></td>
 				<?php endforeach; ?>
 			</tr>

@@ -18,14 +18,14 @@
 		<tr>
 		<?php $count = count( explode(',', $csv_data[0]) );	?>
 		<?php for ($i=0; $i < $count; $i++) :?>
-			<th>
+			<td>
 				<select name="db_field[]">
 					<option value="">-----</option>
 				<?php foreach ($fields as $name => $display_name) : ?>
 					<option value="<?php echo $name ?>"><?php echo $display_name ?></option>
 				<?php endforeach; ?>
 				</select>
-			</th>
+			</td>
 		<?php endfor; ?>
 		</tr>
 		</thead>

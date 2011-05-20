@@ -144,8 +144,14 @@ class Admincp extends Admincp_Controller {
 				// remove standard form elements from the custom fields array
 				unset($custom_fields['user_email'], $custom_fields['user_first_name'], $custom_fields['user_last_name'], $custom_fields['user_password'], $custom_fields['user_username']);
 			
-				if (empty($email) || empty($first_name) || empty($last_name) || $this->user_model->new_user($email, $password, $username, $first_name, $last_name, false, false, false, $custom_fields) === false) {
-					$error_users[] = $row;
+				if (empty($email) || empty($first_name) || empty($last_name)) {
+					$error_users[] = array('error' => 'missing_info', 'data' => $row);
+				} elseif (!$this->user_model->unique_email($email)) {
+					$error_users[] = array('error' => 'duplicate_email', 'data' => $row);
+				} elseif (!$this->user_model->unique_username($username)) {
+					$error_users[] = array('error' => 'duplicate_username', 'data' => $row);
+				} elseif ($this->user_model->new_user($email, $password, $username, $first_name, $last_name, false, false, false, $custom_fields) === false) {
+					$error_users[] = array('error' => 'miscellaneous', 'data' => $row);
 				} else {
 					$total_imports++;
 				}
@@ -170,7 +176,7 @@ class Admincp extends Admincp_Controller {
 	
 		if ($content = read_file('writeable/csv_upload.csv'))
 		{
-			$this->head_assets->stylesheet('css/importer.css');
+			$this->head_assets->stylesheet('css/dataset.css');
 			$this->load->library('Encrypt');
 			
 			$content = explode("\n", $this->encrypt->decode($content));
