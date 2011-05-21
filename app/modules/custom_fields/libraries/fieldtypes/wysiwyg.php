@@ -76,6 +76,7 @@ class Wysiwyg_Fieldtype extends Fieldtype {
 						'type' => 'textarea',
 						'name' => $this->name,
 						'style' => 'width: ' . $this->width . '; height: ' . $this->data['height'],
+						'id' => $this->name,
 						'class' => implode(' ', $this->field_classes)
 						);
 		

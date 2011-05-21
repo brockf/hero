@@ -455,6 +455,12 @@ class Admincp extends Admincp_Controller {
 			$title = new Admin_form;
 			$title->fieldset('Standard Page Elements');
 			$title->text('Title','title',$content['title'],FALSE,TRUE,FALSE,TRUE);
+			
+			// if we are using the base_url in the current URL, chances are we want to keep it for future URL's
+			if (strpos($content['url_path'], $type['base_url']) === 0) {
+				$title->hidden('base_url',$type['base_url']);
+			}
+			
 			$title->text('URL Path','url_path',$content['url_path'],'If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
 			
 			// we will build the rest of the sidebar form with form_builder because we want to use it's cool
