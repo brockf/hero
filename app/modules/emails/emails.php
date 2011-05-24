@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.08';
+	var $version = '1.09';
 	var $name = 'emails';
 
 	function __construct () {
@@ -113,6 +113,11 @@ class Emails extends Module {
 								  `email_template_is_html` tinyint(1) NOT NULL,
 								  PRIMARY KEY  (`email_template_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+		}
+		
+		if ($db_version < 1.09) {
+			$this->CI->app_hooks->register('mass_email_pre','Just before a control panel mass email is sent.');
+			$this->CI->app_hooks->register('mass_email','All emails have been sent in a control panel mass email.');
 		}
 		
 		return $this->version;

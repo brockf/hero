@@ -96,15 +96,14 @@ class Admincp extends Admincp_Controller {
 		
 		// send, but not to duplicates
 		// initialize email
-		$CI =& get_instance();
-		$CI->load->library('email');
+		$this->load->library('email');
 		
 		$settings = array();
 		if ($is_html === TRUE) {
 			$settings['mailtype'] = 'html';
 		}
 		
-		$CI->email->initialize($settings);
+		$this->email->initialize($settings);
 		
 		// track duplicates
 		$sent = array();
@@ -123,14 +122,18 @@ class Admincp extends Admincp_Controller {
 			$body = str_ireplace($search, $replace, $this->input->post('body'));
 		
 			// send full email
-			$CI->email->from(setting('site_email'), setting('site_name'));
-			$CI->email->to($recipient['email']);
+			$this->email->from(setting('site_email'), setting('site_name'));
+			$this->email->to($recipient['email']);
 			
-			$CI->email->subject($subject);
-			$CI->email->message($body);
+			$this->email->subject($subject);
+			$this->email->message($body);
 			
-			$CI->email->send($queue_mail);
-			$CI->email->clear();
+			// app hook
+			$this->app_hooks->trigger('mass_email_pre', $recipient, $this->input->post('subject'), $this->input->post('body'), $queue_mail);
+			$this->app_hooks->reset();
+			
+			$this->email->send($queue_mail);
+			$this->email->clear();
 			
 			$sent[] = $recipient['email'];
 		}
