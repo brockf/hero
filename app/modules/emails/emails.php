@@ -116,6 +116,8 @@ class Emails extends Module {
 		}
 		
 		if ($db_version < 1.09) {
+			$this->CI->load->library('app_hooks');
+			
 			$this->CI->app_hooks->register('mass_email_pre','Just before a control panel mass email is sent.');
 			$this->CI->app_hooks->register('mass_email','All emails have been sent in a control panel mass email.');
 		}
