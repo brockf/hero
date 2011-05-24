@@ -16,6 +16,10 @@
 			</div>
 		</li>
 		{/collections}
+		
+		{products var="product" collection="4"}
+			{$product.name}<br />
+		{/products}
 	</ul>
 	<div style="clear:both"></div>
 {/block}

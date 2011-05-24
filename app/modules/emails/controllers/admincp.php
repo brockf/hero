@@ -141,6 +141,10 @@ class Admincp extends Admincp_Controller {
 			$this->email_template_model->new_template($this->input->post('new_template_name'), $this->input->post('subject'), $this->input->post('body'), $is_html);
 		}
 		
+		// app hook
+		$this->app_hooks->trigger('mass_email', $recipients, $this->input->post('subject'), $this->input->post('body'), $queue_mail);
+		$this->app_hooks->reset();
+		
 		$this->notices->SetNotice('Email sent successfully to ' . count($sent) . ' members.');
 		
 		return redirect('admincp/emails/send');
