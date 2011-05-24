@@ -33,9 +33,36 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('emails/email_template_model');
 		$templates = $this->email_template_model->get_templates();
 		
+		// have we been passed users to pre-populate this method with?
+		$passed_users = array();
+		
+		$users = $this->session->flashdata('email_users');
+		if (!empty($users)) {
+			foreach ($users as $user) {
+				$result = $this->db->select('user_email')
+								   ->select('user_first_name')
+								   ->select('user_last_name')
+								   ->select('user_id')
+								   ->from('users')
+								   ->where('user_id',$user)
+								   ->get();
+								   
+				if ($result->num_rows() > 0) {
+					$user = $result->row_array();
+				
+					$passed_users[] = array(
+									'name' => $user['user_last_name'] . ', ' . $user['user_first_name'],
+									'email' => $user['user_email'],
+									'id' => $user['user_id']
+									);
+				}								   
+			}
+		}
+		
 		$data = array(
 					'usergroups' => $usergroups,
-					'templates' => $templates
+					'templates' => $templates,
+					'passed_users' => $passed_users
 					);
 	
 		$this->load->view('send', $data);

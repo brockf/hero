@@ -69,6 +69,7 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->initialize_pagination();
 
 		// add actions
+		$this->dataset->action('Send Email','admincp/users/send_email');
 		$this->dataset->action('Suspend','admincp/users/suspend');
 		$this->dataset->action('Unsuspend','admincp/users/unsuspend');
 		$this->dataset->action('Delete','admincp/users/delete');
@@ -226,6 +227,20 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		redirect($_SERVER['HTTP_REFERER']);
+	}
+	
+	function send_email ($users, $return_url) {
+		$this->load->library('asciihex');
+		
+		$users = unserialize(base64_decode($this->asciihex->HexToAscii($users)));
+		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
+		
+		// we just need to encode this array of user_id's, and then send to the
+		// send_email function where it will do the rest of the work
+		
+		$this->session->set_flashdata('email_users',$users);
+				
+		return redirect('admincp/emails/send');
 	}
 	
 	function delete ($users, $return_url) {

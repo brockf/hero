@@ -38,8 +38,16 @@
 			</li>
 			<li>
 				<ul class="final_recipients">
-					<li class="empty">No recipients, yet.  Select your recipients in the dialog to the left (or enter an email below).</li>
 					<li>Add Recipient Email: <input type="text" placeholder="email@example.com" name="email_address" value="" /> <input type="submit" id="add_email" name="" value="Add" /></li>
+					
+					<? if (!empty($passed_users)) { ?>
+						<li class="empty" style="display:none">No recipients, yet.  Select your recipients in the dialog to the left (or enter an email below).</li>
+						<? foreach ($passed_users as $user) { ?>
+							<li>Member: <?=$user['name'];?> (<?=$user['email'];?>) (<a rel="<?=$user['name'];?> (<?=$user['email'];?>)" href="#" class="remove member">remove</a>) <input type="hidden" name="recipient_members[]" value="<?=$user['id'];?>" /></li>
+						<? } ?>
+					<? } else { ?>
+						<li class="empty">No recipients, yet.  Select your recipients in the dialog to the left (or enter an email below).</li>	
+					<? } ?>
 				</ul>
 			</li>
 		
