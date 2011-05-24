@@ -457,7 +457,7 @@ class Admincp extends Admincp_Controller {
 			$title->text('Title','title',$content['title'],FALSE,TRUE,FALSE,TRUE);
 			
 			// if we are using the base_url in the current URL, chances are we want to keep it for future URL's
-			if (strpos($content['url_path'], $type['base_url']) === 0) {
+			if (isset($type['base_url']) and !empty($type['base_url']) and strpos($content['url_path'], $type['base_url']) === 0) {
 				$title->hidden('base_url',$type['base_url']);
 			}
 			
