@@ -1,6 +1,10 @@
 <?php
 
 function smarty_outputfilter_user_activity ($output, &$smarty) {
+	if ($smarty->CI->config->item('simultaneous_login_prevention') == '0') {
+		return $output;
+	}
+
 	$url = site_url('users/user_activity');
 
 	$code = '

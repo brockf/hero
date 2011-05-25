@@ -146,14 +146,16 @@ class User_model extends CI_Model
 			$user = $query->row_array();
 			$user = $this->get_user($user['user_id']);
 			
-			// let's make sure someone isn't logged into the account right now
-			$this->db->where('user_id',$user['id']);
-			$this->db->where('user_activity_date >',date('Y-m-d H:i:s', time() - 60));
-			$result = $this->db->get('user_activity');
-			if ($result->num_rows() > 0) {
-				$this->failed_due_to_duplicate_login = TRUE;
-				
-				return FALSE;
+			if ($this->config->item('simultaneous_login_prevention') == '1') {
+				// let's make sure someone isn't logged into the account right now
+				$this->db->where('user_id',$user['id']);
+				$this->db->where('user_activity_date >',date('Y-m-d H:i:s', time() - 60));
+				$result = $this->db->get('user_activity');
+				if ($result->num_rows() > 0) {
+					$this->failed_due_to_duplicate_login = TRUE;
+					
+					return FALSE;
+				}
 			}
 			
 			// let's make sure they are activated if it's been more than 1 day
