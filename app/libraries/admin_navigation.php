@@ -75,6 +75,26 @@ class Admin_navigation {
 	}
 	
 	/**
+	* Delete Child
+	*
+	* Delete a child link from the navigation.  Useful to override an existing navigation link.
+	*
+	* @param string $name
+	*
+	* @return boolean
+	*/
+	function delete_child ($name) {
+		foreach ($this->items as $key => $item) {
+			if ($item['name'] == $name) {
+				unset($this->items[$key]);
+				return TRUE;
+			}
+		}
+		
+		return FALSE;
+	}
+	
+	/**
 	* Get Module Links
 	*
 	* @return string HTML 
