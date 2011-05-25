@@ -165,7 +165,10 @@ class Admin_navigation {
 								
 				$return .= '<ul class="children"' . $display . '>';
 				foreach ($this->navigation[$parent_id] as $child_weight => $child_id) {
-					$return .= '<li><a rel="' . $child_weight . '" href="' . $this->items[$child_id]['link'] . '">' . $this->items[$child_id]['name'] . '</a></li>';
+					// this conditional protects us against child links which were post-humously deleted
+					if (isset($this->items[$child_id]['link'])) {
+						$return .= '<li><a rel="' . $child_weight . '" href="' . $this->items[$child_id]['link'] . '">' . $this->items[$child_id]['name'] . '</a></li>';
+					}
 				}
 				
 				$return .= '</ul>';
