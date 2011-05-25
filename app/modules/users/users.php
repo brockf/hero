@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.12';
+	var $version = '1.13';
 	var $name = 'users';
 
 	function __construct () {
@@ -178,8 +178,9 @@ class Users_module extends Module {
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
 		
-		if ($db_version < 1.12) {
-			$this->CI->settings_model->new_setting(3, 'simultaneous_login_prevention', '0', 'Prevent two users from logging in with the same account credentials at the same time.', 'toggle', 'a:2:{i:0;s:2:"Off";i:1;s:3:"On";}');
+		if ($db_version < 1.13) {
+			$this->CI->settings_model->delete_setting('simultaneous_login_prevention');
+			$this->CI->settings_model->new_setting(3, 'simultaneous_login_prevention', '0', 'Prevent two users from logging in with the same account credentials at the same time.', 'toggle', 'a:2:{i:0;s:3:"Off";i:1;s:2:"On";}');
 		}
 		
 		// return current version
