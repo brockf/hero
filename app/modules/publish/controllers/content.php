@@ -30,8 +30,14 @@ class Content extends Front_Controller {
 			return show_404($url_path);
 		}
 		
-		// administrators don't have to wait to see content
-		$allow_future = ($this->user_model->logged_in() and $this->user_model->is_admin()) ? TRUE : FALSE;
+		// administrators used to not have to wait to see content, but that's not good enough anymore
+		// because (a) it's confusing and (b) they are not auto-logged-in to the frontend even though
+		// they are logged into the control panel
+		//
+		// so now we have the ?preview=[key] appendage to the URL which activates "preview mode"
+		$this->load->library('encrypt');
+		$preview_key = $this->encrypt->encode($url_path);
+		$allow_future = ($this->input->get('preview') == $preview_key) ? TRUE : FALSE;
 		
 		$content = $this->content_model->get_content($content_id, $allow_future);
 		
