@@ -109,7 +109,7 @@ class Admincp extends Admincp_Controller {
 				$count = count($row_fields);
 				for ($i=0; $i < $count; $i++) { 
 					if (!empty($_POST['db_field'][$i])) {
-						$new_record[$_POST['db_field'][$i]] = $row_fields[$i];  
+						$new_record[$_POST['db_field'][$i]] = trim($row_fields[$i]);  
 					}
 				}
 				
