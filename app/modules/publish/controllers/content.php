@@ -35,15 +35,28 @@ class Content extends Front_Controller {
 		// they are logged into the control panel
 		//
 		// so now we have the ?preview=[key] appendage to the URL which activates "preview mode"
-		$this->load->library('encrypt');
-		$preview_key = $this->encrypt->encode($url_path);
-		$allow_future = ($this->input->get('preview') == $preview_key) ? TRUE : FALSE;
+		$preview_mode = FALSE;
+		if ($this->input->get('preview')) {
+			$this->load->library('encrypt');
+			$preview_key = $this->encrypt->decode(base64_decode($this->input->get('preview')));
+			
+			if ($preview_key == $url_path) {
+				$preview_mode = TRUE;
+			}
+		}
+		
+		$allow_future = ($preview_mode == TRUE) ? TRUE : FALSE;
 		
 		$content = $this->content_model->get_content($content_id, $allow_future);
 		
 		// does this content exist?
 		if (empty($content)) {
-			return show_404($url_path);
+			if ($this->input->get('preview')) {
+				return show_error('Your preview key cannot be validated, and so we are showing the standard 404 page.');
+			}
+			else {
+				return show_404($url_path);
+			}
 		}
 		
 		// do they have permissions to see content?
