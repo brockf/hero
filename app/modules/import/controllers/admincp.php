@@ -80,7 +80,7 @@ class Admincp extends Admincp_Controller {
 			'fields' => $this->fields
 		);
 	
-		$data['csv_data'] = $this->read_csv_file();
+		$data['csv_data'] = $this->read_csv_file(5);
 		
 		$this->load->view('fields', $data);
 	}
@@ -169,7 +169,7 @@ class Admincp extends Admincp_Controller {
 	
 	//--------------------------------------------------------------------
 	
-	private function read_csv_file() 
+	private function read_csv_file($limit=0) 
 	{
 		$this->load->helper('file');
 		$return = false;
@@ -180,7 +180,17 @@ class Admincp extends Admincp_Controller {
 			$this->load->library('Encrypt');
 			
 			$content = explode("\n", $this->encrypt->decode($content));
-			$return = array_slice($content, 0, 5);
+			
+			if ($limit > 0)
+			{
+				// Return a slice.
+				$return = array_slice($content, 0, $limit);
+			}
+			else
+			{
+				// Return all of the results.
+				$return = $content;
+			}
 		}
 		
 		return $return;
