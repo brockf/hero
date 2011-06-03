@@ -15,7 +15,7 @@ $CI->load->model('custom_fields_model');
 $CI->load->library('custom_fields/fieldtype'); // hack that triggers update to the custom_fields module
 $CI->custom_fields_model->new_custom_field($type_news['custom_field_group_id'], 'Summary', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_news['system_name']);
 $CI->custom_fields_model->new_custom_field($type_news['custom_field_group_id'], 'Body', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_news['system_name']);
-$CI->custom_fields_model->new_custom_field($type_pages['custom_field_group_id'], 'Body', 'textarea', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_pages['system_name']);
+$CI->custom_fields_model->new_custom_field($type_pages['custom_field_group_id'], 'Body', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_pages['system_name']);
 
 // configure search with content types
 $CI->settings_model->update_setting('search_content_types', 'a:2:{i:' . $type_news['id'] . ';s:7:"summary";i:' . $type_pages['id'] . ';s:1:"0";}');
