@@ -201,7 +201,7 @@ class File_upload_fieldtype extends Fieldtype {
 				$this->data['filetypes'][] = 'jpg';
 			}
 		
-			if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name']) and !empty($this->data['filetypes']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
+			if (isset($_FILES[$this->name]) and is_uploaded_file($_FILES[$this->name]['tmp_name']) and $this->data['filetypes'][0] != '' and !empty($this->data['filetypes']) and !in_array(file_extension($_FILES[$this->name]['name']),$this->data['filetypes'])) {
 				$this->validation_error = $this->label . ' is not of the proper filetype.';
 			
 				return FALSE;
