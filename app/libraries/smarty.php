@@ -183,15 +183,20 @@ class CI_Smarty extends Smarty {
 	/**
 	* Create Loop Data Key from $filters
 	*
-	* @param array $array
+	* @param array $array Specify a series of filters which will identify this loop data amongst all other loop data
+	* @param string $identifier Specify an additional key which will help identify this set of block data, in case your $filters are too generic
 	*
 	* @return string MD5 of array
 	*/
-	public function loop_data_key ($array) {
+	public function loop_data_key ($array, $identifier = '') {
 		$string = '';
 		
 		foreach ($array as $k => $v) {
 			$string = $k . '=' . $v;	
+		}
+		
+		if (!empty($identifier)) {
+			$string .= $identifier;
 		}
 		
 		return md5($string);

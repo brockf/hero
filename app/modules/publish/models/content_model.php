@@ -538,6 +538,18 @@ class Content_model extends CI_Model
 			$this->db->like('users.user_username',$filters['author_like']);
 		}
 		
+		// allow them to pass filters that are custom fields
+		// this filter must also be passed after we join
+		foreach ($custom_fields as $field) {
+			if (isset($filters[$field['name']])) {
+				$this->db->like($field['name'],$filters[$field['name']]);
+			}
+			elseif (isset($filters[$type['system_name'] . '.' . $field['name']])) {
+				$this->db->like($type['system_name'] . '.' . $field['name'],$filters[$type['system_name'] . '.' . $field['name']]);
+			}
+		}
+		reset($custom_fields);
+		
 		// let's check to see if we should order by/limit this query
 		// this only happens if we didn't limit in the subquery (above), i.e., if we are sorting by a content-specific
 		// field
