@@ -134,29 +134,45 @@ class CI_Smarty extends Smarty {
 	* @return string $tagdata or NULL
 	*/
 	
-	function block_loop($data_name, $content = FALSE, $var_name, &$repeat) {
-		if (!$this->loop_data($data_name)) {
+	function block_loop($data_name, $content = array(), $var_name, &$repeat) {
+		// do we have data stored for this loop or is this a new loop?
+		if (!$this->loop_data($data_name . '_index')) {
+			// it's a new loop
+			// store the data and begin iteration
 			if (empty($content)) {
 				$repeat = FALSE;
 				return;
 			}
 			
-			// set loop data
-			$this->loop_data($data_name, $content);
-			$index = 0;
+			// store loop content array
+			$this->set_loop_content($content);
+			
+			// set loop index to track our traversing
+			$index = 1;
 			$this->loop_data($data_name . '_index', $index);
+			
+			// set loop count so we know when to stop
+			$count = count($content);
+			$this->loop_data($data_name . '_count', $count);
+			
+			// retrieve the first content item
+			$content = $this->loop_content($index);
 		}
 		else {
-			$content = $this->loop_data($data_name);
+			// it's an existing loop
+			// retrieve date and continue iterating
 			$index = $this->loop_data($data_name . '_index');
+			$count = $this->loop_data($data_name . '_count');
+			
+			$content = $this->loop_content($index);
 		}
 		
-		if (isset($content[$index])) {
-			$this->assign($var_name, $content[$index]);
+		if (!empty($content)) {
+			$this->assign($var_name, $content);
 		}
 		
 		// continue looping?
-		if (isset($content[($index)])) {
+		if ($count > $index) {
 			$this->loop_data($data_name . '_index', ($index + 1));
 			$repeat = TRUE;
 		}
@@ -183,23 +199,27 @@ class CI_Smarty extends Smarty {
 	/**
 	* Create Loop Data Key from $filters
 	*
-	* @param array $array Specify a series of filters which will identify this loop data amongst all other loop data
-	* @param string $identifier Specify an additional key which will help identify this set of block data, in case your $filters are too generic
+	* Used for caching and persistent storage
+	*
+	* @param string|array $identifier Specify an array or string by which to identify this unique instance of content retrieval
 	*
 	* @return string MD5 of array
 	*/
-	public function loop_data_key ($array, $identifier = '') {
-		$string = '';
-		
-		foreach ($array as $k => $v) {
-			$string = $k . '=' . $v;	
+	public function loop_data_key ($identifier) {
+		if (is_array($identifier)) {
+			$string = '';
+			
+			foreach ($identifier as $k => $v) {
+				$string = $k . '=' . $v;	
+			}
+			
+			return md5($string);
+		}
+		else {
+			$identifier = md5($identifier);	
 		}
 		
-		if (!empty($identifier)) {
-			$string .= $identifier;
-		}
-		
-		return md5($string);
+		return $identifier;
 	}
 	
 	/**
@@ -220,5 +240,41 @@ class CI_Smarty extends Smarty {
 			$this->perpetual_data[$key] = $data;
 			return;
 		}
+	}
+	
+	/**
+	* Store Loop Content
+	*
+	* Stores/retrieves the loop content used in a looping block plugin.
+	* We store independently of $this->loop_data() because we use unique
+	* iteration procedures here.
+	*
+	* @param array $data The content array.  Pass only this to store a content array.
+	*
+	* @return boolean|array Content
+	*/
+	function set_loop_content ($data = array()) {
+		$this->perpetual_data['content'] = $data;
+			
+		return TRUE;
+	}
+	
+	/**
+	* Get Loop Content
+	*
+	* @param int $index The index to retrieve.
+	*
+	* @return boolean|array Content
+	*/
+	function loop_content ($index = FALSE) {
+		if ((int)$index === 1) {
+			$content_item = current($this->perpetual_data['content']);
+		}
+		else {
+			// returns FALSE at end of array so we know
+			$content_item = next($this->perpetual_data['content']);
+		}
+		
+		return $content_item;
 	}
 }
