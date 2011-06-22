@@ -178,6 +178,7 @@ class CI_Smarty extends Smarty {
 		}
 		else {
 			$this->unset_loop_data($data_name);
+			$this->unset_loop_content();
 			
 			$repeat = FALSE;
 		}
@@ -276,5 +277,12 @@ class CI_Smarty extends Smarty {
 		}
 		
 		return $content_item;
+	}
+	
+	/**
+	* Unset Loop Content
+	*/
+	function unset_loop_content () {
+		$this->perpetual_data['content'] = FALSE;
 	}
 }

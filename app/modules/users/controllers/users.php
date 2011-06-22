@@ -205,6 +205,15 @@ class Users extends Front_Controller {
 			}
 		}
 		
+		// if we have activated our registration_spam_stopper in the settings,
+		// we will check to see if the (stupid) bot completed the hidden field
+		// if so, reject it
+		if ($this->config->item('registration_spam_stopper') == '1') {
+			if ($this->input->post('email_confirmation_hp') != '') {
+				die(show_error('This registration was rejected for being spam.  If you are not a spambot, please don\'t complete the "Email Confirmation HP" field.'));
+			}
+		}
+		
 		// create an array of current values in case we redirect with an error
 		$values = array();
 		$values['username'] = $this->input->post('username');
