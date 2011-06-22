@@ -172,7 +172,8 @@ class CI_Smarty extends Smarty {
 		}
 		
 		// continue looping?
-		if ($count > $index) {
+		// no, this doesn't really make sense - we want it to loop through one more time
+		if ($count > ($index - 1)) {
 			$this->loop_data($data_name . '_index', ($index + 1));
 			$repeat = TRUE;
 		}
