@@ -178,8 +178,7 @@ class CI_Smarty extends Smarty {
 			$repeat = TRUE;
 		}
 		else {
-			$this->unset_loop_data($data_name);
-			$this->unset_loop_content();
+			$this->unset_loop_data();
 			
 			$repeat = FALSE;
 		}
@@ -188,12 +187,10 @@ class CI_Smarty extends Smarty {
 	/**
 	* Unset Loop Data
 	* 
-	* @param string$data_name
-	*
 	* @return boolean TRUE
 	*/
-	function unset_loop_data ($data_name) {
-		unset($this->perpetual_data[$data_name]);
+	function unset_loop_data () {
+		$this->perpetual_data = array();
 		
 		return TRUE;
 	}
@@ -215,12 +212,14 @@ class CI_Smarty extends Smarty {
 				$string = $k . '=' . $v;	
 			}
 			
-			return md5($string);
+			$identifier = $string;
 		}
 		else {
-			$identifier = md5($identifier);	
+			$identifier = $identifier;	
 		}
 		
+		$identifier = md5($identifier);
+	
 		return $identifier;
 	}
 	
@@ -278,12 +277,5 @@ class CI_Smarty extends Smarty {
 		}
 		
 		return $content_item;
-	}
-	
-	/**
-	* Unset Loop Content
-	*/
-	function unset_loop_content () {
-		$this->perpetual_data['content'] = FALSE;
 	}
 }
