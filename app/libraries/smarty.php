@@ -135,6 +135,10 @@ class CI_Smarty extends Smarty {
 	*/
 	
 	function block_loop($data_name, $content = array(), $var_name, &$repeat) {
+		if ($repeat == FALSE) {
+			return;
+		}
+	
 		// do we have data stored for this loop or is this a new loop?
 		if (!$this->loop_data($data_name . '_index')) {
 			// it's a new loop
