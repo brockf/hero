@@ -15,6 +15,9 @@ class CI_Smarty extends Smarty {
 	// holds data from looping block plugins
 	private $perpetual_data; 
 	
+	// track loops
+	private $loops;
+	
 	// everytime we update the Smarty library, change this version.
 	// if this date is newer than the current library, all compiled templates
 	// will be deleted
@@ -22,6 +25,9 @@ class CI_Smarty extends Smarty {
 
 	function __construct ($email_parser = FALSE) {
 		parent::__construct();
+		
+		$this->perpetual_data = array();
+		$this->loops = array();
 	}
 	
 	/**
@@ -135,12 +141,11 @@ class CI_Smarty extends Smarty {
 	*/
 	
 	function block_loop($data_name, $content = array(), $var_name, &$repeat) {
-		if ($repeat == FALSE) {
-			return;
-		}
-	
 		// do we have data stored for this loop or is this a new loop?
-		if (!$this->loop_data($data_name . '_index')) {
+		if (!in_array($data_name, $this->loops)) {
+			// start loop
+			$this->loops[] = $data_name;
+		
 			// it's a new loop
 			// store the data and begin iteration
 			if (empty($content)) {
@@ -162,6 +167,10 @@ class CI_Smarty extends Smarty {
 			// retrieve the first content item
 			$content = $this->loop_content($index);
 		}
+		elseif (in_array($data_name, $this->loops) and empty($this->perpetual_data)) {
+			$repeat = FALSE;
+			return;
+		}
 		else {
 			// it's an existing loop
 			// retrieve date and continue iterating
@@ -170,7 +179,7 @@ class CI_Smarty extends Smarty {
 			
 			$content = $this->loop_content($index);
 		}
-		
+				
 		if (!empty($content)) {
 			$this->assign($var_name, $content);
 		}
