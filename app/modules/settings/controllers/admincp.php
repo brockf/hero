@@ -68,4 +68,38 @@ class Admincp extends Admincp_Controller {
 		
 		echo $setting['toggle_value'];
 	}
+	
+	function modules () {
+		$this->load->library('dataset');
+			
+			$columns = array(
+						array(
+							'name' => 'Module Name',
+							'type' => 'id',
+							'width' => '30%',
+							'filter' => 'text'
+							),
+						array(
+							'name' => 'Status',
+							'width' => '15%'
+							),
+						array(
+							'name' => 'Version',
+							'width' => '20%'
+							),
+						array(
+							'name' => '',
+							'width' => '35%'
+							)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('modules/module_model','get_modules');
+		$this->dataset->base_url(site_url('admincp/settings/modules'));
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+				
+		return $this->load->view('modules');
+	}
 }

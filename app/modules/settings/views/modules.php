@@ -14,8 +14,8 @@ if (!empty($this->dataset->data)) {
 			</td>
 			<td><?=$row['version'];?></td>
 			<td class="options">
-				<? if ($row['installed'] == TRUE) { ?><a href="<?=site_url('admincp/modules/uninstall/' . $row['id']);?>">uninstall</a><? } ?>
-				<? if ($row['ignored'] == TRUE) { ?><a href="<?=site_url('admincp/modules/install/' . $row['id']);?>">install</a><? } ?>
+				<? if ($row['installed'] == TRUE) { ?><a href="<?=site_url('admincp/settings/module_uninstall/' . $row['name']);?>">uninstall</a><? } ?>
+				<? if ($row['ignored'] == TRUE) { ?><a href="<?=site_url('admincp/settings/module_install/' . $row['name']);?>">install</a><? } ?>
 			</td>
 		</tr>
 	<?

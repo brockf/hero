@@ -30,6 +30,6 @@ class Settings extends Module {
 	function admin_preload ()
 	{
 		$this->CI->admin_navigation->child_link('configuration',10,'Settings',site_url('admincp/settings'));
-		$this->CI->admin_navigation->child_link('publish',99,'Modules',site_url('admincp/modules'));
+		$this->CI->admin_navigation->child_link('publish',99,'Modules',site_url('admincp/settings/modules'));
 	}
 }
