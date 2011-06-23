@@ -543,6 +543,9 @@ class CI_Form_validation {
 		foreach ($rules As $rule)
 		{
 			$_in_array = FALSE;
+			
+			// track where this was a native PHP callback
+			$native_php = FALSE;
 
 			// We set the $postdata variable with the current data in our master array so that
 			// each cycle of the loop is dealing with the processed data from the last cycle
@@ -628,19 +631,20 @@ class CI_Form_validation {
 							$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
 						}
 					}
-
-					continue;
+					
+					$native_php = TRUE;
 				}
-
-				$result = $this->$rule($postdata, $param);
-
-				if ($_in_array == TRUE)
-				{
-					$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
-				}
-				else
-				{
-					$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
+				else {
+					$result = $this->$rule($postdata, $param);
+	
+					if ($_in_array == TRUE)
+					{
+						$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
+					}
+					else
+					{
+						$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
+					}
 				}
 			}
 
@@ -649,6 +653,11 @@ class CI_Form_validation {
 			{
 				if ( ! isset($this->_error_messages[$rule]))
 				{
+					if ($native_php === TRUE) {
+						// it doesn't have an error message, and shouldn't
+						continue;
+					}
+					
 					if (FALSE === ($line = $this->CI->lang->line($rule)))
 					{
 						$line = 'Unable to access an error message corresponding to your field name.';
