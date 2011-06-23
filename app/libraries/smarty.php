@@ -15,9 +15,6 @@ class CI_Smarty extends Smarty {
 	// holds data from looping block plugins
 	private $perpetual_data; 
 	
-	// track loops
-	private $loops;
-	
 	// everytime we update the Smarty library, change this version.
 	// if this date is newer than the current library, all compiled templates
 	// will be deleted
@@ -27,7 +24,6 @@ class CI_Smarty extends Smarty {
 		parent::__construct();
 		
 		$this->perpetual_data = array();
-		$this->loops = array();
 	}
 	
 	/**
@@ -142,9 +138,9 @@ class CI_Smarty extends Smarty {
 	
 	function block_loop($data_name, $content = array(), $var_name, &$repeat) {
 		// do we have data stored for this loop or is this a new loop?
-		if (!in_array($data_name, $this->loops)) {
+		if (!isset($this->perpetual_data[$data_name])) {
 			// start loop
-			$this->loops[] = $data_name;
+			$this->perpetual_data[$data_name] = array();
 		
 			// it's a new loop
 			// store the data and begin iteration
@@ -154,30 +150,30 @@ class CI_Smarty extends Smarty {
 			}
 			
 			// store loop content array
-			$this->set_loop_content($content);
+			$this->set_loop_content($data_name, $content);
 			
 			// set loop index to track our traversing
 			$index = 1;
-			$this->loop_data($data_name . '_index', $index);
+			$this->loop_data($data_name, 'index', $index);
 			
 			// set loop count so we know when to stop
 			$count = count($content);
-			$this->loop_data($data_name . '_count', $count);
+			$this->loop_data($data_name, 'count', $count);
 			
 			// retrieve the first content item
-			$content = $this->loop_content($index);
+			$content = $this->loop_content($data_name, $index);
 		}
-		elseif (in_array($data_name, $this->loops) and empty($this->perpetual_data)) {
+		elseif (empty($this->perpetual_data[$data_name])) {
 			$repeat = FALSE;
 			return;
 		}
 		else {
 			// it's an existing loop
 			// retrieve date and continue iterating
-			$index = $this->loop_data($data_name . '_index');
-			$count = $this->loop_data($data_name . '_count');
+			$index = $this->loop_data($data_name, 'index');
+			$count = $this->loop_data($data_name, 'count');
 			
-			$content = $this->loop_content($index);
+			$content = $this->loop_content($data_name, $index);
 		}
 				
 		if (!empty($content)) {
@@ -186,12 +182,13 @@ class CI_Smarty extends Smarty {
 		
 		// continue looping?
 		// no, this doesn't really make sense - we want it to loop through one more time
+		
 		if ($count > ($index - 1)) {
-			$this->loop_data($data_name . '_index', ($index + 1));
+			$this->loop_data($data_name, 'index', ($index + 1));
 			$repeat = TRUE;
 		}
 		else {
-			$this->unset_loop_data();
+			$this->unset_loop_data($data_name);
 			
 			$repeat = FALSE;
 		}
@@ -202,8 +199,8 @@ class CI_Smarty extends Smarty {
 	* 
 	* @return boolean TRUE
 	*/
-	function unset_loop_data () {
-		$this->perpetual_data = array();
+	function unset_loop_data ($data_name) {
+		unset($this->perpetual_data[$data_name]);
 		
 		return TRUE;
 	}
@@ -241,17 +238,27 @@ class CI_Smarty extends Smarty {
 	*
 	* Stores/retrieves a variable used in a looping block plugin
 	*
+	* @param string $data_name
 	* @param string $key
 	* @param array|object $data
 	*
 	* @return boolean|array Data, or FALSE
 	*/
-	function loop_data ($key, $data = FALSE) {
-		if ($data === FALSE) {
-			return (isset($this->perpetual_data[$key])) ? $this->perpetual_data[$key] : FALSE;
+	function loop_data ($data_name, $key = FALSE, $data = FALSE) {
+		if ($key === FALSE and $data === FALSE) {
+			// legacy call for the *content*
+			if (isset($this->perpetual_data[$data_name]['content'])) {
+				return $this->perpetual_data[$data_name]['content'];
+			}
+			else {
+				return FALSE;
+			}
+		}
+		elseif ($data === FALSE) {
+			return (isset($this->perpetual_data[$data_name][$key])) ? $this->perpetual_data[$data_name][$key] : FALSE;
 		}
 		else {
-			$this->perpetual_data[$key] = $data;
+			$this->perpetual_data[$data_name][$key] = $data;
 			return;
 		}
 	}
@@ -267,8 +274,8 @@ class CI_Smarty extends Smarty {
 	*
 	* @return boolean|array Content
 	*/
-	function set_loop_content ($data = array()) {
-		$this->perpetual_data['content'] = $data;
+	function set_loop_content ($data_name, $data = array()) {
+		$this->perpetual_data[$data_name]['content'] = $data;
 			
 		return TRUE;
 	}
@@ -280,13 +287,13 @@ class CI_Smarty extends Smarty {
 	*
 	* @return boolean|array Content
 	*/
-	function loop_content ($index = FALSE) {
+	function loop_content ($data_name, $index = FALSE) {
 		if ((int)$index === 1) {
-			$content_item = current($this->perpetual_data['content']);
+			$content_item = current($this->perpetual_data[$data_name]['content']);
 		}
 		else {
 			// returns FALSE at end of array so we know
-			$content_item = next($this->perpetual_data['content']);
+			$content_item = next($this->perpetual_data[$data_name]['content']);
 		}
 		
 		return $content_item;
