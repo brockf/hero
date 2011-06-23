@@ -21,7 +21,9 @@ class Module_model extends CI_Model {
 		foreach ($result->result_array() as $module) {
 			$this->modules_cache[$module['module_name']] = array(
 																'name' => $module['module_name'],
-																'version' => $module['module_version']
+																'version' => (!empty($module['module_version'])) ? $module['module_version'] : 'n/a',
+																'installed' => ($module['module_installed'] == '1') ? TRUE : FALSE,
+																'ignored' => ($module['module_ignored'] == '1') ? TRUE : FALSE
 																);
 		}
 	}
@@ -39,6 +41,15 @@ class Module_model extends CI_Model {
 		}
 		
 		return $this->modules_cache[$name];
+	}
+	
+	/**
+	* Get Modules
+	*
+	* @return array 
+	*/
+	function get_modules () {
+		return $this->modules_cache;
 	}
 	
 	/**

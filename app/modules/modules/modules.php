@@ -1,7 +1,7 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
-* Settings Module Definition
+* Modules Module Definition
 *
 * Declares the module, update code, etc.
 *
@@ -11,17 +11,17 @@
 *
 */
 
-class Settings extends Module {
+class Modules_module extends Module {
 	var $version = '1.0';
-	var $name = 'settings';
+	var $name = 'modules';
 
 	function __construct () {
 		// set the active module
-		$this->active_module = $this->name;
+		$this->active_module = $this->name;	
 		
 		parent::__construct();
 	}
-
+	
 	/*
 	* Pre-admin function
 	*
@@ -29,7 +29,7 @@ class Settings extends Module {
 	*/
 	function admin_preload ()
 	{
-		$this->CI->admin_navigation->child_link('configuration',10,'Settings',site_url('admincp/settings'));
 		$this->CI->admin_navigation->child_link('publish',99,'Modules',site_url('admincp/modules'));
 	}
 }
+	

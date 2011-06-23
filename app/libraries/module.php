@@ -17,7 +17,7 @@ class Module {
 	
 	function __construct() {
 		$this->CI =& get_instance();
-	
+		
 		if (!empty($this->active_module)) {
 			// get the current version
 			$version = $this->get_version();

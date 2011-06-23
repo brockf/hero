@@ -23,7 +23,7 @@ class Front_Controller extends MY_Controller {
 		$directory = APPPATH . 'modules/';
 		$this->load->helper('directory');
 		
-		$modules = directory_map($directory);
+		$modules = directory_map($directory, 2);
 		
 		// load each module definition file, for admincp navigation
 		

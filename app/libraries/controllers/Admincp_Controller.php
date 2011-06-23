@@ -52,7 +52,7 @@ class Admincp_Controller extends MY_Controller {
 	
 		// load all modules with control panel to build navigation, etc.
 		$directory = APPPATH . 'modules/';
-		$modules = directory_map($directory);
+		$modules = directory_map($directory, 2);
 		
 		// load each module definition file, for admincp navigation
 		
