@@ -136,16 +136,25 @@ class User_model extends CI_Model
 	* @return boolean FALSE upon failure, TRUE upon success
 	*/
 	public function login ($username, $password, $remember = FALSE) {
+		$authenticated = FALSE;
+	
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
-		$this->db->where('user_password',md5($password));
 		$this->db->where('user_suspended','0');
 		$this->db->where('user_deleted','0');
 		$query = $this->db->get('users');
-
-		if ($query->num_rows() > 0) { 
-			$user = $query->row_array();
-			$user = $this->get_user($user['user_id']);
+		
+		if ($query->num_rows() > 0) {
+			$user_db = $query->row_array();
+			$user = $this->get_user($user_db['user_id']);
 			
+			$hashed_password = ($user['salt'] == '') ? md5($password) : md5($password . ':' . $user['salt']);
+			
+			if ($hashed_password == $user_db['user_password']) {
+				$authenticated = TRUE;
+			}
+		}
+
+		if ($authenticated === TRUE) { 
 			if ($this->config->item('simultaneous_login_prevention') == '1') {
 				// let's make sure someone isn't logged into the account right now
 				$this->db->where('user_id',$user['id']);
@@ -227,6 +236,21 @@ class User_model extends CI_Model
 		$CI =& get_instance();
 		$CI->load->model('store/cart_model');
 		$CI->cart_model->user_login($this->active_user);
+		
+		// salt password
+		if (!empty($password)) {
+			// do we have a salt?
+			if ($this->get('salt') == '') {
+				// salt it!
+				$CI->load->helper('string');
+				$salt = random_string('unique');
+				
+				// new password with salt
+				$salted_password = md5($password . ':' . $salt);
+				
+				$this->db->update('users', array('user_salt' => $salt, 'user_password' => $salted_password), array('user_id' => $this->get('id')));
+			}
+		}
 		
 		// prep hook
 		$CI =& get_instance();
@@ -548,7 +572,7 @@ class User_model extends CI_Model
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
 		$unique_username = ($editing == FALSE) ? '|unique_username' : '';
-		$CI->form_validation->set_rules('username','Username','trim|min_length[3]|alphanumeric' . $unique_username);
+		$CI->form_validation->set_rules('username','Username','trim|min_length[3]|alpha_numeric' . $unique_username);
 		
 		if ($editing == FALSE) {
 			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
@@ -817,6 +841,12 @@ class User_model extends CI_Model
 			$validate_key = '';
 		}
 		
+		// generate hashed password
+		$CI =& get_instance();
+		$CI->load->helper('string');
+		$salt = random_string('unique');
+		$hashed_password = md5($password . ':' . $salt);
+		
 		$insert_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
 								'user_groups' => '|' . implode('|',$groups) . '|',
@@ -824,7 +854,8 @@ class User_model extends CI_Model
 								'user_last_name' => $last_name,
 								'user_username' => $username,
 								'user_email' => $email,
-								'user_password' => md5($password),
+								'user_password' => $hashed_password,
+								'user_salt' => $salt,
 								'user_referrer' => ($affiliate != FALSE) ? $affiliate : '0',
 								'user_signup_date' => date('Y-m-d H:i:s'),
 								'user_last_login' => '0000-00-00 00:00:00',
@@ -1282,6 +1313,7 @@ class User_model extends CI_Model
 							'id' => $user['user_id'],
 							'is_admin' => ($user['user_is_admin'] == '1') ? TRUE : FALSE,
 							'customer_id' => $user['customer_id'],
+							'salt' => $user['user_salt'],
 							'usergroups' => $user_groups,
 							'first_name' => $user['user_first_name'],
 							'last_name' => $user['user_last_name'],
