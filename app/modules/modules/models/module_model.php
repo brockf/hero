@@ -11,11 +11,15 @@
 */
 
 class Module_model extends CI_Model {
-	var $modules_cache;
+	public $modules_cache;
+	private $CI;
 	
 	function __construct() {
 		parent::__construct();
 		
+		$this->CI =& get_instance();
+		
+		// pre-cache modules table
 		$result = $this->db->get('modules');
 		
 		foreach ($result->result_array() as $module) {
@@ -23,9 +27,73 @@ class Module_model extends CI_Model {
 																'name' => $module['module_name'],
 																'version' => (!empty($module['module_version'])) ? $module['module_version'] : 'n/a',
 																'installed' => ($module['module_installed'] == '1') ? TRUE : FALSE,
-																'ignored' => ($module['module_ignored'] == '1') ? TRUE : FALSE
+																'ignored' => ($module['module_ignore'] == '1') ? TRUE : FALSE
 																);
 		}
+	}
+	
+	/**
+	* Install Module
+	*
+	* @param string $module
+	*
+	* @return boolean
+	*/
+	function install ($module) {
+		$this->db->update('modules', array('module_ignore' => '0', 'module_installed' => '1'), array('module_name' => $module));
+		
+		// look for install module
+		if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
+			// initiate module
+			// this will run update() in the module definition file
+			include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
+			
+			// because of a name conflict, this may be called Modulename_module
+			if (class_exists($module . '_module')) {
+				$class_name = $module . '_module';
+			}
+			else {
+				$class_name = $module;
+			}
+			
+			$this->CI->module_definitions->$module = new $class_name;
+			
+			log_message('debug', 'Module installed: ' . $module);
+		}
+		
+		return TRUE;
+	}
+	
+	/**
+	* Uninstall Module
+	*
+	* @param string $module
+	*
+	* @return boolean
+	*/
+	function uninstall ($module) {
+		// look for module definition file
+		// to run uninstall()
+		if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
+			include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
+			
+			// because of a name conflict, this may be called Modulename_module
+			if (class_exists($module . '_module')) {
+				$class_name = $module . '_module';
+			}
+			else {
+				$class_name = $module;
+			}
+			
+			$this->CI->module_definitions->$module = new $class_name;
+			
+			// look for uninstall method
+			if (method_exists($this->CI->module_definitions->$module, 'uninstall')) {
+				$this->CI->module_definitions->$module->uninstall();
+			}
+		}
+	
+		$this->db->update('modules', array('module_installed' => '0', 'module_ignore' => '1', 'module_version' => ''), array('module_name' => $module));
 	}
 	
 	/**

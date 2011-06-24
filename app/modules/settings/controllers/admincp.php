@@ -75,9 +75,7 @@ class Admincp extends Admincp_Controller {
 			$columns = array(
 						array(
 							'name' => 'Module Name',
-							'type' => 'id',
-							'width' => '30%',
-							'filter' => 'text'
+							'width' => '30%'
 							),
 						array(
 							'name' => 'Status',
@@ -99,7 +97,46 @@ class Admincp extends Admincp_Controller {
 		
 		// initialize the dataset
 		$this->dataset->initialize();
+		
+		// get protected core modules
+		$this->config->load('core_modules');
+		$core_modules = $this->config->item('core_modules');
+		
+		// get settings
+		$settings = $this->settings_model->get_settings(array('group_id' => '1', 'show_hidden' => TRUE, 'sort' => 'setting_name'));
+		
+		// only show modules_ settings
+		foreach ($settings as $key => $setting) {
+			if (strpos($setting['name'],'modules_') !== 0) {
+				unset($settings[$key]);
+			}
+		}
 				
-		return $this->load->view('modules');
+		$data = array(
+					'core_modules' => $core_modules,
+					'settings' => $settings
+				);
+				
+		return $this->load->view('modules', $data);
+	}
+	
+	function modules_settings () {
+		$auto_install = ($this->input->post('auto_install')) ? '1' : '0';
+		
+		$this->settings_model->update_setting('modules_auto_install', $auto_install);
+		
+		return redirect('admincp/settings/modules');
+	}
+	
+	function module_uninstall ($module) {
+		$this->module_model->uninstall($module);
+		
+		return redirect('admincp/settings/modules');
+	}
+	
+	function module_install ($module) {
+		$this->module_model->install($module);
+		
+		return redirect('admincp/settings/modules');
 	}
 }

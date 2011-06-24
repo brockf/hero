@@ -51,15 +51,12 @@ class Admincp_Controller extends MY_Controller {
 		$this->load->library('app_hooks');
 	
 		// load all modules with control panel to build navigation, etc.
-		$directory = APPPATH . 'modules/';
-		$modules = directory_map($directory, 2);
-		
-		// load each module definition file, for admincp navigation
+		$modules = $this->module_model->get_modules();
 		
 		// first, reset module definitions so that we run them all as a "backend" call and their preloads get called
 		$this->module_definitions = new stdClass();
 		
-		foreach ($modules as $module => $module_folder) {
+		foreach ($modules as $module) {
 			MY_Loader::define_module($module . '/');
 		}
 		

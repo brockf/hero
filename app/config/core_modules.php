@@ -21,7 +21,7 @@ $config['core_modules'] = array(
 							'forms',
 							'menu_manager',
 							'modules',
-							'paywall'
+							'paywall',
 							'publish',
 							'reports',
 							'rss',

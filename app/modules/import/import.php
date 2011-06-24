@@ -2,7 +2,7 @@
 
 class Import extends Module {
 	var $version	= "1.0";
-	var $name		= 'Member Import';
+	var $name		= 'import';
 	
 	function __construct() {
 		$this->active_module = $this->name;

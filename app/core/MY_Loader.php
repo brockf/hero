@@ -55,11 +55,30 @@ class MY_Loader extends MX_Loader {
 	    	
 	    	$module = strtolower($module);
 	    	
+	    	// this is an early check - is this a module or not?
+	    	if (!file_exists(APPPATH . 'modules/' . $module)) {
+	    		return false;
+	    	}
+	    	
 	    	$CI =& get_instance();
 	    	
 	    	// make sure the module_definitions var exists
 	    	if (!isset($CI->module_definitions)) {
 	    		$CI->module_definitions = new stdClass();
+	    	}
+	    	
+	    	// are we ignoring this module?
+	    	if (isset($CI->module_model->modules_cache[$module]['ignored']) and $CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
+	    		log_message('debug','Ignoring module: ' . $module);
+	    		return;
+	    	}
+	    	
+	    	// if this is not installed, should we auto-install it?
+	    	if (isset($CI->module_model->modules_cache[$module]['installed']) and $CI->module_model->modules_cache[$module]['installed'] == FALSE) {
+	    		if ($CI->config->item('modules_auto_install') === '0') {
+	    			log_message('debug','Not auto-install module: ' . $module);
+	    			return;
+	    		}
 	    	}
 	    	
 	    	if (!isset($CI->module_definitions->$module) and is_dir(APPPATH . 'modules/' . $module)) {

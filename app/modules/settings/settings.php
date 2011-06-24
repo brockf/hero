@@ -12,7 +12,7 @@
 */
 
 class Settings extends Module {
-	var $version = '1.0';
+	var $version = '1.01';
 	var $name = 'settings';
 
 	function __construct () {
@@ -30,6 +30,6 @@ class Settings extends Module {
 	function admin_preload ()
 	{
 		$this->CI->admin_navigation->child_link('configuration',10,'Settings',site_url('admincp/settings'));
-		$this->CI->admin_navigation->child_link('publish',99,'Modules',site_url('admincp/settings/modules'));
+		$this->CI->admin_navigation->child_link('configuration',110,'Modules',site_url('admincp/settings/modules'));
 	}
 }
