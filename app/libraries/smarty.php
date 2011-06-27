@@ -35,8 +35,12 @@ class CI_Smarty extends Smarty {
 	function initialize ($email_parser = FALSE) {
 		// if these folders don't exist, we're probably not finished installing yet...
 		// let's stop so we don't throw errors
-		if (!file_exists(FCPATH . 'writeable/templates_compile')) {
+		if (!file_exists(FCPATH . 'writeable/templates_compile') and !file_exists(APPPATH . 'config/installed.php')) {
 			return FALSE;
+		}
+		elseif (!file_exists(FCPATH . 'writeable/templates_compile')) {
+			die(show_error('/writeable/templates_compile does not exist.  Please make sure that you have not overwritten
+			your /writeable/ folders during an upgrade.'));
 		}
 	
 		// store CI within Smarty's object
