@@ -565,14 +565,21 @@ class User_model extends CI_Model
 		
 		$CI->load->library('form_validation');
 		$CI->load->model('custom_fields_model');
-		$CI->load->helpers(array('unique_username','unique_email'));
+		$CI->load->helpers(array('unique_username','unique_email','strip_whitespace'));
 		
 		$CI->form_validation->set_rules('first_name','First Name','trim|required');
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
-		$unique_username = ($editing == FALSE) ? '|unique_username' : '';
-		$CI->form_validation->set_rules('username','Username','trim|min_length[3]|alpha_numeric' . $unique_username);
+		
+		$username_rules = array('trim','strip_whitespace','min_length[3]');
+		if ($this->config->item('username_allow_special_characters') == FALSE) {
+			$username_rules[] = 'alpha_numeric';
+		}
+		if ($editing == FALSE) {
+			$username_rules[] = 'unique_username';
+		}
+		$CI->form_validation->set_rules('username','Username',implode('|', $username_rules));
 		
 		if ($editing == FALSE) {
 			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');

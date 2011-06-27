@@ -105,6 +105,9 @@ $config['billing_cron_time'] = 9;
 // should we make sure that only one user is logged into an account at the same time?
 $config['duplicate_login_check'] = 'yes';
 
+// allow special characters in usernames (e.g., for email addresses)?
+$config['username_allow_special_characters'] = FALSE;
+
 /*
 |--------------------------------------------------------------------------
 | Index File
