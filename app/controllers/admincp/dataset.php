@@ -1,13 +1,14 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
 * Dataset Controller 
 *
-* Handles miscellaneous dataset features
+* Certain Dataset-related events require jQuery calls to a controller.  This is
+* that controller.
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
-
 */
 class Dataset extends CI_Controller {
 

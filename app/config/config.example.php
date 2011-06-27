@@ -16,13 +16,6 @@
 */
 $config['base_url']	= "http://www.example.com/";
 
-$config['max_recurring_days_from_today'] = 1095;
-
-// do not edit either of these unless you plan on also modifying lots of core files
-$config['query_result_default_limit'] = 100;
-$config['recurring_charge_failures_allowed'] = 1;
-
-
 // rewrite base URL to SSL if accessed via SSL
 if ($_SERVER["SERVER_PORT"] == "443" or (isset($_SERVER['https']) and $_SERVER['HTTPS'] == 'on')) {
 	$config['base_url'] = str_replace('http://','https://',$config['base_url']);
@@ -107,6 +100,27 @@ $config['duplicate_login_check'] = 'yes';
 
 // allow special characters in usernames (e.g., for email addresses)?
 $config['username_allow_special_characters'] = FALSE;
+
+/*
+|--------------------------------------------------------------------------
+| Advanced Configuration for the Truly Bold
+|--------------------------------------------------------------------------
+|
+*/
+
+$config['max_recurring_days_from_today'] = 1095;
+
+// do not edit either of these unless you plan on also modifying lots of core files
+$config['query_result_default_limit'] = 100;
+$config['recurring_charge_failures_allowed'] = 1;
+
+/*
+|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+|------------- STANDARD CODEIGNITER CONFIGURATION BELOW -------------------
+|--------------------------------------------------------------------------
+|--------------------------------------------------------------------------
+*/
 
 /*
 |--------------------------------------------------------------------------

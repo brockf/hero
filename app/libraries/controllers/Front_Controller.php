@@ -1,4 +1,18 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+* Front Controller
+*
+* This controller is extended by all frontend controllers in modules and in the
+* app core controllers.  Unlike the Admin_Controller, it doesn't authenticate the
+* user or force them to be logged in.  However, it does initialize the Smarty
+* Template Engine, the app hooks engine, preload all modules, and installs the
+* default theme if currently uninstalled.
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 
 class Front_Controller extends MY_Controller {
 	function __construct () {
@@ -26,7 +40,7 @@ class Front_Controller extends MY_Controller {
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module . '/');
+			MY_Loader::define_module($module['name'] . '/');
 		}
 		
 		// if we don't have a theme, we'll setup the default theme

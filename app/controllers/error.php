@@ -1,4 +1,4 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
 * Error Controller 
@@ -7,7 +7,7 @@
 * This controller was initially created so that the IonCube callback file has an internal
 * URL to pass users to.
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
 */

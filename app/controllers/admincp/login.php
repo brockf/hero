@@ -1,12 +1,13 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
 * Admincp Login Controller 
 *
-* Log in and out
+* Log the administrator in and out of the dashboard.
 *
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
-
 */
 
 class Login extends CI_Controller {

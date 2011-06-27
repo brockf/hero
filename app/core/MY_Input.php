@@ -1,5 +1,18 @@
 <?php  if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+* Custom Input library
+*
+* This library does two important things:
+*
+* 	(1) Always enable GET query strings, regardless of configuration.
+*	(2) Allow <? and ?> in input, so that we can take XML requests.
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
+
 class MY_Input extends CI_Input {
 	/**
 	* Constructor

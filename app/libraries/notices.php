@@ -5,7 +5,7 @@
 *
 * Set and retrieve the notices and errors that appear at the top of the control panel
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
 *

@@ -5,7 +5,7 @@
 *
 * Contains all the methods used to get State/Province details.
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
 

@@ -1,11 +1,11 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
 * Frontpage Controller 
 *
-* Displays the site homepage
+* Displays the site homepage by triggering the "frontpage" template.
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
 */

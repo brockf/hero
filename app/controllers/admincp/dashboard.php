@@ -1,14 +1,13 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
 * Admincp Default Controller 
 *
-* Shows the admin homepage
+* Display the administration control panel homepage
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
-
 */
 
 class Dashboard extends Admincp_Controller {

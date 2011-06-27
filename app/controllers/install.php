@@ -1,13 +1,13 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
 /**
 * Install Controller 
 *
 * Installs app by 1) generating config details and setting up the DB file and, 2) Creating the first admin account
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
-
 */
 class Install extends CI_Controller {
 

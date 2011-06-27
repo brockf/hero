@@ -5,7 +5,7 @@
 *
 * Update the current system, if the database is out of date
 *
-* @version 1.0
+* @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
 * @package Electric Framework
 

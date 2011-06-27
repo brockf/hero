@@ -1,4 +1,4 @@
-<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
 * Controller Parent Class
@@ -7,6 +7,10 @@
 * It should include any code they have in common (not much).
 * It's best use is to apply something across ALL pages in the framework without
 * doing something ugly like touching index.php
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
 
 class MY_Controller extends CI_Controller {

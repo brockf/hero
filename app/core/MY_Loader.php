@@ -1,9 +1,17 @@
-<?php (defined('BASEPATH')) OR exit('No direct script access allowed');
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /* load the MX_Loader class */
 require APPPATH."third_party/MX/Loader.php";
 
 class MY_Loader extends MX_Loader {
+	private $CI;
+
+	function __construct () {
+		parent::__construct();
+		
+		$this->CI =& get_instance();
+	}
+
 	/**
 	* Customized loader methods, which will use define_module
 	* to load the module definition file if necessary.
@@ -60,28 +68,26 @@ class MY_Loader extends MX_Loader {
 	    		return false;
 	    	}
 	    	
-	    	$CI =& get_instance();
-	    	
 	    	// make sure the module_definitions var exists
-	    	if (!isset($CI->module_definitions)) {
-	    		$CI->module_definitions = new stdClass();
+	    	if (!isset($this->CI->module_definitions)) {
+	    		$this->CI->module_definitions = new stdClass();
 	    	}
 	    	
 	    	// are we ignoring this module?
-	    	if (isset($CI->module_model->modules_cache[$module]['ignored']) and $CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
+	    	if (isset($this->CI->module_model->modules_cache[$module]['ignored']) and $this->CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
 	    		log_message('debug','Ignoring module: ' . $module);
 	    		return;
 	    	}
 	    	
 	    	// if this is not installed, should we auto-install it?
-	    	if (isset($CI->module_model->modules_cache[$module]['installed']) and $CI->module_model->modules_cache[$module]['installed'] == FALSE) {
-	    		if ($CI->config->item('modules_auto_install') === '0') {
+	    	if (isset($this->CI->module_model->modules_cache[$module]['installed']) and $this->CI->module_model->modules_cache[$module]['installed'] == FALSE) {
+	    		if ($this->CI->config->item('modules_auto_install') === '0') {
 	    			log_message('debug','Not auto-install module: ' . $module);
 	    			return;
 	    		}
 	    	}
 	    	
-	    	if (!isset($CI->module_definitions->$module) and is_dir(APPPATH . 'modules/' . $module)) {
+	    	if (!isset($this->CI->module_definitions->$module) and is_dir(APPPATH . 'modules/' . $module)) {
 	    		// this is a module
 	    		if (file_exists(APPPATH . 'modules/' . $module . '/' . $module . '.php')) {
 	    			include_once(APPPATH . 'modules/' . $module . '/' . $module . '.php');
@@ -94,7 +100,7 @@ class MY_Loader extends MX_Loader {
 	    				$class_name = $module;
 	    			}
 	    			
-	    			$CI->module_definitions->$module = new $class_name;
+	    			$this->CI->module_definitions->$module = new $class_name;
 	    			
 	    			log_message('debug', 'Module defined and loaded: ' . $module);
 	    		}

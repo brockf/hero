@@ -1,4 +1,17 @@
-<?php
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+/**
+* Admin Controller
+*
+* This controller is extended by all control panel controllers in modules.  It forces the
+* user to be logged in, initializes certain universal control panel libraries, initializes
+* the navigation with the parent links (Members, Storefront, etc.), loads modules,
+* loads the app hooks engine, and initializes the KCFinder for CKEditor.
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 
 class Admincp_Controller extends MY_Controller {
 	var $navigation;
@@ -57,7 +70,7 @@ class Admincp_Controller extends MY_Controller {
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module . '/');
+			MY_Loader::define_module($module['name'] . '/');
 		}
 		
 		// define WYSIWYG session variables for file uploading

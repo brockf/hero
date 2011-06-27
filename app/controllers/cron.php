@@ -1,5 +1,16 @@
 <?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
+/**
+* Cron controller
+*
+* The target URL for the 5-minute cronjob.  Any method/function can be bound to the cron hook
+* and be executed with the cronjob.
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
+
 class Cron extends Front_Controller {
 	function __construct () {
 		parent::__construct();
