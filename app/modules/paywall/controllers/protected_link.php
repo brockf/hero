@@ -51,6 +51,9 @@ class Protected_link extends Front_Controller {
 		}
 		else {
 			// load and return file
+			
+			// don't limit to small files
+			set_time_limit(0);
 
 			header("Pragma: public"); // required
 			header("Expires: 0");
@@ -64,13 +67,9 @@ class Protected_link extends Front_Controller {
 			header("Content-Transfer-Encoding: binary");
 			header("Content-Length: " . filesize(FCPATH . $data['url']));
 			
-			$handle = fopen(FCPATH . $data['url'], "r") or die(show_error('Error opening file.'));
-			while (!feof($handle)) {
-			  echo fread($handle, 8192);
-			}
-			fclose($handle);
-			
-			return TRUE;
+			readfile($data['url'], "r");
+
+			die();
 		}
 	}
 }
