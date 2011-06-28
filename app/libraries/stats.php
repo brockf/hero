@@ -35,6 +35,8 @@ class Stats {
 						   ->from('orders')
 						   ->where('timestamp >=',date('Y-m-d H:i:s', strtotime($date_start)))
 						   ->where('timestamp <=',date('Y-m-d H:i:s', strtotime($date_end)))
+						   ->where('orders.status','1')
+						   ->where('orders.refunded','0')
 						   ->get();
 						   
 		return money_format("%!^i", $result->row()->revenue);
@@ -58,6 +60,8 @@ class Stats {
 						   ->from('orders')
 						   ->where('timestamp >=',date('Y-m-d H:i:s', strtotime($date_start)))
 						   ->where('timestamp <=',date('Y-m-d H:i:s', strtotime($date_end)))
+						   ->where('orders.status','1')
+						   ->where('orders.refunded','0')
 						   ->group_by('DATE(orders.timestamp)')
 						   ->get();
 		
@@ -89,6 +93,8 @@ class Stats {
 						   ->join('orders','orders.order_id = order_details.order_id')
 						   ->where('timestamp >=',date('Y-m-d H:i:s', strtotime($date_start)))
 						   ->where('timestamp <=',date('Y-m-d H:i:s', strtotime($date_end)))
+						   ->where('orders.status','1')
+						   ->where('orders.refunded','0')
 						   ->get();
 						   
 		return $result->row()->order_count;
@@ -113,6 +119,8 @@ class Stats {
 						   ->join('orders','orders.order_id = order_details.order_id')
 						   ->where('timestamp >=',date('Y-m-d H:i:s', strtotime($date_start)))
 						   ->where('timestamp <=',date('Y-m-d H:i:s', strtotime($date_end)))
+						   ->where('orders.status','1')
+						   ->where('orders.refunded','0')
 						   ->group_by('DATE(orders.timestamp)')
 						   ->get();
 						   

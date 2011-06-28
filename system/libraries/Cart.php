@@ -354,7 +354,7 @@ class CI_Cart {
 		{
 			$this->_cart_contents[$items['rowid']]['qty'] = $items['qty'];
 		}
-
+		
 		return TRUE;
 	}
 

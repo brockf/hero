@@ -45,7 +45,7 @@ class Users_module extends Module {
 		
 		// track user activity
 		if ($this->CI->config->item('duplicate_login_check') != 'no') {
-			include(APPPATH . 'modules/users/template_plugins/outputfilter.user_activity.php');
+			include_once(APPPATH . 'modules/users/template_plugins/outputfilter.user_activity.php');
 			$this->CI->smarty->registerFilter('output', 'smarty_outputfilter_user_activity');
 		}
 	}
