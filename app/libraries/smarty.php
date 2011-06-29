@@ -38,7 +38,8 @@ class CI_Smarty extends Smarty {
 		if (!file_exists(FCPATH . 'writeable/templates_compile') and !file_exists(APPPATH . 'config/installed.php')) {
 			return FALSE;
 		}
-		elseif (!file_exists(FCPATH . 'writeable/templates_compile') and file_exists(APPPATH . 'config/installed.php')) {
+		
+		if (!file_exists(FCPATH . 'writeable/templates_compile') and file_exists(APPPATH . 'config/installed.php')) {
 			die(show_error('/writeable/templates_compile does not exist.  Please make sure that you have not overwritten
 			your /writeable/ folders during an upgrade.'));
 		}
