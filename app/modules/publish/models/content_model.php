@@ -504,6 +504,10 @@ class Content_model extends CI_Model
 		// are we going to limit in the subquery?  this is more efficient, but not possible if we haven't JOINed the content table
 		// we'll check to see if we are sorting by a content field
 		if (strpos($order_by, 'content') === 0) {
+			// note: in order to retrieve the content in random order, you must pass
+			// "random" as the order!
+			$order_dir = ($order_dir == 'rand()') ? 'random' : $order_dir;
+			
 			$this->db->order_by($order_by, $order_dir);
 		
 			if (isset($filters['limit'])) {
@@ -554,6 +558,10 @@ class Content_model extends CI_Model
 		// this only happens if we didn't limit in the subquery (above), i.e., if we are sorting by a content-specific
 		// field
 		if (strpos($order_by, 'content') === FALSE) {
+			// note: in order to retrieve the content in random order, you must pass
+			// "random" as the order!
+			$order_dir = ($order_dir == 'rand()') ? 'random' : $order_dir;
+			
 			$this->db->order_by($order_by, $order_dir);
 			
 			if (isset($filters['limit'])) {
