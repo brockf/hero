@@ -39,14 +39,23 @@ class CI_Smarty extends Smarty {
 			return FALSE;
 		}
 		
-		if (!file_exists(FCPATH . 'writeable/templates_compile') and file_exists(APPPATH . 'config/installed.php')) {
-			die(show_error('/writeable/templates_compile does not exist.  Please make sure that you have not overwritten
-			your /writeable/ folders during an upgrade.'));
-		}
-	
 		// store CI within Smarty's object
 		$this->CI =& get_instance();
 		
+		if (!file_exists(FCPATH . 'writeable/templates_compile') and file_exists(APPPATH . 'config/installed.php')) {
+			// has the theme module been installed?
+			$row = $this->CI->db->select('module_version')
+								->from('modules')
+								->where('module_name','theme')
+								->get();
+								
+			if ($row->num_rows() > 0 and $row->row()->module_version > 1.01) {					
+				// they likely deleted their /writeable/templates_compile folder in the process of upgrading
+				die(show_error('/writeable/templates_compile does not exist.  Please make sure that you have not overwritten
+				your /writeable/ folders during an upgrade.'));
+			}
+		}
+	
 		// turn down error reporting (makes templates a lot cleaner)
 		$this->error_reporting = E_ALL & ~E_NOTICE;
 		
