@@ -62,15 +62,15 @@ class Admincp_Controller extends MY_Controller {
 		
 		// init hooks
 		$this->load->library('app_hooks');
-	
+		
 		// load all modules with control panel to build navigation, etc.
-		$modules = $this->module_model->get_modules();
+		$modules = $this->module_model->get_module_folders();
 		
 		// first, reset module definitions so that we run them all as a "backend" call and their preloads get called
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module['name'] . '/');
+			MY_Loader::define_module($module . '/');
 		}
 		
 		// define WYSIWYG session variables for file uploading

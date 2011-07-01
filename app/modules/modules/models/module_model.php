@@ -121,6 +121,20 @@ class Module_model extends CI_Model {
 	}
 	
 	/**
+	* Get Module Folders
+	*
+	* @return array
+	*/
+	function get_module_folders () {
+		$directory = APPPATH . 'modules/'; 
+		$this->CI->load->helper('directory');
+		
+		$modules = directory_map($directory, 1);
+		
+		return $modules;
+	}
+	
+	/**
 	* New Module
 	*
 	* @param string $name

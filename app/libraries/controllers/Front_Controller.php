@@ -34,13 +34,13 @@ class Front_Controller extends MY_Controller {
 		$this->load->library('app_hooks');
 		
 		// load all modules with control panel to build navigation, etc.
-		$modules = $this->module_model->get_modules();
+		$modules = $this->module_model->get_module_folders();
 		
 		// first, reset module definitions so that we run them all as a "frontend" call and their preloads get called
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module['name'] . '/');
+			MY_Loader::define_module($module . '/');
 		}
 		
 		// if we don't have a theme, we'll setup the default theme
