@@ -964,7 +964,7 @@ class User_model extends CI_Model
 							);
 							
 		if (!empty($password)) {
-			$update_fields['user_password'] = md5($password);
+			$this->update_password($user_id, $password);
 		}
 							
 		foreach ($custom_fields as $name => $value) {
@@ -1060,7 +1060,12 @@ class User_model extends CI_Model
 	* @return boolean 
 	*/
 	function update_password ($user_id, $new_password) {
-		$this->db->update('users',array('user_password' => md5($new_password)),array('user_id' => $user_id));
+		$CI =& get_instance();
+		$CI->load->helper('string');
+		$salt = random_string('unique');
+		$hashed_password = md5($new_password . ':' . $salt);
+	
+		$this->db->update('users',array('user_password' => $hashed_password, 'user_salt' => $salt),array('user_id' => $user_id));
 		
 		// prep hook
 		$CI =& get_instance();
