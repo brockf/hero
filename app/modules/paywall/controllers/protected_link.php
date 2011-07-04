@@ -52,6 +52,9 @@ class Protected_link extends Front_Controller {
 		else {
 			// load and return file
 			
+			// set filename
+			$filename = (isset($data['filename']) and !empty($data['filename'])) ? $data['filename'] : $link['url_path'];
+			
 			// don't limit to small files
 			set_time_limit(0);
 
@@ -63,7 +66,7 @@ class Protected_link extends Front_Controller {
 			$this->load->helper('file_extension');
 			header("Content-Type: " . $this->config->item(file_extension($data['url']), 'mimes'));
 			
-			header("Content-Disposition: attachment; filename=\"". $link['url_path'] . '.' . file_extension($data['url']) . "\";");
+			header("Content-Disposition: attachment; filename=\"". $filename . '.' . file_extension($data['url']) . "\";");
 			header("Content-Transfer-Encoding: binary");
 			header("Content-Length: " . filesize(FCPATH . $data['url']));
 			

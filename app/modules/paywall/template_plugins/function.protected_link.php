@@ -28,7 +28,8 @@ function smarty_function_protected_link ($params, $smarty) {
 	}
 	
 	// create serialized version of our data so we can see if we already have a link in the database
-	$serialized = serialize(array('url' => $params['url'], 'groups' => $params['groups']));
+	$filename = isset($params['filename']) ? $params['filename'] : null;
+	$serialized = serialize(array('url' => $params['url'], 'groups' => $params['groups'], 'filename' => $filename));
 
 	// check links database
 	$result = $smarty->CI->db->select('link_url_path')
