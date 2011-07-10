@@ -22,6 +22,11 @@ function smarty_block_topics ($params, $tagdata, &$smarty, &$repeat){
 	// deal with filters
 	$filters = array();
 	
+	// param: id
+	if (isset($params['id'])) {
+		$filters['id'] = $params['id'];
+	}
+	
 	// param: sort
 	if (isset($params['sort'])) {
 		$filters['sort'] = $params['sort'];
