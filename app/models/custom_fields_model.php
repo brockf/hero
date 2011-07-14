@@ -149,6 +149,10 @@ class Custom_fields_model extends CI_Model {
 		$this->load->helper('clean_string');
 		$system_name = clean_string($name);
 		
+		if (strlen($system_name) > 64) {
+			$system_name = substr($system_name, 0, 64);
+		}
+		
 		// get next order
 		$this->db->where('custom_field_group',$group);
 		$this->db->order_by('custom_field_order','DESC');
