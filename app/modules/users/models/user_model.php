@@ -1095,7 +1095,7 @@ class User_model extends CI_Model
 		$this->load->helper('string');
 		
 		$password = random_string('alnum',9);
-		$this->db->update('users',array('user_password' => md5($password)),array('user_id' => $user['id']));
+		$this->db->update('users',array('user_password' => md5($password), 'user_salt' => ''),array('user_id' => $user['id']));
 	
 		// hook call
 		$CI =& get_instance();
