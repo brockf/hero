@@ -53,8 +53,16 @@ class Relationship_fieldtype extends Fieldtype {
 		$content = $this->CI->content_model->get_contents(array('type' => $this->data['content_type']));
 		
 		$options = array();
-		foreach ($content as $item) {
-			$options[] = array('name' => $item[$this->data['field_name']], 'value' => $item['id']);
+		
+		if ($this->required != TRUE) {
+			// add an empty option
+			$options[] = array('name' => '', 'value' => '');
+		}
+		
+		if (!empty($content)) {
+			foreach ($content as $item) {
+				$options[] = array('name' => $item[$this->data['field_name']], 'value' => $item['id']);
+			}
 		}
 		
 		$field->label($this->label);
