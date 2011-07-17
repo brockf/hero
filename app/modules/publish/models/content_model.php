@@ -547,7 +547,14 @@ class Content_model extends CI_Model
 		if (isset($custom_fields) and is_array($custom_fields)) {
 			foreach ($custom_fields as $field) {
 				if (isset($filters[$field['name']])) {
-					$this->db->like($field['name'],$filters[$field['name']]);
+					if (!empty($fields[$field['name']])) {
+						// they are searching for *something*
+						$this->db->like($field['name'],$filters[$field['name']]);
+					}
+					else {
+						// they are searching for *nothing*
+						$this->db->where($field['name'],$filters[$field['name']]);
+					}
 				}
 				elseif (isset($filters[$type['system_name'] . '.' . $field['name']])) {
 					$this->db->like($type['system_name'] . '.' . $field['name'],$filters[$type['system_name'] . '.' . $field['name']]);
