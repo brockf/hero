@@ -154,6 +154,7 @@ class Link_model extends CI_Model {
 		$url_path = preg_replace('/<(.*?)>/','',$url_path);
 		$url_path = preg_replace('/\/{2,10}/','',$url_path);
 		$url_path = preg_replace('/[^a-z0-9\/\-\._]/i','',$url_path);
+		$url_path = preg_replace('/_+/i','_',$url_path);
 		
 		return $url_path;
 	}
