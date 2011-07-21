@@ -286,7 +286,7 @@ class Dataset {
     	$this->CI->load->model($this->data_model,'data_model');
     	$data_function = $this->data_function;
     	
-    	// do an XML export?
+    	// do a CSV export?
     	if ($this->CI->input->get('export') == 'csv') {
     		// get data without limits
     		$unlimited_params = $this->get_unlimited_parameters();
