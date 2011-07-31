@@ -501,6 +501,7 @@ class Admin_form {
 					if ($field['type'] == 'text') {
 						$classes = array('text');
 						$rel = '';
+						$placeholder = '';
 						
 						if ($field['required'] == TRUE) {
 							$classes[] = 'required';
@@ -512,15 +513,14 @@ class Admin_form {
 						}
 						
 						if ($field['mark_empty'] != FALSE) {
-							$classes[] = 'mark_empty';
-							$rel = $field['mark_empty'];
+							$placeholder = $field['mark_empty'];
 						}
 						
 						if (is_array($field['classes'])) {
 							$classes = array_merge($classes,$field['classes']);
 						}
 						
-						$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
+						$return .= '<input type="text" class="' . implode(' ',$classes) . '" placeholder="' . $placeholder . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
 					}
 					// password fields
 					elseif ($field['type'] == 'password') {
@@ -652,6 +652,7 @@ class Admin_form {
 						
 						$classes = array('text','datepick');
 						$rel = '';
+						$placeholder = '';
 						
 						if ($field['required'] == TRUE) {
 							$classes[] = 'required';
@@ -663,15 +664,14 @@ class Admin_form {
 						}
 						
 						if ($field['mark_empty'] != FALSE) {
-							$classes[] = 'mark_empty';
-							$rel = $field['mark_empty'];
+							$placeholder = $field['mark_empty'];
 						}
 						
 						if (is_array($field['classes'])) {
 							$classes = array_merge($classes,$field['classes']);
 						}
 						
-						$return .= '<input type="text" class="' . implode(' ',$classes) . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
+						$return .= '<input type="text" class="' . implode(' ',$classes) . '" placeholder="' . $placeholder . '" style="width:' . $field['width'] . '" name="' . $field['name'] . '" rel="' . $rel . '" id="' . $field['name'] . '" value="' . $field['value'] . '" />';
 					}
 					elseif ($field['type'] == 'value_row') {
 						$return .= $field['value'];
