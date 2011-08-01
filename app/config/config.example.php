@@ -93,7 +93,7 @@ $config['debug_profiler'] = FALSE;
 
 // the earliest time to run the billing cron job for subscription maintenance
 // 24 hour clock, no leading zero, uses system time
-$config['billing_cron_time'] = 9;
+$config['billing_cron_time'] = 11;
 
 // should we make sure that only one user is logged into an account at the same time?
 $config['duplicate_login_check'] = 'yes';
