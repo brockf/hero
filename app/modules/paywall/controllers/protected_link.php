@@ -39,11 +39,12 @@ class Protected_link extends Front_Controller {
 			
 			$data['url'] = substr_replace($data['url'], '', 0, strlen($this->config->item('base_url')));
 		}
-		else {
-			if (strpos($data['url'], FCPATH) === 0) {
-				$data['url'] = substr_replace($data['url'], '', 0, strlen(FCPATH)); 
-			}
+		elseif (strpos($data['url'], FCPATH) === 0) {
+			$data['url'] = substr_replace($data['url'], '', 0, strlen(FCPATH)); 
 		}
+		
+		// add APPPATH to make this an absolute path
+		$data['url'] = FCPATH . $data['url'];
 		
 		// check permissions
 		if (!$this->user_model->in_group($data['groups'])) {
