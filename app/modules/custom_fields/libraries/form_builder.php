@@ -128,15 +128,18 @@ class Form_builder {
 		// initial rules-based validation
 		$this->CI->load->library('form_validation');
 		reset($this->form);
+		
+		$has_rules = FALSE;
 		foreach ($this->form as $field) {
 			$rules = $field->validation_rules();
 			
 			if (!empty($rules)) {
-				$this->CI->form_validation->set_rules($field->name, $field->label, implode('|',$field->validation_rules()));
+				$has_rules = TRUE;
+				$this->CI->form_validation->set_rules($field->name, $field->label, implode('|',$rules));
 			}
 		}
 		
-		if (!empty($rules) and $this->CI->form_validation->run() === FALSE) {
+		if ($has_rules === TRUE and $this->CI->form_validation->run() === FALSE) {
 			$this->validation_errors = array_merge($this->validation_errors(TRUE),explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors())));
 		}
 		
