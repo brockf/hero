@@ -162,7 +162,7 @@ class Module_model extends CI_Model {
 	* @return boolean 
 	*/
 	function update_version ($name, $version) {
-		$this->db->update('modules',array('module_version' => $version), array('module_name' => $name));
+		$this->db->update('modules',array('module_version' => $version, 'module_installed' => '1'), array('module_name' => $name));
 		
 		// update cache
 		$this->modules_cache[$name]['version'] = $version;
