@@ -22,7 +22,7 @@ class Forms_module extends Module {
 		parent::__construct();
 	}
 	
-	/*
+	/**
 	* Pre-admin function
 	*
 	* Initiate navigation in control panel
@@ -32,7 +32,16 @@ class Forms_module extends Module {
 		$this->CI->admin_navigation->child_link('publish',45,'Forms',site_url('admincp/forms'));
 	}
 	
-	/*
+	/**
+	* Pre-front Method
+	*
+	* Triggered prior to loading the frontend
+	*/
+	function front_preload () {
+		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/forms/template_plugins/');
+	}
+	
+	/**
 	* Module update
 	*
 	* @param int $db_version The current DB version
