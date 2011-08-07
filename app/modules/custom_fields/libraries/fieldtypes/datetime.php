@@ -77,7 +77,7 @@ class Datetime_fieldtype extends Fieldtype {
 		$attributes = array(
 						'type' => 'text',
 						'name' => $this->name,
-						'value' => (!empty($this->value)) ? date('Y-m-d',strtotime($this->value)) : '',
+						'value' => (!empty($this->value) and strpos($this->value,"0000-00-00") === FALSE) ? date('Y-m-d',strtotime($this->value)) : '',
 						'placeholder' => $this->placeholder,
 						'style' => 'width: ' . $this->width,
 						'class' => implode(' ', $this->field_classes)
