@@ -21,7 +21,7 @@ function smarty_block_form ($params, $tagdata, &$smarty, &$repeat){
 		
 		// get the form
 		$smarty->CI->load->model('forms/form_model');
-		$form = $smarty->CI->form_model->get_form($form_id);
+		$form = $smarty->CI->form_model->get_form($params['id']);
 		
 		
 		if (empty($form)) {

@@ -355,11 +355,18 @@ class Admincp extends Admincp_Controller {
 		
 		$user['show_usergroups'] = implode(', ',$user['usergroups']);
 		
+		// get billing address
+		$billing_address = $this->user_model->get_billing_address($user['id']);
+		
+		$this->load->helper('format_street_address');
+		$formatted_billing_address = format_street_address($billing_address);
+		
 		$data = array(
 					'user' => $user,
 					'custom_fields' => $custom_fields,
 					'subscriptions' => $subscriptions,
-					'usergroups' => $usergroups
+					'usergroups' => $usergroups,
+					'billing_address' => $formatted_billing_address
 			);
 		
 		$this->load->view('profile', $data);

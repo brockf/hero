@@ -68,4 +68,9 @@
 <? } ?>
 	</tbody>
 </table>
+
+<p>&nbsp;</p>
+<h2 class="cat user">Billing Address</h2>
+
+<p><?=$billing_address;?></p>
 <?=$this->load->view(branded_view('cp/footer'));?>
