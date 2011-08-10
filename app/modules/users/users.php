@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.15';
+	var $version = '1.16';
 	var $name = 'users';
 
 	function __construct () {
@@ -189,6 +189,10 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.15) {
 			$this->CI->db->query('ALTER TABLE `users` ADD COLUMN `user_salt` VARCHAR(32) AFTER `user_password`');
+		}
+		
+		if ($db_version < 1.16) {
+			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `customer_id` (`customer_id`)');
 		}
 		
 		// return current version
