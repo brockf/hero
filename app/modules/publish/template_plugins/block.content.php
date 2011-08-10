@@ -30,18 +30,39 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			if (!is_numeric($params['type'])) {
 				$smarty->CI->load->model('publish/content_type_model');
 				$type = $smarty->CI->content_type_model->get_content_types(array('system_name' => $params['type']));
-				
-				if (empty($type)) {
-					show_error('Could not load content type data for "' . $params['type'] . '"');
-				}
-				else {
-					$params['type'] = $type[0]['id'];
-				}
 			}
+			else {
+				$smarty->CI->load->model('publish/content_type_model');
+				$type = $smarty->CI->content_type_model->get_content_type($params['type']);
+			}
+			
+			// we have a type, right?
+			if (empty($type) or !isset($type)) {
+				show_error('Could not load content type data for "' . $params['type'] . '"');
+			}
+
+			// load the proper type ID, if not numeric
+			$params['type'] = (isset($type[0])) ? $type[0]['id'] : $type['id'];
 		}
-	
+		
 		// deal with filters
 		$filters = array();
+		
+		// deal with custom fields first
+		$smarty->CI->load->model('custom_fields_model');
+		$custom_fields = $smarty->CI->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+
+		if (isset($custom_fields) and is_array($custom_fields)) {
+			foreach ($custom_fields as $field) {
+				if (isset($params[$field['name']])) {
+					$filters[$field['name']] = $params[$field['name']];
+				}
+				elseif (isset($params[$type['system_name'] . '.' . $field['name']])) {
+					$filters[$type['system_name'] . '.' . $field['name']] = $params[$type['system_name'] . '.' . $field['name']];
+				}
+			}
+			reset($custom_fields);
+		}
 		
 		// param: topic
 		if (isset($params['topic']) and !empty($params['topic'])) {
