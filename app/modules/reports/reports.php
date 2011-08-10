@@ -35,6 +35,7 @@ class Reports_module extends Module {
 		$this->CI->admin_navigation->child_link('reports',30,'Subscriptions',site_url('admincp/reports/subscriptions'));
 		$this->CI->admin_navigation->child_link('reports',40,'Cancellations',site_url('admincp/reports/cancellations'));
 		$this->CI->admin_navigation->child_link('reports',50,'Expirations',site_url('admincp/reports/expirations'));
+		$this->CI->admin_navigation->child_link('reports',55,'Coupons',site_url('admincp/reports/coupons'));
 		$this->CI->admin_navigation->child_link('reports',60,'Taxes Received',site_url('admincp/reports/taxes'));
 		$this->CI->admin_navigation->child_link('reports',70,'Registrations',site_url('admincp/reports/registrations'));
 		$this->CI->admin_navigation->child_link('reports',80,'Popular Content',site_url('admincp/reports/popular'));

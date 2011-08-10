@@ -7,4 +7,4 @@
 * at an improper time.
 */
 
-$config['app_version'] = '3.48';
+$config['app_version'] = '3.49';

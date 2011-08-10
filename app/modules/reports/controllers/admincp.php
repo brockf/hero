@@ -27,6 +27,51 @@ class Admincp extends Admincp_Controller {
 		return $this->load->view('cronjob');
 	}
 	
+	function coupons () {
+		$this->load->library('dataset');
+		
+		$columns = array(
+						array(
+							'name' => 'Coupon Name',
+							'type' => 'text',
+							'width' => '30%',
+							'sort_column' => 'coupons.coupon_name'),
+						array(
+							'name' => 'Coupon Code',
+							'type' => 'text',
+							'width' => '30%',
+							'filter' => 'code',
+							'sort_column' => 'coupons.coupon_code'),
+						array(
+							'name' => 'Subscription Uses',
+							'type' => 'text',
+							'width' => '15%',
+							'sort_column' => 'order_usages'
+							),
+						array(
+							'name' => 'Product Uses',
+							'type' => 'text',
+							'width' => '15%',
+							'sort_column' => 'subscription_usages'
+							)
+					);
+		
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('coupons/coupon_model','get_coupon_usages');
+		$this->dataset->base_url(site_url('admincp/reports/coupons'));
+		
+		// initialize the dataset
+		$this->dataset->initialize(FALSE);
+		
+		// count total rows
+		$this->load->model('coupons/coupon_model');
+		$total_rows = $this->coupon_model->count_coupons($this->dataset->get_unlimited_parameters());
+		$this->dataset->total_rows($total_rows);
+		$this->dataset->initialize_pagination();
+		
+		$this->load->view('coupons');
+	}
+	
 	function invoices () {
 		$this->load->library('dataset');
 		
@@ -345,7 +390,13 @@ class Admincp extends Admincp_Controller {
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/subscription_model','get_subscriptions');
 		$this->dataset->base_url(site_url('admincp/reports/subscriptions'));
-		$this->dataset->Initialize();
+		$this->dataset->initialize(FALSE);
+		
+		// count total rows
+		$this->load->model('billing/subscription_model');
+		$total_rows = $this->subscription_model->count_subscriptions($this->dataset->get_unlimited_parameters());
+		$this->dataset->total_rows($total_rows);
+		$this->dataset->initialize_pagination();
 		
 		$this->load->view('subscriptions');
 	}
@@ -751,6 +802,4 @@ class Admincp extends Admincp_Controller {
 		
 		return TRUE;
 	}
-	
-
 }
