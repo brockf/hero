@@ -12,7 +12,7 @@
 */
 
 class Custom_fields extends Module {
-	var $version = '1.03';
+	var $version = '1.04';
 	var $name = 'custom_fields';
 
 	function __construct () {
@@ -56,6 +56,10 @@ class Custom_fields extends Module {
 			// the Dropdown type has been substituted for Select
 			$this->CI->db->query('UPDATE `custom_fields` SET `custom_field_type`=\'select\' WHERE `custom_field_type`=\'dropdown\'');
 			$this->CI->db->query('UPDATE `custom_fields` SET `custom_field_type`=\'file_upload\' WHERE `custom_field_type`=\'file\'');
+		}
+		
+		if ($db_version < 1.04) {
+			$this->CI->db->query('ALTER TABLE `custom_fields` ADD INDEX `custom_field_group` (`custom_field_group`)');
 		}
 		
 		return $this->version;
