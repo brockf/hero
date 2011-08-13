@@ -424,8 +424,14 @@ class Form_model extends CI_Model
 	
 		$this->db->order_by('submission_date','DESC');
 		
+		// standard ordering and limiting
+		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'orders.order_id';
+		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'DESC';
+		$this->db->order_by($order_by, $order_dir);
+		
 		if (isset($filters['limit'])) {
-			$this->db->limit($filters['limit']);
+			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+			$this->db->limit($filters['limit'], $offset);
 		}
 		
 		$this->db->join('users','users.user_id = ' . $form['table_name'] . '.user_id','LEFT');
