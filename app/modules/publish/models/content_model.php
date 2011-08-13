@@ -506,7 +506,7 @@ class Content_model extends CI_Model
 		if (strpos($order_by, 'content') === 0) {
 			// note: in order to retrieve the content in random order, you must pass
 			// "random" as the order!
-			$order_dir = ($order_dir == 'rand()') ? 'random' : $order_dir;
+			$order_dir = (strtolower($order_dir) == 'rand()') ? 'random' : $order_dir;
 			
 			$this->db->order_by($order_by, $order_dir);
 		
