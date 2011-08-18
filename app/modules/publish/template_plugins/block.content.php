@@ -55,7 +55,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 		if (isset($custom_fields) and is_array($custom_fields)) {
 			foreach ($custom_fields as $field) {
 				if (isset($params[$field['name']])) {
-					$filters[$field['name']] = $params[$field['name']];
+					$filters[$type['system_name'] . '.' . $field['name']] = $params[$field['name']];
 				}
 				elseif (isset($params[$type['system_name'] . '.' . $field['name']])) {
 					$filters[$type['system_name'] . '.' . $field['name']] = $params[$type['system_name'] . '.' . $field['name']];
