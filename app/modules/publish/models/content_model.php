@@ -557,7 +557,14 @@ class Content_model extends CI_Model
 					}
 				}
 				elseif (isset($filters[$type['system_name'] . '.' . $field['name']])) {
-					$this->db->like($type['system_name'] . '.' . $field['name'],$filters[$type['system_name'] . '.' . $field['name']]);
+					if (!empty($filters[$type['system_name'] . '.' . $field['name']])) {
+						// they are searching for *something*
+						$this->db->like($type['system_name'] . '.' . $field['name'],$filters[$type['system_name'] . '.' . $field['name']]);
+					}
+					else {
+						// they are searching for *nothing*
+						$this->db->where($type['system_name'] . '.' . $field['name'],$filters[$type['system_name'] . '.' . $field['name']]);
+					}
 				}
 			}
 			reset($custom_fields);
