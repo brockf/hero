@@ -425,7 +425,7 @@ class Form_model extends CI_Model
 		$this->db->order_by('submission_date','DESC');
 		
 		// standard ordering and limiting
-		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'orders.order_id';
+		$order_by = (isset($filters['sort'])) ? $filters['sort'] : $form['table_name'] . '.submission_date';
 		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'DESC';
 		$this->db->order_by($order_by, $order_dir);
 		
