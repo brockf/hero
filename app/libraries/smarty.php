@@ -165,6 +165,7 @@ class CI_Smarty extends Smarty {
 		}
 		elseif (empty($this->perpetual_data[$data_name])) {
 			$repeat = FALSE;
+			$this->unset_loop_data($data_name);
 			return;
 		}
 		else {
