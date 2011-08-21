@@ -12,7 +12,7 @@
 */
 
 class Settings extends Module {
-	var $version = '1.01';
+	var $version = '1.03';
 	var $name = 'settings';
 
 	function __construct () {
@@ -22,7 +22,7 @@ class Settings extends Module {
 		parent::__construct();
 	}
 
-	/*
+	/**
 	* Pre-admin function
 	*
 	* Initiate navigation in control panel

@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.16';
+	var $version = '1.17';
 	var $name = 'users';
 
 	function __construct () {
@@ -193,6 +193,10 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.16) {
 			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `customer_id` (`customer_id`)');
+		}
+		
+		if ($db_version < 1.17) {
+			$this->CI->settings_model->new_setting(1, 'datasets_rows_per_page', '50', 'Specify the number of rows to show per page when viewing a control panel dataset (e.g., published content, members listing, etc.).', 'text', FALSE, FALSE, FALSE);
 		}
 		
 		// return current version
