@@ -40,7 +40,7 @@ class Admincp extends Admincp_Controller {
 							'name' => 'Coupon Code',
 							'type' => 'text',
 							'width' => '30%',
-							'filter' => 'code',
+							'filter' => 'code_search',
 							'sort_column' => 'coupons.coupon_code'),
 						array(
 							'name' => 'Subscription Uses',
