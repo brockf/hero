@@ -72,6 +72,14 @@ div#list_items h2 {
 	margin-bottom: 5px;
 	font-size: 11pt;
 	font-weight: bold;
+	position: relative;
+}
+
+div#list_items h2 span {
+	position: absolute;
+	text-align: right;
+	right: 8px;
+	font-size: 85%;
 }
 
 div#list_items h2 a:hover {

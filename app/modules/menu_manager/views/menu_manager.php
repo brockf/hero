@@ -19,7 +19,7 @@
 	<div id="active_menu">
 		<div id="active_menu_wrapper">
 			<div id="list_items">
-				<h2><?=$title;?></h2>
+				<h2><?=$title;?> <span><a href="<?php echo site_url('admincp/menu_manager/delete_menu/'. $active_id) ?>" onclick="return confirm('Are you sure you want to delete this menu?');">Delete Menu</a></span></h2>
 				<div id="list_items_wrapper">
 					
 				</div>

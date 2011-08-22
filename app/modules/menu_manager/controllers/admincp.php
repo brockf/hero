@@ -59,6 +59,7 @@ class Admincp extends Admincp_Controller {
 						'menus' => $menus,
 						'active_menu' => $active_menu_id,
 						'title' => $title,
+						'active_id'	=> $active_menu_id,
 						'possible_links' => $possible_links
 					);
 	
@@ -307,5 +308,23 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		redirect('admincp/menu_manager');
+	}
+	
+	function delete_menu() {
+		$menu_id = $this->uri->segment(4);
+		
+		if (!is_numeric($menu_id))
+		{
+			$this->notices->SetError('Unable to delete menu.');
+			return redirect('admincp/menu_manager');
+		}
+		
+		$this->load->model('menu_model');
+		$this->menu_model->delete_menu($menu_id);
+		$this->notices->SetNotice('Menu successfully deleted.');
+		
+		$this->session->unset_userdata('manage_menu_id');
+		
+		return redirect('admincp/menu_manager');
 	}
 }
