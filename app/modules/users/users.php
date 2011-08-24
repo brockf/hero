@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.17';
+	var $version = '1.18';
 	var $name = 'users';
 
 	function __construct () {
@@ -197,6 +197,19 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.17) {
 			$this->CI->settings_model->new_setting(1, 'datasets_rows_per_page', '50', 'Specify the number of rows to show per page when viewing a control panel dataset (e.g., published content, members listing, etc.).', 'text', FALSE, FALSE, FALSE);
+		}
+		
+		if ($db_version < 1.18)
+		{
+			$this->CI->db->query("CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+				session_id varchar(40) DEFAULT '0' NOT NULL,
+				ip_address varchar(16) DEFAULT '0' NOT NULL,
+				user_agent varchar(120) NOT NULL,
+				last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+				user_data text NOT NULL,
+				PRIMARY KEY (session_id),
+				KEY `last_activity_idx` (`last_activity`)
+			);");
 		}
 		
 		// return current version
