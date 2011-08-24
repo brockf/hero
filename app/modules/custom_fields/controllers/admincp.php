@@ -12,13 +12,17 @@
 */
 
 class Admincp extends Admincp_Controller {
+	private $protected_field_names;
+
 	function __construct()
 	{
 		parent::__construct();
 		
 		$this->admin_navigation->parent_active('configuration');
-		
 		$this->admin_navigation->module_link('Go Back','javascript:history.go(-1)');
+		
+		// set protected names
+		$this->protected_field_names = array('sort','sort_dir','type','limit');
 	}
 	
 	/**
@@ -119,12 +123,23 @@ class Admincp extends Admincp_Controller {
 	function post ($action, $id = FALSE) {
 		if ($this->input->post('name') == '') {
 			$this->notices->SetError('Field name is a required field.');
-			$error = true;
+			$error = TRUE;
 		}
 		
+		// certain names are off limits, let's check that now
+		$name = $this->input->post('name');
+		$this->load->helper('clean_string');
+		$system_name = clean_string($name);
+		
+		if (in_array($system_name, $this->protected_field_names) or in_array($name, $this->protected_field_names)) {
+			$this->notices->SetError('The field name you selected, "' . $name . '", is a protected field name that cannot be used.  Please select another.');
+			$error = TRUE;
+		}
+		
+		// radio validation
 		if (in_array($this->input->post('type'),array('select','radio')) and trim($this->input->post('options')) == '') {
 			$this->notices->SetError('You must specify field options.');
-			$error = true;
+			$error = TRUE;
 		}
 		
 		if (isset($error)) {
