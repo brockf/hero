@@ -573,7 +573,7 @@ class Content_model extends CI_Model
 		// let's check to see if we should order by/limit this query
 		// this only happens if we didn't limit in the subquery (above), i.e., if we are sorting by a content-specific
 		// field
-		if (strpos($order_by, 'content') === FALSE) {
+		if (strpos($order_by, 'content') != FALSE) {
 			// note: in order to retrieve the content in random order, you must pass
 			// "random" as the order!
 			$order_dir = (strtolower($order_dir) == 'rand()') ? 'random' : $order_dir;
