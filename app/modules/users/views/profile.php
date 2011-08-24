@@ -48,9 +48,11 @@
 					<? if ($subscription['active'] == TRUE) { ?>
 					<option value="cancel">cancel subscription</option>
 						<? if (!empty($subscription['card_last_four'])) { ?>
-						<option value="update_cc">update credit card</option
+						<option value="update_cc">update credit card</option>
 						<? } ?>
-					<? if ((float)$subscription['amount'] != 0) { ?><option value="change_price">change recurring amount</option><? } ?>
+					<? if ((float)$subscription['amount'] != 0) { ?>
+						<option value="change_price">change recurring amount</option>
+					<? } ?>
 					<option value="change_plan">change plan</option>
 					<? } ?>
 					<option value="view_all">report: view all related charges</option>
