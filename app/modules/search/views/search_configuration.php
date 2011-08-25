@@ -24,9 +24,11 @@ $setting_types = unserialize(setting('search_content_types'));
 <fieldset>
 	<legend>Options</legend>
 	<ul class="form">
-		<li style="margin-left: 20px">
-			<input type="checkbox" name="search_products" id="search_products" value="1" <? if (setting('search_products') == '1') { ?>checked="checked"<? } ?> /> <b>Include store products in search results</b>
-		</li>
+		<? if (module_installed('store')) { ?>
+			<li style="margin-left: 20px">
+				<input type="checkbox" name="search_products" id="search_products" value="1" <? if (setting('search_products') == '1') { ?>checked="checked"<? } ?> /> <b>Include store products in search results</b>
+			</li>
+		<? } ?>
 		<li style="margin-left: 20px">
 			<b>Require the user to wait <input type="text" name="search_delay" class="number required" style="width: 50px" rel="Search Delay" value="<?=setting('search_delay');?>" /> seconds before searching again.</b> (This option is recommended to reduce server strain.)
 		</li>

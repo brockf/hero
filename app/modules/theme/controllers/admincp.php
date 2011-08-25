@@ -117,42 +117,46 @@ class Admincp extends Admincp_Controller {
 			}
 			
 			// products
-			$this->load->model('store/products_model');
-			$products = $this->products_model->get_products();
-			
-			if (!empty($products)) {
-				foreach ($products as $product) {
-					$this->products_model->delete_product($product['id']);
+			if (module_installed('store')) {
+				$this->load->model('store/products_model');
+				$products = $this->products_model->get_products();
+				
+				if (!empty($products)) {
+					foreach ($products as $product) {
+						$this->products_model->delete_product($product['id']);
+					}
+				}
+				
+				// collections
+				$this->load->model('store/collections_model');
+				$collections = $this->collections_model->get_collections();
+				
+				if (!empty($collections)) {
+					foreach ($collections as $collection) {
+						$this->collections_model->delete_collection($collection['id']);
+					}
+				}
+				
+				// product options
+				$this->load->model('store/product_option_model');
+				$options = $this->product_option_model->get_options();
+				
+				if (!empty($options)) {
+					foreach ($options as $option) {
+						$this->product_option_model->delete_option($option['id']);
+					}
 				}
 			}
 			
-			// collections
-			$this->load->model('store/collections_model');
-			$collections = $this->collections_model->get_collections();
-			
-			if (!empty($collections)) {
-				foreach ($collections as $collection) {
-					$this->collections_model->delete_collection($collection['id']);
-				}
-			}
-			
-			// product options
-			$this->load->model('store/product_option_model');
-			$options = $this->product_option_model->get_options();
-			
-			if (!empty($options)) {
-				foreach ($options as $option) {
-					$this->product_option_model->delete_option($option['id']);
-				}
-			}
-			
-			// subscriptions
-			$this->load->model('billing/subscription_plan_model');
-			$subscriptions = $this->subscription_plan_model->get_plans();
-			
-			if (!empty($subscriptions)) {
-				foreach ($subscriptions as $plan) {
-					$this->subscription_plan_model->delete_plan($plan['id']);
+			if (module_installed('billing')) {
+				// subscriptions
+				$this->load->model('billing/subscription_plan_model');
+				$subscriptions = $this->subscription_plan_model->get_plans();
+				
+				if (!empty($subscriptions)) {
+					foreach ($subscriptions as $plan) {
+						$this->subscription_plan_model->delete_plan($plan['id']);
+					}
 				}
 			}
 			
@@ -170,19 +174,20 @@ class Admincp extends Admincp_Controller {
 			$this->load->model('custom_fields_model');
 			
 			// custom fields - products
-			
-			if ($this->config->item('products_custom_field_group')) {
-				$group = $this->config->item('products_custom_field_group');
-				$this->custom_fields_model->delete_group($group, 'products');
-				$this->settings_model->delete_setting('products_custom_field_group');
+			if  (module_installed('store')) {
+				if ($this->config->item('products_custom_field_group')) {
+					$group = $this->config->item('products_custom_field_group');
+					$this->custom_fields_model->delete_group($group, 'products');
+					$this->settings_model->delete_setting('products_custom_field_group');
+				}
+				
+				// custom fields - collections
+				if ($this->config->item('collections_custom_field_group')) {
+					$group = $this->config->item('collections_custom_field_group');
+					$this->custom_fields_model->delete_group($group, 'collections');
+					$this->settings_model->delete_setting('collections_custom_field_group');
+				}	
 			}
-			
-			// custom fields - collections
-			if ($this->config->item('collections_custom_field_group')) {
-				$group = $this->config->item('collections_custom_field_group');
-				$this->custom_fields_model->delete_group($group, 'collections');
-				$this->settings_model->delete_setting('collections_custom_field_group');
-			}	
 			
 			// clear custom fields cache
 			$this->custom_fields_model->cache = array();

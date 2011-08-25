@@ -54,31 +54,35 @@ $CI->custom_fields_model->new_custom_field($form['custom_field_group_id'], 'Your
 $CI->custom_fields_model->new_custom_field($form['custom_field_group_id'], 'Your Email', 'text', FALSE, FALSE, '450px', FALSE, TRUE, array('email'), $form['table_name']);
 $CI->custom_fields_model->new_custom_field($form['custom_field_group_id'], 'Message', 'textarea', FALSE, FALSE, '450px', FALSE, TRUE, array(), $form['table_name']);
 
-// collections custom fields
-if (!$field_group = $CI->config->item('collections_custom_field_group')) {
-	$field_group = $CI->custom_fields_model->new_group('Collections');
-	$this->settings_model->new_setting(2, 'collections_custom_field_group', $field_group, 'The custom field group ID for collection data.', 'text', '');
+if (module_installed('store')) {
+	// collections custom fields
+	if (!$field_group = $CI->config->item('collections_custom_field_group')) {
+		$field_group = $CI->custom_fields_model->new_group('Collections');
+		$this->settings_model->new_setting(2, 'collections_custom_field_group', $field_group, 'The custom field group ID for collection data.', 'text', '');
+	}
+	$CI->custom_fields_model->new_custom_field($field_group, 'Image', 'file_upload', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 'collections');
+	
+	// collections
+	$CI->load->model('store/collections_model');
+	$collection_id_blueberries = $CI->collections_model->new_collection('Blueberries','Our delicious blend of blueberries make the best pies.', 0, array('image' => 'themes/orchard/images/placeholders/blueberries.jpg'));
+	$collection_id_cherries = $CI->collections_model->new_collection('Cherries','Even better than the cough candies!', 0, array('image' => 'themes/orchard/images/placeholders/cherries.jpg'));
+	$collection_id_apples = $CI->collections_model->new_collection('Apples','You\'ll only ever eat apple pies again!', 0, array('image' => 'themes/orchard/images/placeholders/apples.jpg'));
+	$collection_id_oranges = $CI->collections_model->new_collection('Oranges','Straight from Florida, in the back of a truck!', 0, array('image' => 'themes/orchard/images/placeholders/oranges.jpg'));
+	$collection_id_pears = $CI->collections_model->new_collection('Pears','Not for the feint of heart', 0, array('image' => 'themes/orchard/images/placeholders/pears.jpg'));
+	$collection_id_strawberries = $CI->collections_model->new_collection('Strawberries','On your cereal, ice cream, pies, and anything else!', 0, array('image' => 'themes/orchard/images/placeholders/strawberries.jpg'));
+
+	// products
+	$CI->load->model('store/products_model');
+	$CI->products_model->new_product('Fresh Blueberries', 'Order a basket of the freshest blueberries out there!', array($collection_id_blueberries), 4.99, 1, TRUE, FALSE, 0, FALSE, '', TRUE);
 }
-$CI->custom_fields_model->new_custom_field($field_group, 'Image', 'file_upload', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, 'collections');
-
-// collections
-$CI->load->model('store/collections_model');
-$collection_id_blueberries = $CI->collections_model->new_collection('Blueberries','Our delicious blend of blueberries make the best pies.', 0, array('image' => 'themes/orchard/images/placeholders/blueberries.jpg'));
-$collection_id_cherries = $CI->collections_model->new_collection('Cherries','Even better than the cough candies!', 0, array('image' => 'themes/orchard/images/placeholders/cherries.jpg'));
-$collection_id_apples = $CI->collections_model->new_collection('Apples','You\'ll only ever eat apple pies again!', 0, array('image' => 'themes/orchard/images/placeholders/apples.jpg'));
-$collection_id_oranges = $CI->collections_model->new_collection('Oranges','Straight from Florida, in the back of a truck!', 0, array('image' => 'themes/orchard/images/placeholders/oranges.jpg'));
-$collection_id_pears = $CI->collections_model->new_collection('Pears','Not for the feint of heart', 0, array('image' => 'themes/orchard/images/placeholders/pears.jpg'));
-$collection_id_strawberries = $CI->collections_model->new_collection('Strawberries','On your cereal, ice cream, pies, and anything else!', 0, array('image' => 'themes/orchard/images/placeholders/strawberries.jpg'));
-
-// products
-$CI->load->model('store/products_model');
-$CI->products_model->new_product('Fresh Blueberries', 'Order a basket of the freshest blueberries out there!', array($collection_id_blueberries), 4.99, 1, TRUE, FALSE, 0, FALSE, '', TRUE);
 
 // menu
 $CI->load->model('menu_manager/menu_model');
 $menu = $CI->menu_model->new_menu('main_menu');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Home', 'home');
-$CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Store', 'store');
+if (module_installed('store')) {
+	$CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Store', 'store');
+}
 $CI->menu_model->add_link($menu, FALSE, 'link', $blog['link_id'], 'News');
 $CI->menu_model->add_link($menu, FALSE, 'link', $about['link_id'], 'About Us');
 $CI->menu_model->add_link($menu, FALSE, 'link', $form['link_id'], 'Contact Us');

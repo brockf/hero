@@ -318,7 +318,9 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// navigation
-		$this->admin_navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
+		if (module_installed('billing','store')) {
+			$this->admin_navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
+		}
 		
 		$this->admin_navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
 		
@@ -331,13 +333,17 @@ class Admincp extends Admincp_Controller {
 			$this->admin_navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
 		}
 		
-		$this->admin_navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
+		if (module_installed('billing')) {
+			$this->admin_navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
+		}
 		
 		// prep data
 		$custom_fields = $this->user_model->get_custom_fields();
 		
-		$this->load->model('billing/subscription_model');
-		$subscriptions = $this->subscription_model->get_subscriptions_friendly(array(), $user['id']);
+		if (module_installed('billing')) {
+			$this->load->model('billing/subscription_model');
+			$subscriptions = $this->subscription_model->get_subscriptions_friendly(array(), $user['id']);
+		}
 		
 		// prep $show_usergroups
 		$this->load->model('usergroup_model');
@@ -356,17 +362,19 @@ class Admincp extends Admincp_Controller {
 		$user['show_usergroups'] = implode(', ',$user['usergroups']);
 		
 		// get billing address
-		$billing_address = $this->user_model->get_billing_address($user['id']);
-		
-		$this->load->helper('format_street_address');
-		$formatted_billing_address = format_street_address($billing_address);
+		if (module_installed('billing')) {
+			$billing_address = $this->user_model->get_billing_address($user['id']);
+			
+			$this->load->helper('format_street_address');
+			$formatted_billing_address = format_street_address($billing_address);
+		}
 		
 		$data = array(
 					'user' => $user,
 					'custom_fields' => $custom_fields,
-					'subscriptions' => $subscriptions,
+					'subscriptions' => (isset($subscriptions)) ? $subscriptions : FALSE,
 					'usergroups' => $usergroups,
-					'billing_address' => $formatted_billing_address
+					'billing_address' => (isset($formatted_billing_address)) ? $formatted_billing_address : FALSE
 			);
 		
 		$this->load->view('profile', $data);

@@ -70,7 +70,8 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['friendly_name'];?></td>
 			<td><?=$row['name'];?></td>
 			<td><?=$row['type'];?></td>
-			<td><?=form_dropdown('billing_equiv',array(
+			<td><? if (module_installed('billing')) { ?>
+				<?=form_dropdown('billing_equiv',array(
 									'' => 'No',
 									'address_1' => 'Address Line 1',
 									'address_2' => 'Address Line 2',
@@ -78,7 +79,11 @@ if (!empty($this->dataset->data)) {
 									'state' => 'State/Province',
 									'country' => 'Country',
 									'postal_code' => 'Postal Code'
-								), (isset($row['billing_equiv'])) ? $row['billing_equiv'] : '');?></td>
+								), (isset($row['billing_equiv'])) ? $row['billing_equiv'] : '');?>
+				<? } else { ?>
+					n/a
+				<? } ?>
+			</td>
 			<td><?=form_checkbox('admin_only', '1', (isset($row['admin_only']) and $row['admin_only'] == TRUE) ? TRUE : FALSE);?></td>
 			<td><?=form_checkbox('registration_form', '1', (isset($row['registration_form']) and $row['registration_form'] == FALSE) ? FALSE : TRUE);?></td>
 			<td class="options"><a href="<?=site_url('admincp/users/data_edit/' . $row['custom_field_id']);?>">edit</a></td>

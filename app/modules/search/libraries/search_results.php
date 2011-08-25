@@ -54,7 +54,7 @@ class Search_results {
 		}
 		
 		// product search
-		if (setting('search_products') == '1') {
+		if (setting('search_products') == '1' and module_installed('store')) {
 			$this->CI->load->model('store/products_model');
 			
 			$products = $this->CI->products_model->get_products(array('keyword' => $query, 'sort' => 'relevance', 'sort_dir' => 'DESC', 'limit' => '50'));

@@ -67,12 +67,19 @@ class Emails extends Module {
 			$import = array(
 						'member_register' => array('subject' => '{$site_name}: Account Details', 'to' => array('member')),
 						'member_forgot_password' => array('subject' => 'Your new password', 'to' => array('member')),
-						'member_validate_email' => array('subject' => 'Please validate your email', 'to' => array('member')),
-						'subscription_charge' => array('subject' => '{$site_name}: Thank you for your subscription payment', 'to' => array('member'), 'bcc' => array('admin')),
-						'subscription_expire' => array('subject' => '{$site_name}: Your subscription has expired', 'to' => array('member')),
-						'store_order' => array('subject' => 'Thank you for your order from {$site_name}', 'to' => array('member'), 'bcc' => array('admin')),
-						'store_order_product_downloadable' => array('subject' => 'Your product download: {$product.name}', 'to' => array('member'))
+						'member_validate_email' => array('subject' => 'Please validate your email', 'to' => array('member'))
 					);
+					
+			if (file_exists(APPPATH . 'modules/billing')) {
+				$import_billing = array(		
+							'subscription_charge' => array('subject' => '{$site_name}: Thank you for your subscription payment', 'to' => array('member'), 'bcc' => array('admin')),
+							'subscription_expire' => array('subject' => '{$site_name}: Your subscription has expired', 'to' => array('member')),
+							'store_order' => array('subject' => 'Thank you for your order from {$site_name}', 'to' => array('member'), 'bcc' => array('admin')),
+							'store_order_product_downloadable' => array('subject' => 'Your product download: {$product.name}', 'to' => array('member'))
+						);
+						
+				$import = array_merge($import, $import_billing);
+			}
 		
 			$this->_email_import($import);
 		}

@@ -41,7 +41,7 @@ class User_model extends CI_Model
         	$this->set_active($this->session->userdata($this->session_name));
         	
         	// no carts in the control panel...
-        	if (!$this->in_admin()) {
+        	if (!$this->in_admin() and module_installed('store')) {
 	        	// handle a potential cart
 	        	$CI =& get_instance();
 	        	$CI->load->model('store/cart_model');
@@ -250,6 +250,33 @@ class User_model extends CI_Model
 				
 				$this->db->update('users', array('user_salt' => $salt, 'user_password' => $salted_password), array('user_id' => $this->get('id')));
 			}
+		}
+		
+		// do we have a customer record for this user?
+		if ($this->active_user['customer_id'] == FALSE and module_installed('billing')) {
+			$CI =& get_instance();
+			$CI->load->model('billing/customer_model');
+			
+			$customer = array();
+			$customer['email'] = $this->active_user['email'];
+			$customer['internal_id'] = $user_id;
+			$customer['first_name'] = $this->active_user['first_name'];
+			$customer['last_name'] = $this->active_user['last_name'];
+			
+			// do any custom fields map to billing fields?
+			$user_custom_fields = $this->get_custom_fields();
+			
+			if (is_array($user_custom_fields)) {
+				foreach ($user_custom_fields as $field) {
+					if (!empty($field['billing_equiv']) and isset($this->active_user[$field['name']])) {
+						$customer[$field['billing_equiv']] = $this->active_user[$field['name']];		
+					}
+				}
+			}
+			
+			$customer_id = $CI->customer_model->NewCustomer($customer);
+			
+			$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		}
 		
 		// prep hook
@@ -882,28 +909,30 @@ class User_model extends CI_Model
 		$user_id = $this->db->insert_id();
 		
 		// create customer record
-		$this->load->model('billing/customer_model');
-		
-		$customer = array();
-		$customer['email'] = $email;
-		$customer['internal_id'] = $user_id;
-		$customer['first_name'] = $first_name;
-		$customer['last_name'] = $last_name;
-		
-		// do any custom fields map to billing fields?
-		$user_custom_fields = $this->get_custom_fields();
-		
-		if (is_array($user_custom_fields)) {
-			foreach ($user_custom_fields as $field) {
-				if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
-					$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+		if (module_installed('billing')) {
+			$CI->load->model('billing/customer_model');
+			
+			$customer = array();
+			$customer['email'] = $email;
+			$customer['internal_id'] = $user_id;
+			$customer['first_name'] = $first_name;
+			$customer['last_name'] = $last_name;
+			
+			// do any custom fields map to billing fields?
+			$user_custom_fields = $this->get_custom_fields();
+			
+			if (is_array($user_custom_fields)) {
+				foreach ($user_custom_fields as $field) {
+					if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
+						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+					}
 				}
 			}
+			
+			$customer_id = $CI->customer_model->NewCustomer($customer);
+			
+			$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		}
-		
-		$customer_id = $this->customer_model->NewCustomer($customer);
-		
-		$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		
 		// prep hook
 		// only run this hook if the App_hooks library is loaded
@@ -973,25 +1002,42 @@ class User_model extends CI_Model
 												
 		$this->db->update('users',$update_fields,array('user_id' => $user_id));
 		
-		// update email in customers table
-		$this->db->update('customers',array('email' => $email),array('internal_id' => $user_id));
-		
-		// do any custom fields map to billing fields?
-		$user_custom_fields = $this->get_custom_fields();
-		
-		$customer = array();
-		if (is_array($user_custom_fields)) {
-			foreach ($user_custom_fields as $field) {
-				if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
-					$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+		if (module_installed('billing')) {
+			// update email in customers table
+			$this->db->update('customers',array('email' => $email),array('internal_id' => $user_id));
+			
+			// do any custom fields map to billing fields?
+			$user_custom_fields = $this->get_custom_fields();
+			
+			$customer = array();
+			if (is_array($user_custom_fields)) {
+				foreach ($user_custom_fields as $field) {
+					if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
+						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+					}
 				}
 			}
-		}
+			
+			$customer_id = $this->get_customer_id($user_id);
+			
+			if (!empty($customer)) {
+				$this->db->update('customers', $customer, array('internal_id' => $user_id));
+			}
+			else {
+				$CI->load->model('billing/customer_model');
 		
-		$customer_id = $this->get_customer_id($user_id);
-		
-		if (!empty($customer)) {
-			$this->db->update('customers', $customer, array('internal_id' => $user_id));
+				$customer['email'] = $email;
+				$customer['internal_id'] = $user_id;
+				$customer['first_name'] = $first_name;
+				$customer['last_name'] = $last_name;
+				
+				// do any custom fields map to billing fields?
+				$user_custom_fields = $this->get_custom_fields();
+				
+				$customer_id = $CI->customer_model->NewCustomer($customer);
+				
+				$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
+			}
 		}
 		
 		// hook call
@@ -1012,6 +1058,10 @@ class User_model extends CI_Model
 	* @return boolean 
 	*/
 	function update_billing_address ($user_id, $address_fields) {
+		if (!module_installed('billing')) {
+			return FALSE;
+		}
+	
 		$CI =& get_instance();
 		$CI->load->model('billing/customer_model');
 		
@@ -1507,6 +1557,8 @@ class User_model extends CI_Model
 			return FALSE;
 		}
 		
+		$billing_installed = module_installed('billing');
+		
 		$fields = array();
 		foreach ($result->result_array() as $field) {
 			$fields[] = array(
@@ -1523,7 +1575,7 @@ class User_model extends CI_Model
 							'required' => ($field['custom_field_required'] == 1) ? TRUE : FALSE,
 							'validators' => (!empty($field['custom_field_validators'])) ? unserialize($field['custom_field_validators']) : array(),
 							'data' => (!empty($field['custom_field_data'])) ? unserialize($field['custom_field_data']) : array(),
-							'billing_equiv' => $field['user_field_billing_equiv'],
+							'billing_equiv' => ($billing_installed === TRUE) ? $field['user_field_billing_equiv'] : '',
 							'admin_only' => ($field['user_field_admin_only'] == '1') ? TRUE : FALSE,
 							'registration_form' => ($field['user_field_registration_form'] == '1') ? TRUE : FALSE
 						);

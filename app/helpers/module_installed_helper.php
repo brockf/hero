@@ -21,14 +21,30 @@ function module_installed () {
 		return FALSE;
 	}
 	
+	// create our cache-holder
+	if (!isset($GLOBALS['modules_installed'])) {
+		$GLOBALS['modules_installed'] = array();
+	}
+	
 	foreach ($modules as $module) {
+		if (isset($GLOBALS['modules_installed'][$module]))  {
+			if ($GLOBALS['modules_installed'][$module] == FALSE) {
+				return FALSE;
+			}
+		}
+	
 		$result = $CI->db->select('module_id')
 						 ->where('module_name',$module)
 						 ->where('module_installed','1')
-						 ->get();
+						 ->get('modules');
 						 
 		if ($result->num_rows() == 0) {
+			$GLOBALS['modules_installed'][$module] = FALSE;
+		
 			return FALSE;
+		}
+		else {
+			$GLOBALS['modules_installed'][$module] = TRUE;
 		}
 	}
 	

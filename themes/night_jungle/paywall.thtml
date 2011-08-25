@@ -12,7 +12,9 @@
 	<div class="paywall">
 		<h2>You do not have permission to access this content.</h2>
 		<p>This content is restricted for <b>subscribers only</b>.</p>
-		<p><b>Not a subscriber?</b>  <a href="{url path="subscriptions"}">Click here to subscribe</a>.</p>
+		{module_installed name="billing"}
+			<p><b>Not a subscriber?</b>  <a href="{url path="subscriptions"}">Click here to subscribe</a>.</p>
+		{/module_installed}
 		{if !$logged_in}
 			<p><b>Already a subscriber?</b> Login Below.</p>
 			{login_form var="login" return=$content.url_path}

@@ -13,9 +13,7 @@
 */
 
 $config['core_modules'] = array(
-							'billing',
 							'blogs',
-							'coupons',
 							'custom_fields',
 							'emails',
 							'forms',
@@ -27,7 +25,6 @@ $config['core_modules'] = array(
 							'rss',
 							'search',
 							'settings',
-							'store',
 							'theme',
 							'users'
 						);

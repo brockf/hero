@@ -98,11 +98,17 @@ class Admincp extends Admincp_Controller {
 								'home' => 'Home',
 								'control_panel' => 'Control Panel',
 								'my_account' => 'My Account',
-								'store' => 'Store',
-								'search' => 'Search',
-								'subscriptions' => 'Subscription Plans',
-								'cart' => 'Shopping Cart'
+								'search' => 'Search'
 							);
+								
+		if (module_installed('store')) {
+			$special_links['store'] = 'Store';
+			$special_links['cart'] = 'Shopping Cart';
+		}								
+		
+		if (module_installed('billing')) {
+			$special_links['subscriptions'] = 'Subscription Plans';				
+		}								
 							
 		foreach ($special_links as $special_link_code => $special_link_name) {
 			if (!$this->special_link_in_array($current_links, $special_link_code)) {
