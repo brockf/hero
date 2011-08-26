@@ -22,6 +22,8 @@ class Module_model extends CI_Model {
 		// pre-cache modules table
 		$result = $this->db->get('modules');
 		
+		$this->modules_cache = array();
+		
 		foreach ($result->result_array() as $module) {
 			$this->modules_cache[$module['module_name']] = array(
 																'name' => $module['module_name'],
@@ -30,6 +32,9 @@ class Module_model extends CI_Model {
 																'ignored' => ($module['module_ignore'] == '1') ? TRUE : FALSE
 																);
 		}
+		
+		// alphabetically sort!
+		ksort($this->modules_cache);
 	}
 	
 	/**
