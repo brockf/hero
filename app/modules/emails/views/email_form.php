@@ -137,7 +137,7 @@ if (!isset($form)) {
 		<ul class="form">
 			<li>
 				<label>To:</label>
-				<? if (in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="to_member" value="1" <? if (in_array('member', $form['recipients'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
+				<? if (is_array($hook['email_data']) and in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="to_member" value="1" <? if (in_array('member', $form['recipients'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
 				<input type="checkbox" name="to_admin" value="1" <? if (in_array('admin', $form['recipients'])) { ?> checked="checked" <? } ?> /> Administrator
 				&nbsp;&nbsp;&nbsp;Others: <input type="text" style="width: 450px" name="to_others" class="text mark_empty" rel="e.g., tom@example.com, bill@otherdomain.com" value="<?=$form['other_recipients'];?>" />
 			</li>
@@ -148,7 +148,7 @@ if (!isset($form)) {
 			</li>
 			<li>
 				<label>BCC:</label>
-				<? if (in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="bcc_member" value="1" <? if (in_array('member', $form['bccs'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
+				<? if (is_array($hook['email_data']) and in_array('member', $hook['email_data'])) { ?><input type="checkbox" name="bcc_member" value="1" <? if (in_array('member', $form['bccs'])) { ?> checked="checked" <? } ?> /> Member<? } ?>
 				<input type="checkbox" name="bcc_admin" value="1" <? if (in_array('member', $form['bccs'])) { ?> checked="checked" <? } ?> /> Administrator
 				&nbsp;&nbsp;&nbsp;Others: <input type="text" style="width: 450px" name="bcc_others" class="text mark_empty" rel="e.g., tom@example.com, bill@otherdomain.com" value="<?=$form['other_bccs'];?>" />
 			</li>

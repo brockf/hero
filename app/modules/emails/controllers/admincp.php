@@ -367,7 +367,7 @@ class Admincp extends Admincp_Controller {
 	function email_variables ($email_data, $other_email_data = array()) {
 		$vars = array();
 		
-		if (in_array('member', $email_data)) {
+		if (is_array($email_data) and in_array('member', $email_data)) {
 			// dynamically load variables from a get_user() call
 			$user = $this->user_model->get();
 			
@@ -388,7 +388,7 @@ class Admincp extends Admincp_Controller {
 			}
 		}
 		
-		if (in_array('product', $email_data)) {
+		if (is_array($email_data) and in_array('product', $email_data)) {
 			$vars[] = array('tag' => '{$product.id}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$product.url}', 'type' => 'url');
 			$vars[] = array('tag' => '{$product.url_path}', 'type' => 'url_path');
@@ -411,7 +411,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$product.feature_image_url}', 'type' => 'url');
 		}
 		
-		if (in_array('order', $email_data)) {
+		if (is_array($email_data) and in_array('order', $email_data)) {
 			$vars[] = array('tag' => '{$shipping_address}', 'type' => 'string');
 			$vars[] = array('tag' => '{$products}', 'type' => 'array');
 			$vars[] = array('tag' => '{$products.X.id}', 'type' => 'integer');
@@ -423,7 +423,6 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$products.X.description}', 'type' => 'string');
 			$vars[] = array('tag' => '{$products.X.price}', 'type' => 'float');
 			$vars[] = array('tag' => '{$products.X.weight}', 'type' => 'float');
-			$vars[] = array('tag' => '{$products.X.quantity}', 'type' => 'int');
 			$vars[] = array('tag' => '{$products.X.requires_shipping}', 'type' => 'boolean');
 			$vars[] = array('tag' => '{$products.X.track_inventory}', 'type' => 'boolean');
 			$vars[] = array('tag' => '{$products.X.inventory}', 'type' => 'integer');
@@ -437,7 +436,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$products.X.feature_image_url}', 'type' => 'url');
 		}
 		
-		if (in_array('invoice', $email_data)) {
+		if (is_array($email_data) and in_array('invoice', $email_data)) {
 			$vars[] = array('tag' => '{$billing_address}', 'type' => 'string');
 			$vars[] = array('tag' => '{$invoice.id}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$invoice.gateway}', 'type' => 'string');
@@ -449,7 +448,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$invoice.tax_rate}', 'type' => 'float');
 		}
 		
-		if (in_array('subscription', $email_data)) {
+		if (is_array($email_data) and in_array('subscription', $email_data)) {
 			$vars[] = array('tag' => '{$subscription.id}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$subscription.date_created}', 'type' => 'date');
 			$vars[] = array('tag' => '{$subscription.amount}', 'type' => 'float');
@@ -473,7 +472,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$subscription.is_updated}', 'type' => 'boolean');
 		}
 		
-		if (in_array('subscription_plan', $email_data)) {
+		if (is_array($email_data) and in_array('subscription_plan', $email_data)) {
 			$vars[] = array('tag' => '{$subscription_plan.id}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$subscription_plan.name}', 'type' => 'string');
 			$vars[] = array('tag' => '{$subscription_plan.initial_charge}', 'type' => 'float');
