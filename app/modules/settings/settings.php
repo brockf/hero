@@ -22,10 +22,6 @@ class Settings extends Module {
 		parent::__construct();
 	}
 	
-	function update () {
-		return $this->version;
-	}
-
 	/**
 	* Pre-admin function
 	*

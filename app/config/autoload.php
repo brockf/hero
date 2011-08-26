@@ -76,6 +76,11 @@ $autoload['helper'] = array('ioncube_license',
 							'query_value'
 						);
 
+// we only do license checks if they have the e-commerce module
+if (!file_exists(APPPATH . 'modules/billing')) {
+	unset($autoload['helper'][0]);
+}
+
 
 /*
 | -------------------------------------------------------------------
