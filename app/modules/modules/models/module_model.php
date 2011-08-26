@@ -61,6 +61,9 @@ class Module_model extends CI_Model {
 			log_message('debug', 'Module installed: ' . $module);
 		}
 		
+		// force the templates to recompile because of {module_installed} tags
+		$this->CI->settings_model->update_setting('smarty_library','0');
+		
 		return TRUE;
 	}
 	
@@ -94,6 +97,9 @@ class Module_model extends CI_Model {
 		}
 	
 		$this->db->update('modules', array('module_installed' => '0', 'module_ignore' => '1', 'module_version' => ''), array('module_name' => $module));
+		
+		// force the templates to recompile because of {module_installed} tags
+		$this->CI->settings_model->update_setting('smarty_library','0');
 	}
 	
 	/**

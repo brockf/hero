@@ -19,9 +19,6 @@ class CI_Smarty extends Smarty {
 	// if this date is newer than the current library, all compiled templates
 	// will be deleted
 	private $library_version = '3.06';
-	
-	// holds a template that we are prefiltering
-	private $prefiltering_template;
 
 	function __construct ($email_parser = FALSE) {
 		parent::__construct();
@@ -144,11 +141,9 @@ class CI_Smarty extends Smarty {
 	* @return string
 	*/
 	function pre_filter ($template, &$smarty) {
-		$this->prefiltering_template = $template;
-	
-		preg_replace_callback ('/\{module_installed\s*?name="(.*?)"\}(.*?)\{\/module_installed\}/is', array($this, 'pre_filter_module_installed') , $this->prefiltering_template);
+		$template = preg_replace_callback ('/\{module_installed\s*?name="(.*?)"\}(.*?)\{\/module_installed\}/is', array($this, 'pre_filter_module_installed') , $template);
 		
-		return $this->prefiltering_template;
+		return $template;
 	}
 	
 	/**
@@ -164,11 +159,12 @@ class CI_Smarty extends Smarty {
 
 		$module_installed = module_installed($module);
 		
-		if ($moduled_installed == FALSE) {
-			$this->prefiltering_template = preg_replace('/\{module_installed\s*?name="' . $module . '"\}(.*?)\{\/module_installed\}/is','',$this->prefiltering_template);
+		if ($module_installed == FALSE) {
+			return '';
 		}
-		
-		return TRUE;
+		else {
+			return $tagdata;
+		}
 	}
 	
 	/**
