@@ -19,6 +19,9 @@ class CI_Smarty extends Smarty {
 	// if this date is newer than the current library, all compiled templates
 	// will be deleted
 	private $library_version = '3.06';
+	
+	// holds a template that we are prefiltering
+	private $prefiltering_template;
 
 	function __construct ($email_parser = FALSE) {
 		parent::__construct();
@@ -65,6 +68,9 @@ class CI_Smarty extends Smarty {
 		else {
 			$this->addPluginsDir(setting('path_email_templates') . '/plugins');
 		}
+		
+		// register the prefilter which parses {module_installed} tags
+		$this->registerFilter('pre',array($this,'pre_filter'));
 		
 		// check for a library update
 		$current_library = setting('smarty_library');
@@ -113,7 +119,11 @@ class CI_Smarty extends Smarty {
 		}
 	}
 	
-	// modify the display class
+	/**
+	* Display
+	*
+	* @param string $template
+	*/
 	function display ($template, $cache_id = null, $compile_id = null, $parent = null) {
 		// automatically add .thtml extension if it's not already there (and no extension is)
 		if (strpos($template,'.') === FALSE) {
@@ -121,6 +131,44 @@ class CI_Smarty extends Smarty {
 		}
 		
 		parent::display($template, $cache_id, $compile_id, $parent);
+	}
+	
+	/**
+	* Pre Filter
+	*
+	* Templates pass through this function
+	*
+	* @param string $template
+	* @object $smarty
+	*
+	* @return string
+	*/
+	function pre_filter ($template, &$smarty) {
+		$this->prefiltering_template = $template;
+	
+		preg_replace_callback ('/\{module_installed\s*?name="(.*?)"\}(.*?)\{\/module_installed\}/is', array($this, 'pre_filter_module_installed') , $this->prefiltering_template);
+		
+		return $this->prefiltering_template;
+	}
+	
+	/**
+	* Pre Filter: {module_installed}
+	*
+	* @param array $matches
+	*
+	* @return string
+	*/
+	function pre_filter_module_installed ($matches) {
+		$module = $matches[1];
+		$tagdata = $matches[2];
+
+		$module_installed = module_installed($module);
+		
+		if ($moduled_installed == FALSE) {
+			$this->prefiltering_template = preg_replace('/\{module_installed\s*?name="' . $module . '"\}(.*?)\{\/module_installed\}/is','',$this->prefiltering_template);
+		}
+		
+		return TRUE;
 	}
 	
 	/**

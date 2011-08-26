@@ -44,4 +44,8 @@ class Reports_module extends Module {
 		
 		$this->CI->admin_navigation->child_link('configuration',100,'Cronjob',site_url('admincp/reports/cronjob'));
 	}
+	
+	function update () {
+		return $this->version;
+	}
 }

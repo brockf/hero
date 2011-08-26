@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.10';
+	var $version = '1.11';
 	var $name = 'publish';
 
 	function __construct () {
@@ -122,6 +122,12 @@ class Publish extends Module {
 		
 		if ($db_version < 1.10) {
 			$this->CI->db->query('ALTER TABLE `content_types` ADD COLUMN `content_type_base_url` VARCHAR(100) NOT NULL AFTER `content_type_template`');
+		}
+		
+		if ($db_version < 1.11) {
+			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `content_type_id` (`content_type_id`)');
+			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `link_id` (`link_id`)');
+			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `user_id` (`user_id`)');
 		}
 	
 		return $this->version;

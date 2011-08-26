@@ -24,10 +24,6 @@ class Cron extends Front_Controller {
 			die('Invalid key.');
 		}
 		
-		if (!isset($this->app_hooks->hooks['cron'])) {
-			$this->app_hooks->register('cron','The daily cronjob for maintenance updates.');
-		}
-		
 		$this->app_hooks->trigger('cron');
 		
 		// update cron update setting

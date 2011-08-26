@@ -29,9 +29,11 @@
 		</a>
 
 		<div class="date">
-			{has_cart}
-				<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a> | 
-			{/has_cart}
+			{module_installed name="store"}
+				{has_cart}
+					<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a> | 
+				{/has_cart}
+			{/module_installed}
 			{$smarty.now|date_format:"%A, %B %e, %Y"}
 		</div>
 		

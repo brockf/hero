@@ -8,8 +8,6 @@ class MY_Loader extends MX_Loader {
 
 	function __construct () {
 		parent::__construct();
-		
-		$this->CI =& get_instance();
 	}
 
 	/**
@@ -58,6 +56,12 @@ class MY_Loader extends MX_Loader {
 	*/
 	function define_module ($path) {
 	    if (strpos($path, '/') !== FALSE) {
+	    	// normally, we'd do this in the constructor, but that way left us with
+	    	// some issues in that module_model was NULL in certain instances
+	    	if (isset($this->CI) or !isset($this->CI->module_model)) {
+		    	$this->CI =& get_instance();
+		    }
+	    	
 	    	// this may be a module
 	    	list($module,$path) = explode('/',$path);
 	    	
@@ -74,7 +78,7 @@ class MY_Loader extends MX_Loader {
 	    	}
 	    	
 	    	// are we ignoring this module?
-	    	if (isset($this->CI->module_model->modules_cache[$module]['ignored']) and $this->CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
+			if (isset($this->CI->module_model->modules_cache[$module]['ignored']) and $this->CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
 	    		log_message('debug','Ignoring module: ' . $module);
 	    		return;
 	    	}
@@ -107,5 +111,4 @@ class MY_Loader extends MX_Loader {
 	    	}
 	    }
 	}
-
 }

@@ -59,15 +59,17 @@
 			<a class="small_link" href="{url path="search"}">Advanced Search</a>
 		</div>
 		
-		<div class="top_box cart">
-			<h4>Shopping Cart</h3>
-			{has_cart}
-				<a href="{url path="store/cart"}">You have {cart_items} items in your shopping cart</a>
-			{/has_cart}
-			{no_cart}
-				<a href="{url path="store/cart"}">Your shopping cart is currently empty</a>
-			{/no_cart}
-		</div>
+		{module_installed name="store"}
+			<div class="top_box cart">
+				<h4>Shopping Cart</h3>
+				{has_cart}
+					<a href="{url path="store/cart"}">You have {cart_items} items in your shopping cart</a>
+				{/has_cart}
+				{no_cart}
+					<a href="{url path="store/cart"}">Your shopping cart is currently empty</a>
+				{/no_cart}
+			</div>
+		{/module_installed}
 	</div>
 	
 	<div id="navigation">

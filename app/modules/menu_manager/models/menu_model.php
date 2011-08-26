@@ -288,6 +288,15 @@ class Menu_model extends CI_Model
 		$result = $this->db->get('menus_links');
 		
 		if ($result->num_rows() == 0) {
+			// save cache?
+			if (isset($filters['menu'])) {
+				$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
+				$directory = $this->config->item('path_writeable') . 'menu_cache/';
+				
+				$this->load->helper('file');
+				write_file($directory . $cache_file, serialize(FALSE));
+			}
+			
 			return FALSE;
 		}
 		

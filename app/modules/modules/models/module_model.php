@@ -25,7 +25,7 @@ class Module_model extends CI_Model {
 		foreach ($result->result_array() as $module) {
 			$this->modules_cache[$module['module_name']] = array(
 																'name' => $module['module_name'],
-																'version' => (!empty($module['module_version'])) ? $module['module_version'] : 'n/a',
+																'version' => ($module['module_version'] != '') ? $module['module_version'] : FALSE,
 																'installed' => ($module['module_installed'] == '1') ? TRUE : FALSE,
 																'ignored' => ($module['module_ignore'] == '1') ? TRUE : FALSE
 																);

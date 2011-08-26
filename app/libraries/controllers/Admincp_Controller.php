@@ -43,7 +43,9 @@ class Admincp_Controller extends MY_Controller {
 		// add basic navigation categories
 		$this->admin_navigation->parent_link('dashboard','Dashboard');
 		$this->admin_navigation->parent_link('publish','Publish');
-		$this->admin_navigation->parent_link('storefront','Storefront');
+		if (module_installed('store') or module_installed('billing') or module_installed('coupons')) {
+			$this->admin_navigation->parent_link('storefront','Storefront');
+		}
 		$this->admin_navigation->parent_link('members','Members');
 		$this->admin_navigation->parent_link('reports','Reports');
 		$this->admin_navigation->parent_link('design','Design');

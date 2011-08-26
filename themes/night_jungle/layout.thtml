@@ -16,11 +16,13 @@
 
 <div class="container">
 	<div id="top_bar">
-		{has_cart}
-		<div class="top_cart">
-			<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a>
-		</div>
-		{/has_cart}
+		{module_installed name="store"}
+			{has_cart}
+			<div class="top_cart">
+				<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a>
+			</div>
+			{/has_cart}
+		{/module_installed}
 		
 		<div class="top_search">
 			<form class="form" method="get" action="{url path="search"}" class="validate">

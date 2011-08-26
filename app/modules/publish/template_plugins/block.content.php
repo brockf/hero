@@ -48,25 +48,27 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 		// deal with filters
 		$filters = array();
 		
-		// deal with custom fields first
-		$smarty->CI->load->model('custom_fields_model');
-		$custom_fields = $smarty->CI->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
-
-		if (isset($custom_fields) and is_array($custom_fields)) {
-			foreach ($custom_fields as $field) {
-				if (isset($params[$field['name']])) {
-					if (isset($type['system_name'])) {
-						$filters[$type['system_name'] . '.' . $field['name']] = $params[$field['name']];
+		if (isset($type['custom_field_group_id'])) {
+			// deal with custom fields first
+			$smarty->CI->load->model('custom_fields_model');
+			$custom_fields = $smarty->CI->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+	
+			if (isset($custom_fields) and is_array($custom_fields)) {
+				foreach ($custom_fields as $field) {
+					if (isset($params[$field['name']])) {
+						if (isset($type['system_name'])) {
+							$filters[$type['system_name'] . '.' . $field['name']] = $params[$field['name']];
+						}
+						else {
+							$filters[$field['name']] = $params[$field['name']];
+						}
 					}
-					else {
-						$filters[$field['name']] = $params[$field['name']];
+					elseif (isset($type['system_name']) and isset($params[$type['system_name'] . '.' . $field['name']])) {
+						$filters[$type['system_name'] . '.' . $field['name']] = $params[$type['system_name'] . '.' . $field['name']];
 					}
 				}
-				elseif (isset($params[$type['system_name'] . '.' . $field['name']])) {
-					$filters[$type['system_name'] . '.' . $field['name']] = $params[$type['system_name'] . '.' . $field['name']];
-				}
+				reset($custom_fields);
 			}
-			reset($custom_fields);
 		}
 		
 		// param: topic

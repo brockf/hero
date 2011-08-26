@@ -10,11 +10,11 @@ class Import extends Module {
 		parent::__construct();
 	} 
 	
-	//--------------------------------------------------------------------
+	function update () {
+		return $this->version;
+	}
 	
 	function admin_preload () {
 	    $this->CI->admin_navigation->child_link('members', 44, 'Import Members', site_url('admincp/import'));
 	}
-	
-	//--------------------------------------------------------------------
 }

@@ -115,7 +115,12 @@ class App_hooks {
 	*/
 	public function bind ($hook, $class = FALSE, $method, $filename) {
 		if (!isset($this->hooks[$hook])) {
-			die(show_error('Attempting to bind to a non-existant hook, "' . $hook . '"'));
+			if ($hook == 'cron') {
+				$this->register('cron','The daily cronjob for maintenance updates.');
+			}
+			else {
+				die(show_error('Attempting to bind to a non-existant hook, "' . $hook . '"'));
+			}
 		}
 	
 		$insert_fields = array(
