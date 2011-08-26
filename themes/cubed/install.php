@@ -38,6 +38,9 @@ if (module_installed('billing')) {
 	$CI->load->model('billing/subscription_plan_model');
 	$CI->subscription_plan_model->new_plan('Members-Only Access','9.99', '9.99', TRUE, 30, 7, FALSE, 24, $usergroup, 0, 'Gain access to all of our members-only resources!');
 }
+else {
+	$usergroup = 1;
+}
 
 // content
 $CI->load->model('publish/content_model');

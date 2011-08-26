@@ -3,8 +3,10 @@
 
 <ul class="inner_nav">	
 	<li><a href="<?=site_url('admincp/users/data');?>">Member Data</a></li>
-	<li><a href="<?=site_url('admincp/store/data');?>">Product Data</a></li>
-	<li><a href="<?=site_url('admincp/store/collection_data');?>">Store Collection Data</a></li>
+	<? if (module_installed('store')) { ?>
+		<li><a href="<?=site_url('admincp/store/data');?>">Product Data</a></li>
+		<li><a href="<?=site_url('admincp/store/collection_data');?>">Store Collection Data</a></li>
+	<? } ?>
 </ul>
 
 <h3>What are custom fields?</h3>

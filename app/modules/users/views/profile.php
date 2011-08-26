@@ -14,6 +14,8 @@
 	<li><span class="tag">&nbsp;</span> <a href="<?=site_url('admincp/users/edit/' . $user['id']);?>">edit profile</a></li>
 </ul>
 
+<? if (module_installed('billing')) { ?>
+
 <h2 class="cat user">Subscriptions</h2>
 <Br />
 	<table class="dataset" cellpadding="0" cellspacing="0">
@@ -75,4 +77,5 @@
 <h2 class="cat user">Billing Address</h2>
 
 <p><?=$billing_address;?></p>
+<? } ?>
 <?=$this->load->view(branded_view('cp/footer'));?>

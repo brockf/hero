@@ -40,6 +40,9 @@ if (module_installed('billing')) {
 	$CI->load->model('billing/subscription_plan_model');
 	$CI->subscription_plan_model->new_plan('Supporter Subscription','9.99', '9.99', TRUE, 30, 7, FALSE, 24, $usergroup, 0, 'Help support our organization with a low monthly payment.');
 }
+else {
+	$usergroup = 1;
+}
 
 // content
 $CI->load->model('publish/content_model');

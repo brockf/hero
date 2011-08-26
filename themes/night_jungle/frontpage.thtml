@@ -11,7 +11,7 @@
 	{module_installed name="store"}
 		<p>It also includes a <a href="{url path="store"}">store</a> so that people can buy items (stuffed tigers, T-shirts, etc.) that support
 		our cause.</p>
-	{/if}
+	{/module_installed}
 	
 	<p>This would make a nice place for you to talk about your site or organization.</p>
 	

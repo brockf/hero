@@ -140,9 +140,12 @@ if (file_exists(APPPATH . 'config/database.php')) {
 	$autoload['model'] = array(
 							   'modules/module_model',
 							   'users/user_model',
-							   'settings/settings_model',
-							   'billing/gateway_model'
+							   'settings/settings_model'
 							  );
+							  							  
+	if (file_exists(APPPATH . 'modules/billing')) {
+		$autoload['model'][] = 'billing/gateway_model';
+	}							  
 }
 else {
 	$autoload['model'] = array();

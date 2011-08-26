@@ -233,9 +233,11 @@ class User_model extends CI_Model
 		$this->db->insert('user_activity', array('user_id' => $user_id, 'user_activity_date' => date('Y-m-d H:i:s')));
 		
 		// cart functions
-		$CI =& get_instance();
-		$CI->load->model('store/cart_model');
-		$CI->cart_model->user_login($this->active_user);
+		if (module_installed('store/cart_model')) {
+			$CI =& get_instance();
+			$CI->load->model('store/cart_model');
+			$CI->cart_model->user_login($this->active_user);
+		}
 		
 		// salt password
 		if (!empty($password)) {
