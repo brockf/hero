@@ -97,7 +97,7 @@
 			<li class="indent">
 				<input type="submit" name="continue" class="button submit" value="Pay &amp; Complete Checkout" />
 			</li>
-			{if $setting.ssl_active == TRUE}
+			{if $setting.ssl_certificate == TRUE}
 				<li>
 					<p>Your order is safe and secure.  We encrypt all transactions with 256-bit secure socket layer technology.</p>
 				</li>
