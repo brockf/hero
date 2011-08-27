@@ -527,7 +527,7 @@ class Content_model extends CI_Model
 			// get the query we've been building for the embedded select, then clear the active record
 			// query being built
 			$embedded_from_query = $this->db->_compile_select();
-			$this->db->_reset_select();
+			$this->db->flush_cache();
 		}
 		else {
 			$this->db->select('content.content_id');
