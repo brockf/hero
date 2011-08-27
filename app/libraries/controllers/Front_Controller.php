@@ -45,7 +45,8 @@ class Front_Controller extends MY_Controller {
 		
 		// if we don't have a theme, we'll setup the default theme
 		// we do it after Smarty because some module definitions reference the Smarty library
-		if (setting('theme') == FALSE and setting('default_theme')) {
+		// we won't do this if it's a cron load though - that's too awkward
+		if ($this->uri->segment(1) != 'cron' and setting('theme') == FALSE and setting('default_theme')) {
 			$this->settings_model->update_setting('theme',setting('default_theme'));
 			
 			// install the default theme
