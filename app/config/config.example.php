@@ -14,7 +14,7 @@
 |	http://example.com/
 |
 */
-$config['base_url']	= "http://www.example.com/";
+$config['base_url']	= "";
 
 // rewrite base URL to SSL if accessed via SSL
 if ($_SERVER["SERVER_PORT"] == "443" or (isset($_SERVER['https']) and $_SERVER['HTTPS'] == 'on')) {
@@ -348,11 +348,18 @@ $config['sess_time_to_update'] 	= 300;
 | 'cookie_path'   =  Typically will be a forward slash
 |
 */
-$config['cookie_prefix']	= "";
-$parsed_url = parse_url($config['base_url']);
-$host = $parsed_url['host'];
-$config['cookie_domain']	= $host;
-$config['cookie_path']		= (empty($parsed_url['path'])) ? "/" : $parsed_url['path'];
+if (!empty($config['base_url'])) {
+	$config['cookie_prefix']	= '';
+	$parsed_url = parse_url($config['base_url']);
+	$host = $parsed_url['host'];
+	$config['cookie_domain']	= $host;
+	$config['cookie_path']		= (empty($parsed_url['path'])) ? "/" : $parsed_url['path'];
+}
+else {
+	$config['cookie_prefix']	= '';
+	$config['cookie_domain']	= '';
+	$config['cookie_path']		= '/';
+}
 
 /*
 |--------------------------------------------------------------------------

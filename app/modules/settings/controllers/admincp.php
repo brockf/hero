@@ -129,7 +129,19 @@ class Admincp extends Admincp_Controller {
 	}
 	
 	function module_uninstall ($module) {
-		$this->module_model->uninstall($module);
+		return $this->load->view('module_uninstall_confirm', array('module' => $module));
+	}
+	
+	function module_uninstall_confirm () {
+		$module = $this->input->post('module');
+		
+		// get protected core modules
+		$this->config->load('core_modules');
+		$core_modules = $this->config->item('core_modules');
+		
+		if (!empty($module) and !in_array($module, $core_modules)) {
+			$this->module_model->uninstall($module);
+		}
 		
 		return redirect('admincp/settings/modules');
 	}

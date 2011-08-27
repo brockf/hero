@@ -26,11 +26,11 @@ class Cron extends Front_Controller {
 		
 		$this->load->helper('cron_log');
 		
-		cron_log('debug','Cron processes triggered.');
+		cron_log('Cron processes triggered.');
 		
 		$this->app_hooks->trigger('cron');
 		
-		cron_log('debug','Cron processes complete.');
+		cron_log('Cron processes complete.');
 		
 		// update cron update setting
 		if (setting('cron_last_update') === FALSE) {

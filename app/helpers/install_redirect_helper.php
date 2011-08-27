@@ -22,7 +22,9 @@ function install_redirect () {
 		$CI =& get_instance();
 		
 		if ($CI->router->fetch_class() != 'install') {
-			show_error($CI->config->item('app_name') . ' has not been installed.  Visit yourdomain.com/install to install the server.<br /><br />Need help with the installation?  Check out the <a href="' . $CI->config->item('app_support') . '">support website</a>.');
+			$CI->load->helper('url');
+		
+			show_error($CI->config->item('app_name') . ' has not been installed.  Visit <a href="' . site_url('install') . '">the Installation Wizard</a> to install ' . $CI->config->item('app_name') . ' on this server.<br /><br />Need help with the installation?  Visit the <a href="' . $CI->config->item('app_support') . '">support website</a>.');
 			die();
 		}
 	}
