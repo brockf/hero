@@ -180,8 +180,8 @@
 		<h3><?=$this->config->item('app_name');?></h3>
 		<div class="contents">
 			<ul>
-				<li><a href="<?=$this->config->item('app_link');?>"><?=$this->config->item('app_name');?></li>
-				<li><a href="<?=$this->config->item('app_support');?>">Support &amp; Documentation</li>
+				<li><a href="<?=$this->config->item('app_link');?>"><?=$this->config->item('app_name');?></a></li>
+				<li><a href="<?=$this->config->item('app_support');?>">Support &amp; Documentation</a></li>
 			</ul>
 		</div>
 	</div>
