@@ -198,9 +198,13 @@ class Content_model extends CI_Model
 	*
 	* @param int $content_id
 	*
-	* @return boolean TRUE
+	* @return boolean
 	*/
 	function delete_content ($content_id) {
+		if (empty($content_id)) {
+			return FALSE;
+		}
+	
 		$content = $this->get_content($content_id, TRUE);
 		
 		$this->load->model('link_model');
@@ -214,7 +218,10 @@ class Content_model extends CI_Model
 		}
 		
 		$this->db->delete('content',array('content_id' => $content_id));
-		$this->db->delete($type['system_name'], array('content_id' => $content_id));
+		
+		if ($this->db->table_exists($type['system_name'])) {
+			$this->db->delete($type['system_name'], array('content_id' => $content_id));
+		}
 		
 		return TRUE;
 	}
