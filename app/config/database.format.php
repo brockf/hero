@@ -40,7 +40,7 @@ $active_record = TRUE;
 $db['default']['hostname'] = "localhost";
 $db['default']['username'] = "root";
 $db['default']['password'] = '';
-$db['default']['database'] = "opengateway";
+$db['default']['database'] = "caribou";
 $db['default']['dbdriver'] = "mysql";
 $db['default']['dbprefix'] = "";
 $db['default']['pconnect'] = TRUE;
@@ -52,4 +52,4 @@ $db['default']['dbcollat'] = "utf8_general_ci";
 
 
 /* End of file database.php */
-/* Location: ./system/opengateway/config/database.php */
+/* Location: ./app/config/database.php */

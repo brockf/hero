@@ -425,4 +425,4 @@ $config['rewrite_short_tags'] = TRUE;
 $config['proxy_ips'] = '';
 
 /* End of file config.php */
-/* Location: ./system/opengateway/config/config.php */
+/* Location: ./app/config/config.php */

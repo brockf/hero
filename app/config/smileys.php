@@ -63,4 +63,4 @@ $smileys = array(
 		);
 
 /* End of file smileys.php */
-/* Location: ./system/opengateway/config/smileys.php */
+/* Location: ./app/config/smileys.php */

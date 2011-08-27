@@ -18,14 +18,27 @@
 |
 | These are the things you can load automatically:
 |
-| 1. Libraries
-| 2. Helper files
-| 3. Plugins
+| 1. Packages
+| 2. Libraries
+| 3. Helper files
 | 4. Custom config files
 | 5. Language files
 | 6. Models
 |
 */
+
+/*
+| -------------------------------------------------------------------
+|  Auto-load Packges
+| -------------------------------------------------------------------
+| Prototype:
+|
+|  $autoload['packages'] = array(APPPATH.'third_party', '/usr/local/shared');
+|
+*/
+
+$autoload['packages'] = array();
+
 
 /*
 | -------------------------------------------------------------------
@@ -152,4 +165,4 @@ else {
 }
 
 /* End of file autoload.php */
-/* Location: ./system/opengateway/config/autoload.php */
+/* Location: ./app/config/autoload.php */

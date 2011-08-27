@@ -61,4 +61,4 @@ if (!function_exists('__autoload')) {
 }
 
 /* End of file constants.php */
-/* Location: ./system/opengateway/config/constants.php */
+/* Location: ./app/config/constants.php */

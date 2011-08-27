@@ -66,4 +66,4 @@ if (file_exists(FCPATH . 'writeable/routes.php')) {
 }
 
 /* End of file routes.php */
-/* Location: ./system/opengateway/config/routes.php */
+/* Location: ./app/config/routes.php */

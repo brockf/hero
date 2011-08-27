@@ -12,4 +12,4 @@ $_doctypes = array(
 					);
 
 /* End of file doctypes.php */
-/* Location: opengateway/config/doctypes.php */
+/* Location: /app/config/doctypes.php */

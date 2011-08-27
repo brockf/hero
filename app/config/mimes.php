@@ -102,4 +102,4 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 
 
 /* End of file mimes.php */
-/* Location: ./system/opengateway/config/mimes.php */
+/* Location: ./app/config/mimes.php */
