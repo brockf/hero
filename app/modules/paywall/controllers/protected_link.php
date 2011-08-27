@@ -52,9 +52,26 @@ class Protected_link extends Front_Controller {
 		}
 		else {
 			// load and return file
+			$this->load->helper('file_extension');
 			
 			// set filename
 			$filename = (isset($data['filename']) and !empty($data['filename'])) ? $data['filename'] : $link['url_path'] . '.' . file_extension($data['url']);
+			
+			$extension = file_extension($data['url']);
+			
+			// get the mime type
+			include(APPPATH . 'config/mimes.php');
+			
+			if (!isset($mimes[$extension])) {
+				die(show_error('Failed to retrieve mime-type data for file extension "' . $extension . '".'));
+			}
+			
+			$mime_type = $mimes[$extension];
+
+			// some mime types are arrays...
+			if (is_array($mime_type)) {
+				$mime_type = $mime_type[0];
+			}
 			
 			// don't limit to small files
 			set_time_limit(0);
@@ -63,13 +80,10 @@ class Protected_link extends Front_Controller {
 			header("Expires: 0");
 			header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 			header("Cache-Control: private", FALSE); // required for certain browsers 
-			
-			$this->load->helper('file_extension');
-			header("Content-Type: " . $this->config->item(file_extension($data['url']), 'mimes'));
-			
+			header("Content-Type: " . $mime_type);
 			header("Content-Disposition: attachment; filename=\"" . $filename . "\";");
 			header("Content-Transfer-Encoding: binary");
-			header("Content-Length: " . filesize(FCPATH . $data['url']));
+			header("Content-Length: " . filesize($data['url']));
 			
 			readfile($data['url'], "r");
 

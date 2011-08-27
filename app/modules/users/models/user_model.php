@@ -255,31 +255,8 @@ class User_model extends CI_Model
 		}
 		
 		// do we have a customer record for this user?
-		if ($this->active_user['customer_id'] == FALSE and module_installed('billing')) {
-			$CI =& get_instance();
-			$CI->load->model('billing/customer_model');
-			
-			$customer = array();
-			$customer['email'] = $this->active_user['email'];
-			$customer['internal_id'] = $user_id;
-			$customer['first_name'] = $this->active_user['first_name'];
-			$customer['last_name'] = $this->active_user['last_name'];
-			
-			// do any custom fields map to billing fields?
-			$user_custom_fields = $this->get_custom_fields();
-			
-			if (is_array($user_custom_fields)) {
-				foreach ($user_custom_fields as $field) {
-					if (!empty($field['billing_equiv']) and isset($this->active_user[$field['name']])) {
-						$customer[$field['billing_equiv']] = $this->active_user[$field['name']];		
-					}
-				}
-			}
-			
-			$customer_id = $CI->customer_model->NewCustomer($customer);
-			
-			$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
-		}
+		// trigger its creation if not, else just get the active customer ID
+		$this->active_user['customer_id'] = $this->get_customer_id($user_id);
 		
 		// prep hook
 		$CI =& get_instance();
@@ -530,22 +507,68 @@ class User_model extends CI_Model
     * 
     * Sometimes, we just need this, so let's not do a full blown query.
     *
-    * @param int $user_id
+    * @param int $user_id (default: active user)
     *
-    * @return int $customer_id
+    * @return int|boolean $customer_id
     */
-    function get_customer_id ($user_id) {
-    	$this->db->select('customer_id');
-    	$this->db->where('user_id',$user_id);
-    	$result = $this->db->get('users');
-    	
-    	if ($result->num_rows() == 0) {
+    function get_customer_id ($user_id = FALSE) {
+    	if (!module_installed('billing')) {
     		return FALSE;
     	}
-    	else {
-    		$user = $result->row_array();
+    	
+    	// auto-complete $user_id?
+    	if (empty($user_id) and $this->logged_in()) {
+    		$user_id = $this->active_user['id'];
+    	}
+    
+    	// previously, we looked for the "customer_id" in the users table
+    	// however, this didn't let us confirm that the customer record actually exists
+    	// so now we look up via the customers table
+    	$this->db->select('customer_id');
+    	$this->db->where('internal_id',$user_id);
+    	$result = $this->db->get('customers');
+    	
+    	if ($result->num_rows() == 0) {
+    		// no reason not to have a customer record
+    		// let's create one
+    		if (module_installed('billing')) {
+    			// get user data
+    			$user = (!empty($this->active_user) and $this->active_user['id'] == $user_id) ? $this->active_user : $this->get_user($user_id);
+    			
+    			if (empty($user)) {
+    				// how would this happen?  probably impossible
+    				return FALSE;
+    			}
     		
-    		return isset($user['customer_id']) ? $user['customer_id'] : FALSE;
+				// do any custom fields map to billing fields?
+				$user_custom_fields = $this->get_custom_fields();
+				
+				$customer = array();
+				if (is_array($user_custom_fields)) {
+					foreach ($user_custom_fields as $field) {
+						if (!empty($field['billing_equiv']) and isset($user[$field['name']])) {
+							$customer[$field['billing_equiv']] = $user[$field['name']];		
+						}
+					}
+				}
+				
+				$CI =& get_instance();
+				$CI->load->model('billing/customer_model');
+		
+				$customer['email'] = $user['email'];
+				$customer['internal_id'] = $user['id'];
+				$customer['first_name'] = $user['first_name'];
+				$customer['last_name'] = $user['last_name'];
+				
+				$customer_id = $CI->customer_model->NewCustomer($customer);
+				
+				$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
+				
+				return $customer_id;
+			}
+    	}
+    	else {
+    		return $result->row()->customer_id;
     	}
     }
     
@@ -1024,21 +1047,6 @@ class User_model extends CI_Model
 			
 			if (!empty($customer)) {
 				$this->db->update('customers', $customer, array('internal_id' => $user_id));
-			}
-			else {
-				$CI->load->model('billing/customer_model');
-		
-				$customer['email'] = $email;
-				$customer['internal_id'] = $user_id;
-				$customer['first_name'] = $first_name;
-				$customer['last_name'] = $last_name;
-				
-				// do any custom fields map to billing fields?
-				$user_custom_fields = $this->get_custom_fields();
-				
-				$customer_id = $CI->customer_model->NewCustomer($customer);
-				
-				$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 			}
 		}
 		
