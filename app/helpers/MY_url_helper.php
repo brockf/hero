@@ -1,7 +1,13 @@
 <?php
 
 /**
+* Current URL
+*
 * Retrieve current URL *with* query string
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
 function current_url () {
 	$CI =& get_instance();

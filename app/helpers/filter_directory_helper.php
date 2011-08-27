@@ -1,11 +1,15 @@
 <?php
 
-/*
+/**
 * Filter out files from a CodeIgniter directory_map() array
 *
 * @param array $directory Output of directory_map()
 * @param array $filters Files to not include
 * @return array $directory_map
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
 function filter_directory ($directory, $filters = array()) {
 	$directory_map = array();

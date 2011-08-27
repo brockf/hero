@@ -1,5 +1,17 @@
 <?php
 
+/**
+* Unique Username
+*
+* A form validation rule: Is this username unique in the system?
+*
+* @param string $username
+* @return boolean
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function unique_username ($username) {
 	$CI =& get_instance();
 	

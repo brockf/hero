@@ -6,8 +6,11 @@
 * If ImageMagick is available, use it!  If nothing's there, throw an error.
 *
 * @return string Image library name
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
-
 function get_available_image_library () {
 	$CI =& get_instance();
 	

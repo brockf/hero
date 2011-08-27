@@ -4,6 +4,13 @@
 * Format Street Address
 *
 * Takes an array of street address elements and outputs an HTML formatted address
+*
+* @param array $address
+* @return string address
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
 function format_street_address ($address = array()) {
 	// field standardization

@@ -1,5 +1,17 @@
 <?php
 
+/**
+* Verify Password
+*
+* A form validation routine:  Validate the user's password.
+*
+* @param string $password
+* @return boolean
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function verify_password ($password) {
 	$CI =& get_instance();
 	

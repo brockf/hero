@@ -7,8 +7,10 @@
 *
 * @return boolean TRUE if installed, FALSE if not installed
 *
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
-
 function install_redirect () {
 	$not_installed = FALSE;
 	

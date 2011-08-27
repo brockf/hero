@@ -1,5 +1,12 @@
 <?php
 
+/**
+* Money Format Helper
+*
+* A replacement for money_format() if the user doesn't have it installed.
+*
+* From php.net
+*/
 if (!function_exists('money_format')) {
 	function money_format($format, $number)
 	{

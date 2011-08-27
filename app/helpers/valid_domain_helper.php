@@ -1,5 +1,17 @@
 <?php
 
+/**
+* Valid Domain
+*
+* A form validation rule:  Is this a valid domain like example.com?
+*
+* @param string $domain
+* @return boolean
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function valid_domain ($domain) {
 	$CI =& get_instance();
 	

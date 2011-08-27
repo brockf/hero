@@ -1,5 +1,13 @@
 <?php
 
+/**
+* Local Time
+*
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function local_time ($time, $format = FALSE) {
 	if ($time == '0000-00-00 00:00:00' or $time == '0000-00-00') {
 		return 'n/a';

@@ -4,8 +4,13 @@
 * Get Template Files
 *
 * Returns an array of all template files in a theme's directory
-*/
-function template_files () {
+*
+* @return array
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/function template_files () {
 	$CI = get_instance();
 	$CI->load->helper('directory');
 	

@@ -10,8 +10,11 @@
 * @param string ...
 *
 * @return boolean
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
-
 function module_installed () {
 	$CI =& get_instance();
 	

@@ -1,5 +1,14 @@
 <?php
 
+/**
+* SSL Helper
+*
+* Redirects to SSL if we are in a SSL-necessary place (defined as "secure_modules" in the config file)
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 $CI =& get_instance();
 
 function secure($url) {

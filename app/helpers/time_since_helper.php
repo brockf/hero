@@ -1,5 +1,19 @@
 <?php
 
+/**
+* Time Since
+*
+* Return a string like "4 minutes ago" for a datetime, in relation to now
+*
+* @param time|date $time
+* @param time $now (default: now)
+*
+* @return string|boolean
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function time_since($time, $now = FALSE) {
 	if ($now == FALSE) {
 		$now = time();

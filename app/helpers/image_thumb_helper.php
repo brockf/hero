@@ -10,6 +10,10 @@
 * @param int $width Maximum image width
 *
 * @return string Web path to image thumbnail
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
 */
 function image_thumb ($image_path, $height, $width)
 {
