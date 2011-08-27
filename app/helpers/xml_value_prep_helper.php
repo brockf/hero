@@ -1,5 +1,19 @@
 <?php
 
+/**
+* XML Value Prep
+*
+* Prepare a value for an XML document.  Encode characters, etc.
+*
+* @param string $value
+* @param boolean $encode_tags (default: TRUE)
+*
+* @return string $value
+*
+* @copyright Electric Function, Inc.
+* @package Electric Framework
+* @author Electric Function, Inc.
+*/
 function xml_value_prep ($value, $encode_tags = TRUE) {
 
 	if (is_numeric($value)) {
