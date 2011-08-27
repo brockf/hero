@@ -1,0 +1,27 @@
+{extends file="layout.thtml"}
+{block name="content"}
+	<p class="intro">Your site is being powered by the <b>Orchard</b> theme for <b>{setting name="app_name"}</b>!  It's easy to modify and the simplest
+	way to get started building your website.</p>
+	
+	{module_installed name="store"}
+		<h1>Our Products</h1>
+		<ul class="frontpage_products">
+			{collections var="collection"}
+			<li>
+				<div class="image">
+					<a href="{$collection.url}"><img src="{$collection.image}" alt="{$collection.name}" /></a>
+				</div>
+				<div class="collection">
+					<a href="{$collection.url}">{$collection.name}</a>
+					<p>{$collection.description}.</p>
+				</div>
+			</li>
+			{/collections}
+			
+			{products var="product" collection="4"}
+				{$product.name}<br />
+			{/products}
+		</ul>
+		<div style="clear:both"></div>
+	{/module_installed}
+{/block}

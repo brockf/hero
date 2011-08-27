@@ -1,0 +1,25 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Invoices - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	{if !$for_subscription}
+	<h1>Invoices</h1>
+	{else}
+	<h1>Invoices for Subscription #{$for_subscription}</h1>
+	{/if}
+	<a href="javascript:history.go(-1)">go back</a>
+	
+	{if $invoices}
+		<ul>
+			{foreach $invoices as $invoice}
+			{assign var="invoice_id" value=$invoice.id}
+				<li>
+					<a href="{url path="users/invoice/$invoice_id"}">{setting name="currency_symbol"}{$invoice.amount} ({$invoice.date|date_format:"%B %d, %Y"})</a>
+				</li>
+			{/foreach}
+		</ul>
+	{else}
+		<p>No invoices match your criteria.</p>
+	{/if}
+{/block}

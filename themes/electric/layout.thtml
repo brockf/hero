@@ -1,0 +1,85 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html>
+<head>
+<meta content="text/html; charset=UTF-8" http-equiv="Content-Type" />
+<base href="{url}" />
+<title>{block name="title"}{setting name="site_name"}{/block}</title>
+<link href="{theme_url path="css/universal.css"}" rel="stylesheet" type="text/css" media="screen" />
+<script type="text/javascript" src="{url path="themes/_common/jquery-1.4.2.min.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/universal.js"}"></script>
+<script type="text/javascript" src="{theme_url path="js/form.js"}"></script>
+{block name="head_includes"}
+{/block}
+</head>
+<body>
+<div id="notices"></div>
+
+<div class="container">
+	<div id="header">
+		<a class="logo" href="{url}">
+			<img src="{theme_url path="images/logo.jpg"}" alt="{setting name="site_name"}" />
+			
+			<div class="logo_text">
+				{setting name="site_name"}
+				
+				<div class="slogan">
+					Orchard, a simple theme for business
+				</div>
+			</div>
+		</a>
+
+		<div class="date">
+			{module_installed name="store"}
+				{has_cart}
+					<a href="{url path="store/cart"}">Shopping Cart ({cart_items})</a> | 
+				{/has_cart}
+			{/module_installed}
+			{$smarty.now|date_format:"%A, %B %e, %Y"}
+		</div>
+		
+		<div class="search">
+			<form method="get" action="{url path="search"}" class="validate">
+				<input type="text" class="text required mark_empty" rel="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
+			</form>
+		</div>
+	</div>
+	
+	<div id="navigation">
+		{menu name="main_menu" show_sub_menus="yes"}
+		<div style="clear:both"></div>
+	</div>
+	
+	<div id="banner">
+		<img src="{theme_url path="images/banner.jpg"}" alt="" />
+	</div>
+	
+	<div id="content">
+		<div class="sidebar">
+			<h3>Latest News</h3>
+			
+			<ul class="news">
+				{content var="news" type="news" limit="5" sort="content.content_date" sort_dir="desc"}
+				<li>
+					<span class="date">{$news.date|date_format: "%B %e, %Y"}</span>
+					<a href="{$news.url}">{$news.title}</a>
+				</li>
+				{/content}
+			</ul>
+			
+			<a class="rss" href="{url path="news_rss"}">RSS Feed</a>
+		</div>
+		
+		<div class="inner_content">
+			{block name="content"}No content has been sent to this block{/block}
+		</div>
+		
+		<div style="clear:both"></div>
+	</div>
+</div>
+
+<div class="container footer">
+	Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
+	{menu name="footer_menu" class="menu"}
+</div>
+</body>
+</html>

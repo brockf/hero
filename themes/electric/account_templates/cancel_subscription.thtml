@@ -1,0 +1,18 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Cancel Subscription - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>Cancel Subscription</h1>
+	
+	{if $cancelled}
+		<p>Your subscription has been cancelled successfully.  <a href="{url path="users"}">Continue to your account manager</a>.</p>
+	{else}
+		<p>Please confirm the cancellation of your subscription, below.  If you do not want to cancel this subscription,
+		<a href="javascript:history.go(-1)">click here to go back</a>.</p>
+		<form class="form validate" method="post" action="{$subscription.cancel_link}">
+			<input type="hidden" name="confirm" value="true" />
+			<input type="submit" class="button" name="go" value="Cancel My Subscription" />
+		</form>
+	{/if}
+{/block}

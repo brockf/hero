@@ -1,0 +1,78 @@
+{extends file="layout.thtml"}
+{block name="title"}
+Account Manager - {$smarty.block.parent}
+{/block}
+{block name="content"}
+	<h1>Account Manager</h1>
+	
+	{if $notice}
+		<div class="notices">
+			<p>{$notice}</p>
+		</div>
+	{/if}
+	
+	<p>Hello, {$member.first_name}!</p>
+	<p>Welcome back to your account manager.  Here, you can review your account records, update your profile and password, and review
+	your purchases.</p>
+	<ul class="account_links">
+		<li><a href="{url path="users/profile"}">Edit your profile</a></li>
+		<li><a href="{url path="users/password"}">Change your password</a></li>
+		<li><a href="{url path="users/invoices"}">View all invoices</a></li>
+		<li><a href="{url path="users/logout"}">Logout</a></li>
+	</ul>
+	
+	{module_installed name="billing"}
+		{has_subscriptions}
+		<table class="table" cellpadding="0" cellspacing="0">
+			<thead>
+				<tr>
+					<td colspan="2">Your Subscriptions</td>
+				</tr>
+			</thead>
+			<tbody>
+			{subscriptions var="sub" active=TRUE}
+			{assign var="sub_id" value=$sub.id}
+				<tr>
+					<td style="width:50%"><b>{$sub.plan.name}</b></td>
+					<td>
+						{if $sub.is_recurring == TRUE}Next Charge: {$sub.next_charge_date|date_format:"%B %e, %Y"}
+						{else}Expires: {$sub.end_date|date_format:"%B %e, %Y"}{/if}
+						{if $sub.is_renewed == TRUE} (Renewed){/if}
+					</td>
+				</tr>
+				<tr>
+					<td colspan="2">
+						<ul class="sub_options">
+							{if $sub.card_last_four and $sub.is_recurring}
+								<li>
+									<a href="{$sub.update_cc_link}">Update Credit Card Information</a>
+								</li>
+							{/if}
+							{if $sub.last_charge_date}
+								<li>
+									<a href="{url path="users/invoices/$sub_id"}">View Related Invoices</a>
+								</li>
+							{/if}
+							{if $sub.is_recurring}
+								<li>
+									<a href="{$sub.cancel_link}">Cancel Subscription</a>
+								</li>
+							{/if}
+							{if $sub.is_renewed == FALSE and $sub.last_charge_date}
+								<li>
+									<a href="{$sub.renew_link}">Renew Subscription</a>
+								</li>
+							{/if}
+							
+							{if !$sub.is_recurring and !$sub.last_charge_date}
+								<li>No options available.</li>
+							{/if}
+						</ul>
+					</td>
+				</tr>
+			{/subscriptions}
+			</tbody>
+		</table>
+		{/has_subscriptions}
+	{/module_installed}
+{/block}

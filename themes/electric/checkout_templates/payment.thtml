@@ -1,0 +1,108 @@
+{extends file="checkout_templates/checkout_layout.thtml"}
+{block name="title"}Payment - {$smarty.block.parent}{/block}
+{block name="step_header"}Payment Details{/block}
+{block name="payment_step"}class="active"{/block}
+{block name="checkout_content"}
+	<form class="form validate" method="post" action="{url path="checkout/post_payment"}">
+	<fieldset>
+		<legend>Review Your Order</legend>
+		<ul class="form">
+			<li>
+				<label>Subtotal</label>
+				{setting name="currency_symbol"}{$totals.order_sub_total}
+			</li>
+			{if $totals.shipping}
+				<li>
+					<label>Shipping</label>
+					{setting name="currency_symbol"}{$totals.shipping} ({$shipping_method})
+				</li>
+			{/if}
+			<li>
+				<label>Tax</label>
+				{setting name="currency_symbol"}{$totals.order_tax}
+			</li>
+			<li>
+				<label>Today's Total</label>
+				{setting name="currency_symbol"}{$totals.order_total}
+			</li>
+			{if $totals.recurring_sub_total}
+				<li>
+					<label>Recurring Charge</label>
+					{setting name="currency_symbol"}{$totals.recurring_total} every {$totals.recurring_interval} days{if $totals.recurring_first_charge} beginning {$totals.recurring_first_charge}{/if}{if $totals.recurring_last_charge} until {$totals.recurring_last_charge}{/if}
+				</li>
+			{/if}
+		</ul>
+	</fieldset>
+
+	{if $has_coupons}
+		<fieldset>
+			<legend>Promotional Code</legend>
+			<ul class="form">
+				{if $active_coupon}
+					<li>
+						<label>Coupon Code</label>
+						{$active_coupon}
+					</li>
+				{/if}
+				<li>
+					<label for="coupon">Enter {if $active_coupon}New{else}Your{/if} Code</label>
+					<input type="text" name="coupon" id="coupon" value="" />
+				</li>
+				<li class="indent">
+					<input type="submit" name="apply_coupon" class="button submit" value="Apply Coupon" />
+				</li>
+			</ul>
+		</fieldset>
+	{/if}
+
+	<fieldset>
+		<legend>Payment Method</legend>
+		<ul class="form">
+			<li>
+				<label for="method">Payment Method</label>
+				<select id="method" name="method">
+					{foreach $gateways as $gateway}
+						<option value="{$gateway.id}" class="{if $gateway.external}external{/if} {if $gateway.no_credit_card}no_credit_card{/if}" {if $setting.default_gateway == $gateway.id}selected="selected"{/if}>{$gateway.gateway}</option>
+					{/foreach}
+				</select>
+			</li>
+			<li class="credit_card">
+				<label for="cc_number">Credit Card Number</label>
+				<input type="text" name="cc_number" id="cc_number" class="text" value="" />
+			</li>
+			<li class="credit_card">
+				<label for="cc_name">Name on Card</label>
+				<input type="text" name="cc_name" id="cc_name" class="text" value="" />
+			</li>
+			<li class="credit_card">
+				<label for="cc_expiry_month">Expiry Date</label>
+				<select name="cc_expiry_month" id="cc_expiry_month">
+					{foreach $month_options as $key => $month}
+					<option value="{$key}">{$key} - {$month}</option>
+					{/foreach}
+				</select>&nbsp;&nbsp;
+				<select name="cc_expiry_year" id="cc_expiry_year">
+					{foreach $year_options as $key => $year}
+					<option value="{$key}">{$year}</option>
+					{/foreach}
+				</select>
+			</li>
+			<li class="credit_card">
+				<label for="cc_cvv2">Security Code</label>
+				<input type="text" class="text" name="cc_cvv2" id="cc_cvv2" style="width: 60px" />
+			</li>
+			<li class="indent external">
+				<p>You will be redirected to complete your purchase when you select "Pay &amp; Complete Checkout" below.</p>
+			</li>
+			<li class="indent">
+				<input type="submit" name="continue" class="button submit" value="Pay &amp; Complete Checkout" />
+			</li>
+			{if $setting.ssl_certificate == TRUE}
+				<li>
+					<p>Your order is safe and secure.  We encrypt all transactions with 256-bit secure socket layer technology.</p>
+				</li>
+			{/if}
+		</ul>
+	</fieldset>
+	</form>
+{/block}
