@@ -2,20 +2,33 @@
 * Body, Wrappers, and Containers #######################################
 */
 
-html, body {
-	margin: 10px 0;
+html {
+	margin: 0;
 	padding: 0;
-	font-family: "helvetica", "arial", sans-serif;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	font-family: arial, helvetica, sans-serif;
 	font-size: 10pt;
+	background-image: url(../images/body_back.jpg);
+	background-repeat: repeat-x;
 	background-color: #f0f0f1;
 }
 
-div.container {
-	width: 930px; /* 960px, with padding */
+div#wrapper {
+	width: 960px;
 	margin: 0 auto;
-	padding: 15px;
+	background-image: url(../images/wrapper_back.gif);
+	background-repeat: no-repeat;
+}
+
+div.container {
+	width: 940px;
+	margin: 0 auto;
+	padding: 0;
 	background-color: #fff;
-	-moz-box-shadow: 0 0 3px #CFCFCF;
 }
 
 /**
@@ -27,13 +40,12 @@ img {
 }
 
 a {
-	color: #e53b26;
+	color: #6196f5;
 	text-decoration: none;
 }
 
 a:hover {
-	background-color: #e53b26;
-	color: #fff;
+	text-decoration: underline;
 }
 
 /**
@@ -42,60 +54,26 @@ a:hover {
 
 div#header {
 	position: relative;
-	height: 100px;
+	height: 166px;
+	background-image: url(../images/header_back.jpg);
 }
 
 div#header a.logo {
 	display: block;
 	position: absolute;
-	top: 10px;
-	left: 0;
-	width: 550px;
-	height: 72px;
-	text-decoration: none;
-}
-
-div#header a.logo:hover {
-	background-color: transparent;
-}
-
-div#header a.logo img {
-	float: left;
-	margin-right: 10px;
-}
-
-div#header a.logo div.logo_text {
-	float: left;
-	color: #e53b26;
-	font-size: 29pt;
-	font-weight: bold;
-	letter-spacing: -3px;
-	padding-top: 10px;
-}
-
-div#header a.logo div.slogan {
-	color: #000;
-	font-size: 9pt;
-	font-weight: normal;
-	letter-spacing: normal;
-}
-
-div#header div.date {
-	position: absolute;
-	right: 0;
-	top: 20px;
-	color: #777;
-	font-size: 8pt;
-}
-
-div#header div.search {
-	position: absolute;
-	right: 0;
-	top: 40px;
-}
-
-div#banner {
-	margin-bottom: 10px;
+	top: 50px;
+	left: 15px;
+	width: 300px;
+	height: 77px;
+	font-family: Podkova, Georgia, Times New Roman, serif;
+	color: #fff;
+	font-size: 30pt;
+	text-shadow: 1px 1px #333;
+	background-image: url(../images/logo.png);
+	background-repeat: no-repeat;
+	background-position: top left;
+	padding-left: 96px;
+	padding-top: 17px;
 }
 
 /**
@@ -103,8 +81,9 @@ div#banner {
 */
 
 div#navigation {
-	background-color: #b4b4b4;
-	margin-bottom: 1px;
+	background-image: url(../images/navigation_back.jpg);
+	height: 67px;
+	position: relative;
 }
 
 div#navigation ul {
@@ -122,21 +101,23 @@ div#navigation ul li {
 div#navigation ul li a {
 	display: block;	
 	float: left;
-	margin: 1px;
-	margin-right: 0;
-	background-color: #ccc;
-	color: #222;
-	text-align: center;
-	padding: 12px 18px;
+	color: #f0f0f1;
 	font-size: 9pt;
-	text-decoration: none;
-	text-shadow: 0px 1px #f0f0f0;
+	text-transform: uppercase;
+	letter-spacing: 0.5px;
+	text-align: center;
+	padding-top: 26px;
+	padding: 26px 20px 27px;
+	text-shadow: 0px 1px #444;
+	background-image: url(../images/nav_separator.gif);
+	background-position: top right;
+	background-repeat: no-repeat;
 }
 
-div#navigation ul li.active a, div#navigation ul li a:hover {
-	background-color: #e53b26;
-	color: #fff;
-	text-shadow: 0px 1px #000;
+div#navigation ul li.active a {
+	background-color: #111;
+	text-shadow: none;
+	font-weight: bold;
 }
 
 div#navigation ul.children {
@@ -176,20 +157,6 @@ div.footer {
 	font-size: 9pt;
 }
 
-div.footer ul.menu {
-	list-style-type: none;
-	margin: 5px 0 0 0 ;
-	padding: 0;
-}
-
-div.footer ul.menu li {
-	display: inline;
-}
-
-div.footer ul.menu li a {
-	display: inline;
-}
-
 /**
 * Sidebar ##############################################################
 */
@@ -210,44 +177,16 @@ h3 {
 	font-weight: bold;
 }
 
-div.sidebar ul.news {
-	list-style-type: none;
-	margin: 10px;
-	padding: 0;
-}
-
-div.sidebar ul.news li {
-	display: block;
-	margin-bottom: 15px;
-}
-
-div.sidebar ul.news li span.date {
-	color: #777;
-	font-style: italic;
-	font-weight: bold;
-	display: block;
-	margin: 5px 0;
-	font-size: 8pt;
-}
-
-div.sidebar a.rss {
-	background-color: #e53b26;
-	color: #fff;
-	display: block;
-	width: 60px;
-	padding: 5px 10px;
-	margin: 10px;
-	font-size: 8pt;
-	text-transform: uppercase;
-}
-
-div.sidebar a.rss:hover {
-	background-color: #000;
-}
-
 /**
 * Content ##############################################################
 */
+
+div.container.content {
+	background-image: url(../images/content_back.gif);
+	background-repeat: repeat-x;
+	padding: 15px;
+	width: 910px;
+}
 
 h1 {
 	font-size: 20pt;
