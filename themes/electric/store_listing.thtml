@@ -10,22 +10,28 @@
 			<ul class="collections">
 			{foreach $collections as $collection}
 				<li>
+					<a class="image" href="{$collection.url}"><img src="{thumbnail path=$collection.image width="50" height="50"}" alt="{$collection.name}" /></a>
 					<a class="name" href="{$collection.url}">{$collection.name}</a>
 					{if $collection.description}<div class="description">{$collection.description}</div>{/if}
 				</li>
 			{/foreach}
 			</ul>
+		{else}
+			<a class="back_button" href="{url path="store"}" style="width: 120px; margin-bottom: 15px;">back to store categories</a>
 		{/if}
 		
 		{if $products}
-			<ul class="products">
+			<ul class="products {if $collections}with_collections{/if}">
 			{foreach $products as $product}
 				<li>
 					{if $product.feature_image}
-						<a href="{$product.url}"><img src="{thumbnail path=$product['feature_image'] width="150" height="150"}" alt="{$product.name}" /></a>
+						<a class="image" href="{$product.url}"><img src="{thumbnail path=$product['feature_image'] width="110" height="110"}" alt="{$product.name}" /></a>
 					{/if}
-					<a class="name" href="{$product.url}">{$product.name}</a>
-					<div class="price">{setting name="currency_symbol"}{$product.price}</div>
+					<div class="details">
+						<a class="name" href="{$product.url}">{$product.name}</a>
+						<div class="price">{setting name="currency_symbol"}{$product.price}</div>
+						<div class="description">{shorten string=$product.description length="250"}</div>
+					</div>
 				</li>
 			{/foreach}
 			</ul>

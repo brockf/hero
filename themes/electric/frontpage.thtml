@@ -1,9 +1,9 @@
 {extends file="layout.thtml"}
 {block name="content"}
 	<ul class="blog">
-		{content var="post" type="blog" limit="4"}
+		{content var="post" type="blog" limit="4" sort="content.content_date" sort_dir="desc"}
 			<li>
-				<a class="title" href="{$post.link}">
+				<a class="title" href="{$post.url}">
 					{$post.title}
 					<span class="date">{$post.date|date_format:"%A, %B %e, %Y"} / {$post.author_first_name}</span>
 				</a>
@@ -16,6 +16,16 @@
 					{restricted not_in_group="1"}
 						<p><b>You must be registered to access this download.  <a href="{url path="users/register"}">Click here to register an account</a>.</b></p>
 					{/restricted}
+				{/if}
+				
+				{if $post.topics}
+					<p class="topics">Filed under:
+					{foreach $post.topics as $topic}
+						{topics var="topic_data" id=$topic}
+							<span class="topic">{$topic_data.name}</span>
+						{/topics}
+					{/foreach}
+					</p>
 				{/if}
 			</li>
 		{/content}

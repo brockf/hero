@@ -22,7 +22,7 @@ class Admincp extends Admincp_Controller {
 		$this->admin_navigation->module_link('Go Back','javascript:history.go(-1)');
 		
 		// set protected names
-		$this->protected_field_names = array('sort','sort_dir','type','limit');
+		$this->protected_field_names = array('sort','sort_dir','type','limit','date');
 	}
 	
 	/**

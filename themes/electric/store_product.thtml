@@ -14,21 +14,23 @@
 	<h1>{$name}</h1>
 	
 	<div class="product">
-		{if $images}
-			<div class="images">
-				<a rel="shadowbox[product_images]" href="{$feature_image_url}" class="feature_image"><img src="{thumbnail path=$feature_image height="165" width="165"}" alt="{$name}" /></a>
-				<ul>
-					{foreach $images as $image}
-						{* we don't want to show the feature image twice *}
-						{if $image.path != $feature_image}
-							{assign var="image_id" value=$image.id}
-							<li><a rel="shadowbox[product_images]" href="{$image.url}"><img src="{thumbnail path=$image.path height="50" width="50"}" alt="click to enlarge" title="click to enlarge" /></a>
-						{/if}
-					{/foreach}
-				</ul>
-			</div>
-		{/if}
-		<div class="description {if !$images}full{/if}">
+		<div class="bar">
+			{if $images}
+				<div class="images">
+					<a rel="shadowbox[product_images]" href="{$feature_image_url}" class="feature_image"><img src="{thumbnail path=$feature_image width="165"}" alt="{$name}" /></a>
+					<ul>
+						{foreach $images as $image}
+							{* we don't want to show the feature image twice *}
+							{if $image.path != $feature_image}
+								{assign var="image_id" value=$image.id}
+								<li><a rel="shadowbox[product_images]" href="{$image.url}"><img src="{thumbnail path=$image.path height="50" width="50"}" alt="click to enlarge" title="click to enlarge" /></a>
+							{/if}
+						{/foreach}
+					</ul>
+					<div style="clear:both"></div>
+				</div>
+			{/if}
+		
 			<div class="cart_form">
 				{if $track_inventory and !$inventory_allow_oversell and $inventory < 1}
 					<p>Unfortunately, this product is sold out.  Please check back again later.</p>
@@ -54,12 +56,15 @@
 							</ul>
 						{/if}
 						
-						Quantity: <input type="text" style="width: 40px" name="quantity" value="1" />
+						<p>Quantity: <input type="text" style="width: 40px" name="quantity" value="1" /></p>
+						
 						<input type="submit" class="button" name="add_to_cart" value="Add to Cart" />
 					</form>
 				{/if}
 			</div>
-			
+		</div>
+		
+		<div class="description">
 			{$description}
 		</div>
 	</div>

@@ -1,0 +1,25 @@
+{extends file="layout.thtml"}
+{block name="title"}{$title} - Calendar - {$smarty.block.parent}{/block}
+{block name="content"}
+	<a class="back_button" href="{url path="events"}" style="width: 100px">view more events</a>
+
+	<h1>{$title}</h1>
+	
+	{if $picture}
+		<img src="{thumbnail path=$picture width="125"}" alt="" style="border: 1px solid #ccc; float: left" />
+		<div style="margin-left: 145px">
+	{/if}
+	
+		<h4>When?</h4>
+		<p>{$event_date|date_format:"%A, %B %e, %Y"}</p>
+		
+		<h4>Where?</h4>
+		<p>{$location}</p>
+	
+		<h4>What?</h4>
+		{$description}
+	
+	{if $picture}
+		</div>
+	{/if}
+{/block}

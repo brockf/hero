@@ -3,6 +3,8 @@
 Cancel Subscription - {$smarty.block.parent}
 {/block}
 {block name="content"}
+	<a class="back_button" href="{url path="users"}">account home</a>
+	
 	<h1>Cancel Subscription</h1>
 	
 	{if $cancelled}

@@ -1,0 +1,34 @@
+{extends file="layout.thtml"}
+{block name="title"}{$title} - {$smarty.block.parent}{/block}
+{block name="content"}
+	<a class="back_button" href="{url}">back to home</a>
+
+	<ul class="blog">
+		<li>
+			<a class="title" href="{$url}">
+				{$title}
+				<span class="date">{$date|date_format:"%A, %B %e, %Y"} / {$author_first_name}</span>
+			</a>
+			{$body}
+			
+			{if $attached_download}
+				{restricted in_group="1"}
+					<p><a href="{protected_link url=$attached_download groups="1"}">Download the attached file</a></p>
+				{/restricted}
+				{restricted not_in_group="1"}
+					<p><b>You must be registered to access this download.  <a href="{url path="users/register"}">Click here to register an account</a>.</b></p>
+				{/restricted}
+			{/if}
+			
+			{if $topics}
+				<p class="topics">Filed under:
+				{foreach $topics as $topic}
+					{topics var="topic_data" id=$topic}
+						<span class="topic">{$topic_data.name}</span>
+					{/topics}
+				{/foreach}
+				</p>
+			{/if}
+		</li>
+	</ul>
+{/block}

@@ -32,15 +32,92 @@
 	</div>
 		
 	<div class="container content">
-		<div class="sidebar">
-			<div class="sidebar_block">
-				<div class="sidebar_head"></div>
-				<div class="sidebar_body">
-					
+		{block name="sidebar"}
+			<div class="sidebar">
+				{module_installed name="store"}
+					{has_cart}
+						<div class="sidebar_block">
+							<div class="sidebar_head"></div>
+							<div class="sidebar_body">
+								<p><a href="{url path="store/cart"}">You have {cart_items} item(s) in your shopping cart</a>.</p>
+							</div>
+							<div class="sidebar_foot"></div>
+						</div>
+					{/has_cart}
+				{/module_installed}
+			
+				<div class="sidebar_block">
+					<div class="sidebar_head"></div>
+					<div class="sidebar_body">
+						<form method="get" action="{url path="search"}" class="validate search">
+							<input type="text" class="text required" placeholder="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
+						</form>
+					</div>
+					<div class="sidebar_foot"></div>
 				</div>
-				<div class="sidebar_foot"></div>
+				
+				<div class="sidebar_block">
+					<div class="sidebar_head"></div>
+					<div class="sidebar_body">
+						{if !$logged_in}
+							<h3>Member Login</h3>
+							<div class="side_login">
+								{login_form var="form" return=$current_url}
+									<form method="post" action="{$form.form_action}">
+										<input type="hidden" name="return" value="{$form.return}">
+										
+										<input class="text" type="text" placeholder="email" name="username" value="" /><br />
+										<input class="text" type="password" placeholder="password" name="password" value="" /><br />
+										<input type="submit" class="button small" name="" value="Login Now" />
+									</form>
+									<p><a href="{url path="users/register"}">Create an account</a></p>
+									<p><a href="{url path="users/forgot_password"}">I forgot my password</a></p>
+								{/login_form}
+							</div>
+						{else}
+							<h3>My Account</h3>
+							<p>Welcome, {$member.first_name}!</p>
+							<p class="account_links"><img src="{theme_url path="images/manage_account.png"}" alt="manage account" /> <a class="side_manage" href="{url path="users"}">Manage my account</a>&nbsp;&nbsp; <img src="{theme_url path="images/logout.png"}" alt="logout" /> <a class="side_logout" href="{url path="users/logout"}">Logout</a></p>
+						{/if}
+					</div>
+					<div class="sidebar_foot"></div>
+				</div>
+				
+				{if $uri_segment.1 != "events"}
+					<div class="sidebar_block">
+						<div class="sidebar_head"></div>
+						<div class="sidebar_body">
+							<h3>Upcoming Events</h3>
+							<ul class="upcoming_events">
+							{content var="event" type="events" limit="4" sort="events.event_date" sort_dir="asc"}
+								<li>
+									<a class="name" href="{$event.url}">{$event.title}</a>
+									<span class="date_place">{$event.event_date|date_format:"%e.%b.%Y"} @ {$event.location}</span>
+								</li>
+							{/content}
+							</ul>
+						</div>
+						<div class="sidebar_foot"></div>
+					</div>
+				{/if}
+				
+				<div class="sidebar_block">
+					<div class="sidebar_head"></div>
+					<div class="sidebar_body">
+						<h3>Latest Blog Posts</h3>
+						<ul class="latest_blog_posts">
+						{content var="post" type="blog" limit="5" sort="content.content_date" sort_dir="desc"}
+							<li>
+								<a class="title" href="{$post.url}">{$post.title}</a>
+								<span class="date">{$post.date|date_format:"%e.%b.%Y"}</span>
+							</li>
+						{/content}
+						</ul>
+					</div>
+					<div class="sidebar_foot"></div>
+				</div>
 			</div>
-		</div>
+		{/block}
 		
 		<div class="inner_content">
 			{block name="content"}No content has been sent to this block{/block}
@@ -50,7 +127,7 @@
 	</div>
 	
 	<div class="container footer">
-		Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
+		Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.  &nbsp;&nbsp;&nbsp;<a href="{url path="blog_rss"}">Blog RSS</a>.
 	</div>
 </div>
 </body>

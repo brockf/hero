@@ -1,0 +1,51 @@
+{extends file="layout.thtml"}
+{block name="title"}Calendar - {$smarty.block.parent}{/block}
+{block name="content"}
+	{if $smarty.get.month}
+		{assign var="month" value=$smarty.get.month}
+	{else}
+		{assign var="month" value=$smarty.now|date_format:"%B"}
+	{/if}
+	
+	{assign var="year" value=$smarty.now|date_format:"%Y"}
+
+	<h1>Events Calendar for {$month} {$smarty.now|date_format:"%Y"}</h1>
+	
+	<ul class="calendar_nav">
+		<li><a href="{url path="events?month=January"}">Jan</a></li>
+		<li><a href="{url path="events?month=February"}">Feb</a></li>
+		<li><a href="{url path="events?month=March"}">Mar</a></li>
+		<li><a href="{url path="events?month=April"}">Apr</a></li>
+		<li><a href="{url path="events?month=May"}">May</a></li>
+		<li><a href="{url path="events?month=June"}">Jun</a></li>
+		<li><a href="{url path="events?month=July"}">Jul</a></li>
+		<li><a href="{url path="events?month=August"}">Aug</a></li>
+		<li><a href="{url path="events?month=September"}">Sep</a></li>
+		<li><a href="{url path="events?month=October"}">Oct</a></li>
+		<li><a href="{url path="events?month=November"}">Nov</a></li>
+		<li><a href="{url path="events?month=December"}">Dec</a></li>
+	</ul>
+	
+	<div style="clear:left"></div>
+	
+	<p style="font-style: italic">To have your event listed online, please <a href="{url path="contact"}">contact us</a>.</p>
+	
+	<ul class="calendar">
+		{content var="event" type="events" limit="50" calendar_month=$month calendar_year=$year sort="events.event_date" sort_dir="asc"}
+			{assign var="found_content" value="true"}
+			<li>
+				<div class="date">
+					<span class="day">{$event.event_date|date_format:"%e"}</span>
+					<span class="month">{$event.event_date|date_format:"%B"}</span>
+				</div>
+				<a class="title" href="{$event.url}">{$event.title}</a>
+				<div class="detail">@ {$event.location}</div>
+				<div class="detail description">{shorten string=$event.description length="90"}</div>
+			</li>
+		{/content}
+	</ul>
+	
+	{if !$found_content}
+		<p>Sorry, no calendar events exist for this month.</p>
+	{/if}
+{/block}

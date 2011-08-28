@@ -3,6 +3,8 @@
 Edit Your Profile - {$smarty.block.parent}
 {/block}
 {block name="content"}
+	<a class="back_button" href="{url path="users"}">account home</a>
+	
 	<h1>Edit Your Profile</h1>
 	<p>Complete the fields below to update your {setting name="site_name"} account profile.</p>
 	<form class="form validate" enctype="multipart/form-data" method="post" action="{url path="users/post_profile"}">
