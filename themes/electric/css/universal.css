@@ -180,14 +180,7 @@ div.sidebar_block {
 }
 
 h3 {
-	margin: 0 0 5px 0;
-	padding: 8px 10px;
-	background-color: #ccc;
-	color: #f0f0f0;
-	text-shadow: 1px 1px #000;
-	font-size: 12pt;
-	font-weight: bold;
-	background-image: url(../images/sidebar_head.gif);
+	
 }
 
 /**

@@ -34,11 +34,11 @@
 	<div class="container content">
 		<div class="sidebar">
 			<div class="sidebar_block">
-				<h3>Latest News</h3>
-				
-				<div class="sidebar_content">
-					test
+				<div class="sidebar_head"></div>
+				<div class="sidebar_body">
+					
 				</div>
+				<div class="sidebar_foot"></div>
 			</div>
 		</div>
 		
