@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.12';
+	var $version = '1.13';
 	var $name = 'publish';
 
 	function __construct () {
@@ -133,6 +133,10 @@ class Publish extends Module {
 		if ($db_version < 1.12) {
 			// create caching folder
 			$this->CI->settings_model->make_writeable_folder(APPPATH . 'cache', TRUE);
+		}
+		
+		if ($db_version < 1.13) {
+			$this->CI->settings_model->make_writeable_folder(setting('path_image_thumbs'));
 		}
 	
 		return $this->version;
