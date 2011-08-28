@@ -44,7 +44,7 @@ $config['cron_key'] = '0000000000000000';
 $config['app_name'] = 'Caribou CMS';
 $config['app_link'] = 'http://www.cariboucms.com/';
 $config['app_support'] = 'http://www.cariboucms.com/support';
-$config['default_theme'] = 'orchard';
+$config['default_theme'] = 'electric';
 
 /*
 |--------------------------------------------------------------------------
