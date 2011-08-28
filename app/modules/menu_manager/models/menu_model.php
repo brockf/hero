@@ -49,6 +49,8 @@ class Menu_model extends CI_Model
 		if (isset($this->CI->cache)) {
 			$this->CI->cache->file->clean();
 		}
+		
+		return $link_id;
 	}
 	
 	/**

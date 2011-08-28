@@ -128,4 +128,6 @@ $CI->menu_model->add_link($menu, FALSE, 'link', $form['link_id'], 'Contact Us');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'My Account', 'my_account');
 
 $menu = $CI->menu_model->new_menu('footer_menu');
+$CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Home', 'home');
+$CI->menu_model->add_link($menu, FALSE, 'link', $feed['link_id'], 'Blog RSS');
 $CI->menu_model->add_link($menu, FALSE, 'special', FALSE, 'Control Panel', 'control_panel');

@@ -202,7 +202,9 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 						// add children						
 						$menu_children[$link['id']][] = 'profile';
 						$menu_children[$link['id']][] = 'password';
-						$menu_children[$link['id']][] = 'invoices';
+						if (module_installed('billing')) {
+							$menu_children[$link['id']][] = 'invoices';
+						}
 						$menu_children[$link['id']][] = 'logout';
 						
 						$menu_items['profile'] = array(
@@ -220,14 +222,16 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 													'class' => 'account_password',
 													'is_child' => TRUE
 												);
-												
-						$menu_items['invoices'] = array(
-													'text' => 'View Invoices',
-													'url' => site_url('users/invoices'),
-													'active' => ($smarty->CI->uri->segment(1) == 'users' and $smarty->CI->uri->segment(2) == 'invoices') ? TRUE : FALSE,
-													'class' => 'account_invoices',
-													'is_child' => TRUE
-												);											
+						
+						if (module_installed('billing')) {						
+							$menu_items['invoices'] = array(
+														'text' => 'View Invoices',
+														'url' => site_url('users/invoices'),
+														'active' => ($smarty->CI->uri->segment(1) == 'users' and $smarty->CI->uri->segment(2) == 'invoices') ? TRUE : FALSE,
+														'class' => 'account_invoices',
+														'is_child' => TRUE
+													);											
+						}
 												
 						$menu_items['logout'] = array(
 													'text' => 'Logout',
@@ -238,7 +242,7 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 												);
 					}
 				}
-				elseif ($link['special_type'] == 'store') {
+				elseif ($link['special_type'] == 'store' and module_installed('store')) {
 					$menu_items[$link['id']] = array(
 												'text' => $link['text'],
 												'url' => site_url('store'),
@@ -256,7 +260,7 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 				}
-				elseif ($link['special_type'] == 'subscriptions') {
+				elseif ($link['special_type'] == 'subscriptions' and module_installed('billing')) {
 					$menu_items[$link['id']] = array(
 												'text' => $link['text'],
 												'url' => site_url('subscriptions'),

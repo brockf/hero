@@ -163,6 +163,21 @@ div.container.footer {
 	width: 890px;
 }
 
+ul.footer_menu {
+	display: inline;
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.footer_menu li {
+	display: inline;
+}
+
+ul.footer_menu li a {
+	padding-left: 11px;
+}
+
 /**
 * Sidebar ##############################################################
 */

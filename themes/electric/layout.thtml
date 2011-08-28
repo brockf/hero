@@ -132,7 +132,7 @@
 	</div>
 	
 	<div class="container footer">
-		Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.  &nbsp;&nbsp;&nbsp;<a href="{url path="blog_rss"}">Blog RSS</a>.
+		Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.  &nbsp;&nbsp;&nbsp;{menu name="footer_menu" show_sub_menus="off" class="footer_menu"}
 	</div>
 </div>
 </body>
