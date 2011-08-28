@@ -89,7 +89,9 @@ class Content_type_model extends CI_Model
 		}
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return $content_type_id;
 	}
@@ -124,7 +126,9 @@ class Content_type_model extends CI_Model
 		$this->db->update('content_types', $update_fields, array('content_type_id' => $content_type_id));
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return;
 	}
@@ -162,7 +166,9 @@ class Content_type_model extends CI_Model
 		$this->db->delete('content_types',array('content_type_id' => $type['id']));
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return TRUE;
 	}
@@ -240,7 +246,7 @@ class Content_type_model extends CI_Model
 	function get_content_type ($id) {
 		$cache_key = 'get_content_type' . $id;
 		
-		if ($return = $this->cache->file->get($cache_key)) {
+		if (isset($this->CI->cache) and $return = $this->cache->file->get($cache_key)) {
 			return $return;
 		}
 		
@@ -253,7 +259,9 @@ class Content_type_model extends CI_Model
 			$return = $type[0];
 		}
 		
-		$this->CI->cache->file->save($cache_key, $return, (30*60));
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->save($cache_key, $return, (30*60));
+		}
 		
 		return $return;
 	}
@@ -270,7 +278,7 @@ class Content_type_model extends CI_Model
 	function get_content_types ($filters = array()) {
 		$cache_key = 'get_content_types' . md5(serialize($filters));
 		
-		if ($return = $this->cache->file->get($cache_key)) {
+		if (isset($this->CI->cache) and $return = $this->cache->file->get($cache_key)) {
 			return ($return == 'empty_cache') ? FALSE : $return;
 		}
 	
@@ -293,7 +301,10 @@ class Content_type_model extends CI_Model
 		$result = $this->db->get('content_types');
 		
 		if ($result->num_rows() == 0) {
-			$this->cache->file->save($cache_key, 'empty_cache', (30*60));
+			if (isset($this->CI->cache)) {
+				$this->cache->file->save($cache_key, 'empty_cache', (30*60));
+			}
+			
 			return FALSE;
 		}
 		
@@ -315,7 +326,9 @@ class Content_type_model extends CI_Model
 					);
 		}
 		
-		$this->cache->file->save($cache_key, $types, (30*60));
+		if (isset($this->CI->cache)) {
+			$this->cache->file->save($cache_key, $types, (30*60));
+		}
 		
 		return $types;
 	}

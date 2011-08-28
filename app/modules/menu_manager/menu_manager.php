@@ -66,7 +66,8 @@ class Menu_manager extends Module {
 		}
 		
 		if ($db_version < 1.02) {
-			$this->CI->settings_model->make_writeable_folder(setting('path_writeable') . 'menu_cache', TRUE);
+			// we no longer use our caching library, but the CI standard
+			// $this->CI->settings_model->make_writeable_folder(setting('path_writeable') . 'menu_cache', TRUE);
 		}
 		
 		return $this->version;

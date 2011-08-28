@@ -54,7 +54,8 @@
 					<div class="sidebar_head"></div>
 					<div class="sidebar_body">
 						<form method="get" action="{url path="search"}" class="validate search">
-							<input type="text" class="text required" placeholder="search query" name="q" /> <input type="submit" class="button small" name="" value="Search" />
+							<label style="display: none" for="side_search">Search Query</label>
+							<input type="text" class="text required" placeholder="search query" name="q" id="side_search" /> <input type="submit" class="button small" name="" value="Search" />
 						</form>
 					</div>
 					<div class="sidebar_foot"></div>

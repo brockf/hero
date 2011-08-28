@@ -38,8 +38,6 @@ class Admincp extends Admincp_Controller {
 			$this->session->set_userdata('manage_menu_parent_link_id','0');
 		}
 		
-		$this->menu_model->clear_cache($this->session->userdata('manage_menu_id'));
-		
 		$active_menu_id = $this->session->userdata('manage_menu_id');
 		$active_menu = $this->menu_model->get_menu($active_menu_id);
 		
@@ -201,9 +199,6 @@ class Admincp extends Admincp_Controller {
 			$this->menu_model->add_link($this->session->userdata('manage_menu_id'), $this->session->userdata('manage_menu_parent_link_id'), 'external', 0, $this->input->post('text'), FALSE, $this->input->post('url'));
 		}
 		
-		// clear cache
-		$this->menu_model->clear_cache($this->session->userdata('manage_menu_id'));
-		
 		// return the current menu
 		$this->get_links();
 	}
@@ -211,9 +206,6 @@ class Admincp extends Admincp_Controller {
 	function remove_link () {
 		$this->load->model('menu_model');
 		$this->menu_model->remove_link($this->input->post('menu_link_id'));
-		
-		// clear cache
-		$this->menu_model->clear_cache($this->session->userdata('manage_menu_id'));
 		
 		$this->get_links();
 	}
@@ -255,10 +247,10 @@ class Admincp extends Admincp_Controller {
 			
 			$count++;
 		}
-		
-		// clear cache
-		$this->load->model('menu_model');
-		$this->menu_model->clear_cache($this->session->userdata('manage_menu_id'));
+
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 	}
 	
 	function edit_link () {
@@ -270,9 +262,6 @@ class Admincp extends Admincp_Controller {
 		$this->load->model('menu_model');
 		
 		$this->menu_model->update_link($link_id, $text, $privileges, $class);
-		
-		// clear cache
-		$this->menu_model->clear_cache($this->session->userdata('manage_menu_id'));
 		
 		echo 'Edit saved.';
 	}

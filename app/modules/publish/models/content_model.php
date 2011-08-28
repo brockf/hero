@@ -107,7 +107,9 @@ class Content_model extends CI_Model
 		$this->db->insert($type['system_name'], $insert_fields);
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return $content_id;
 	}
@@ -196,7 +198,9 @@ class Content_model extends CI_Model
 		}
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return TRUE;
 	}
@@ -232,7 +236,9 @@ class Content_model extends CI_Model
 		}
 		
 		// clear cache
-		$this->CI->cache->file->clean();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return TRUE;
 	}
@@ -313,7 +319,7 @@ class Content_model extends CI_Model
 			$cache_key .= '1';
 		}
 		
-		if ($return = $this->cache->file->get($cache_key)) {
+		if (isset($this->CI->cache) and $return = $this->cache->file->get($cache_key)) {
 			return $return;
 		}
 	
@@ -332,7 +338,9 @@ class Content_model extends CI_Model
 			$return = $content[0];
 		}
 		
-		$this->cache->file->save($cache_key, $return, (30*60));
+		if (isset($this->CI->cache)) {
+			$this->cache->file->save($cache_key, $return, (30*60));
+		}
 		
 		return $return;
 	}
@@ -364,7 +372,7 @@ class Content_model extends CI_Model
 	*/
 	function get_contents ($filters = array(), $counting = FALSE) {
 		// cache check!
-		if (!isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()') {
+		if (isset($this->CI->cache) and (!isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()')) {
 			$caching = TRUE;
 			$cache_key = 'get_contents' . md5(serialize($filters));
 			
@@ -478,11 +486,13 @@ class Content_model extends CI_Model
 						unset($filters['sort']);
 					}
 					
+					// search the title
+					$this->db->like('content_title',$filters['keyword']);
+					
 					$search_fields = array();
-					$method = 'like';
+					$method = 'or_like';
 					foreach ($custom_fields as $field) {
 						$this->db->$method($field['name'],$filters['keyword']);
-						$method = 'or_like';
 					}
 					reset($custom_fields);
 				}

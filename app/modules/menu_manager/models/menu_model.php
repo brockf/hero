@@ -23,26 +23,6 @@ class Menu_model extends CI_Model
 	}
 	
 	/**
-	* Clear Cache
-	*
-	* Menus are cached to limit the number of queries per page.  This method clears that cache and should be run upon menu modifications.
-	*
-	* @return void
-	*/
-	function clear_cache ($menu_id) {
-		$this->load->helper('directory');
-		$files = directory_map($this->config->item('path_writeable') . 'menu_cache');
-		
-		foreach ($files as $file) {
-			if (strpos($file, $menu_id . '-') === 0) {
-				unlink($this->config->item('path_writeable') . 'menu_cache/' . $file);
-			}
-		}
-		
-		return;
-	}
-	
-	/**
 	* Create New Menu
 	*
 	* @param string $name
@@ -64,8 +44,11 @@ class Menu_model extends CI_Model
 						);
 						
 		$this->db->insert('menus',$insert_fields);
+		$link_id = $this->db->insert_id();
 		
-		return $this->db->insert_id();
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 	}
 	
 	/**
@@ -109,7 +92,13 @@ class Menu_model extends CI_Model
 							
 		$this->db->insert('menus_links', $insert_fields);
 		
-		return $this->db->insert_id();
+		$link_id = $this->db->insert_id();
+		
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
+		
+		return $link_id;
 	}
 	
 	/**
@@ -131,6 +120,10 @@ class Menu_model extends CI_Model
 							
 		$this->db->update('menus_links', $update_fields, array('menu_link_id' => $menu_link_id));
 		
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
+		
 		return TRUE;
 	}
 	
@@ -143,6 +136,10 @@ class Menu_model extends CI_Model
 	*/
 	function remove_link ($menu_link_id) {
 		$this->db->delete('menus_links', array('menu_link_id' => $menu_link_id));
+		
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
 		
 		return TRUE;
 	}
@@ -244,6 +241,10 @@ class Menu_model extends CI_Model
 		$this->db->delete('menus',array('menu_id' => $menu_id));
 		$this->db->delete('menus_links',array('menu_id' => $menu_id));
 		
+		if (isset($this->CI->cache)) {
+			$this->CI->cache->file->clean();
+		}
+		
 		return;
 	}
 	
@@ -261,7 +262,7 @@ class Menu_model extends CI_Model
 		// we'll only cache for calls with a filter menu as all frontend calls
 		// have this parameter
 		
-		if (isset($filters['menu']) and $no_cache == FALSE) {
+		if (isset($this->CI->cache) and isset($filters['menu']) and $no_cache == FALSE) {
 			$caching = TRUE;
 			$cache_key = 'get_links' . md5(serialize($filters));
 			
