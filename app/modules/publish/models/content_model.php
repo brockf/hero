@@ -345,6 +345,23 @@ class Content_model extends CI_Model
 	* @return array Array of content, or FALSE
 	*/
 	function get_contents ($filters = array(), $counting = FALSE) {
+		// cache check!
+		if ($counting == FALSE and !isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()') {
+			$caching = TRUE;
+			$cache_key = 'get_contents' . md5(serialize($filters));
+		
+			$CI =& get_instance();
+			
+			$CI->load->driver('cache');
+			if ($return = $CI->cache->file->get($cache_key)) {
+				die('test');
+				return $return;
+			}
+		}
+		else {
+			$caching = FALSE;
+		}
+	
 		// if we are going to do a content search, let's get the total content items so that we can decide
 		// if this is a LIKE or a FULLTEXT search
 		if (isset($filters['keyword']) and isset($filters['type'])) {
@@ -605,6 +622,10 @@ class Content_model extends CI_Model
 		$result = $this->db->get();
 		
 		if ($result->num_rows() == 0) {
+			if ($caching == TRUE) {
+				$CI->cache->file->save($cache_key, FALSE);
+			}
+			
 			return FALSE;
 		}
 		
@@ -647,6 +668,10 @@ class Content_model extends CI_Model
 		}
 		
 		$result->free_result();
+		
+		if ($caching == TRUE) {
+			$CI->cache->file->save($cache_key, $contents, (5*60));	
+		}
 		
 		return $contents;
 	}
