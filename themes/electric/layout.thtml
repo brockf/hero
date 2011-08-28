@@ -34,6 +34,10 @@
 	<div class="container content">
 		{block name="sidebar"}
 			<div class="sidebar">
+				{block name="sidebar_top"}
+				
+				{/block}
+			
 				{module_installed name="store"}
 					{has_cart}
 						<div class="sidebar_block">

@@ -2,6 +2,16 @@
 {block name="title"}
 {if $title}{$title}{elseif $collection}{$collection.name}{/if} - {$smarty.block.parent}
 {/block}
+{block name="sidebar_top"}
+	<div class="sidebar_block">
+		<div class="sidebar_head"></div>
+		<div class="sidebar_body">
+			<h3>Our Store Promise</h3>
+			<p>We'll delivery only the freshest fruit to your door, any day of the week!  If you don't like it, we'll refund you + 10%.</p>
+		</div>
+		<div class="sidebar_foot"></div>
+	</div>
+{/block}
 {block name="content"}
 	<h1>Browse Our Store</h1>
 	
