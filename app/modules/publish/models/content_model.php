@@ -354,7 +354,6 @@ class Content_model extends CI_Model
 			
 			$CI->load->driver('cache');
 			if ($return = $CI->cache->file->get($cache_key)) {
-				die('test');
 				return $return;
 			}
 		}
