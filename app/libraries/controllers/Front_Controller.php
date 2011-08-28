@@ -43,6 +43,9 @@ class Front_Controller extends MY_Controller {
 			MY_Loader::define_module($module . '/');
 		}
 		
+		// load caching for the frontend
+		$this->load->driver('cache');
+		
 		// if we don't have a theme, we'll setup the default theme
 		// we do it after Smarty because some module definitions reference the Smarty library
 		// we won't do this if it's a cron load though - that's too awkward

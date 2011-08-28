@@ -12,11 +12,13 @@
 
 class Content_model extends CI_Model
 {
-	private $cache;
+	private $CI;
 	
 	function __construct()
 	{
 		parent::__construct();
+		
+		$this->CI =& get_instance();
 	}
 	
 	/**
@@ -104,6 +106,9 @@ class Content_model extends CI_Model
 		
 		$this->db->insert($type['system_name'], $insert_fields);
 		
+		// clear cache
+		$this->CI->cache->file->clean();
+		
 		return $content_id;
 	}
 	
@@ -190,6 +195,9 @@ class Content_model extends CI_Model
 			$this->db->update($type['system_name'], $update_fields, array('content_id' => $content['id']));
 		}
 		
+		// clear cache
+		$this->CI->cache->file->clean();
+		
 		return TRUE;
 	}
 
@@ -222,6 +230,9 @@ class Content_model extends CI_Model
 		if ($this->db->table_exists($type['system_name'])) {
 			$this->db->delete($type['system_name'], array('content_id' => $content_id));
 		}
+		
+		// clear cache
+		$this->CI->cache->file->clean();
 		
 		return TRUE;
 	}
@@ -297,10 +308,13 @@ class Content_model extends CI_Model
 	* @return array $content
 	*/
 	function get_content ($content_id, $allow_future = FALSE) {
-		$cache_id = $content_id;
-		$cache_id .= ($allow_future == FALSE) ? '_0' : '_1';
-		if (isset($this->cache[$cache_id])) {
-			return $this->cache[$cache_id];
+		$cache_key = 'get_content' . $content_id;
+		if ($allow_future == TRUE) {
+			$cache_key .= '1';
+		}
+		
+		if ($return = $this->cache->file->get($cache_key)) {
+			return $return;
 		}
 	
 		$filters = array('id' => $content_id);
@@ -312,11 +326,15 @@ class Content_model extends CI_Model
 		$content = $this->get_contents($filters);
 		
 		if (empty($content)) {
-			return FALSE;
+			$return = FALSE;
+		}
+		else {
+			$return = $content[0];
 		}
 		
-		$this->cache[$cache_id] = $content[0];
-		return $content[0];
+		$this->cache->file->save($cache_key, $return, (30*60));
+		
+		return $return;
 	}
 	
 	/**
@@ -346,15 +364,16 @@ class Content_model extends CI_Model
 	*/
 	function get_contents ($filters = array(), $counting = FALSE) {
 		// cache check!
-		if ($counting == FALSE and !isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()') {
+		if (!isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()') {
 			$caching = TRUE;
 			$cache_key = 'get_contents' . md5(serialize($filters));
-		
-			$CI =& get_instance();
 			
-			$CI->load->driver('cache');
-			if ($return = $CI->cache->file->get($cache_key)) {
-				return $return;
+			if ($counting == TRUE) {
+				$cache_key .= '_counting';
+			}
+			
+			if ($return = $this->cache->file->get($cache_key)) {
+				return ($return == 'empty_cache') ? FALSE : $return;
 			}
 		}
 		else {
@@ -388,6 +407,9 @@ class Content_model extends CI_Model
 			}
 			
 			if (isset($result) and $result->num_rows() == 0) {
+				if ($caching == TRUE) {
+					$this->CI->cache->file->save($cache_key, 'empty_cache');
+				}
 				return FALSE;
 			}
 			else {
@@ -395,6 +417,9 @@ class Content_model extends CI_Model
 				$type = $this->content_type_model->get_content_type($content_type_id);
 				
 				if (empty($type)) {
+					if ($caching == TRUE) {
+						$this->CI->cache->file->save($cache_key, 'empty_cache');
+					}
 					return FALSE;
 				}
 				
@@ -423,16 +448,15 @@ class Content_model extends CI_Model
 				if (isset($filters['keyword']) and $content_count > 10) {
 					$search_fields = array();
 					// load fieldtype library for below dbcolumn checks
-					$CI =& get_instance();
-					$CI->load->library('custom_fields/fieldtype');
+					$this->CI->load->library('custom_fields/fieldtype');
 					
 					$search_fields = array();
 					$fields = 1;
 					foreach ($custom_fields as $field) {
 						if ($fields < 16) {
 							// we will only index fields that are VARCHAR, or TEXT
-							$CI->fieldtype->load_type($field['type']);
-							$db_column = $CI->fieldtype->$field['type']->db_column;
+							$this->CI->fieldtype->load_type($field['type']);
+							$db_column = $this->CI->fieldtype->$field['type']->db_column;
 						
 							if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
 								$search_fields[] = '`' . $field['name'] . '`';
@@ -557,6 +581,10 @@ class Content_model extends CI_Model
 			$result = $this->db->get();
 			$rows = $result->num_rows();
 			$result->free_result();
+			
+			if ($caching == TRUE) {
+				$this->CI->cache->file->save($cache_key, $rows, (30*60));
+			}
 			return $rows;
 		}
 		
@@ -622,7 +650,7 @@ class Content_model extends CI_Model
 		
 		if ($result->num_rows() == 0) {
 			if ($caching == TRUE) {
-				$CI->cache->file->save($cache_key, FALSE);
+				$this->CI->cache->file->save($cache_key, 'empty_cache');
 			}
 			
 			return FALSE;
@@ -669,7 +697,7 @@ class Content_model extends CI_Model
 		$result->free_result();
 		
 		if ($caching == TRUE) {
-			$CI->cache->file->save($cache_key, $contents, (5*60));	
+			$this->CI->cache->file->save($cache_key, $contents, (5*60));	
 		}
 		
 		return $contents;

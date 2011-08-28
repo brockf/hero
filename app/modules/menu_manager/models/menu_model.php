@@ -13,9 +13,13 @@
 
 class Menu_model extends CI_Model
 {
+	private $CI;
+	
 	function __construct()
 	{
 		parent::__construct();
+		
+		$this->CI =& get_instance();
 	}
 	
 	/**
@@ -258,15 +262,15 @@ class Menu_model extends CI_Model
 		// have this parameter
 		
 		if (isset($filters['menu']) and $no_cache == FALSE) {
-			$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
-			$directory = $this->config->item('path_writeable') . 'menu_cache/';
+			$caching = TRUE;
+			$cache_key = 'get_links' . md5(serialize($filters));
 			
-			if (file_exists($directory . $cache_file)) {
-				$links = file_get_contents($directory . $cache_file);
-				$links = unserialize($links);
-				
-				return $links;
+			if ($return = $this->CI->cache->file->get($cache_key)) {
+				return ($return == 'empty_cache') ? FALSE : $return;
 			}
+		}
+		else {
+			$caching = FALSE;
 		}
 		
 		// no cache, continue...
@@ -289,12 +293,8 @@ class Menu_model extends CI_Model
 		
 		if ($result->num_rows() == 0) {
 			// save cache?
-			if (isset($filters['menu'])) {
-				$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
-				$directory = $this->config->item('path_writeable') . 'menu_cache/';
-				
-				$this->load->helper('file');
-				write_file($directory . $cache_file, serialize(FALSE));
+			if ($caching == TRUE) {
+				$this->CI->cache->file->save($cache_key, 'empty_cache', (24*60*60));
 			}
 			
 			return FALSE;
@@ -323,13 +323,8 @@ class Menu_model extends CI_Model
 					);
 		}
 		
-		// save cache
-		if (isset($filters['menu'])) {
-			$cache_file = $filters['menu'] . '-' . md5(serialize($filters));	
-			$directory = $this->config->item('path_writeable') . 'menu_cache/';
-			
-			$this->load->helper('file');
-			write_file($directory . $cache_file, serialize($links));
+		if ($caching == TRUE) {
+			$this->CI->cache->file->save($cache_key, $links, (24*60*60));
 		}
 		
 		return $links;

@@ -12,11 +12,13 @@
 
 class Content_type_model extends CI_Model
 {
-	private $cache;
+	private $CI;
 	
 	function __construct()
 	{
 		parent::__construct();
+		
+		$this->CI =& get_instance();
 	}
 	
 	/**
@@ -86,6 +88,9 @@ class Content_type_model extends CI_Model
 			$this->db->query('ALTER TABLE `' . $system_name . '` ADD INDEX ( `content_id` )');
 		}
 		
+		// clear cache
+		$this->CI->cache->file->clean();
+		
 		return $content_type_id;
 	}
 	
@@ -117,6 +122,9 @@ class Content_type_model extends CI_Model
 						);
 						
 		$this->db->update('content_types', $update_fields, array('content_type_id' => $content_type_id));
+		
+		// clear cache
+		$this->CI->cache->file->clean();
 		
 		return;
 	}
@@ -153,6 +161,9 @@ class Content_type_model extends CI_Model
 		// delete content type
 		$this->db->delete('content_types',array('content_type_id' => $type['id']));
 		
+		// clear cache
+		$this->CI->cache->file->clean();
+		
 		return TRUE;
 	}
 	
@@ -180,16 +191,15 @@ class Content_type_model extends CI_Model
 		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
 		
 		// load fieldtype library for below dbcolumn checks
-		$CI =& get_instance();
-		$CI->load->library('custom_fields/fieldtype');
+		$this->CI->load->library('custom_fields/fieldtype');
 		
 		$search_fields = array();
 		$fields = 1;
 		foreach ($custom_fields as $field) {
 			if ($fields < 16) {		
 				// we will only index fields that are VARCHAR, or TEXT
-				$CI->fieldtype->load_type($field['type']);
-				$db_column = $CI->fieldtype->$field['type']->db_column;
+				$this->CI->fieldtype->load_type($field['type']);
+				$db_column = $this->CI->fieldtype->$field['type']->db_column;
 			
 				if (strpos($db_column,'TEXT') !== FALSE or strpos($db_column,'VARCHAR') !== FALSE) {
 					$search_fields[] = '`' . $field['name'] . '`';
@@ -228,18 +238,24 @@ class Content_type_model extends CI_Model
 	* @return array $content_type
 	*/
 	function get_content_type ($id) {
-		if (isset($this->cache[$id])) {
-			return $this->cache[$id];
+		$cache_key = 'get_content_type' . $id;
+		
+		if ($return = $this->cache->file->get($cache_key)) {
+			return $return;
 		}
 		
 		$type = $this->get_content_types(array('id' => $id));
 		
 		if (empty($type)) {
-			return FALSE;
+			$return = FALSE;
+		}
+		else {
+			$return = $type[0];
 		}
 		
-		$this->cache[$id] = $type[0];
-		return $type[0];
+		$this->CI->cache->file->save($cache_key, $return, (30*60));
+		
+		return $return;
 	}
 	
 	/**
@@ -252,6 +268,12 @@ class Content_type_model extends CI_Model
 	* @return array
 	*/
 	function get_content_types ($filters = array()) {
+		$cache_key = 'get_content_types' . md5(serialize($filters));
+		
+		if ($return = $this->cache->file->get($cache_key)) {
+			return ($return == 'empty_cache') ? FALSE : $return;
+		}
+	
 		if (isset($filters['id'])) {
 			$this->db->where('content_type_id',$filters['id']);
 		}
@@ -271,6 +293,7 @@ class Content_type_model extends CI_Model
 		$result = $this->db->get('content_types');
 		
 		if ($result->num_rows() == 0) {
+			$this->cache->file->save($cache_key, 'empty_cache', (30*60));
 			return FALSE;
 		}
 		
@@ -291,6 +314,8 @@ class Content_type_model extends CI_Model
 						'base_url' => $row['content_type_base_url']
 					);
 		}
+		
+		$this->cache->file->save($cache_key, $types, (30*60));
 		
 		return $types;
 	}
