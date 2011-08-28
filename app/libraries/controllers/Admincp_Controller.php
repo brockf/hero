@@ -62,6 +62,9 @@ class Admincp_Controller extends MY_Controller {
 		// load assets library (include stylesheets and javascript files dynamically)
 		$this->load->library('head_assets');
 		
+		// load caching library
+		$this->load->driver('cache');
+		
 		// init hooks
 		$this->load->library('app_hooks');
 		
