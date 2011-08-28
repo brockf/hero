@@ -1,6 +1,6 @@
 <?php
 
-/*
+/**
 * Menu Template Function
 *
 * Displays a menu in CSS-ready HTML

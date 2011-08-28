@@ -92,4 +92,4 @@ function image_thumb ($image_path, $height, $width)
 }
 
 /* End of file image_thumb_helper.php */
-/* Location: ./application/helpers/image_thumb_helper.php */
+/* Location: ./app/helpers/image_thumb_helper.php */
