@@ -30,6 +30,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			if (!is_numeric($params['type'])) {
 				$smarty->CI->load->model('publish/content_type_model');
 				$type = $smarty->CI->content_type_model->get_content_types(array('system_name' => $params['type']));
+				$type = $type[0];
 			}
 			else {
 				$smarty->CI->load->model('publish/content_type_model');
@@ -42,7 +43,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			}
 
 			// load the proper type ID, if not numeric
-			$params['type'] = (isset($type[0])) ? $type[0]['id'] : $type['id'];
+			$params['type'] = $type['id'];
 		}
 		
 		// deal with filters
