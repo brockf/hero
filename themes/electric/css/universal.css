@@ -62,8 +62,8 @@ div#header a.logo {
 	display: block;
 	position: absolute;
 	top: 50px;
-	left: 15px;
-	width: 300px;
+	left: 25px;
+	width: 500px;
 	height: 77px;
 	font-family: Podkova, Georgia, Times New Roman, serif;
 	color: #fff;
@@ -107,15 +107,16 @@ div#navigation ul li a {
 	letter-spacing: 0.5px;
 	text-align: center;
 	padding-top: 26px;
-	padding: 26px 20px 27px;
+	padding: 26px 25px 27px;
 	text-shadow: 0px 1px #444;
-	background-image: url(../images/nav_separator.gif);
+	background-image: url(../images/nav_separator.png);
 	background-position: top right;
 	background-repeat: no-repeat;
 }
 
 div#navigation ul li.active a {
 	background-color: #111;
+	color: #bfb76c;
 	text-shadow: none;
 	font-weight: bold;
 }
@@ -123,38 +124,43 @@ div#navigation ul li.active a {
 div#navigation ul.children {
 	display: none;
 	position: absolute;
-	left: 0;
-	top: 39px;
-	background-color: #b4b4b4;
+	left: -3px;
+	top: 66px;
+	background-color: #333;
 	z-index: 995;
 }
 
 div#navigation ul.children li a {
-	background-color: #ccc;
-	color: #222;
+	font-weight: normal;
+	background-color: #111;
+	border-left: 1px solid #888;
+	color: #f0f0f1;
 	float: none;
 	display: block;
 	width: 140px;
 	text-align: left;
 	text-shadow: none;
 	padding: 9px 15px;
-	margin: 0 0 1px 0;
+	margin: 1px 0 0 1px;
+	text-transform: none;
+	background-image: none;
 }
 
-div#navigation ul.children li a:hover {
-	background-color: #e53b26;
-	color: #fff;
-	text-shadow: 0px 1px #000;
+div#navigation ul.children li:first-child a {
+	margin-top: 0px;
 }
 
 /**
 * Footer ###############################################################
 */
 
-div.footer {
-	margin-top: 10px;
+div.container.footer {
+	margin: 10px auto;
 	color: #666;
-	font-size: 9pt;
+	font-size: 8pt;
+	text-transform: uppercase;
+	padding: 15px 25px;
+	width: 890px;
 }
 
 /**
@@ -163,18 +169,25 @@ div.footer {
 
 div.sidebar {
 	float: right;
-	width: 251px;
-	margin-left: 25px;
+	width: 249px;
+}
+
+div.sidebar_block {
 	background-color: #f0f0f0;
+	-moz-box-shadow: 0px 0px 2px #ccc;
+	-webkit-box-shadow: 0px 0px 2px #ccc;
+	box-shadow: 0px 0px 2px #ccc;
 }
 
 h3 {
 	margin: 0 0 5px 0;
-	padding: 5px 10px;
+	padding: 8px 10px;
 	background-color: #ccc;
-	color: #222;
+	color: #f0f0f0;
+	text-shadow: 1px 1px #000;
 	font-size: 12pt;
 	font-weight: bold;
+	background-image: url(../images/sidebar_head.gif);
 }
 
 /**
@@ -184,59 +197,37 @@ h3 {
 div.container.content {
 	background-image: url(../images/content_back.gif);
 	background-repeat: repeat-x;
-	padding: 15px;
-	width: 910px;
+	padding: 15px 25px;
+	width: 890px;
+	color: #333;
+	font-size: 11pt;
 }
 
 h1 {
-	font-size: 20pt;
+	font-size: 23pt;
 	letter-spacing: -1px;
 	font-weight: bold;
 	line-height: 1.1em;
+	color: #453552;
+	font-family: Podkova, Georgia, Times New Roman, serif;
 }
 
 div.inner_content {
-	margin-right: 276px;
+	margin-right: 275px;
 	line-height: 1.4em;
+}
+
+div.content ol {
+	list-style-type: square;
+}
+
+div.content ol li {
+	display: list-item;
+	margin-bottom: 12px;
 }
 
 div.pagination a, div.pagination b {
 	margin-right: 5px;
-}
-
-p.intro {
-	font-size: 13pt;
-	margin: 0 0 25px 0;
-	background-color: #f0f0f0;
-	padding: 15px;
-	line-height: 2em;
-}
-
-ul.frontpage_products {
-	list-style-type: none;
-	margin: 0 0 25px 0;
-	padding: 0;
-}
-
-ul.frontpage_products li {
-	display: block;
-	float: left;
-	width: 208px;
-	margin-right: 10px;
-	margin-bottom: 15px;
-}
-
-ul.frontpage_products li div.image {
-	margin-bottom: 5px;
-}
-
-ul.frontpage_products li a {
-	font-weight: bold;
-	font-size: 14pt;
-}
-
-ul.frontpage_products li p {
-	margin: 5px 0;
 }
 
 div.byline {
@@ -267,20 +258,32 @@ ul.blog li {
 }
 
 ul.blog li a.title {
-	font-size: 17pt;
+	position: relative;
 	clear: left;
 	display: block;
 	margin-top: 10px;
+	padding: 0 58px 7px 0;
+	background-image: url(../images/post.gif);
+	background-repeat: no-repeat;
+	background-position: top right;
+	border-bottom: 1px solid #dedede;
 	line-height: 1em;
+	font-family: Podkova, Georgia, Times New Roman, serif;
+	color: #453552;
+	font-size: 23pt;
 }
 
-ul.blog li h4.date {
-	background-color: #ccc;
-	color: #fff;
-	font-weight: normal;
-	font-style: italic;
-	padding: 3px 8px;
-	display: inline;
+ul.blog li a.title span.date {
+	color: #777;
+	font-size: 9pt;
+	display: block;
+	bottom: 0;
+	left: 0;
+	text-decoration: none;
+}
+
+ul.blog li a.title:hover span.date {
+	text-decoration: none;
 }
 
 /**

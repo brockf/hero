@@ -33,10 +33,12 @@
 		
 	<div class="container content">
 		<div class="sidebar">
-			<h3>Latest News</h3>
-			
-			<div class="sidebar_content">
-				test
+			<div class="sidebar_block">
+				<h3>Latest News</h3>
+				
+				<div class="sidebar_content">
+					test
+				</div>
 			</div>
 		</div>
 		
@@ -49,7 +51,6 @@
 	
 	<div class="container footer">
 		Copyright &copy; {$smarty.now|date_format:"%Y"}, {setting name="site_name"}.  All Rights Reserved.
-		{menu name="footer_menu" class="menu"}
 	</div>
 </div>
 </body>
