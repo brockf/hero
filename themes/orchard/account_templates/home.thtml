@@ -19,7 +19,7 @@ Account Manager - {$smarty.block.parent}
 		<li><a href="{url path="users/password"}">Change your password</a></li>
 		{module_installed name="billing"}
 			<li><a href="{url path="users/invoices"}">View all invoices</a></li>
-		{/module}
+		{/module_installed}
 		<li><a href="{url path="users/logout"}">Logout</a></li>
 	</ul>
 	
