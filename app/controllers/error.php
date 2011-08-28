@@ -9,7 +9,7 @@
 *
 * @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 */
 
 class Error extends CI_Controller {

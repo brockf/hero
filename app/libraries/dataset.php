@@ -11,7 +11,7 @@
 *
 * @author Electric Function, Inc.
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 *
 */
 class Dataset {

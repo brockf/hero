@@ -8,7 +8,7 @@
 * @return array $directory_map
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function filter_directory ($directory, $filters = array()) {

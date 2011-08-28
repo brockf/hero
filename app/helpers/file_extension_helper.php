@@ -9,7 +9,7 @@
 * @return string extension
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function file_extension ($file) {

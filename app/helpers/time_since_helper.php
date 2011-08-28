@@ -11,7 +11,7 @@
 * @return string|boolean
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function time_since($time, $now = FALSE) {

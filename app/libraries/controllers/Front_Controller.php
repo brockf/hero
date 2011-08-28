@@ -10,7 +10,7 @@
 * default theme if currently uninstalled.
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 

@@ -10,7 +10,7 @@
 * @return string Formatted filesize
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function format_size ($filesize)

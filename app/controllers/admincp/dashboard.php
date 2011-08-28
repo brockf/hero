@@ -7,7 +7,7 @@
 *
 * @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 */
 
 class Dashboard extends Admincp_Controller {

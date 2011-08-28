@@ -9,7 +9,7 @@
 * @return string The Value
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function setting ($name) {

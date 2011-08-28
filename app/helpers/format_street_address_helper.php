@@ -9,7 +9,7 @@
 * @return string address
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function format_street_address ($address = array()) {

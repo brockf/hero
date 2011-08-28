@@ -9,7 +9,7 @@
 * @return string $string The encoded value
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function query_value_encode ($string) {
@@ -25,7 +25,7 @@ function query_value_encode ($string) {
 * @return string $string The decoded value
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function query_value_decode ($string) {

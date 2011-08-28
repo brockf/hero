@@ -2,7 +2,7 @@
 
 <h1>Match Columns</h1>
 
-<p>Your list has been uploaded. Now match up the columns in your uploaded list to Caribou's user fields.</p>
+<p>Your list has been uploaded. Now match up the columns in your uploaded list to <?=$this->config->item('app_name');?>'s user fields.</p>
 
 <p>Every import MUST supply email address, first name and last name.</p>
 

@@ -10,7 +10,7 @@
 * @param boolean $retain_whole_words
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function shorten ($string, $length, $retain_whole_words = FALSE) {

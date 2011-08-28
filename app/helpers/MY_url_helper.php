@@ -6,7 +6,7 @@
 * Retrieve current URL *with* query string
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function current_url () {

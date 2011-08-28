@@ -9,7 +9,7 @@
 *	(2) Allow <? and ?> in input, so that we can take XML requests.
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 

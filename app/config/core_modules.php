@@ -8,7 +8,7 @@
 * module that you want to protect from uninstallation.
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 

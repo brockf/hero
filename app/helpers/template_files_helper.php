@@ -8,7 +8,7 @@
 * @return array
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */function template_files () {
 	$CI = get_instance();

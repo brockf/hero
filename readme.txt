@@ -1,4 +1,4 @@
-Electric Framework is a web publishing and e-commerce platform.
+Hero Framework is a web publishing and e-commerce platform.
 Copyright (C) 2010 Electric Function, Inc.  ALL RIGHTS RESERVED.
 
 By using this software, you agree to the following terms and conditions

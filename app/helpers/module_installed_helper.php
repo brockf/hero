@@ -12,7 +12,7 @@
 * @return boolean
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function module_installed () {

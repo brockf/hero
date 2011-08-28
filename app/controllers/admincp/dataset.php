@@ -8,7 +8,7 @@
 *
 * @copyright Electric Function, Inc.
 * @author Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 */
 class Dataset extends CI_Controller {
 

@@ -9,7 +9,7 @@
 * loads the app hooks engine, and initializes the KCFinder for CKEditor.
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 
@@ -86,7 +86,7 @@ class Admincp_Controller extends MY_Controller {
 		// Safari base_href fix
 		$url = parse_url(base_url());
 		$this->load->library('user_agent');
-		// if they are using Safari and don't have Caribou installed in a sub-folder, this prefix "/" fixes the problem
+		// if they are using Safari and don't have Hero installed in a sub-folder, this prefix "/" fixes the problem
 		if (stripos($this->agent->browser(),'safari') !== FALSE and trim($url['path'], '/') == '') {
 			$prefix = '/';
 		}

@@ -6,7 +6,7 @@
 * Contains all the methods used to create, and update modules
 *
 * @author Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @copyright Electric Function, Inc.
 */
 

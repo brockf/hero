@@ -7,7 +7,7 @@
 * and be executed with the cronjob.
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 

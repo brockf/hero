@@ -41,9 +41,9 @@ $config['cron_key'] = '0000000000000000';
 |--------------------------------------------------------------------------
 |
 */
-$config['app_name'] = 'Caribou CMS';
-$config['app_link'] = 'http://www.cariboucms.com/';
-$config['app_support'] = 'http://www.cariboucms.com/support';
+$config['app_name'] = 'Hero Framework';
+$config['app_link'] = 'http://www.heroframework.com/';
+$config['app_support'] = 'http://www.heroframework.com/support';
 $config['default_theme'] = 'electric';
 
 /*

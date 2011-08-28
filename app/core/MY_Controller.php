@@ -9,7 +9,7 @@
 * doing something ugly like touching index.php
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 

@@ -11,7 +11,7 @@
 * @return string $value
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function xml_value_prep ($value, $encode_tags = TRUE) {

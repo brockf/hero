@@ -9,7 +9,7 @@
 * @return string
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function clean_string ($text) {

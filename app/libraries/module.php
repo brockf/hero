@@ -7,7 +7,7 @@
 * and __construct() triggers the process
 *
 * @author Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 *
 */
 

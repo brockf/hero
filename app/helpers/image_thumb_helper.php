@@ -12,7 +12,7 @@
 * @return string Web path to image thumbnail
 *
 * @copyright Electric Function, Inc.
-* @package Electric Framework
+* @package Hero Framework
 * @author Electric Function, Inc.
 */
 function image_thumb ($image_path, $height, $width)
