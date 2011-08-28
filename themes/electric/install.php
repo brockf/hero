@@ -17,7 +17,7 @@ $type_events = $CI->content_type_model->get_content_type($type_events);
 $CI->load->model('custom_fields_model');
 $CI->load->library('custom_fields/fieldtype'); // hack that triggers update to the custom_fields module
 $CI->custom_fields_model->new_custom_field($type_blog['custom_field_group_id'], 'Body', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_blog['system_name']);
-$CI->custom_fields_model->new_custom_field($type_blog['custom_field_group_id'], 'Attached Download', 'file_upload', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, $type_blog['system_name']);
+$CI->custom_fields_model->new_custom_field($type_blog['custom_field_group_id'], 'Attached Download', 'file_upload', FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, $type_blog['system_name']);
 
 $CI->custom_fields_model->new_custom_field($type_pages['custom_field_group_id'], 'Body', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_pages['system_name']);
 
@@ -27,7 +27,7 @@ $CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id']
 $CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id'], 'Description', 'wysiwyg', FALSE, FALSE, '650px', FALSE, TRUE, FALSE, $type_events['system_name']);
 $CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id'], 'Location', 'text', FALSE, FALSE, '450px', FALSE, TRUE, FALSE, $type_events['system_name']);
 $CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id'], 'Event Date', 'datetime', FALSE, FALSE, '200px', FALSE, TRUE, FALSE, $type_events['system_name']);
-$CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id'], 'BYOB', 'checkbox', FALSE, FALSE, FALSE, FALSE, TRUE, FALSE, $type_events['system_name']);
+$CI->custom_fields_model->new_custom_field($type_events['custom_field_group_id'], 'BYOB', 'checkbox', FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, $type_events['system_name']);
 
 // configure search with content types
 $CI->settings_model->update_setting('search_content_types', 'a:3:{i:' . $type_blog['id'] . ';s:4:"body";i:' . $type_pages['id'] . ';s:1:"0";i:' . $type_events['id'] . ';s:11:"description";}');
