@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.11';
+	var $version = '1.12';
 	var $name = 'publish';
 
 	function __construct () {
@@ -128,6 +128,11 @@ class Publish extends Module {
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `content_type_id` (`content_type_id`)');
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `link_id` (`link_id`)');
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `user_id` (`user_id`)');
+		}
+		
+		if ($db_version < 1.12) {
+			// create caching folder
+			$this->CI->settings_model->make_writeable_folder(APPPATH . 'cache', TRUE);
 		}
 	
 		return $this->version;
