@@ -201,15 +201,17 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.18)
 		{
-			$this->CI->db->query("CREATE TABLE IF NOT EXISTS  `ci_sessions` (
-				session_id varchar(40) DEFAULT '0' NOT NULL,
-				ip_address varchar(16) DEFAULT '0' NOT NULL,
-				user_agent varchar(120) NOT NULL,
-				last_activity int(10) unsigned DEFAULT 0 NOT NULL,
-				user_data text NOT NULL,
-				PRIMARY KEY (session_id),
-				KEY `last_activity_idx` (`last_activity`)
-			);");
+			if ($this->CI->db->table_exists($this->CI->config->item('sess_table_name')) == FALSE) {			
+				$this->CI->db->query("CREATE TABLE IF NOT EXISTS  `ci_sessions` (
+					session_id varchar(40) DEFAULT '0' NOT NULL,
+					ip_address varchar(16) DEFAULT '0' NOT NULL,
+					user_agent varchar(120) NOT NULL,
+					last_activity int(10) unsigned DEFAULT 0 NOT NULL,
+					user_data text NOT NULL,
+					PRIMARY KEY (session_id),
+					KEY `last_activity_idx` (`last_activity`)
+				);");
+			}
 		}
 		
 		// return current version
