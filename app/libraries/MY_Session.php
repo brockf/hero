@@ -10,7 +10,7 @@ class MY_Session extends CI_Session {
 		$CI =& get_instance();
 		
 		// we really only need to check this during the installation wizard
-		if ($CI->uri->segment(1) == 'install' and isset($CI->db) and $CI->db->table_exists($CI->config->item('sess_table_name')) == FALSE) {
+		if (isset($CI->db) and $CI->db->table_exists($CI->config->item('sess_table_name')) == FALSE) {
 			$params['sess_use_database'] = FALSE;
 		}
 		
