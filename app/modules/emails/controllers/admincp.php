@@ -334,11 +334,22 @@ class Admincp extends Admincp_Controller {
 	* @return true Passes to view
 	*/
 	function new_email_2 () {
-		$this->load->model('billing/subscription_plan_model');
-		$this->load->model('store/products_model');
+		if (module_installed('billing')) {
+			$this->load->model('billing/subscription_plan_model');
+			$plans = $this->subscription_plan_model->get_plans();
+		}
+		else {
+			$plans = FALSE;
+		}
 		
-		$plans = $this->subscription_plan_model->get_plans();
-		$products = $this->products_model->get_products();
+		
+		if (module_installed('store')) {
+			$this->load->model('store/products_model');
+			$products = $this->products_model->get_products();
+		}
+		else {
+			$products = FALSE;
+		}
 		
 		$hook = $this->app_hooks->get_hook($this->input->get('hook'));
 		
