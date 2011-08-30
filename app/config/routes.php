@@ -61,6 +61,24 @@ $route['checkout'] = 'billing/checkout';
 $route['checkout/([a-zA-Z_-]+)'] = 'billing/checkout/$1';
 $route['subscriptions'] = 'billing/subscriptions';
 
+/**
+* Custom Routes
+*
+* This file is subject to change with future releases.  So, if you have custom routes
+* you would like to specify that you don't want to have overwritten in a future release,
+* update /app/config/custom_routes.php with these routes.
+*
+* e.g.:
+*
+* <?php
+* $route['my_custom_users_dir'] = 'users';
+* ?>
+*
+*/
+if (file_exists(APPPATH . 'config/custom_routes.php')) {
+	include(APPPATH . 'config/custom_routes.php');
+}
+
 if (file_exists(FCPATH . 'writeable/routes.php')) {
 	include(FCPATH . 'writeable/routes.php');
 }
