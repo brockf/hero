@@ -581,6 +581,18 @@ class CI_Form_validation {
 				$rule	= $match[1];
 				$param	= $match[2];
 			}
+			
+			/**
+			* Begin Hero customization
+			*
+			* We want to able to call helper functions as validation,
+			* so we need to deal with error responses from them.
+			*
+			*/
+			$native_php = FALSE;
+			/**
+			* End Hero customization
+			*/
 
 			// Call the function that corresponds to the rule
 			if ($callback === TRUE)
@@ -627,25 +639,45 @@ class CI_Form_validation {
 						{
 							$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
 						}
+						
+						/**
+						* Begin Hero customization
+						*/
+						$native_php = TRUE;
+						/**
+						* End Hero Customization
+						*/
 					}
 					else
 					{
 						log_message('debug', "Unable to find validation rule: ".$rule);
 					}
-
-					continue;
 				}
-
-				$result = $this->$rule($postdata, $param);
-
-				if ($_in_array == TRUE)
-				{
-					$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
+				/**
+				* Begin Hero Customization
+				*/
+				else {
+					/**
+					* End Hero Customization
+					*/
+					$result = $this->$rule($postdata, $param);
+	
+					if ($_in_array == TRUE)
+					{
+						$this->_field_data[$row['field']]['postdata'][$cycles] = (is_bool($result)) ? $postdata : $result;
+					}
+					else
+					{
+						$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
+					}
+				/**
+				* Begin Hero Customization
+				*/
 				}
-				else
-				{
-					$this->_field_data[$row['field']]['postdata'] = (is_bool($result)) ? $postdata : $result;
-				}
+				/**
+				* End Hero customization
+				*/
+				
 			}
 
 			// Did the rule test negatively?  If so, grab the error.
@@ -653,6 +685,17 @@ class CI_Form_validation {
 			{
 				if ( ! isset($this->_error_messages[$rule]))
 				{
+					/**
+					* Begin Hero customization
+					*/
+					if ($native_php === TRUE) {
+						// it doesn't have an error message, and shouldn't
+						continue;
+					}
+					/**
+					* End Hero customization
+					*/
+					
 					if (FALSE === ($line = $this->CI->lang->line($rule)))
 					{
 						$line = 'Unable to access an error message corresponding to your field name.';
