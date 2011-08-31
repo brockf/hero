@@ -8,8 +8,8 @@ if (!empty($this->dataset->data)) {
 		<tr>
 			<td><a href="<?=site_url('admincp/coupons/edit/' . $row['id']);?>"><?=$row['name'];?></a></td>
 			<td><?=$row['code'];?></td>
-			<td><?=$row['order_usages'];?></td>
 			<td><?=$row['subscription_usages'];?></td>
+			<td><?=$row['order_usages'];?></td>
 		</tr>
 	<?
 	}
