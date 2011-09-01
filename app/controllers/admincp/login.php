@@ -16,6 +16,7 @@ class Login extends CI_Controller {
 		
 		$this->load->model('admincp/notices');
 		$this->load->helper('admincp/get_notices');
+		$this->load->helper('ssl');
 	}
 	
 	function index() {
