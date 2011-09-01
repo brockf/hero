@@ -22,6 +22,9 @@ class Admincp_Controller extends MY_Controller {
 		// by defining _CONTROLPANEL, certain functionality can be modified to be appropriate to this context
 		define("_CONTROLPANEL","TRUE");
 		
+		// load the SSL helper, and redirect to HTTPS if necessary (or to HTTP)
+		$this->load->helper('ssl');
+		
 		// load notices library (display success/error messages at top of screen)
 		$this->load->library('notices');
 		$this->load->helper('admincp/get_notices');

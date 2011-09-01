@@ -44,6 +44,7 @@
 							<ul class="options">
 							{foreach $options as $option}
 								<li>
+									<label>{$product_options[$option]['name']}</label>
 									<select name="option_{$option}">
 										{if $product_options[$option]['options']}
 											{foreach $product_options[$option]['options'] as $value}
