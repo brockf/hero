@@ -479,11 +479,16 @@ class User_model extends CI_Model
     */
     
     function get_active_subscriptions ($user_id) {
-    	$this->load->model('billing/recurring_model');
-    	
-    	$customer_id = $this->get_customer_id($user_id);
-    	
-    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id));
+    	if (module_installed('billing')) {
+	    	$this->load->model('billing/recurring_model');
+	    	
+	    	$customer_id = $this->get_customer_id($user_id);
+	    	
+	    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id));
+	    } 
+	    else {
+	    	return FALSE;
+	    }
     }
     
     /**
@@ -497,9 +502,14 @@ class User_model extends CI_Model
     */
     
     function get_subscriptions ($user_id) {
-    	$this->load->model('billing/subscription_model');
-    	
-    	return $this->subscription_model->get_subscriptions(array('user_id' => $user_id), TRUE);
+    	if (module_installed('billing')) {
+	    	$this->load->model('billing/subscription_model');
+	    	
+	    	return $this->subscription_model->get_subscriptions(array('user_id' => $user_id), TRUE);
+	    }
+	    else {
+	    	return FALSE;
+	    }
     }
     
     /**

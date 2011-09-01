@@ -193,9 +193,14 @@ class Users extends Front_Controller {
 			$return = query_value_decode($this->input->post('return'));
 		}
 		else {
-			// redirect to subscription packages?
-			$this->load->model('billing/subscription_plan_model');
-			$plans = $this->subscription_plan_model->get_plans();
+			if (module_installed('billing')) {
+				// redirect to subscription packages?
+				$this->load->model('billing/subscription_plan_model');
+				$plans = $this->subscription_plan_model->get_plans();
+			}
+			else {
+				$plans = FALSE;
+			}
 			
 			if (setting('show_subscriptions') == '1' and !empty($plans)) {
 				$return = site_url('subscriptions');
@@ -428,25 +433,30 @@ class Users extends Front_Controller {
 	}
 	
 	function cancel ($subscription_id) {
-		$this->load->model('billing/subscription_model');
-		$subscription = $this->subscription_model->get_subscription($subscription_id);
-		
-		if (empty($subscription) or $subscription['user_id'] != $this->user_model->get('id')) {
-			die(show_error('The subscription your attempting to cancel is invalid.'));
-		}
-		
-		if ($this->input->post('confirm')) {
-			// do the cancellation
-			$this->subscription_model->cancel_subscription($subscription_id);
+		if (module_installed('billing')) {
+			$this->load->model('billing/subscription_model');
+			$subscription = $this->subscription_model->get_subscription($subscription_id);
 			
-			$this->smarty->assign('cancelled',TRUE);
+			if (empty($subscription) or $subscription['user_id'] != $this->user_model->get('id')) {
+				die(show_error('The subscription your attempting to cancel is invalid.'));
+			}
+			
+			if ($this->input->post('confirm')) {
+				// do the cancellation
+				$this->subscription_model->cancel_subscription($subscription_id);
+				
+				$this->smarty->assign('cancelled',TRUE);
+			}
+			else {
+				$this->smarty->assign('cancelled',FALSE);
+			}
+			
+			$this->smarty->assign('subscription',$subscription);
+			$this->smarty->display('account_templates/cancel_subscription');
 		}
 		else {
-			$this->smarty->assign('cancelled',FALSE);
+			die(show_error('Billing module is not installed.'));
 		}
-		
-		$this->smarty->assign('subscription',$subscription);
-		$this->smarty->display('account_templates/cancel_subscription');
 	}
 	
 	function update_cc ($subscription_id) {
