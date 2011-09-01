@@ -140,7 +140,7 @@ class CI_Smarty extends Smarty {
 	*
 	* @return string
 	*/
-	function pre_filter ($template, &$smarty) {
+	function pre_filter ($template, $smarty) {
 		$template = preg_replace_callback ('/\{module_installed\s*?name="(.*?)"\}(.*?)\{\/module_installed\}/is', array($this, 'pre_filter_module_installed') , $template);
 		
 		return $template;
