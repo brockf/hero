@@ -41,7 +41,7 @@ $config['cron_key'] = '0000000000000000';
 |--------------------------------------------------------------------------
 |
 */
-$config['app_name'] = 'Hero Framework';
+$config['app_name'] = 'Hero';
 $config['app_link'] = 'http://www.heroframework.com/';
 $config['app_support'] = 'http://www.heroframework.com/support';
 $config['default_theme'] = 'electric';
