@@ -461,6 +461,7 @@ class Admincp extends Admincp_Controller {
 		
 		if (is_array($email_data) and in_array('subscription', $email_data)) {
 			$vars[] = array('tag' => '{$subscription.id}', 'type' => 'integer');
+			$vars[] = array('tag' => '{$subscription.gateway_id}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$subscription.date_created}', 'type' => 'date');
 			$vars[] = array('tag' => '{$subscription.amount}', 'type' => 'float');
 			$vars[] = array('tag' => '{$subscription.interval}', 'type' => 'integer');
