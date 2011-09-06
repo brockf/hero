@@ -36,6 +36,10 @@ class Form_model extends CI_Model
 		$this->load->helper('clean_string');
 		$table_name = clean_string($title);
 		
+		if (strlen($table_name) > 50) {
+			$table_name = substr($table_name, 0, 50);
+		}
+		
 		$url_path = (empty($url_path)) ? clean_string($title) : $url_path;
 		
 		// make sure table doesn't already exist
