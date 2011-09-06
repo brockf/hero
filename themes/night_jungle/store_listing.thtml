@@ -32,6 +32,10 @@
 				</li>
 			{/foreach}
 			</ul>
+			
+			<div style="clear:both">
+				{paginate variable="page" base_url=$current_url total_rows=$total_products per_page=$products_per_page}
+			</div>
 		{/if}
 	</div>
 	
