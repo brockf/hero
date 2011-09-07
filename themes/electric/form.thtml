@@ -21,7 +21,7 @@
 					<label class="full" for="{$field.name}">{$field.friendly_name}</label>
 				</li>
 				<li>
-					{custom_field field=$field value=$values[$field.name]}
+					{custom_field field=$field value=$values[$field.name] default=$field.default}
 				</li>
 			{else}
 				<li>

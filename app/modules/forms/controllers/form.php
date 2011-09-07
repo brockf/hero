@@ -54,7 +54,7 @@ class Form extends Front_Controller {
 			$fields = $this->custom_fields_model->get_custom_fields(array('group' => $form['custom_field_group_id']));
 			
 			foreach ($fields as $field) {
-				$values[$field['name']] = '';
+				$values[$field['name']] = null;
 			}
 		}
 		
