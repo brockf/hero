@@ -8,7 +8,7 @@ $config['first_tag_open'] = '<span class="first">';
 $config['first_tag_close'] = '</span>';
 
 $config['last_link'] = 'Last';
-$config['last_tag_open'] = '<span class="last"';
+$config['last_tag_open'] = '<span class="last">';
 $config['last_tag_close'] = '</span>';
 
 $config['next_link'] = '&gt;';
