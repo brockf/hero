@@ -141,12 +141,13 @@ class Admincp extends Admincp_Controller {
 		
 		// template form
 		$form = new Admin_form;
+		$setting = $this->settings_model->get_setting('front_items_count');
 		
 		$form->fieldset('Design');
 		$this->load->helper('template_files');
 		$template_files = template_files();
 		$form->dropdown('Output Template', 'template', $template_files, 'blog.thtml', FALSE, TRUE, 'This template in your theme directory will be used to display this blog/archive page.');
-		$form->text('Items per Page','per_page', '25', 'Automatic pagination will occur if the total number of content items is greater than this number.', TRUE, FALSE, FALSE, '70px', '', array('number'));
+		$form->text('Items per Page','per_page', $setting['value'], 'Automatic pagination will occur if the total number of content items is greater than this number.', TRUE, FALSE, FALSE, '70px', '', array('number'));
 		
 		$data = array(
 					'types' => $type_options,
@@ -227,7 +228,6 @@ class Admincp extends Admincp_Controller {
 		$privilege_form = $privileges->display();
 		
 		// template form
-		
 		$form = new Admin_form;
 		
 		$form->fieldset('Design');
