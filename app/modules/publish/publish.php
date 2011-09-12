@@ -125,7 +125,6 @@ class Publish extends Module {
 		}
 		
 		if ($db_version < 1.11) {
-			$this->CI->db->query('DROP INDEX `content_type_id` ON `content`');
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `content_type_id` (`content_type_id`)');
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `link_id` (`link_id`)');
 			$this->CI->db->query('ALTER TABLE `content` ADD INDEX `user_id` (`user_id`)');
