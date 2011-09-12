@@ -78,13 +78,13 @@ class MY_Loader extends MX_Loader {
 	    	}
 	    	
 	    	// are we ignoring this module?
-			if (isset($this->CI->module_model->modules_cache[$module]['ignored']) and $this->CI->module_model->modules_cache[$module]['ignored'] == TRUE) {
+			if (isset($this->CI->module_model->modules_cache[$module]['ignored']) and $this->CI->module_model->modules_cache[$module]['ignored'] === TRUE) {
 	    		log_message('debug','Ignoring module: ' . $module);
 	    		return;
 	    	}
 	    	
 	    	// if this is not installed, should we auto-install it?
-	    	if (isset($this->CI->module_model->modules_cache[$module]['installed']) and $this->CI->module_model->modules_cache[$module]['installed'] == FALSE) {
+	    	if (isset($this->CI->module_model->modules_cache[$module]['installed']) and $this->CI->module_model->modules_cache[$module]['installed'] === FALSE) {
 	    		if ($this->CI->config->item('modules_auto_install') === '0') {
 	    			log_message('debug','Not auto-install module: ' . $module);
 	    			return;
