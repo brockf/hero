@@ -84,14 +84,14 @@ class Publish extends Module {
 		}
 		
 		if ($db_version < 1.03) {
-			$this->CI->db->query('CREATE TABLE `topic_maps` (
+			$this->CI->db->query('CREATE TABLE IF NOT EXISTS `topic_maps` (
  								 `topic_map_id` int(11) NOT NULL auto_increment,
  								 `topic_id` int(11) NOT NULL,
  								 `content_id` int(11) NOT NULL,
    								 PRIMARY KEY  (`topic_map_id`)
 								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		
-			$this->CI->db->query('CREATE TABLE `topics` (
+			$this->CI->db->query('CREATE TABLE IF NOT EXISTS `topics` (
  								 `topic_id` int(11) NOT NULL auto_increment,
  								 `topic_parent_id` int(11) NOT NULL,
  								 `topic_name` varchar(250) NOT NULL,
