@@ -76,7 +76,7 @@ class Admincp extends Admincp_Controller {
 							'name' => 'ID #',
 							'type' => 'id',
 							'width' => '5%',
-							'filter' => 'text'
+							'filter' => 'response_id'
 							),
 						array(
 							'name' => 'Date',
