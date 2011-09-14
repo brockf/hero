@@ -190,6 +190,7 @@ class CI_Smarty extends Smarty {
 			// store the data and begin iteration
 			if (empty($content)) {
 				$repeat = FALSE;
+				$this->unset_loop_data($data_name);
 				return;
 			}
 			
