@@ -231,7 +231,9 @@ class Content_type_model extends CI_Model
 			$this->db->query('ALTER TABLE `' . $type['system_name'] . '` DROP index `search`');
 		}
 		
-		$this->db->query('CREATE FULLTEXT INDEX `search` ON `' . $type['system_name'] . '` (' . $search_fields . ');');
+		if (!empty($search_fields)) {
+			$this->db->query('CREATE FULLTEXT INDEX `search` ON `' . $type['system_name'] . '` (' . $search_fields . ');');
+		}
 		
 		return TRUE;
 	}
