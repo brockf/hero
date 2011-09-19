@@ -226,7 +226,7 @@ class Datetime_fieldtype extends Fieldtype {
 	*/
 	function validate_post () {
 		// is this a future date?
-		if ($this->data['future_only'] == TRUE) {
+		if (isset($this->data['future_only']) and $this->data['future_only'] == TRUE) {
 			if (strtotime($this->post_to_value()) < time()) {
 				$this->validation_error = $this->label . ' must be in the future.';
 				return FALSE;
