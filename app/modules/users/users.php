@@ -116,7 +116,7 @@ class Users_module extends Module {
 		}
 		
 		if ($db_version < 1.03) {
-			$this->CI->settings_model->new_setting(3, 'validate_emails', '1', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
+			$this->CI->settings_model->new_setting(3, 'validate_emails', '0', 'Require registering users to validate their emails by clicking a link in an automated email', 'toggle', 'a:2:{i:0;s:2:"No";i:1;s:3:"Yes";}');
 		}
 		
 		if ($db_version < 1.04) {

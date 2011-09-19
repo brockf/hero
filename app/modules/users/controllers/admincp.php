@@ -491,7 +491,8 @@ class Admincp extends Admincp_Controller {
 		$custom_fields = $this->form_builder->post_to_array();
 			
 		if ($action == 'new') {
-			$validation = (setting('validate_emails') == '1') ? TRUE : FALSE;
+			// validation is always false for backend-created users, now
+			$validation = FALSE;
 			
 			$user_id = $this->user_model->new_user(
 													$this->input->post('email'),
