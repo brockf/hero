@@ -604,11 +604,16 @@ class browser extends uploader {
             return $return;
 
         foreach ($files as $file) {
-            $this->makeThumb($file, false);
-            $image = new gd($file);
-            $image = !$image->init_error &&
-                ($image->get_width() <= $this->config['thumbWidth']) &&
-                ($image->get_height() <= $this->config['thumbHeight']);
+            $size = @getimagesize($file);
+            if (is_array($size) && count($size)) {
+                $thumb_file = "$thumbDir/" . basename($file);
+                if (!is_file($thumb_file))
+                    $this->makeThumb($file, false);
+                $image =
+                    ($size[0] <= $this->config['thumbWidth']) &&
+                    ($size[1] <= $this->config['thumbHeight']);
+            } else
+                $image = false;
             $stat = stat($file);
             if ($stat === false) continue;
             $name = basename($file);
