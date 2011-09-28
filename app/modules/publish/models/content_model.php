@@ -476,7 +476,7 @@ class Content_model extends CI_Model
 					
 					$search_fields = implode(', ', $search_fields);
 					
-					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . $filters['keyword'] . '%\')', NULL, FALSE);  
+					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . mysql_real_escape_string($filters['keyword']) . '%\')', NULL, FALSE);  
 					
 					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
 				}
