@@ -47,7 +47,7 @@ class Emails extends Module {
 								  `hook_name` varchar(125) NOT NULL,
 								  `email_parameters` TEXT NOT NULL,
 								  `email_subject` VARCHAR(255) NOT NULL,
-								  `email_subject_template` varchar(255) NOT NULL,
+								  `email_subject_template` varchar(255)  NULL,
 								  `email_body_template` varchar(255) NOT NULL,
 								  `email_recipients` TEXT NOT NULL,
 								  `email_bccs` TEXT NOT NULL,
