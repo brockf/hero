@@ -312,7 +312,7 @@ $config['log_date_format'] = 'Y-m-d H:i:s';
 |--------------------------------------------------------------------------
 |
 | Leave this BLANK unless you would like to set something other than the default
-| system/cache/ folder.  Use a full server path with trailing slash.
+| /app/cache/ folder.  Use a full server path with trailing slash.
 |
 */
 $config['cache_path'] = '';
