@@ -63,7 +63,7 @@ class Users_module extends Module {
 			$this->CI->db->query('CREATE TABLE `usergroups` (
 								  `usergroup_id` int(11) NOT NULL auto_increment,
 								  `usergroup_name` varchar(150) NOT NULL,
-								  `usergroup_default` tinyint(4) NOT NULL,
+								  `usergroup_default` tinyint(4) NULL,
 								  PRIMARY KEY  (`usergroup_id`)
 								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 								
