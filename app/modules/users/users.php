@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.18';
+	var $version = '1.19';
 	var $name = 'users';
 
 	function __construct () {
@@ -212,6 +212,10 @@ class Users_module extends Module {
 					KEY `last_activity_idx` (`last_activity`)
 				);");
 			}
+		}
+		
+		if ($db_version < 1.19) {
+			$this->CI->db->query('ALTER TABLE ci_sessions MODIFY user_agent VARCHAR(120);');
 		}
 		
 		// return current version
