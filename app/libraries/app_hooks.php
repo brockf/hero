@@ -613,6 +613,12 @@ class App_hooks {
 		// From: 
 		$this->CI->email->from(setting('site_email'), setting('email_name'));
 		
+		// We used to track whether we had assigned variables or not, since the library
+		// was last reset, but we experienced a time when variables weren't assigned and this was
+		// true (likely due to a lack of a reset).  However, for now, we'll just have to set
+		// this to FALSE
+		$this->smarty_assigned = FALSE;
+		
 		if (!$this->smarty_assigned) {
 			// assign variables to smarty
 			foreach ($this->data as $k => $v) {
