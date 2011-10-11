@@ -476,9 +476,9 @@ class Content_model extends CI_Model
 					
 					$search_fields = implode(', ', $search_fields);
 					
-					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") OR `content`.`content_title` LIKE \'%' . mysql_real_escape_string($filters['keyword']) . '%\')', NULL, FALSE);  
+					$this->db->where('(MATCH (' . $search_fields . ') AGAINST ("' . mysql_real_escape_string($filters['keyword']) . '") OR `content`.`content_title` LIKE \'%' . mysql_real_escape_string($filters['keyword']) . '%\')', NULL, FALSE);  
 					
-					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . $filters['keyword'] . '") AS `relevance`', FALSE);
+					$this->db->select('MATCH (' . $search_fields . ') AGAINST ("' . mysql_real_escape_string($filters['keyword']) . '") AS `relevance`', FALSE);
 				}
 				elseif (isset($filters['keyword']) and $content_count <= 10) {
 					// we aren't doing a fulltext search, let's get rid of their relevance order
