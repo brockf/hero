@@ -60,9 +60,11 @@ function smarty_block_members ($params, $tagdata, &$smarty, &$repeat){
 		// custom field params
 		$fields = $smarty->CI->user_model->get_custom_fields();
 		
-		foreach ($fields as $field) {
-			if (isset($params[$field['name']])) {
-				$filters[$field['name']] = $params[$field['name']];
+		if (!empty($fields)) {
+			foreach ($fields as $field) {
+				if (isset($params[$field['name']])) {
+					$filters[$field['name']] = $params[$field['name']];
+				}
 			}
 		}
 		
