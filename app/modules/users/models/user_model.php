@@ -964,6 +964,12 @@ class User_model extends CI_Model
 				}
 			}
 			
+			// we don't want to set a country if we don't have a state/province, because we risk
+			// internal US/Canada province validation
+			if (isset($customer['country']) and (!isset($customer['state']) or (isset($customer['state']) and empty($customer['state']))) {
+				unset($customer['country']);
+			}
+			
 			$customer_id = $CI->customer_model->NewCustomer($customer);
 			
 			$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
