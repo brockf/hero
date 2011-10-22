@@ -21,6 +21,9 @@ class User_model extends CI_Model
 	// so a user can be logged in the CP but no the frontend (helps for testing - eases confusion)
 	private $session_name = 'user_id';
 	
+	// should we trigger the member_register hook or create the user silently in new_user()?
+	public $trigger_register_hook = TRUE;
+	
 	// are we in the control panel?
 	private $in_admin = null;
 	
@@ -966,7 +969,7 @@ class User_model extends CI_Model
 			
 			// we don't want to set a country if we don't have a state/province, because we risk
 			// internal US/Canada province validation
-			if (isset($customer['country']) and (!isset($customer['state']) or (isset($customer['state']) and empty($customer['state']))) {
+			if (isset($customer['country']) and (!isset($customer['state']) or (isset($customer['state']) and empty($customer['state'])))) {
 				unset($customer['country']);
 			}
 			
@@ -978,7 +981,7 @@ class User_model extends CI_Model
 		// prep hook
 		// only run this hook if the App_hooks library is loaded
 		// it may not be if this is the user created during the install wizard
-		if (class_exists('App_hooks')) {
+		if (class_exists('App_hooks') and $this->trigger_register_hook == TRUE) {
 			$CI =& get_instance();
 			$CI->app_hooks->data('member', $user_id);
 			$CI->app_hooks->data_var('password', $password);
