@@ -20,7 +20,12 @@ function smarty_function_protected_link ($params, $smarty) {
 	
 	// prep $groups
 	if (is_string($params['groups'])) {
-		$params['groups'] = array($params['groups']);
+		if (strpos($params['groups'],'|') !== FALSE) {
+			$params['groups'] = explode('|', $params['groups']);
+		}
+		else {
+			$params['groups'] = array($params['groups']);
+		}
 	}
 	
 	if (empty($params['groups'])) {
