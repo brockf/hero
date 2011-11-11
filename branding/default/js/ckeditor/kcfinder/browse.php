@@ -12,8 +12,11 @@
   *      @link http://kcfinder.sunhater.com
   */
 
-require "core/autoload.php";
+if (file_exists('core/autoload.php')) {
+	require "core/autoload.php";
+}
+else {
+	require "./core/autoload.php";
+}
 $browser = new browser();
 $browser->action();
-
-?>

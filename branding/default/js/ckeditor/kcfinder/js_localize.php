@@ -12,7 +12,12 @@
   *      @link http://kcfinder.sunhater.com
   */
 
-require "core/autoload.php";
+if (file_exists('core/autoload.php')) {
+	require "core/autoload.php";
+}
+else {
+	require "./core/autoload.php";
+}
 
 if (function_exists('set_magic_quotes_runtime'))
     @set_magic_quotes_runtime(false);
