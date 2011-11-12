@@ -318,24 +318,7 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// navigation
-		if (module_installed('billing','store')) {
-			$this->admin_navigation->module_link('Invoices',dataset_link('admincp/reports/invoices/',array('member_name' => $user['id'])));
-		}
-		
-		$this->admin_navigation->module_link('Login History',dataset_link('admincp/users/logins/',array('username' => $user['username'])));
-		
 		$this->admin_navigation->module_link('Edit Profile',site_url('admincp/users/edit/' . $user['id']));
-		
-		if ($user['suspended'] != TRUE) {
-			$this->admin_navigation->module_link('Suspend User',site_url('admincp/users/suspend_user/' . $id));
-		}
-		else {
-			$this->admin_navigation->module_link('Unsuspend User',site_url('admincp/users/unsuspend_user/' . $id));
-		}
-		
-		if (module_installed('billing')) {
-			$this->admin_navigation->module_link('New Subscription',site_url('admincp/billing/new_subscription/' . $id));	
-		}
 		
 		// prep data
 		$custom_fields = $this->user_model->get_custom_fields();
@@ -378,6 +361,12 @@ class Admincp extends Admincp_Controller {
 			);
 		
 		$this->load->view('profile', $data);
+	}
+	
+	function send_user_email ($user_id) {
+		$this->session->set_flashdata('email_users',array($user_id));
+				
+		return redirect('admincp/emails/send');
 	}
 	
 	function profile_actions ($subscription_id = FALSE, $action = FALSE) {
