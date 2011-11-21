@@ -74,6 +74,9 @@ class Content_type_model extends CI_Model
 		// if this content type isn't another admin module, we'll create a table for it
 		// otherwise, we expect the developer to create it's own table in the module install
 		if ($is_module == FALSE) {
+			/*
+				OLD DBFORGE METHOD
+			
 			// database functions
 			$this->load->dbforge();
 			
@@ -86,6 +89,21 @@ class Content_type_model extends CI_Model
 			
 			// add the content_id index to VASTLY speed up queries
 			$this->db->query('ALTER TABLE `' . $system_name . '` ADD INDEX ( `content_id` )');
+			*/
+			
+			/*
+				We can't use dbforge anymore as it doesn't let us specify a table-type, 
+				which we need to be able to support FULLTEXT queries.
+			*/
+			$prefix = $this->db->dbprefix;
+			
+			$sql ="CREATE TABLE `{$prefix}{$system_name}` (
+				`{$system_name}_id` INT(11) AUTO_INCREMENT PRIMARY KEY,
+				`content_id` INT(11) NOT NULL,
+				INDEX ( `content_id` )
+			) ENGINE = MYISAM";
+			
+			$this->db->query($sql);
 		}
 		
 		// clear cache
