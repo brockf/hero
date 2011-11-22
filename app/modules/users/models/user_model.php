@@ -140,6 +140,9 @@ class User_model extends CI_Model
 	*/
 	public function login ($username, $password, $remember = FALSE) {
 		$authenticated = FALSE;
+		
+		// stop SQL injection
+		$username = addslashes($username);
 	
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
 		$this->db->where('user_suspended','0');
