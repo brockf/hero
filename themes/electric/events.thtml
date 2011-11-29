@@ -9,7 +9,7 @@
 	
 	{assign var="year" value=$smarty.now|date_format:"%Y"}
 
-	<h1>Events Calendar for {$month} {$smarty.now|date_format:"%Y"}</h1>
+	<h1>Events Calendar for {xss_clean string=$month} {$smarty.now|date_format:"%Y"}</h1>
 	
 	<ul class="calendar_nav">
 		<li><a href="{url path="events?month=January"}">Jan</a></li>
