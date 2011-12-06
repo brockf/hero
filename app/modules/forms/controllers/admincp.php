@@ -407,7 +407,7 @@ class Admincp extends Admincp_Controller {
 		$return_url = base64_decode($this->asciihex->HexToAscii($return_url));
 		
 		foreach ($fields as $field) {
-			$this->custom_fields_model->delete_custom_field($field, $form['system_name']);
+			$this->custom_fields_model->delete_custom_field($field, $form['table_name']);
 		}
 		
 		$this->notices->SetNotice('Field(s) deleted successfully.');
