@@ -77,13 +77,13 @@
 				<label for="body" class="full">Body</label>
 			</li>
 			<li>
-				<textarea name="body" id="body" class="full required"></textarea>
+				<textarea name="body" id="body" class="full required wysiwyg basic"></textarea>
 			</li>
 			<li>
 				<div class="help" style="margin: 0; padding: 0;">You may use the tags <b>[MEMBER_FIRST_NAME]</b>, <b>[MEMBER_LAST_NAME]</b>, and <b>[MEMBER_EMAIL]</b> in the email body and subject.  They will be replaced with the appropriate values for each member.</div>
 			</li>
-			<li>
-				<input type="checkbox" name="html" value="1" /> <b>This email is formatted with HTML tags</b>
+			<li style="display: none">
+				<input type="checkbox" name="html" value="1" checked="checked" /> <b>This email is formatted with HTML tags</b>
 			</li>
 			<li>
 				<input type="checkbox" name="new_template" value="1" /> <b>Save this email as a template</b> <input type="text" class="text" placeholder="Enter Template Name" name="new_template_name" value="" />

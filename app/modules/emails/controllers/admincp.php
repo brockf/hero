@@ -59,6 +59,11 @@ class Admincp extends Admincp_Controller {
 			}
 		}
 		
+		// get CKEditor to show
+		if (!defined('INCLUDE_CKEDITOR')) {
+			define('INCLUDE_CKEDITOR','TRUE');
+		}
+		
 		$data = array(
 					'usergroups' => $usergroups,
 					'templates' => $templates,
@@ -147,6 +152,9 @@ class Admincp extends Admincp_Controller {
 			// parse message
 			$subject = str_ireplace($search, $replace, $this->input->post('subject'));
 			$body = str_ireplace($search, $replace, $this->input->post('body'));
+			
+			// we may be sending images with a relative link...
+			$body = str_ireplace('src="writeable/','src="' . base_url() . '/writeable/', $body);
 		
 			// send full email
 			$this->email->from(setting('site_email'), setting('site_name'));
