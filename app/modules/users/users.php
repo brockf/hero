@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.19';
+	var $version = '1.20';
 	var $name = 'users';
 
 	function __construct () {
@@ -216,6 +216,10 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.19) {
 			$this->CI->db->query('ALTER TABLE ci_sessions MODIFY user_agent VARCHAR(120);');
+		}
+		
+		if ($db_version < 1.20) {
+			$this->CI->db->query('ALTER TABLE ci_sessions MODIFY user_agent VARCHAR(255);');
 		}
 		
 		// return current version

@@ -21,13 +21,13 @@
     
         <item>
 
-          <title>{$item.title}</title>
+          <title>{$item.title|escape}</title>
           <link>{$item.url}</link>
           <guid>{$item.url_path}</guid>
 			
 		  {if $summary_field}
           <description><![CDATA[
-     		{$item.summary}
+     		{$item.summary|escape}
      	  ]]></description>
      	  {/if}
           <pubDate>{$item.date|date_format:"%a %b %e %H:%M:%S %Z %Y"}</pubDate>
