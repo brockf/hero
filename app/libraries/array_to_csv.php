@@ -59,6 +59,10 @@ class Array_to_csv {
 			foreach ($this->headers as $header) {
 				$value = (isset($line[$header])) ? $line[$header] : '';
 				$value = str_replace("\n",' ',$value);
+				
+				// replace " with ""
+				$value = str_replace('"','""',$value);
+				
 				$csv .= '"' . $value . '",';
 			}
 			
