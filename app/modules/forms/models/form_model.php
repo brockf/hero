@@ -227,7 +227,7 @@ class Form_model extends CI_Model
 			$this->db->like('form_title',$filters['title']);
 		}
 	
-		$this->db->order_by('form_title');
+		$this->db->order_by('forms.form_id','DESC');
 		$this->db->join('links','links.link_id = forms.link_id','left');
 		$result = $this->db->get('forms');
 		
