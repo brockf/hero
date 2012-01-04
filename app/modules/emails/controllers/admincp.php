@@ -431,6 +431,12 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		if (is_array($email_data) and in_array('order', $email_data)) {
+			$vars[] = array('tag' => '{$order_totals.shipping}', 'type' => 'float');						
+			$vars[] = array('tag' => '{$order_totals.subtotal}', 'type' => 'float');
+			$vars[] = array('tag' => '{$order_totals.tax}', 'type' => 'float');
+			$vars[] = array('tag' => '{$order_totals.discount}', 'type' => 'float');
+			$vars[] = array('tag' => '{$order_totals.total}', 'type' => 'float');
+		
 			$vars[] = array('tag' => '{$shipping_address}', 'type' => 'string');
 			$vars[] = array('tag' => '{$products}', 'type' => 'array');
 			$vars[] = array('tag' => '{$products.X.id}', 'type' => 'integer');

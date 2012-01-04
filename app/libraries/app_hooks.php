@@ -256,6 +256,9 @@ class App_hooks {
 			}
 			$this->data_var('shipping_address', $shipping_address);
 			
+			// set totals
+			$this->data_var('order_totals',$order['totals']);
+			
 			// products
 			$products = $this->CI->order_model->get_order_products(array('invoice_id' => $order['invoice_id']));
 			$this->data_var('products', $products);
