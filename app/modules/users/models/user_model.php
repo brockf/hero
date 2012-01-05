@@ -387,6 +387,9 @@ class User_model extends CI_Model
     		// this is a "privileges" array and it's public so anyone can see it
     		return TRUE;
     	}
+    	elseif (is_array($group) and in_array('', $group)) {
+    		return TRUE;
+    	}
     	
     	if (!$this->logged_in()) {
     		// we aren't even logged in
