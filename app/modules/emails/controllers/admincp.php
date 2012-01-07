@@ -472,6 +472,20 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$invoice.tax_name}', 'type' => 'string');
 			$vars[] = array('tag' => '{$invoice.tax_paid}', 'type' => 'float');
 			$vars[] = array('tag' => '{$invoice.tax_rate}', 'type' => 'float');
+			$vars[] = array('tag' => '{$invoice.shipping_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.coupon_id}', 'type' => 'int');
+			$vars[] = array('tag' => '{$invoice.coupon_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address}', 'type' => 'array');
+			$vars[] = array('tag' => '{$invoice.billing_address.first_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.last_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.company}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.address_1}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.address_2}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.city}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.state}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.country}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.postal_code}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.billing_address.email}', 'type' => 'string');
 		}
 		
 		if (is_array($email_data) and in_array('subscription', $email_data)) {
