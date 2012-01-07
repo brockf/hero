@@ -25,6 +25,12 @@
 	<div style="clear:both"></div>
 </div>
 
+<? if (!empty($invoice['coupon_name'])) { ?>
+	<div>
+		<p><b>Coupon Used: </b> <?=$invoice['coupon_name'];?></p>
+	</div>
+<? } ?>
+
 <table class="dataset spaced" cellspacing="0" cellspacing="0">
 	<thead>
 		<tr>
@@ -53,6 +59,12 @@
 			<td colspan="3" style="text-align: right">Tax: <?=$invoice['tax_name'];?> (<?=$invoice['tax_rate'];?>%)</td>
 			<td><?=setting('currency_symbol');?><?=$invoice['tax_paid'];?></td>
 		</tr>
+		<? if (!empty($order['discount'])) { ?>
+			<tr>
+				<td colspan="3" style="text-align: right">Discount: (<?=$invoice['coupon_name'];?>)</td>
+				<td><?=setting('currency_symbol');?><?=$order['discount'];?></td>
+			</tr>
+		<? } ?>
 		<? if (!empty($invoice['shipping_charge'])) { ?>
 			<tr>
 				<td colspan="3" style="text-align: right">Shipping: <?=$invoice['shipping_name'];?></td>
