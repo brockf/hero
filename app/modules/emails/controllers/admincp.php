@@ -446,6 +446,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$products.X.collections}', 'type' => 'array');
 			$vars[] = array('tag' => '{$products.X.name}', 'type' => 'string');
 			$vars[] = array('tag' => '{$products.X.description}', 'type' => 'string');
+			$vars[] = array('tag' => '{$products.X.quantity}', 'type' => 'integer');
 			$vars[] = array('tag' => '{$products.X.price}', 'type' => 'float');
 			$vars[] = array('tag' => '{$products.X.weight}', 'type' => 'float');
 			$vars[] = array('tag' => '{$products.X.requires_shipping}', 'type' => 'boolean');
