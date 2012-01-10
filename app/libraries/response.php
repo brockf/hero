@@ -150,6 +150,8 @@ class Response
 						'5021' => 'Only active gateways can be updated with new credit card details.',
 						'5022' => 'This subscription is free - updating credit card details is futile.',
 						'5023' => 'The new gateway you have chosen requires customer information but this customer record currently doesn\'t exist.  Please use UpdateCustomer to add full customer details for this user before calling UpdateCreditCard.',
+						'5024' => 'Only non-external gateways allow for a paid initial charge but free recurring charge.',
+						'5025' => 'Subscriptions with a paid initial charge but free recurring charge must start immediately.',
 						'6000' => 'A valid Charge ID is required.',
 						'6001' => 'A valid Customer ID is required.',
 						'6002' => 'A valid Recurring ID is required',
