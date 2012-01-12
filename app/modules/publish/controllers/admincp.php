@@ -29,6 +29,21 @@ class Admincp extends Admincp_Controller {
 		// get type_id from session
 		$type_id = $this->session->userdata('manage_content_type');
 		
+		// Make topics available to views
+		$this->load->model('topic_model');
+		$topics = $this->topic_model->get_topics();
+		
+		$topics_sort = array();
+		foreach ($topics as $topic)
+		{
+			$topics_sort[$topic['id']] = $topic['name'];
+		}
+		
+		$data = array(
+			'topics'=> $topics_sort
+		);
+		unset($topics);
+		
 		// we'll show all content if they don't pass a $type_id
 		if ($type_id == FALSE) {
 			$this->admin_navigation->module_link('Publish New Content',site_url('admincp/publish/create'));
@@ -54,7 +69,7 @@ class Admincp extends Admincp_Controller {
 								),
 							array(
 								'name' => 'Title',
-								'width' => '25%',
+								'width' => '20%',
 								'filter' => 'title',
 								'type' => 'text',
 								'sort_column' => 'content.content_title'
@@ -66,8 +81,16 @@ class Admincp extends Admincp_Controller {
 								'type' => 'text'
 								),
 							array(
+								'name' => 'Topic',
+								'width' => '15%',
+								'type' => 'select',
+								'options' => $topics_sort,
+								'filter' => 'topic_id',
+								'sort_column' => 'topic_maps.topic_id'
+							),
+							array(
 								'name' => 'Date',
-								'width' => '20%',
+								'width' => '15%',
 								'sort_column' => 'content.content_date',
 								'type' => 'date',
 								'filter' => 'date',
@@ -89,7 +112,7 @@ class Admincp extends Admincp_Controller {
 								),
 							array(
 								'name' => '',
-								'width' => '15%'
+								'width' => '10%'
 								)
 						);
 							
@@ -109,7 +132,7 @@ class Admincp extends Admincp_Controller {
 			// add actions
 			$this->dataset->action('Delete','admincp/publish/delete');
 			
-			$this->load->view('content');
+			$this->load->view('content', $data);
 		}
 		else {
 			// they passed a type id
@@ -148,6 +171,14 @@ class Admincp extends Admincp_Controller {
 									'type' => 'text'
 									),
 								array(
+									'name' => 'Topic',
+									'width' => '15%',
+									'type' => 'select',
+									'options' => $topics_sort,
+									'filter' => 'topic',
+									'sort_column' => 'topic_maps.topic_id'
+								),
+								array(
 									'name' => 'Date',
 									'width' => '20%',
 									'sort_column' => 'content.content_date',
@@ -183,9 +214,7 @@ class Admincp extends Admincp_Controller {
 				// add actions
 				$this->dataset->action('Delete','admincp/publish/delete');
 				
-				$data = array(
-							'type' => $type
-						);
+				$data['type'] = $type;
 				
 				$this->load->view('content_standard', $data);
 			}
@@ -269,10 +298,8 @@ class Admincp extends Admincp_Controller {
 				// add actions
 				$this->dataset->action('Delete','admincp/publish/delete');
 				
-				$data = array(
-							'type' => $type,
-							'columns' => $data_columns
-						);
+				$data['type'] 		= $type;
+				$data['columns']	= $data_columns;
 				
 				$this->load->view('content_non_standard', $data);
 			}
