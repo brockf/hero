@@ -21,6 +21,12 @@
 				<label>Tax</label>
 				{setting name="currency_symbol"}{$totals.order_tax}
 			</li>
+			{if $totals.discount}
+				<li>
+					<label>Discount</label>
+					{setting name="currency_symbol"}{$totals.discount}
+				</li>	
+			{/if}
 			<li>
 				<label>Today's Total</label>
 				{setting name="currency_symbol"}{$totals.order_total}
