@@ -78,7 +78,7 @@ class Text_fieldtype extends Fieldtype {
 	* @return string $return The HTML to be included in a form
 	*/
 	function output_admin () {
-		if ($this->value === FALSE and $this->CI->input->post($this->name) == FALSE) {
+		if (empty($this->value) and $this->CI->input->post($this->name) === FALSE) {
 			$this->value($this->default);
 		}
 	
