@@ -475,6 +475,7 @@ class Admincp extends Admincp_Controller {
 			$vars[] = array('tag' => '{$invoice.shipping_name}', 'type' => 'string');
 			$vars[] = array('tag' => '{$invoice.coupon_id}', 'type' => 'int');
 			$vars[] = array('tag' => '{$invoice.coupon_name}', 'type' => 'string');
+			$vars[] = array('tag' => '{$invoice.coupon_code}', 'type' => 'string');
 			$vars[] = array('tag' => '{$invoice.billing_address}', 'type' => 'array');
 			$vars[] = array('tag' => '{$invoice.billing_address.first_name}', 'type' => 'string');
 			$vars[] = array('tag' => '{$invoice.billing_address.last_name}', 'type' => 'string');
