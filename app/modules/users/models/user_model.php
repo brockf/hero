@@ -616,7 +616,7 @@ class User_model extends CI_Model
     * @return boolean TRUE
     */
     function remove_charge_id ($user_id) {
-    	$this->db->update('users', array('user_pending_charge_id' => ''), array('user_id' => $user_id));
+    	$this->db->update('users', array('user_pending_charge_id' => '0'), array('user_id' => $user_id));
     	
     	return TRUE;
     }
