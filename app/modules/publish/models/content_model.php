@@ -111,6 +111,9 @@ class Content_model extends CI_Model
 			$this->CI->cache->file->clean();
 		}
 		
+		$CI =& get_instance();
+		$CI->app_hooks->trigger('new_content', $content_id);
+		
 		return $content_id;
 	}
 	
@@ -201,6 +204,9 @@ class Content_model extends CI_Model
 		if (isset($this->CI->cache)) {
 			$this->CI->cache->file->clean();
 		}
+		
+		$CI =& get_instance();
+		$CI->app_hooks->trigger('update_content', $content['id']);
 		
 		return TRUE;
 	}

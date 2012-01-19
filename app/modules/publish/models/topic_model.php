@@ -37,7 +37,12 @@ class Topic_model extends CI_Model
 							
 		$this->db->insert('topics',$insert_fields);
 		
-		return $this->db->insert_id();
+		$topic_id = $this->db->insert_id();
+		
+		$CI =& get_instance();
+		$CI->app_hooks->trigger('new_topic', $topic_id);
+		
+		return $topic_id;
 	}
 	
 	/**
@@ -58,6 +63,9 @@ class Topic_model extends CI_Model
 							);
 							
 		$this->db->update('topics',$update_fields,array('topic_id' => $topic_id));
+		
+		$CI =& get_instance();
+		$CI->app_hooks->trigger('update_topic', $topic_id);
 		
 		return TRUE;
 	}
