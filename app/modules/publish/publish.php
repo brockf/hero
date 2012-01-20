@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.13';
+	var $version = '1.14';
 	var $name = 'publish';
 
 	function __construct () {
@@ -137,6 +137,14 @@ class Publish extends Module {
 		
 		if ($db_version < 1.13) {
 			$this->CI->settings_model->make_writeable_folder(setting('path_image_thumbs'));
+		}
+		
+		if ($db_version < 1.14) {
+			$this->CI->load->library('app_hooks');
+			$this->CI->app_hooks->register('new_topic','A topic is published.',array());
+			$this->CI->app_hooks->register('update_topic','A topic is updated.',array());
+			$this->CI->app_hooks->register('new_content','A content item is published.',array());
+			$this->CI->app_hooks->register('new_topic','A content item is updated.',array());
 		}
 	
 		return $this->version;
