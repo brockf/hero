@@ -117,7 +117,8 @@ class Topic_model extends CI_Model
 	* returns: Shoes
 	*		   Shoes > Adidas
 	*          Shoes > Adidas > Crosstrainers
-	*
+	*          	
+	* @uses make_tiers()
 	* @param array $filters equivalent to get_topics()
 	*
 	* @return array Topics
@@ -152,7 +153,11 @@ class Topic_model extends CI_Model
 			return array();
 		}
 		
-		$tiers = array();
+		$tiers = array(); 
+		return $this->make_tiers($topics, $tiers);
+		
+		/* rest of original method is below for reference, but no longer used */
+		
 		// start at parent 0 and go from there
 		foreach ($topics[0] as $id => $name) {
 			$tiers[$id] = array('id' => $id, 'name' => $name);
@@ -178,6 +183,43 @@ class Topic_model extends CI_Model
 							}
 						}
 					}
+				}
+			}
+		}
+		
+		return $tiers;
+	}
+	
+	/**
+	 * make the actual tiers for above
+	 * recursive method	 
+	 * 
+	 * @param array ($terms)
+	 * @param array ($tiers)
+	 * @param int
+	 * @param string (running name)
+	 * @return array (finished tiers)	 
+	 */	 	 	  	 	 	
+	function make_tiers($terms, &$tiers, $index=0, $names='')
+	{
+		if (is_array($terms[$index]))
+		{
+			while(list($id, $name) = each($terms[$index]))
+			{	
+				if ($index == 0)
+				{
+					$tiers[$id] = array('id'=>$id, 'name'=>$name);
+					$names = $name . ' > ';
+				}
+				else
+				{
+					$tiers[$id] = array('id'=>$id, 'name'=>$names . $name);
+					$names = $names . $name . ' > ';
+				}			
+								
+				if (isset($terms[$id]))
+				{
+					$this->make_tiers($terms, $tiers, $id, $names);
 				}
 			}
 		}
