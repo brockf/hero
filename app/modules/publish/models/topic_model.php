@@ -78,6 +78,10 @@ class Topic_model extends CI_Model
 	function delete_topic ($topic_id) {
 		$this->db->update('topics',array('topic_deleted' => '1'), array('topic_id' => $topic_id));
 		
+		$CI =& get_instance();
+		
+		$CI->app_hooks->trigger('delete_topic', $topic_id);
+		
 		// delete all children, too
 		$result = $this->get_topics(array());
 		
@@ -96,6 +100,8 @@ class Topic_model extends CI_Model
 			// has children
 			foreach ($topics[$topic_id] as $child_id => $child) {
 				$this->db->update('topics',array('topic_deleted' => '1'), array('topic_id' => $child_id));
+				
+				$CI->app_hooks->trigger('delete_topic', $child_id);
 			}
 		}
 		

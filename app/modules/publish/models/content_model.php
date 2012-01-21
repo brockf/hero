@@ -241,6 +241,9 @@ class Content_model extends CI_Model
 			$this->db->delete($type['system_name'], array('content_id' => $content_id));
 		}
 		
+		$CI =& get_instance();
+		$CI->app_hooks->trigger('delete_content', $content_id);
+		
 		// clear cache
 		if (isset($this->CI->cache)) {
 			$this->CI->cache->file->clean();

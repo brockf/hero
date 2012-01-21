@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.14';
+	var $version = '1.15';
 	var $name = 'publish';
 
 	function __construct () {
@@ -145,6 +145,12 @@ class Publish extends Module {
 			$this->CI->app_hooks->register('update_topic','A topic is updated.',array());
 			$this->CI->app_hooks->register('new_content','A content item is published.',array());
 			$this->CI->app_hooks->register('new_topic','A content item is updated.',array());
+		}
+		
+		if ($db_version < 1.15) {
+			$this->CI->load->library('app_hooks');
+			$this->CI->app_hooks->register('delete_topic','A topic is deleted.',array());
+			$this->CI->app_hooks->register('delete_content','A content item is deleted.',array());
 		}
 	
 		return $this->version;
