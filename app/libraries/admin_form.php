@@ -427,7 +427,9 @@ class Admin_form {
 			}
 			
 			// get HTML
-			$field_object->help(FALSE);
+			
+			// This line was written here and I don't know why.  Commenting it out shows help fields in the admin...
+			// $field_object->help(FALSE);
 			$html = $field_object->output_admin();
 			unset($field_object);
 			
