@@ -34,9 +34,13 @@ class Admincp extends Admincp_Controller {
 		$topics = $this->topic_model->get_topics();
 		
 		$topics_sort = array();
-		foreach ($topics as $topic)
+		
+		if (is_array($topics))
 		{
-			$topics_sort[$topic['id']] = $topic['name'];
+			foreach ($topics as $topic)
+			{
+				$topics_sort[$topic['id']] = $topic['name'];
+			}
 		}
 		
 		$data = array(
