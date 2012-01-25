@@ -154,9 +154,6 @@ class Topic_model extends CI_Model
 		}
 		
 		$tiers = array(); 
-		return $this->make_tiers($topics, $tiers);
-		
-		/* rest of original method is below for reference, but no longer used */
 		
 		// start at parent 0 and go from there
 		foreach ($topics[0] as $id => $name) {
@@ -191,6 +188,8 @@ class Topic_model extends CI_Model
 	}
 	
 	/**
+ 	 * NO LONGER USED.  HAS BUGS.
+	 *
 	 * make the actual tiers for above
 	 * recursive method	 
 	 * 
