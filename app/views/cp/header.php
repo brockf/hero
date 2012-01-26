@@ -1,4 +1,4 @@
-<?=$this->load->view('cp/html_header');?>
+<?=$this->load->view(branded_view('cp/html_header'));?>
 <body>
 	<div id="notices"><?=get_notices();?></div>
 	<div id="header">
