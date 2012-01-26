@@ -1,6 +1,6 @@
 <?php if (!defined('BASEPATH')) exit('No direct script access allowed');
 
-/*
+/**
 * Content Control Panel
 *
 * Displays all control panel forms, datasets, and other displays
