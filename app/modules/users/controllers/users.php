@@ -425,9 +425,39 @@ class Users extends Front_Controller {
 		// remove <br />'s
 		$formatted_address = strip_tags($formatted_address);
 		
+		// get shipping address
+		$this->load->model('store/order_model');
+		$order = $this->order_model->get_order($invoice['id']);
+		
+		$shipping_address = FALSE;
+		if (!empty($order)) {
+			if (!empty($order['shipping'])) {
+				$shipping_address = $order['shipping'];
+			}
+		}
+		
+		if (!empty($shipping_address)) {
+			$formatted_address = format_street_address($shipping_address);
+			// remove <br />'s
+			$formatted_shipping_address = strip_tags($formatted_shipping_address);
+		}
+		else {
+			$formatted_shipping_address = FALSE;
+		}
+		
+		// get other invoice data
+		$data = $this->invoice_model->get_invoice_data($invoice['id']);
+		
 		$this->smarty->assign('invoice',$invoice);
 		$this->smarty->assign('lines', $lines);
 		$this->smarty->assign('formatted_address', $formatted_address);
+		$this->smarty->assign('shipping_address', $shipping_address);
+		$this->smarty->assign('formatted_shipping_address', $formatted_shipping_address);
+		$this->smarty->assign('shipping',$data['shipping']);
+		$this->smarty->assign('subtotal',$data['subtotal']);
+		$this->smarty->assign('tax',$data['tax']);
+		$this->smarty->assign('total',$data['total']);
+		$this->smarty->assign('discount',$data['discount']);
 		
 		return $this->smarty->display('account_templates/invoice');
 	}
