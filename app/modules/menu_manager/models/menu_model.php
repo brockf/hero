@@ -113,13 +113,18 @@ class Menu_model extends CI_Model
 	*
 	* @return int $menu_link_id
 	*/
-	function update_link ($menu_link_id, $text, $privileges = array(), $class = FALSE) {
+	function update_link ($menu_link_id, $text, $privileges = array(), $class = FALSE, $external_url=null) {
 		$update_fields = array(
 								'menu_link_text' => $text,
 								'menu_link_privileges' => (!empty($privileges)) ? serialize($privileges) : '',
 								'menu_link_class' => $class
 							);
-							
+		
+		if (!is_null($external_url))
+		{
+			$update_fields['menu_link_external_url'] = $external_url;
+		}
+		
 		$this->db->update('menus_links', $update_fields, array('menu_link_id' => $menu_link_id));
 		
 		if (isset($this->CI->cache)) {

@@ -258,10 +258,11 @@ class Admincp extends Admincp_Controller {
 		$text = $this->input->post('text');
 		$privileges = $this->input->post('privileges');
 		$class = $this->input->post('class');
+		$external_url = $this->input->post('external_url') ? $this->input->post('external_url') : null;
 		
 		$this->load->model('menu_model');
-		
-		$this->menu_model->update_link($link_id, $text, $privileges, $class);
+
+		$this->menu_model->update_link($link_id, $text, $privileges, $class, $external_url);
 		
 		echo 'Edit saved.';
 	}
