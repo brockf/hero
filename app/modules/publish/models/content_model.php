@@ -381,7 +381,7 @@ class Content_model extends CI_Model
 	*/
 	function get_contents ($filters = array(), $counting = FALSE) {
 		// cache check!
-		if (isset($this->CI->cache) and (!isset($filters['sort_dir']) or $filters['sort_dir'] != 'rand()')) {
+		if (isset($this->CI->cache) and (!isset($filters['sort_dir']) or (strtolower($filters['sort_dir']) != 'rand()' and strtolower($filters['sort_dir']) != 'random'))) {
 			$caching = TRUE;
 			$cache_key = 'get_contents' . md5(serialize($filters));
 			
