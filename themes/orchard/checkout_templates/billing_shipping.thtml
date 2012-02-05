@@ -54,6 +54,10 @@
 				<label for="postal_code">Postal/Zip Code*</label>
 				<input type="text" class="text" name="postal_code" id="postal_code" value="{$billing_values.postal_code}" />
 			</li>
+			<li class="new_billing">
+				<label for="phone_number">Phone Number*</label>
+				<input type="text" class="text" name="phone_number" id="phone_number" value="{$billing_values.phone_number}" />
+			</li>
 		</ul>
 	</fieldset>
 	
@@ -102,6 +106,10 @@
 				<li class="new_shipping">
 					<label for="shipping_postal_code">Postal/Zip Code*</label>
 					<input type="text" class="text" name="shipping_postal_code" id="shipping_postal_code" value="{$shipping_values.postal_code}" />
+				</li>
+				<li class="new_shipping">
+					<label for="shipping_phone_number">Phone Number*</label>
+					<input type="text" class="text" name="shipping_phone_number" id="shipping_phone_number" value="{$shipping_values.phone_number}" />
 				</li>
 			</ul>
 		</fieldset>

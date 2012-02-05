@@ -696,7 +696,8 @@ class User_model extends CI_Model
 							'address_1',
 							'city',
 							'country',
-							'postal_code'
+							'postal_code',
+							'phone_number'
 						);
 						
 		foreach ($required as $item) {
@@ -736,7 +737,8 @@ class User_model extends CI_Model
 						'city' => $customer['city'],
 						'country' => $customer['country'],
 						'postal_code' => $customer['postal_code'],
-						'state' => $customer['state']
+						'state' => $customer['state'],
+						'phone_number' => $customer['phone']
 					);
 		
 		return $address;

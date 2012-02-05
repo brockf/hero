@@ -78,7 +78,8 @@ if (!empty($this->dataset->data)) {
 									'city' => 'City',
 									'state' => 'State/Province',
 									'country' => 'Country',
-									'postal_code' => 'Postal Code'
+									'postal_code' => 'Postal Code',
+									'phone' => 'Phone Number'
 								), (isset($row['billing_equiv'])) ? $row['billing_equiv'] : '');?>
 				<? } else { ?>
 					n/a

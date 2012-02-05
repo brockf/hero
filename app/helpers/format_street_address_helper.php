@@ -90,5 +90,9 @@ function format_street_address ($address = array()) {
 		$return .= $address['postal_code'];
 	}
 	
+	if (isset($address['phone_number']) and !empty($address['phone_number'])) {
+		$return .= "\n" . $address['phone_number'];
+	}
+	
 	return nl2br($return);
 }
