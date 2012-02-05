@@ -437,7 +437,7 @@ class Users extends Front_Controller {
 		}
 		
 		if (!empty($shipping_address)) {
-			$formatted_address = format_street_address($shipping_address);
+			$formatted_shipping_address = format_street_address($shipping_address);
 			// remove <br />'s
 			$formatted_shipping_address = strip_tags($formatted_shipping_address);
 		}
