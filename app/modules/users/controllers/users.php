@@ -427,7 +427,7 @@ class Users extends Front_Controller {
 		
 		// get shipping address
 		$this->load->model('store/order_model');
-		$order = $this->order_model->get_order($invoice['id']);
+		$order = $this->order_model->get_order($invoice['id'], 'order_id');
 		
 		$shipping_address = FALSE;
 		if (!empty($order)) {
