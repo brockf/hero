@@ -1036,7 +1036,7 @@ class User_model extends CI_Model
 		
 		$update_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
-								'user_groups' => '|' . implode('|',$groups) . '|',
+								'user_groups' => @'|' . implode('|',$groups) . '|',
 								'user_first_name' => $first_name,
 								'user_last_name' => $last_name,
 								'user_username' => $username,
@@ -1366,13 +1366,15 @@ class User_model extends CI_Model
 		}
 		
 		// standard ordering and limiting
-		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'user_username';
-		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
-		$this->db->order_by($order_by, $order_dir);
-		
-		if (isset($filters['limit'])) {
-			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
-			$this->db->limit($filters['limit'], $offset);
+		if ($counting == FALSE) {
+			$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'user_username';
+			$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
+			$this->db->order_by($order_by, $order_dir);
+			
+			if (isset($filters['limit'])) {
+				$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+				$this->db->limit($filters['limit'], $offset);
+			}
 		}
 		
 		if ($counting === TRUE) {

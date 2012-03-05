@@ -12,7 +12,7 @@
 */
 
 class Users_module extends Module {
-	var $version = '1.21';
+	var $version = '1.22';
 	var $name = 'users';
 
 	function __construct () {
@@ -224,6 +224,10 @@ class Users_module extends Module {
 		
 		if ($db_version < 1.21) {
 			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `user_username` (`user_username`)');
+		}
+		
+		if ($db_version < 1.22) {
+			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `user_deleted` (`user_deleted`)');
 		}
 		
 		// return current version
