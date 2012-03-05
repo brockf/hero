@@ -233,6 +233,7 @@ class Users_module extends Module {
 		if ($db_version < 1.23) {
 			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `user_suspended` (`user_suspended`)');
 			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `user_email` (`user_email`)');
+			$this->CI->db->query('ALTER TABLE `users` ADD INDEX `user_remember_key` (`user_remember_key`)');
 		}
 		
 		// return current version
