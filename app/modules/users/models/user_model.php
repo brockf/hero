@@ -1034,6 +1034,36 @@ class User_model extends CI_Model
 			return FALSE;
 		}
 		
+		// can we update the username?
+		if ($old_user['username'] != $username) {
+			// check if username is in use by someone else
+			$users = $this->db->select('user_id')
+							  ->from('users')
+							  ->where('user_username',$username)
+							  ->get();
+							  
+			if ($users->num_rows() > 0) {
+				// already in use
+				// keep old username
+				$username = $old_user['username'];
+			}							  
+		}
+		
+		// can we update the email?
+		if ($old_user['email'] != $email) {
+			// check if email is in use by someone else
+			$users = $this->db->select('user_id')
+							  ->from('users')
+							  ->where('user_email',$email)
+							  ->get();
+							  
+			if ($users->num_rows() > 0) {
+				// already in use
+				// keep old email
+				$email = $old_user['email'];
+			}							  
+		}
+		
 		$update_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
 								'user_groups' => @'|' . implode('|',$groups) . '|',
