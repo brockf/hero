@@ -31,6 +31,11 @@ class Template extends Front_Controller {
 		
 		$link = $link[0];
 		
+		// should we format this is as XML?
+		if (strpos($url_path,'.xml') !== FALSE) {
+			header("Content-Type: text/xml");
+		}
+		
 		// return the template via the link's stored parameter (the mapped template file)
 		return $this->smarty->display($link['parameter']);
 	}
