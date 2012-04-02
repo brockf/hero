@@ -69,6 +69,12 @@ class Content extends Front_Controller {
 		
 		// show content
 		$this->smarty->assign($content);
+		
+		// should we format this is as XML?
+		if (strpos($url_path,'.xml') !== FALSE) {
+			header("Content-Type: text/xml");
+		}
+		
 		return $this->smarty->display($content['template']);
 	}
 }
