@@ -645,13 +645,26 @@ class Admincp extends Admincp_Controller {
 	* @return string The email form view
 	*/
 	function edit_email($id) {
-		$this->load->model('billing/subscription_plan_model');
-		$this->load->model('store/products_model');
 		$this->load->model('emails/email_model');
 		
+		if (module_installed('billing')) {
+			$this->load->model('billing/subscription_plan_model');
+			$plans = $this->subscription_plan_model->get_plans();
+		}
+		else {
+			$plans = FALSE;
+		}
+		
+		
+		if (module_installed('store')) {
+			$this->load->model('store/products_model');
+			$products = $this->products_model->get_products();
+		}
+		else {
+			$products = FALSE;
+		}
+		
 		$email = $this->email_model->get_email($id);
-		$plans = $this->subscription_plan_model->get_plans();
-		$products = $this->products_model->get_products();
 		
 		// get email body from template file
 		$this->load->helper('file');
@@ -662,8 +675,8 @@ class Admincp extends Admincp_Controller {
 		$data = array(
 					'hook' => $hook,
 					'variables' => $this->email_variables($hook['email_data'], $hook['other_email_data']),
-					'products' => $products,
 					'plans' => $plans,
+					'products' => $products,
 					'form' => $email,
 					'form_title' => 'Edit Email',
 					'form_action' => site_url('admincp/emails/post_email/edit/' . $email['id'])
