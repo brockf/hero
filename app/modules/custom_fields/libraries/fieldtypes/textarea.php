@@ -75,7 +75,6 @@ class Textarea_fieldtype extends Fieldtype {
 		$placeholder = ($this->placeholder !== FALSE) ? ' placeholder="' . $this->placeholder . '" ' : '';
 		
 		$attributes = array(
-						'type' => 'textarea',
 						'name' => $this->name,
 						'style' => 'width: ' . $this->width . '; height: ' . $this->data['height'],
 						'class' => implode(' ', $this->field_classes)
