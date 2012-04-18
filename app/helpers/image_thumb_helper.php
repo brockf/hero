@@ -62,6 +62,12 @@ function image_thumb ($image_path, $height, $width)
 	// Path to image thumbnail
 	$image_thumb = setting('path_image_thumbs') . $file_name;
 	
+	// We can't deal with BMP files (but who uses BMP?)
+	if (file_extension($image_path) == 'bmp') {
+		copy($image_path, $image_thumb);
+		return site_url(str_replace(FCPATH,'',$image_thumb));
+	}
+	
 	// if the file has been modified since the last thumb was generated, it will have a new md5 and thus the cache won't exist yet
 	if (!file_exists($image_thumb)) {
 		// load library
