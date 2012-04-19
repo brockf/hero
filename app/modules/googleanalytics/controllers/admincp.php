@@ -25,7 +25,7 @@ class Admincp extends Admincp_Controller {
 		
 		$form->fieldset('Settings');
 		$form->value_row('&nbsp;','<div style="float:left; width: 600px">Enter your Google Analytics site id (e.g., UA-1234567-1) to automatically
-		being sending site analytics information to your Google Analytics account.</div>');
+		begin sending site analytics information to your Google Analytics account.</div>');
 								   
 		$form->text('Site ID','analytics_id', $this->config->item('googleanalytics_id'));
 	

@@ -1,6 +1,6 @@
 {extends file="layout.thtml"}
 {block name="content"}
-	<ul class="blog">
+	 <ul class="blog">
 		{content var="post" type="blog" limit="4" sort="content.content_date" sort_dir="desc"}
 			<li>
 				<a class="title" href="{$post.url}">
