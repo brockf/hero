@@ -61,7 +61,7 @@ class Login_model extends CI_Model
 			$this->db->where('user_login_id',$filters['id']);
 		}
 		if (isset($filters['user_id'])) {
-			$this->db->where('user_id',$filters['user_id']);
+			$this->db->where('user_logins.user_id',$filters['user_id']);
 		}
 		if (isset($filters['username'])) {
 			$this->db->where('user_username',$filters['username']);
