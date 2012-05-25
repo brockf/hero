@@ -72,6 +72,18 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			}
 		}
 		
+		// param: author_id (by id)
+		if (isset($params['author_id']) and !empty($params['author_id']))
+		{
+			$filters['author'] = $params['author_id'];			
+		}
+		
+		// param: author_name
+		if (isset($params['author_name']) and !empty($params['author_name']))
+		{
+			$filters['author_like'] = $params['author_name'];			
+		}
+		
 		// param: topic
 		if (isset($params['topic']) and !empty($params['topic'])) {
 			if (strpos($params['topic'],'|') !== FALSE) {
