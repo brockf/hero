@@ -791,7 +791,7 @@ class Admincp extends Admincp_Controller {
 	
 	function content_actions ($action, $id) {
 		$this->load->model('publish/content_model');
-		$content = $this->user_model->get_content($id, TRUE);
+		$content = $this->content_model->get_content($id, TRUE);
 		
 		if ($action == 'edit') {
 			redirect('admincp/publish/edit/' . $content['id']);
