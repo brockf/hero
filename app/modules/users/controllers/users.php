@@ -416,6 +416,13 @@ class Users extends Front_Controller {
 			die(show_error('Unable to find an invoice by that ID.'));
 		}
 		
+		$cur_user_id = $this->user_model->active_user['id'];
+		
+		if ($cur_user_id != $invoice['user_id'])
+		{
+			die(show_error('That invoice does not belong to you.'));	
+		}
+		
 		// get invoice lines
 		$lines = $this->invoice_model->invoice_lines($invoice['id']);
 		
