@@ -46,8 +46,8 @@ class CI_Smarty extends Smarty {
 		$this->error_reporting = E_ALL & ~E_NOTICE;
 		
 		// specify directories
-		$this->setCompileDir(FCPATH . 'writeable/templates_compile');
-		$this->setCacheDir(FCPATH . 'writeable/templates_cache');
+		$this->setCompileDir(FCPATH . $this->CI->config->item('path_writeable') .'templates_compile');
+		$this->setCacheDir(FCPATH . $this->CI->config->item('path_writeable') .'templates_cache');
 		
 		if ($email_parser == FALSE) {
 			$this->setTemplateDir(FCPATH . 'themes/' . $this->CI->config->item('current_theme'));
