@@ -742,6 +742,16 @@ class Admincp extends Admincp_Controller {
 	function popular () {
 		$this->load->library('dataset');
 		
+		$this->load->model('publish/content_type_model');
+		$content_types = $this->content_type_model->get_content_types();
+		
+		$content_type_options = array();
+		if (!empty($content_types)) {
+			foreach ($content_types as $type) {
+				$content_type_options[$type['id']] = $type['name'];
+			}
+		}
+		
 		$columns = array(
 						array(
 							'name' => 'Content ID #',
@@ -757,7 +767,8 @@ class Admincp extends Admincp_Controller {
 						array(
 							'name' => 'Type',
 							'sort_column' => 'content.content_type_id',
-							'type' => 'text',
+							'type' => 'select',
+							'options' => $content_type_options,
 							'width' => '15%',
 							'filter' => 'type'),
 						array(
