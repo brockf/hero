@@ -773,7 +773,7 @@ class Admincp extends Admincp_Controller {
 							'filter' => 'type'),
 						array(
 							'name' => 'Hits',
-							'sort_column' => 'contents.content_hits',
+							'sort_column' => 'content.content_hits',
 							'type' => 'text',
 							'width' => '7%',
 							'filter' => 'hits'),

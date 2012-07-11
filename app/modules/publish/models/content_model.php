@@ -511,6 +511,10 @@ class Content_model extends CI_Model
 			// don't join a content type table
 			$content_table_join = FALSE;
 		}
+		
+		if (isset($filters['hits'])) {
+			$this->db->where('content.content_hits >=', $filters['hits']);
+		}
 	
 		if (isset($filters['start_date'])) {
 			$start_date = date('Y-m-d H:i:s', strtotime($filters['start_date']));
