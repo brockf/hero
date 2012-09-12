@@ -120,7 +120,7 @@ class Admincp extends Admincp_Controller {
 			}
 		}
 		
-		if (empty($recipients)) {
+		if (empty($recipients) && !$this->input->post('new_template')) {
 			$this->notices->SetError('No recipients were selected.');
 			
 			return redirect('admincp/emails/send');
@@ -177,6 +177,13 @@ class Admincp extends Admincp_Controller {
 		if ($this->input->post('new_template')) {
 			$this->load->model('emails/email_template_model');
 			$this->email_template_model->new_template($this->input->post('new_template_name'), $this->input->post('subject'), $this->input->post('body'), $is_html);
+		}
+		
+		// Did we only save a template and not send any emails.
+		if (empty($recipients) && $this->input->post('new_template'))
+		{
+			$this->notices->SetNotice('Email template saved.');
+			return redirect('admincp/emails/send');
 		}
 		
 		// app hook

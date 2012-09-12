@@ -31,6 +31,17 @@ class Email_template_model extends CI_Model
 	* @return int $email_template_id
 	*/
 	function new_template ($name, $subject, $body, $is_html = FALSE) {
+
+		// Allow for editing of existing templates by 
+		// simply re-saving existing templates. That means
+		// we need to delete them first. 
+		$result = $this->db->where('LOWER(email_template_name)', strtolower($name))->delete('email_templates');
+	
+		if (!$result)
+		{
+			show_error('Unable to delete template: '. $this->db->last_query());
+		}
+	
 		$insert = array(
 						'email_template_name' => $name,
 						'email_template_subject' => $subject,
