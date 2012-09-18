@@ -14,7 +14,7 @@
 	<div style="float: left; width: 45%">
 		<h3>Billing Address</h3>
 		<?=format_street_address($invoice['billing_address']);?>
-		<br/><?=$invoice['billing_address']['email'] ?>
+		<br/><?= isset($invoice['billing_address']['email']) && !empty($invoice['billing_address']['email']) ? $invoice['billing_address']['email'] : $invoice['user_email'] ?>
 	</div>
 	
 	<? if (!empty($order) and isset($order['shipping']) and !empty($order['shipping'])) { ?>
