@@ -130,6 +130,12 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			$filters['offset'] = $params['offset'];
 		}
 		
+		// param: on_date
+		if (isset($params['on_date'])) {
+			$filters['start_date'] = date('Y-m-d 00:00:00', strtotime($params['on_date']));
+			$filters['end_date'] = date('Y-m-d 23:59:59', strtotime($params['on_date']));
+		}
+		
 		// initialize block loop
 		$data_name = $smarty->CI->smarty->loop_data_key($filters);
 		
