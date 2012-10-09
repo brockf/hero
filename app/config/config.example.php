@@ -17,7 +17,7 @@
 $config['base_url']	= "";
 
 // rewrite base URL to SSL if accessed via SSL
-if ($_SERVER["SERVER_PORT"] == "443" or (isset($_SERVER['https']) and $_SERVER['HTTPS'] == 'on')) {
+if (is_secure()) {
 	$config['base_url'] = str_replace('http://','https://',$config['base_url']);
 }
 
@@ -267,7 +267,7 @@ $config['directory_trigger'] 	= 'd'; // experimental not currently in use
 | Error Logging Threshold
 |--------------------------------------------------------------------------
 |
-| If you have enabled error logging, you can set an error threshold to 
+| If you have enabled error logging, you can set an error threshold to
 | determine what gets logged. Threshold options are:
 | You can enable error logging by setting a threshold over zero. The
 | threshold determines what gets logged. Threshold options are:
@@ -430,6 +430,32 @@ $config['rewrite_short_tags'] = TRUE;
 |
 */
 $config['proxy_ips'] = '';
+
+/*
+|--------------------------------------------------------------------------
+| Function: is_secure
+|--------------------------------------------------------------------------
+|
+| Check to see if the connection is secure.  Used here to rewrite the
+| site URL and also in ssl_helper.
+|
+*/
+function is_secure () {
+	if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == '443') {
+		return TRUE;
+	}
+	elseif (isset($_SERVER['HTTP_X_FORWARDED_PORT']) and $_SERVER['HTTP_X_FORWARDED_PORT'] == '443') {
+		return TRUE;
+	}
+	elseif (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on') {
+		return TRUE;
+	}
+	elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) and $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+		return TRUE;
+	}
+
+	return FALSE;
+}
 
 /* End of file config.php */
 /* Location: ./app/config/config.php */
