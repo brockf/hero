@@ -8,24 +8,26 @@ CKEDITOR.editorConfig = function( config )
 	// Define changes to default configuration here. For example:
 	// config.language = 'fr';
 	// config.uiColor = '#AADC6E';
-	
+
 	// enable the MediaEmbed plugin
 	config.extraPlugins = 'MediaEmbed';
-	
+
 	// get the base URL
 	config.base_url = $('#site_url').html();
-	
+
+	config.baseUrl = config.baseHref = config.base_url;
+
 	// integrate KCFinder
 	config.filebrowserBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=files';
     config.filebrowserImageBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=images';
     config.filebrowserFlashBrowseUrl = config.base_url + 'branding/default/js/ckeditor/kcfinder/browse.php?type=flash';
-        
+
     // force plain text
     //config.forcePasteAsPlainText = true;
-   
+
     // remove upload tab
     config.filebrowserUploadUrl = null;
-	
+
 	config.toolbar_Complete =
 	[
 	    ['Source','-','ShowBlocks','-',],
@@ -42,7 +44,7 @@ CKEDITOR.editorConfig = function( config )
 	    ['TextColor','BGColor'],
 	    ['Maximize']
 	];
-	
+
 	config.toolbar_Basic =
 	[
 	    ['Source','-',],
