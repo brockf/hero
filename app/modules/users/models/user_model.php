@@ -1,7 +1,7 @@
 <?php
 
 /**
-* User Model 
+* User Model
 *
 * Contains all the methods used to create, update, login, logout, and delete users.
 *
@@ -16,33 +16,33 @@ class User_model extends CI_Model
 	public $active_user;  // the logged-in use
 	public $failed_due_to_activation; // if the login failed to the account not being activated, this == TRUE
 	public $failed_due_to_duplicate_login; // if the login failed because someone is already logged in, this == TRUE
-	
+
 	// this will change if we are in the control panel, as we want to have independent sessions foreach
 	// so a user can be logged in the CP but no the frontend (helps for testing - eases confusion)
 	private $session_name = 'user_id';
-	
+
 	// should we trigger the member_register hook or create the user silently in new_user()?
 	public $trigger_register_hook = TRUE;
-	
+
 	// are we in the control panel?
 	private $in_admin = null;
-	
+
 	private $cache_fields;
-	
+
 	function __construct()
 	{
 		parent::__construct();
-		
+
 		if ($this->in_admin()) {
 			// let's use a different session token so that we can independent sessions
 			$this->make_admin_session();
 		}
-		
+
 		// check for session
         if ($this->session->userdata($this->session_name) != '') {
         	// load active user into cache for future ->Get() calls
         	$this->set_active($this->session->userdata($this->session_name));
-        	
+
         	// no carts in the control panel...
         	if (!$this->in_admin() and module_installed('store')) {
 	        	// handle a potential cart
@@ -55,33 +55,33 @@ class User_model extends CI_Model
         	// we don't have remember_keys for admins...
         	if (!$this->in_admin()) {
 	        	$this->load->helper('cookie');
-	        	
+
 	        	// we may have a remembered user
 	        	if (get_cookie('user_remember_key',TRUE)) {
 	        		// does this correspond with a remember key?
 	        		$this->db->select('user_id');
 	        		$this->db->where('user_remember_key', get_cookie('user_remember_key', TRUE));
 	        		$result = $this->db->get('users');
-	        		
+
 	        		if ($result->num_rows() == 0) {
 	        			// no correspondence, this key has expired
 	        			delete_cookie('user_remember_key');
-	        			
+
 	        			$this->db->update('users',array('user_remember_key' => ''),array('user_remember_key' => get_cookie('user_remember_key', TRUE)));
 	        		}
 	        		else {
 	        			$user = $result->row_array();
-	        			
+
 	        			$this->login_by_id($user['user_id']);
 	        		}
 	        	}
 	        }
         }
 	}
-	
+
 	/**
 	* CP Check
-	* 
+	*
 	* Are we in the control panel?
 	*
 	* @return boolean
@@ -90,9 +90,9 @@ class User_model extends CI_Model
 		if ($this->in_admin != null) {
 			return $this->in_admin;
 		}
-	
+
 		$CI =& get_instance();
-		
+
 		$url = $CI->uri->uri_string();
 		// it may be at 0 or 1 depending on if we retained the initial slash...
 		if (strpos($url, 'admincp') === 0 or strpos($url, 'admincp') === 1) {
@@ -101,32 +101,32 @@ class User_model extends CI_Model
 		else {
 			$this->in_admin = FALSE;
 		}
-		
+
 		return $this->in_admin;
 	}
-	
+
 	/**
 	* Make Admin Session
 	*
 	* Forces the model into an admin session
 	*
-	* @return void 
+	* @return void
 	*/
 	function make_admin_session () {
 		$this->session_name = 'admin_id';
 	}
-	
+
 	/**
 	* Make Frontend Session
 	*
 	* Forces the model into a user session
 	*
-	* @return void 
+	* @return void
 	*/
 	function make_frontend_session () {
 		$this->session_name = 'user_id';
 	}
-	
+
 	/**
 	* Login User
 	*
@@ -140,27 +140,27 @@ class User_model extends CI_Model
 	*/
 	public function login ($username, $password, $remember = FALSE) {
 		$authenticated = FALSE;
-		
+
 		// stop SQL injection
 		$username = addslashes($username);
-	
+
 		$this->db->where('(`user_username` = \'' . $username . '\' or `user_email` = \'' . $username . '\')');
 		$this->db->where('user_suspended','0');
 		$this->db->where('user_deleted','0');
 		$query = $this->db->get('users');
-		
+
 		if ($query->num_rows() > 0) {
 			$user_db = $query->row_array();
 			$user = $this->get_user($user_db['user_id']);
-			
+
 			$hashed_password = ($user['salt'] == '') ? md5($password) : md5($password . ':' . $user['salt']);
-			
+
 			if ($hashed_password == $user_db['user_password']) {
 				$authenticated = TRUE;
 			}
 		}
 
-		if ($authenticated === TRUE) { 
+		if ($authenticated === TRUE) {
 			if ($this->config->item('simultaneous_login_prevention') == '1') {
 				// let's make sure someone isn't logged into the account right now
 				$this->db->where('user_id',$user['id']);
@@ -168,83 +168,83 @@ class User_model extends CI_Model
 				$result = $this->db->get('user_activity');
 				if ($result->num_rows() > 0) {
 					$this->failed_due_to_duplicate_login = TRUE;
-					
+
 					return FALSE;
 				}
 			}
-			
+
 			// let's make sure they are activated if it's been more than 1 day
 			if (!empty($user['validate_key']) and ((time() - strtotime($user['signup_date'])) > (60*60*24))) {
 				$this->failed_due_to_activation = TRUE;
-				
+
 				return FALSE;
 			}
 		}
 		else {
 			return FALSE;
 		}
-		
+
 		// track login
-		$this->login_by_id($user['id'], $password); 
-		
+		$this->login_by_id($user['id'], $password);
+
 		// remember?
 		if ($remember == TRUE) {
 			$remember_key = random_string('unique');
-			
+
 			$result = $this->db->select('user_id')->where('user_remember_key',$remember_key)->get('users');
 			while ($result->num_rows() > 0) {
 				$remember_key = random_string('unique');
-				
+
 				$result = $this->db->select('user_id')->where('user_remember_key',$remember_key)->get('users');
 			}
-			
+
 			// create the cookie with the key
 			$this->load->helper('cookie');
-			
+
 			$cookie = array(
 			                   'name'   => 'user_remember_key',
 			                   'value'  => $remember_key,
 			                   'expire' => (60*60*24*365) // 1 year
 			               );
-			
-			set_cookie($cookie); 
-			
+
+			set_cookie($cookie);
+
 			// put key in database
 			$this->db->update('users',array('user_remember_key' => $remember_key),array('user_id' => $user['id']));
 		}
-		
+
 		return TRUE;
     }
-    
+
     /**
     * Login by ID
     *
     * @param int $user_id
     *
-    * @return boolean 
+    * @return boolean
     */
     function login_by_id ($user_id, $password = FALSE) {
     	$CI =& get_instance();
     	$CI->load->model('users/login_model');
 		$CI->login_model->new_login($user_id);
-		
+
 		$this->db->update('users',array('user_last_login' => date('Y-m-d H:i:s')),array('user_id' => $user_id));
-    	
+
     	$this->session->set_userdata($this->session_name,$user_id);
     	$this->session->set_userdata('login_time',now());
-		
+
 		$this->set_active($user_id);
-		
+
 		// track activity
 		$this->db->insert('user_activity', array('user_id' => $user_id, 'user_activity_date' => date('Y-m-d H:i:s')));
-		
+
 		// cart functions
 		if (module_installed('store/cart_model')) {
 			$CI =& get_instance();
 			$CI->load->model('store/cart_model');
 			$CI->cart_model->user_login($this->active_user);
 		}
-		
+
 		// salt password
 		if (!empty($password)) {
 			// do we have a salt?
@@ -252,18 +252,18 @@ class User_model extends CI_Model
 				// salt it!
 				$CI->load->helper('string');
 				$salt = random_string('unique');
-				
+
 				// new password with salt
 				$salted_password = md5($password . ':' . $salt);
-				
+
 				$this->db->update('users', array('user_salt' => $salt, 'user_password' => $salted_password), array('user_id' => $this->get('id')));
 			}
 		}
-		
+
 		// do we have a customer record for this user?
 		// trigger its creation if not, else just get the active customer ID
 		$this->active_user['customer_id'] = $this->get_customer_id($user_id);
-		
+
 		// prep hook
 		$CI =& get_instance();
 		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
@@ -272,10 +272,10 @@ class User_model extends CI_Model
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->trigger('member_login', $user_id, $password);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
     }
-    
+
     /**
     * User Logout
     *
@@ -284,15 +284,15 @@ class User_model extends CI_Model
     function logout () {
     	// delete activity
     	$this->db->delete('user_activity', array('user_id' => $this->get('id')));
-    	
+
     	// unset user_id session and login_time
     	$this->session->unset_userdata($this->session_name,'login_time');
-    	
+
     	// delete cookie
 		$CI =& get_instance();
 		$CI->load->helper('cookie');
 		delete_cookie('user_remember_key');
-		
+
 		// prep hook
 		// call the library here, because this may be loaded in the admin/login controller which doesn't preload
 		// app_hooks like the other controllers
@@ -300,10 +300,10 @@ class User_model extends CI_Model
 		$CI->app_hooks->data('member', $this->get('id'));
 		$CI->app_hooks->trigger('member_logout', $this->get('id'));
 		$CI->app_hooks->reset();
-    	
+
     	return TRUE;
     }
-    
+
     /**
     * Set Active User
     *
@@ -317,12 +317,12 @@ class User_model extends CI_Model
     	if (!$user = $this->get_user($user_id)) {
     		return FALSE;
     	}
-    	
+
     	$this->active_user = $user;
-    	
+
     	return TRUE;
     }
-    
+
     /**
     * Is User an Admin?
     *
@@ -332,10 +332,10 @@ class User_model extends CI_Model
     	if (empty($this->active_user) or $this->active_user['is_admin'] == FALSE) {
     		return FALSE;
     	}
-    	
+
     	return TRUE;
     }
-    
+
     /**
     * Is user logged in?
     *
@@ -349,11 +349,11 @@ class User_model extends CI_Model
     		return TRUE;
     	}
     }
-    
+
     /**
     * Is user in this group?
     *
-    * Returns TRUE if the user is in the usergroup(s) or the privileges are open to all (i.e., array is empty or contains "0"). 
+    * Returns TRUE if the user is in the usergroup(s) or the privileges are open to all (i.e., array is empty or contains "0").
     * To check if the user is logged out, send "-1" by itself or in an array.  It's return TRUE if the user is logged out.
     *
     * @param int|array $group A group ID, or array of group ID's (they must be in one of the groups)
@@ -365,7 +365,7 @@ class User_model extends CI_Model
     	if (empty($group)) {
     		return TRUE;
     	}
-    	
+
     	// sometimes, we only want to show something if the user is logged out
     	if ($group == '-1' or (is_array($group) and in_array('-1', $group))) {
     		if ($this->logged_in() === FALSE) {
@@ -375,28 +375,28 @@ class User_model extends CI_Model
 	    		return FALSE;
 	    	}
 	    }
-    
+
     	if ($user_id) {
     		$user_array = $this->get_user($user_id);
     	}
     	else {
     		$user_array = $this->active_user;
     	}
-    	
-    	if (is_array($group) and in_array('0', $group)) {	
+
+    	if (is_array($group) and in_array('0', $group)) {
     		// this is a "privileges" array and it's public so anyone can see it
     		return TRUE;
     	}
     	elseif (is_array($group) and in_array('', $group)) {
     		return TRUE;
     	}
-    	
+
     	if (!$this->logged_in()) {
     		// we aren't even logged in
-    		
+
     		return FALSE;
     	}
-    
+
     	if (is_array($group)) {
 			// are they in any of these groups?
     		foreach ($group as $one_group) {
@@ -411,11 +411,11 @@ class User_model extends CI_Model
     			return TRUE;
     		}
     	}
-    	
+
     	// nope
     	return FALSE;
     }
-    
+
     /**
     * Is user NOT in this group?
     *
@@ -428,20 +428,20 @@ class User_model extends CI_Model
     	if (empty($group)) {
     		return FALSE;
     	}
-    
+
     	if ($user_id) {
     		$user_array = $this->get_user($user_id);
     	}
     	else {
     		$user_array = $this->active_user;
     	}
-    	
+
     	if (!$this->logged_in()) {
     		// we aren't even logged in
-    		
+
     		return TRUE;
     	}
-    	
+
     	if (is_array($group)) {
 			// are they in any of these groups?
     		foreach ($group as $one_group) {
@@ -456,11 +456,11 @@ class User_model extends CI_Model
     			return FALSE;
     		}
     	}
-    	
+
     	// nope, they aren't in any of them
     	return TRUE;
     }
-    
+
     /**
     * Get user data
     *
@@ -476,7 +476,7 @@ class User_model extends CI_Model
     		return $this->active_user;
     	}
     }
-    
+
     /**
     * Get Active Subscriptions
     *
@@ -486,20 +486,20 @@ class User_model extends CI_Model
     *
     * @return array Array of active subscriptions, else FALSE if none exist
     */
-    
+
     function get_active_subscriptions ($user_id) {
     	if (module_installed('billing')) {
 	    	$this->load->model('billing/recurring_model');
-	    	
+
 	    	$customer_id = $this->get_customer_id($user_id);
-	    	
+
 	    	return $this->recurring_model->GetRecurrings(array('customer_id' => $customer_id));
-	    } 
+	    }
 	    else {
 	    	return FALSE;
 	    }
     }
-    
+
     /**
     * Get Subscriptions
     *
@@ -509,21 +509,21 @@ class User_model extends CI_Model
     *
     * @param array Array of subscriptions, else FALSE if none exist
     */
-    
+
     function get_subscriptions ($user_id) {
     	if (module_installed('billing')) {
 	    	$this->load->model('billing/subscription_model');
-	    	
+
 	    	return $this->subscription_model->get_subscriptions(array('user_id' => $user_id), TRUE);
 	    }
 	    else {
 	    	return FALSE;
 	    }
     }
-    
+
     /**
     * Get Customer ID
-    * 
+    *
     * Sometimes, we just need this, so let's not do a full blown query.
     *
     * @param int $user_id (default: active user)
@@ -534,55 +534,55 @@ class User_model extends CI_Model
     	if (!module_installed('billing')) {
     		return FALSE;
     	}
-    	
+
     	// auto-complete $user_id?
     	if (empty($user_id) and $this->logged_in()) {
     		$user_id = $this->active_user['id'];
     	}
-    
+
     	// previously, we looked for the "customer_id" in the users table
     	// however, this didn't let us confirm that the customer record actually exists
     	// so now we look up via the customers table
     	$this->db->select('customer_id');
     	$this->db->where('internal_id',$user_id);
     	$result = $this->db->get('customers');
-    	
+
     	if ($result->num_rows() == 0) {
     		// no reason not to have a customer record
     		// let's create one
     		if (module_installed('billing')) {
     			// get user data
     			$user = (!empty($this->active_user) and $this->active_user['id'] == $user_id) ? $this->active_user : $this->get_user($user_id);
-    			
+
     			if (empty($user)) {
     				// how would this happen?  probably impossible
     				return FALSE;
     			}
-    		
+
 				// do any custom fields map to billing fields?
 				$user_custom_fields = $this->get_custom_fields();
-				
+
 				$customer = array();
 				if (is_array($user_custom_fields)) {
 					foreach ($user_custom_fields as $field) {
 						if (!empty($field['billing_equiv']) and isset($user[$field['name']])) {
-							$customer[$field['billing_equiv']] = $user[$field['name']];		
+							$customer[$field['billing_equiv']] = $user[$field['name']];
 						}
 					}
 				}
-				
+
 				$CI =& get_instance();
 				$CI->load->model('billing/customer_model');
-		
+
 				$customer['email'] = $user['email'];
 				$customer['internal_id'] = $user['id'];
 				$customer['first_name'] = $user['first_name'];
 				$customer['last_name'] = $user['last_name'];
-				
+
 				$customer_id = $CI->customer_model->NewCustomer($customer);
-				
+
 				$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
-				
+
 				return $customer_id;
 			}
     	}
@@ -590,7 +590,7 @@ class User_model extends CI_Model
     		return $result->row()->customer_id;
     	}
     }
-    
+
     /**
     * Set Charge ID
     *
@@ -604,23 +604,23 @@ class User_model extends CI_Model
     */
     function set_charge_id ($user_id, $charge_id) {
     	$this->db->update('users', array('user_pending_charge_id' => $charge_id), array('user_id' => $user_id));
-    	
+
     	return TRUE;
     }
-    
+
     /**
     * Remove Charge ID
-    * 
+    *
     * @param int $user_id
     *
     * @return boolean TRUE
     */
     function remove_charge_id ($user_id) {
     	$this->db->update('users', array('user_pending_charge_id' => '0'), array('user_id' => $user_id));
-    	
+
     	return TRUE;
     }
-	
+
 	/**
 	* Validation
 	*
@@ -631,18 +631,18 @@ class User_model extends CI_Model
 	*
 	* @return array If errors, returns an array of individual errors, else returns TRUE
 	*/
-	function validation ($editing = FALSE, $error_array = TRUE) {	
+	function validation ($editing = FALSE, $error_array = TRUE) {
 		$CI =& get_instance();
-		
+
 		$CI->load->library('form_validation');
 		$CI->load->model('custom_fields_model');
 		$CI->load->helpers(array('unique_username','unique_email','strip_whitespace'));
-		
+
 		$CI->form_validation->set_rules('first_name','First Name','trim|required');
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
-		
+
 		$username_rules = array('trim','strip_whitespace','min_length[3]');
 		if ($this->config->item('username_allow_special_characters') == FALSE) {
 			$username_rules[] = 'alpha_numeric';
@@ -651,12 +651,12 @@ class User_model extends CI_Model
 			$username_rules[] = 'unique_username';
 		}
 		$CI->form_validation->set_rules('username','Username',implode('|', $username_rules));
-		
+
 		if ($editing == FALSE) {
 			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
 			$CI->form_validation->set_rules('password2','Repeat Password','required');
 		}
-		
+
 		if ($CI->form_validation->run() === FALSE) {
 			if ($error_array == TRUE) {
 				return explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors()));
@@ -665,10 +665,10 @@ class User_model extends CI_Model
 				return validation_errors();
 			}
 		}
-		
+
 		// validate custom fields
 		$custom_fields = $this->get_custom_fields(array('not_in_admin' => TRUE));
-		
+
 		$CI->load->library('custom_fields/form_builder');
 		$CI->form_builder->build_form_from_array($custom_fields);
 
@@ -676,10 +676,10 @@ class User_model extends CI_Model
 			$errors = $CI->form_builder->validation_errors(($error_array == TRUE) ? TRUE : FALSE);
 			return $errors;
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Validate Billing Address
 	*
@@ -689,7 +689,7 @@ class User_model extends CI_Model
 	*/
 	function validate_billing_address ($user_id) {
 		$address = $this->get_billing_address($user_id);
-		
+
 		$required = array(
 							'first_name',
 							'last_name',
@@ -698,16 +698,16 @@ class User_model extends CI_Model
 							'country',
 							'postal_code'
 						);
-						
+
 		foreach ($required as $item) {
 			if (empty($address[$item])) {
 				return FALSE;
 			}
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Get Billing Address
 	*
@@ -716,17 +716,20 @@ class User_model extends CI_Model
 	* @return array Billing address
 	*/
 	function get_billing_address ($user_id) {
+		if (empty($user_id))
+			return false;
+
 		$customer_id = $this->get_customer_id($user_id);
-		
+
 		if (empty($customer_id)) {
 			return FALSE;
 		}
-		
+
 		$CI =& get_instance();
 		$CI->load->model('billing/customer_model');
-		
+
 		$customer = $this->customer_model->GetCustomer($customer_id);
-		
+
 		$address = array(
 						'first_name' => $customer['first_name'],
 						'last_name' => $customer['last_name'],
@@ -739,10 +742,10 @@ class User_model extends CI_Model
 						'state' => $customer['state'],
 						'phone_number' => $customer['phone']
 					);
-		
+
 		return $address;
 	}
-	
+
 	/**
 	* Is email address unique?
 	*
@@ -750,12 +753,12 @@ class User_model extends CI_Model
 	*
 	* @return boolean TRUE upon being OK, FALSE if not
 	*/
-	function unique_email ($email) {	
+	function unique_email ($email) {
 		$this->db->select('user_id');
 		$this->db->where('user_email',$email);
 		$this->db->where('user_deleted','0');
 		$result = $this->db->get('users');
-		
+
 		if ($result->num_rows() > 0) {
 			return FALSE;
 		}
@@ -763,7 +766,7 @@ class User_model extends CI_Model
 			return TRUE;
 		}
 	}
-	
+
 	/**
 	* Is username unique?
 	*
@@ -777,12 +780,12 @@ class User_model extends CI_Model
 		if (in_array($username, $protected)) {
 			return FALSE;
 		}
-	
+
 		$this->db->select('user_id');
 		$this->db->where('user_username',$username);
 		$this->db->where('user_deleted','0');
 		$result = $this->db->get('users');
-		
+
 		if ($result->num_rows() > 0) {
 			return FALSE;
 		}
@@ -790,7 +793,7 @@ class User_model extends CI_Model
 			return TRUE;
 		}
 	}
-	
+
 	/**
 	* Add a Usergroup
 	*
@@ -798,28 +801,28 @@ class User_model extends CI_Model
 	* @param int $group_id
 	*
 	* @return array New usergroup array
-	*/	
+	*/
 	function add_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
-		
+
 		if (is_array($user['usergroups']) and !empty($user['usergroups']) and in_array($group_id, $user['usergroups'])) {
 			// already a member
 			return FALSE;
 		}
-		
+
 		if ($user['usergroups'] == FALSE) {
 			$user['usergroups'] = array();
 		}
-		
+
 		$user['usergroups'][] = $group_id;
-		
+
 		$usergroups = '|' . implode('|',$user['usergroups']) . '|';
-		
+
 		$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
-		
+
 		return $usergroups;
 	}
-	
+
 	/**
 	* Remove a Usergroup
 	*
@@ -830,22 +833,22 @@ class User_model extends CI_Model
 	*/
 	function remove_group ($user_id, $group_id) {
 		$user = $this->get_user($user_id);
-		
+
 		if (is_array($user['usergroups']) and !empty($user['usergroups'])) {
 			foreach ($user['usergroups'] as $key => $val) {
 				if ($val == $group_id) {
 					unset($user['usergroups'][$key]);
 				}
 			}
-			
+
 			$usergroups = '|' . implode('|',$user['usergroups']) . '|';
-			
+
 			$this->db->update('users',array('user_groups' => $usergroups),array('user_id' => $user_id));
 		}
-		
+
 		return $usergroups;
 	}
-	
+
 	/**
 	* Resend Validation Email
 	*
@@ -857,28 +860,28 @@ class User_model extends CI_Model
 	*/
 	function resend_validation_email ($user_id) {
 		$user = $this->get_user($user_id);
-		
+
 		if (empty($user)) {
 			return FALSE;
 		}
 
 		if (!empty($user['validate_key'])) {
 			$validation_link = site_url('users/validate/' . $user['validate_key']);
-			
+
 			$CI =& get_instance();
 			$CI->app_hooks->data('member', $user['id']);
-			
+
 			$CI->app_hooks->data_var('validation_link', $validation_link);
 			$CI->app_hooks->data_var('validation_code', $user['validate_key']);
-			
+
 			$CI->app_hooks->trigger('member_validate_email');
-			
+
 			return TRUE;
 		}
-		
+
 		return FALSE;
 	}
-	
+
 	/**
 	* New User
 	*
@@ -900,32 +903,32 @@ class User_model extends CI_Model
 	function new_user($email, $password, $username, $first_name, $last_name, $groups = FALSE, $affiliate = FALSE, $is_admin = FALSE, $custom_fields = array(), $require_validation = FALSE) {
 		if (empty($groups)) {
 			$this->load->model('users/usergroup_model');
-			
+
 			$group = $this->usergroup_model->get_default();
-			
+
 			$groups = array($group);
 		}
-		
+
 		if ($require_validation == TRUE) {
 			$validate_key = random_string('unique');
-			
+
 			$result = $this->db->select('user_id')->where('user_validate_key',$validate_key)->get('users');
 			while ($result->num_rows() > 0) {
 				$validate_key = random_string('unique');
-				
+
 				$result = $this->db->select('user_id')->where('user_validate_key',$validate_key)->get('users');
 			}
 		}
 		else {
 			$validate_key = '';
 		}
-		
+
 		// generate hashed password
 		$CI =& get_instance();
 		$CI->load->helper('string');
 		$salt = random_string('unique');
 		$hashed_password = md5($password . ':' . $salt);
-		
+
 		$insert_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
 								'user_groups' => '|' . implode('|',$groups) . '|',
@@ -943,48 +946,48 @@ class User_model extends CI_Model
 								'user_remember_key' => '',
 								'user_validate_key' => $validate_key
 							);
-		
-		if (is_array($custom_fields)) {					
+
+		if (is_array($custom_fields)) {
 			foreach ($custom_fields as $name => $value) {
 				$insert_fields[$name] = $value;
 			}
 		}
-												
+
 		$this->db->insert('users',$insert_fields);
 		$user_id = $this->db->insert_id();
-		
+
 		// create customer record
 		if (module_installed('billing')) {
 			$CI->load->model('billing/customer_model');
-			
+
 			$customer = array();
 			$customer['email'] = $email;
 			$customer['internal_id'] = $user_id;
 			$customer['first_name'] = $first_name;
 			$customer['last_name'] = $last_name;
-			
+
 			// do any custom fields map to billing fields?
 			$user_custom_fields = $this->get_custom_fields();
-			
+
 			if (is_array($user_custom_fields)) {
 				foreach ($user_custom_fields as $field) {
 					if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
-						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];
 					}
 				}
 			}
-			
+
 			// we don't want to set a country if we don't have a state/province, because we risk
 			// internal US/Canada province validation
 			if (isset($customer['country']) and (!isset($customer['state']) or (isset($customer['state']) and empty($customer['state'])))) {
 				unset($customer['country']);
 			}
-			
+
 			$customer_id = $CI->customer_model->NewCustomer($customer);
-			
+
 			$this->db->update('users',array('customer_id' => $customer_id),array('user_id' => $user_id));
 		}
-		
+
 		// prep hook
 		// only run this hook if the App_hooks library is loaded
 		// it may not be if this is the user created during the install wizard
@@ -992,24 +995,24 @@ class User_model extends CI_Model
 			$CI =& get_instance();
 			$CI->app_hooks->data('member', $user_id);
 			$CI->app_hooks->data_var('password', $password);
-			
+
 			// trip the validation email?
 			if (!empty($validate_key)) {
 				$validation_link = site_url('users/validate/' . $validate_key);
-				
+
 				$CI->app_hooks->data_var('validation_link', $validation_link);
 				$CI->app_hooks->data_var('validation_code', $validate_key);
-				
+
 				$CI->app_hooks->trigger('member_validate_email');
 			}
-			
+
 			$CI->app_hooks->trigger('member_register', $user_id, $password);
 			$CI->app_hooks->reset();
 		}
-		
+
 		return $user_id;
 	}
-	
+
 	/**
 	* Update User
 	*
@@ -1029,11 +1032,11 @@ class User_model extends CI_Model
 	*/
 	function update_user($user_id, $email, $password, $username, $first_name, $last_name, $groups = FALSE, $is_admin = FALSE, $custom_fields = array()) {
 		$old_user = $this->get_user($user_id);
-		
+
 		if (empty($old_user)) {
 			return FALSE;
 		}
-		
+
 		// can we update the username?
 		if ($old_user['username'] != $username) {
 			// check if username is in use by someone else
@@ -1041,14 +1044,14 @@ class User_model extends CI_Model
 							  ->from('users')
 							  ->where('user_username',$username)
 							  ->get();
-							  
+
 			if ($users->num_rows() > 0) {
 				// already in use
 				// keep old username
 				$username = $old_user['username'];
-			}							  
+			}
 		}
-		
+
 		// can we update the email?
 		if ($old_user['email'] != $email) {
 			// check if email is in use by someone else
@@ -1056,14 +1059,14 @@ class User_model extends CI_Model
 							  ->from('users')
 							  ->where('user_email',$email)
 							  ->get();
-							  
+
 			if ($users->num_rows() > 0) {
 				// already in use
 				// keep old email
 				$email = $old_user['email'];
-			}							  
+			}
 		}
-		
+
 		$update_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
 								'user_groups' => @'|' . implode('|',$groups) . '|',
@@ -1072,67 +1075,67 @@ class User_model extends CI_Model
 								'user_username' => $username,
 								'user_email' => $email
 							);
-							
+
 		if (!empty($password)) {
 			$this->update_password($user_id, $password);
 		}
-							
+
 		foreach ($custom_fields as $name => $value) {
 			$update_fields[$name] = $value;
 		}
-												
+
 		$this->db->update('users',$update_fields,array('user_id' => $user_id));
-		
+
 		if (module_installed('billing')) {
 			// update email in customers table
 			$this->db->update('customers',array('email' => $email),array('internal_id' => $user_id));
-			
+
 			// do any custom fields map to billing fields?
 			$user_custom_fields = $this->get_custom_fields();
-			
+
 			$customer = array();
 			if (is_array($user_custom_fields)) {
 				foreach ($user_custom_fields as $field) {
 					if (!empty($field['billing_equiv']) and isset($custom_fields[$field['name']])) {
-						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];		
+						$customer[$field['billing_equiv']] = $custom_fields[$field['name']];
 					}
 				}
 			}
-			
+
 			$customer_id = $this->get_customer_id($user_id);
-			
+
 			if (!empty($customer)) {
 				$this->db->update('customers', $customer, array('internal_id' => $user_id));
 			}
 		}
-		
+
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->trigger('member_update', $user_id, $old_user);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Update Billing Address
 	*
 	* @param int $user_id
 	* @param array $address_fields New Address
 	*
-	* @return boolean 
+	* @return boolean
 	*/
 	function update_billing_address ($user_id, $address_fields) {
 		if (!module_installed('billing')) {
 			return FALSE;
 		}
-	
+
 		$CI =& get_instance();
 		$CI->load->model('billing/customer_model');
-		
+
 		$customer_id = $this->get_customer_id($user_id);
-		
+
 		if ($customer_id != FALSE) {
 			$CI->customer_model->UpdateCustomer($customer_id, $address_fields);
 		}
@@ -1140,14 +1143,14 @@ class User_model extends CI_Model
 			// user doesn't have a customer record, let's create one
 			$address_fields['internal_id'] = $user_id;
 			$customer_id = $CI->customer_model->NewCustomer($address_fields);
-			
+
 			// link this to customer account
 			$this->db->update('users', array('customer_id' => $customer_id), array('user_id' => $user_id));
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Delete User
 	*
@@ -1157,42 +1160,42 @@ class User_model extends CI_Model
 	*/
 	function delete_user ($user_id) {
 		$this->db->update('users',array('user_deleted' => '1'),array('user_id' => $user_id));
-		
+
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->trigger('member_delete', $user_id);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Update Password
 	*
 	* @param int $user_id
 	* @param string $new_password
 	*
-	* @return boolean 
+	* @return boolean
 	*/
 	function update_password ($user_id, $new_password) {
 		$CI =& get_instance();
 		$CI->load->helper('string');
 		$salt = random_string('unique');
 		$hashed_password = md5($new_password . ':' . $salt);
-	
+
 		$this->db->update('users',array('user_password' => $hashed_password, 'user_salt' => $salt),array('user_id' => $user_id));
-		
+
 		// prep hook
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->data_var('new_password', $new_password);
 		$CI->app_hooks->trigger('member_change_password', $user_id, $new_password);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Reset Password
 	*
@@ -1202,47 +1205,47 @@ class User_model extends CI_Model
 	*/
 	function reset_password ($user_id) {
 		$user = $this->get_user($user_id);
-		
+
 		if (empty($user)) {
 			return FALSE;
 		}
-		
+
 		// reset the password
 		$this->load->helper('string');
-		
+
 		$password = random_string('alnum',9);
 		$this->db->update('users',array('user_password' => md5($password), 'user_salt' => ''),array('user_id' => $user['id']));
-	
+
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user['id']);
 		$CI->app_hooks->data_var('new_password', $password);
-		
+
 		$CI->app_hooks->trigger('member_forgot_password');
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Suspend User
 	*
 	* @param int $user_id The user ID #
 	*
-	* @return boolean  
+	* @return boolean
 	*/
 	function suspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '1'),array('user_id' => $user_id));
-		
+
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->trigger('member_suspend', $user_id);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Unsuspend User
 	*
@@ -1252,16 +1255,16 @@ class User_model extends CI_Model
 	*/
 	function unsuspend_user ($user_id) {
 		$this->db->update('users',array('user_suspended' => '0'),array('user_id' => $user_id));
-		
+
 		// hook call
 		$CI =& get_instance();
 		$CI->app_hooks->data('member', $user_id);
 		$CI->app_hooks->trigger('member_unsuspend', $user_id);
 		$CI->app_hooks->reset();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Get User
 	*
@@ -1272,9 +1275,9 @@ class User_model extends CI_Model
 	*/
 	function get_user ($user_id, $any_status = FALSE) {
 		$filters = array('id' => $user_id);
-		
+
 		$user = $this->get_users($filters, $any_status);
-		
+
 		if (empty($user)) {
 			return FALSE;
 		}
@@ -1282,7 +1285,7 @@ class User_model extends CI_Model
 			return $user[0];
 		}
 	}
-	
+
 	/**
 	* Count Users
 	*
@@ -1293,7 +1296,7 @@ class User_model extends CI_Model
 	function count_users ($filters) {
 		return $this->get_users($filters, FALSE, TRUE);
 	}
-	
+
 	/**
 	* Get Users
 	*
@@ -1319,7 +1322,7 @@ class User_model extends CI_Model
 	*/
 	function get_users ($filters = array(), $any_status = FALSE, $counting = FALSE) {
 		$fields = $this->get_custom_fields();
-		
+
 		// keyword search
 		if (isset($filters['keyword'])) {
 			$this->db->where('user_deleted','0');
@@ -1329,28 +1332,28 @@ class User_model extends CI_Model
 			$this->db->or_like('user_last_name', $filters['keyword']);
 			$this->db->or_like('user_first_name', $filters['keyword']);
 		}
-		
+
 		// other filters
 		if (isset($filters['id'])) {
 			$this->db->where('user_id',$filters['id']);
 		}
-		
+
 		if (isset($filters['group'])) {
 			$this->db->where('(user_groups LIKE \'%|' . $filters['group'] . '|%\' or user_groups = \'|' . $filters['group'] . '|\')');
 		}
-		
+
 		if (isset($filters['suspended'])) {
 			$this->db->where('user_suspended',$filters['suspended']);
 		}
-		
+
 		if (isset($filters['email'])) {
 			$this->db->like('user_email',$filters['email']);
 		}
-		
+
 		if (isset($filters['username'])) {
 			$this->db->like('user_username',$filters['username']);
 		}
-		
+
 		if (isset($filters['name'])) {
 			if (is_numeric($filters['name'])) {
 				// we are passed a member id
@@ -1359,29 +1362,29 @@ class User_model extends CI_Model
 				$this->db->where('(`user_first_name` LIKE \'%' . mysql_real_escape_string($filters['name']) . '%\' OR `user_last_name` LIKE \'%' . mysql_real_escape_string($filters['name']) . '%\')');
 			}
 		}
-		
+
 		if (isset($filters['first_name'])) {
 			$this->db->like('user_first_name',$filters['first_name']);
 		}
-		
+
 		if (isset($filters['last_name'])) {
 			$this->db->like('user_last_name',$filters['last_name']);
 		}
-		
+
 		if (isset($filters['is_admin'])) {
 			$this->db->where('users.user_is_admin',$filters['is_admin']);
 		}
-		
+
 		if (isset($filters['signup_date_start'])) {
 			$date = date('Y-m-d H:i:s', strtotime($filters['signup_date_start']));
 			$this->db->where('users.user_signup_date >=', $date);
 		}
-		
+
 		if (isset($filters['signup_date_end'])) {
 			$date = date('Y-m-d H:i:s', strtotime($filters['signup_date_end']));
 			$this->db->where('users.user_signup_date <=', $date);
 		}
-		
+
 		// custom field params
 		if (is_array($fields)) {
 			foreach ($fields as $field) {
@@ -1390,23 +1393,23 @@ class User_model extends CI_Model
 				}
 			}
 		}
-		
+
 		if ($any_status == FALSE) {
 			$this->db->where('user_deleted','0');
 		}
-		
+
 		// standard ordering and limiting
 		if ($counting == FALSE) {
 			$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'user_username';
 			$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
 			$this->db->order_by($order_by, $order_dir);
-			
+
 			if (isset($filters['limit'])) {
 				$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
 				$this->db->limit($filters['limit'], $offset);
 			}
 		}
-		
+
 		if ($counting === TRUE) {
 			$this->db->select('users.user_id');
 			$result = $this->db->get('users');
@@ -1416,19 +1419,19 @@ class User_model extends CI_Model
 		}
 		else {
 			$this->db->from('users');
-			
+
 			$result = $this->db->get();
 		}
-		
+
 		if ($result->num_rows() == 0) {
 			return FALSE;
 		}
-		
+
 		// get custom fields
 		$CI =& get_instance();
 		$CI->load->model('custom_fields_model');
 		$custom_fields = $CI->custom_fields_model->get_custom_fields(array('group' => '1'));
-		
+
 		$users = array();
 		foreach ($result->result_array() as $user) {
 			$groups = explode('|',$user['user_groups']);
@@ -1438,7 +1441,7 @@ class User_model extends CI_Model
 					$user_groups[] = $group;
 				}
 			}
-		
+
 			$this_user = array(
 							'id' => $user['user_id'],
 							'is_admin' => ($user['user_is_admin'] == '1') ? TRUE : FALSE,
@@ -1459,21 +1462,21 @@ class User_model extends CI_Model
 							'cart' => (empty($user['user_cart'])) ? FALSE : unserialize($user['user_cart']),
 							'pending_charge_id' => (!empty($user['user_pending_charge_id'])) ? $user['user_pending_charge_id'] : FALSE
 							);
-							
+
 			foreach ($custom_fields as $field) {
 				$this_user[$field['name']] = $user[$field['name']];
 			}
 			reset($custom_fields);
-							
+
 			$users[] = $this_user;
-							
+
 		}
-		
+
 		$result->free_result();
-		
+
 		return $users;
 	}
-	
+
 	/**
 	* New User Custom Field
 	*
@@ -1495,12 +1498,12 @@ class User_model extends CI_Model
 							'user_field_admin_only' => ($admin_only == TRUE) ? '1' : '0',
 							'user_field_registration_form' => ($registration_form == TRUE) ? '1' : '0'
 							);
-							
+
 		$this->db->insert('user_fields',$insert_fields);
-		
+
 		return $this->db->insert_id();
 	}
-	
+
 	/**
 	* Update User Custom Field
 	*
@@ -1513,17 +1516,17 @@ class User_model extends CI_Model
 	*
 	* @return boolean TRUE
 	*/
-	function update_custom_field ($custom_field_id, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE) {	
+	function update_custom_field ($custom_field_id, $billing_equiv = '', $admin_only = FALSE, $registration_form = TRUE) {
 		$result = $this->db->select('user_field_id')
 							 ->from('user_fields')
 							 ->where('custom_field_id',$custom_field_id)
 							 ->get();
-							 
+
 		if ($result->num_rows() == 0) {
 			// no record yet
 			$field_id = $this->new_custom_field($custom_field_id, $billing_equiv, $admin_only, $registration_form);
 		}
-				
+
 		$update_fields = array(
 							'subscription_plans' => '',
 							'products' => '',
@@ -1531,12 +1534,12 @@ class User_model extends CI_Model
 							'user_field_admin_only' => ($admin_only == TRUE) ? '1' : '0',
 							'user_field_registration_form' => ($registration_form == TRUE) ? '1' : '0'
 							);
-							
+
 		$this->db->update('user_fields',$update_fields,array('custom_field_id' => $custom_field_id));
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Delete User Custom Field
 	*
@@ -1550,15 +1553,15 @@ class User_model extends CI_Model
 	function delete_custom_field ($user_field_id) {
 		// get custom_field_id
 		$field = $this->get_custom_field($user_field_id);
-		
+
 		$this->load->model('custom_fields_model');
 		$this->custom_fields_model->delete_custom_field($field['custom_field_id'], 'users');
-		
+
 		$this->db->delete('user_fields',array('user_field_id' => $user_field_id));
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Get User Custom Field
 	*
@@ -1568,19 +1571,19 @@ class User_model extends CI_Model
 	*/
 	function get_custom_field ($id) {
 		$return = $this->get_custom_fields(array('id' => $id));
-		
+
 		if (empty($return)) {
 			return FALSE;
 		}
-		
+
 		return $return[0];
 	}
-	
+
 	/**
 	* Get User Custom Fields
 	*
 	* Retrieves custom fields ordered by custom_field_order
-	* 
+	*
 	* @param int $filters['id'] A custom field ID
 	* @param boolean $filters['registration_form'] Set to TRUE to retrieve registration form fields
 	* @param boolean $filters['not_in_admin'] Set to TRUE to not retrieve admin-only fields
@@ -1589,44 +1592,44 @@ class User_model extends CI_Model
 	*/
 	function get_custom_fields ($filters = array()) {
 		$cache_string = md5(implode(',',$filters));
-		
+
 		if (isset($this->cache_fields[$cache_string])) {
 			return $this->cache_fields[$cache_string];
 		}
-	
+
 		$this->load->model('custom_fields_model');
-	
+
 		if (isset($filters['id'])) {
 			$this->db->where('user_field_id',$filters['id']);
 		}
-		
+
 		if (isset($filters['registration_form']) and $filters['registration_form'] == TRUE) {
 			$this->db->where('user_field_registration_form','1');
 		}
-		
+
 		if (isset($filters['not_in_admin']) and $filters['not_in_admin'] == TRUE) {
 			$this->db->where('user_field_admin_only','0');
 		}
-	
+
 		$this->db->join('user_fields','custom_fields.custom_field_id = user_fields.custom_field_id','left');
 		$this->db->order_by('custom_fields.custom_field_order','ASC');
-		
+
 		$this->db->select('user_fields.user_field_id');
 		$this->db->select('user_fields.user_field_billing_equiv');
 		$this->db->select('user_fields.user_field_admin_only');
 		$this->db->select('user_fields.user_field_registration_form');
 		$this->db->select('custom_fields.*');
-		
+
 		$this->db->where('custom_field_group','1');
-		
+
 		$result = $this->db->get('custom_fields');
-		
+
 		if ($result->num_rows() == 0) {
 			return FALSE;
 		}
-		
+
 		$billing_installed = module_installed('billing');
-		
+
 		$fields = array();
 		foreach ($result->result_array() as $field) {
 			$fields[] = array(
@@ -1648,9 +1651,9 @@ class User_model extends CI_Model
 							'registration_form' => ($field['user_field_registration_form'] == '1') ? TRUE : FALSE
 						);
 		}
-		
+
 		$this->cache_fields[$cache_string] = $fields;
-		
+
 		return $fields;
 	}
 }
