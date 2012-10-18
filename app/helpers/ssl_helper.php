@@ -43,7 +43,7 @@ if (!function_exists('is_secure')) {
 if ($CI->uri->segment(2) != 'user_activity') {
 
 	if ($CI->config->item('ssl_certificate') == '1') {
-		if (in_array($CI->uri->segment(1),$CI->config->item('secure_modules')) and is_secure()) {
+		if (in_array($CI->uri->segment(1),$CI->config->item('secure_modules')) and !is_secure()) {
 			header("Location: " . secure(current_url()));
 			die();
 		}
