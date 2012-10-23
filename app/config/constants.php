@@ -40,14 +40,14 @@ define('FOPEN_READ_WRITE_CREATE_STRICT',		'x+b');
 | -------------------------------------------------------------------
 |  Auto-load Base Controllers with Native _autoload
 | -------------------------------------------------------------------
-| 
+|
 |  Loads Admincp_Controller and Public_Controller automatically when extended
 |
 */
 
 // because some people have this function in their config, we have to not break those sites
-if (!function_exists('__autoload')) {
-	function __autoload($class)
+if (!function_exists('__hw_autoload')) {
+	function __hw_autoload($class)
 	{
 		if (strpos($class, 'CI_') !== 0) {
 			if (is_file($location = APPPATH.'libraries/controllers/'.$class.EXT)) {
@@ -58,6 +58,8 @@ if (!function_exists('__autoload')) {
 			}
 		}
 	}
+
+	spl_autoload_register("__hw_autoload");
 }
 
 /* End of file constants.php */
