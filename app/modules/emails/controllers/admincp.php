@@ -155,6 +155,7 @@ class Admincp extends Admincp_Controller {
 			
 			// we may be sending images with a relative link...
 			$body = str_ireplace('src="writeable/','src="' . base_url() . '/writeable/', $body);
+			$body = str_ireplace('src="/writeable/','src="' . base_url() . '/writeable/', $body);
 		
 			// send full email
 			$this->email->from(setting('site_email'), setting('site_name'));
