@@ -644,6 +644,10 @@ class App_hooks {
 		$body = $this->CI->smarty_email->fetch($email['body_template']);
 		$this->CI->email->message($body);
 		
+		// rewrite uploaded image links to be absolute
+		$body = str_ireplace('src="writeable/','src="' . base_url() . '/writeable/', $body);
+		$body = str_ireplace('src="/writeable/','src="' . base_url() . '/writeable/', $body);
+		
 		// Send!
 		$this->CI->email->send();
 		$this->CI->email->clear();
