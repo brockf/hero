@@ -29,14 +29,14 @@
 		<?php endfor; ?>
 		</tr>
 		</thead>
-		
+
 		<?php $count = 0; ?>
 		<?php foreach ($csv_data as $row) : ?>
-			<?php 
+			<?php
 				$csv_fields = explode(',', $row);
 			?>
 			<?php if ($count == 1) { $count = 2; } else { $count = 1; } ?>
-			
+
 			<tr <?php echo $count == 1 ? 'class="odd"' : ''; ?>>
 			<?php foreach ($csv_fields as $field) : ?>
 				<td><?php echo str_replace('"', '', $field) ?></td>
@@ -45,8 +45,19 @@
 		<?php endforeach; ?>
 		</tbody>
 	</table>
-	
+
 </div>
+
+<?php if (isset($groups)) :?>
+<p>
+	Assign all members to the Member Group:
+	<select name="to_group">
+	<?php foreach ($groups as $group) :?>
+		<option value="<?php echo $group['id'] ?>"><?php echo $group['name'] ?></option>
+	<?php endforeach; ?>
+	</select>
+</p>
+<?php endif; ?>
 
 <div class="submit">
 	<br/>
