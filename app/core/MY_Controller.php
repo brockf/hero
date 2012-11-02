@@ -16,15 +16,25 @@
 class MY_Controller extends CI_Controller {
 	public function __construct() {
 		parent::__construct();
-		
+
 		// we don't want to do anything if we're not installed
 		$this->load->helper('install_redirect_helper');
 		install_redirect();
-		
+
 		// this is a config.php setting.  if TRUE, it shows an awesome
 		// profiler at the bottom of each page.
 		if ($this->config->item('debug_profiler') === TRUE) {
 			$this->output->enable_profiler(TRUE);
 		}
-	}	
+
+		// If we're in the admincp, define a var so we can check later.
+		if ($this->router->fetch_class() == 'admincp')
+		{
+			define('IN_ADMIN', true);
+		}
+		else
+		{
+			define('IN_ADMIN', false);
+		}
+	}
 }
