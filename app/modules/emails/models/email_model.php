@@ -28,7 +28,14 @@ class Email_model extends CI_Model
 	function mail_queue () {
 		$CI =& get_instance();
 		set_time_limit(500);
+
+		if (!function_exists('cron_log'))
+		{
+			$CI->load->helper('cron_log');
+		}
 		
+		cron_log('Beginning the Mail Queue cronjob.');
+
 		$mail_queue_limit = setting('mail_queue_limit');
 		if (empty($mail_queue_limit) or !is_numeric($mail_queue_limit) or $mail_queue_limit > 5000) {
 			$mail_queue_limit = 450;
@@ -61,6 +68,8 @@ class Email_model extends CI_Model
 				}
 			}
 			
+			cron_log('No emails found to send. Exiting.');
+			
 			return FALSE;
 		}
 		
@@ -68,6 +77,9 @@ class Email_model extends CI_Model
 		// writeable/mail_queue/*.email files
 		$previous_body = '';
 		$previous_body_file = '';
+		
+		$sent_count = 0;
+		$failed_count = 0;
 		
 		foreach ($result->result_array() as $mail) {
 			$config = array();
@@ -114,11 +126,23 @@ class Email_model extends CI_Model
 			$CI->email->message((string)$body);
 			
 			// Send!
-			$CI->email->send();
+			if ($CI->email->send())
+			{
+				log_message('debug', '[Send Mail] Email sent to: '. $mail['to']);
+				$sent_count++;
+			}
+			else
+			{
+				log_message('debug', '[Send Mail] Unable to send mail to: '. $mail['to'] .'. DEBUGGER: '. $CI->email->print_debugger());
+				$failed_count++;
+			}
+			
 			$CI->email->clear();
 			
 			$this->db->delete('mail_queue', array('mail_queue_id' => $mail['mail_queue_id']));
 		}
+		
+		cron_log("$sent_count emails sent. $failed_count failed emails.");
 		
 		return;
 	}
