@@ -225,6 +225,8 @@ class Install extends CI_Controller {
 		
 			if (!isset($error_password)) {
 				// form submission
+				// Make sure the register hook is not called for new user creation here...
+				$this->user_model->trigger_register_hook = false;
 				$user_id = $this->user_model->new_user(
 													 $this->input->post('email'),
 													 $this->input->post('password'),
