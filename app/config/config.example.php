@@ -52,7 +52,7 @@ $config['default_theme'] = 'electric';
 |--------------------------------------------------------------------------
 |
 */
-$config['path_writeable'] = 'writeable/';
+$config['path_writeable'] =	FCPATH .  'writeable/';
 $config['path_product_files'] = $config['path_writeable'] . 'product_files/';
 $config['path_product_images'] = $config['path_writeable'] . 'product_images/';
 $config['path_editor_uploads'] = $config['path_writeable'] . 'editor_uploads/';
