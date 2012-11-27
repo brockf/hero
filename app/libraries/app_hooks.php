@@ -381,7 +381,7 @@ class App_hooks {
 	public function data_var ($name, $value) {
 		$this->data[$name] = $value;
 		
-		log_message('debug', 'Hook: "' . $name . '" => "' . $value . '" data registered to active hook.');
+		@log_message('debug', 'Hook: "' . $name . '" => "' . $value . '" data registered to active hook.');
 		
 		return;
 	}
