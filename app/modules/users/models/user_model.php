@@ -1058,6 +1058,7 @@ class User_model extends CI_Model
 			$users = $this->db->select('user_id')
 							  ->from('users')
 							  ->where('user_email',$email)
+							  ->where('user_deleted','0')
 							  ->get();
 
 			if ($users->num_rows() > 0) {
