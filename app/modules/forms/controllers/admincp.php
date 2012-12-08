@@ -166,9 +166,9 @@ class Admincp extends Admincp_Controller {
 				$value = $response[$field['name']];
 				
 				// automatically parse links
-				$value = eregi_replace('(((f|ht){1}tp://)[-a-zA-Z0-9@:%_\+.~#?&//=]+)', '<a target="_blank" href="\\1">\\1</a>', $value);
-				$value = eregi_replace('([[:space:]()[{}])(www.[-a-zA-Z0-9@:%_\+.~#?&//=]+)','\\1<a target="_blank" href="http://\\2">\\2</a>', $value);
-				$value = eregi_replace('([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,3})','<a href="mailto:\\1">\\1</a>', $value);
+				$value = preg_replace('/(http:\/\/[^ )\r\n!]+)/i', '<a target="_blank" href="\\1">\\1</a>', $value);
+				$value = preg_replace('/(https:\/\/[^ )\r\n!]+)/i', '<a target="_blank" href="\\1">\\1</a>', $value);
+				$value = preg_replace('/([_\.0-9a-z-]+@([0-9a-z][0-9a-z-]+\.)+[a-z]{2,4})/i','<a href="mailto:\\1">\\1</a>', $value);
 			}
 			
 			$lines[$field['friendly_name']] = $value;
