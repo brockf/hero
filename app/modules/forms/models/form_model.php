@@ -473,4 +473,39 @@ class Form_model extends CI_Model
 		
 		return $responses;
 	}
+	
+	//--------------------------------------------------------------------
+	
+	public function count_responses($form_id, $filters=array()) 
+	{
+		$form = $this->get_form($form_id);
+		
+		if (empty($form)) {
+			return FALSE;
+		}
+		
+		if (isset($filters['response_id'])) {
+			$this->db->where($form['table_name'] . '_id', $filters['response_id']);
+		}
+		
+		if (isset($filters['start_date'])) {
+			$start_date = date('Y-m-d H:i:s', strtotime($filters['start_date']));
+			$this->db->where('submission_date >=', $start_date);
+		}
+		
+		if (isset($filters['end_date'])) {
+			$end_date = date('Y-m-d H:i:s', strtotime($filters['end_date']));
+			$this->db->where('submission_date <=', $end_date);
+		}
+		
+		if (isset($filters['username'])) {
+			$this->db->like('users.user_username',$filters['username']);
+		}
+	
+		$count = $this->db->count_all_results($form['table_name']);
+		
+		return $count;
+	}
+	
+	//--------------------------------------------------------------------
 }
