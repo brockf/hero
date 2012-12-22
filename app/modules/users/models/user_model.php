@@ -638,12 +638,12 @@ class User_model extends CI_Model
 		$CI->load->model('custom_fields_model');
 		$CI->load->helpers(array('unique_username','unique_email','strip_whitespace'));
 
-		$CI->form_validation->set_rules('first_name','First Name','trim|required');
-		$CI->form_validation->set_rules('last_name','Last Name','trim|required');
+		$CI->form_validation->set_rules('first_name','First Name','trim|required|xss_clean');
+		$CI->form_validation->set_rules('last_name','Last Name','trim|required|xss_clean');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
 
-		$username_rules = array('trim','strip_whitespace','min_length[3]');
+		$username_rules = array('trim','strip_whitespace','min_length[3]', 'xss_clean');
 		if ($this->config->item('username_allow_special_characters') == FALSE) {
 			$username_rules[] = 'alpha_numeric';
 		}
