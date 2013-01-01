@@ -15,21 +15,21 @@ class Admincp extends Admincp_Controller {
 	function __construct()
 	{
 		parent::__construct();
-				
+
 		$this->admin_navigation->parent_active('reports');
 	}
-	
+
 	function cronjob () {
 		$this->admin_navigation->parent_active('configuration');
-		
+
 		$this->admin_navigation->module_link('Run Cronjob Manually',site_url('cron/update/' . setting('cron_key')));
-		
+
 		return $this->load->view('cronjob');
 	}
-	
+
 	function coupons () {
 		$this->load->library('dataset');
-		
+
 		$columns = array(
 						array(
 							'name' => 'Coupon Name',
@@ -55,37 +55,37 @@ class Admincp extends Admincp_Controller {
 							'sort_column' => 'subscription_usages'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('coupons/coupon_model','get_coupon_usages');
 		$this->dataset->base_url(site_url('admincp/reports/coupons'));
-		
+
 		// initialize the dataset
 		$this->dataset->initialize(FALSE);
-		
+
 		// count total rows
 		$this->load->model('coupons/coupon_model');
 		$total_rows = $this->coupon_model->count_coupons($this->dataset->get_unlimited_parameters());
 		$this->dataset->total_rows($total_rows);
 		$this->dataset->initialize_pagination();
-		
+
 		$this->load->view('coupons');
 	}
-	
+
 	function invoices () {
 		$this->load->library('dataset');
-		
+
 		// get gateway options
 		$this->load->model('billing/gateway_model');
 		$gateways = $this->gateway_model->GetGateways();
-		
+
 		$gateway_options = array();
 		if (!empty($gateways)) {
 			foreach ($gateways as $gateway) {
 				$gateway_options[$gateway['id']] = $gateway['gateway'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'ID #',
@@ -130,36 +130,36 @@ class Admincp extends Admincp_Controller {
 							'width' => '23%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/invoice_model','get_invoices');
 		$this->dataset->base_url(site_url('admincp/reports/invoices'));
-		
+
 		// initialize the dataset
 		$this->dataset->initialize(FALSE);
-		
+
 		// count total rows
 		$this->load->model('billing/invoice_model');
 		$total_rows = $this->invoice_model->count_invoices($this->dataset->get_unlimited_parameters());
 		$this->dataset->total_rows($total_rows);
 		$this->dataset->initialize_pagination();
-		
+
 		$this->load->model('billing/invoice_model');
-		
+
 		// get total charges
 		$total_amount = $this->invoice_model->get_invoices_total($this->dataset->params);
-		
+
 		$data = array(
 					'total_amount' => $total_amount
 					);
-		
+
 		$this->load->view('invoices', $data);
 	}
-	
+
 	function invoice_actions ($action, $id) {
 		$this->load->model('billing/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($id);
-		
+
 		if ($action == 'details') {
 			redirect('admincp/reports/invoice/' . $invoice['id']);
 		}
@@ -172,26 +172,26 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'related_charges') {
 			header('Location: ' . dataset_link('admincp/reports/invoices', array('subscription_id' => $invoice['subscription_id'])));
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	function invoice ($invoice_id) {
 		$this->admin_navigation->module_link('Back to Invoices',site_url('admincp/reports/invoices'));
-		
+
 		$this->load->helper('format_street_address');
-	
+
 		$this->load->model('billing/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		
+
 		// refund?
 		if ($invoice['refunded'] == FALSE) {
 			$this->admin_navigation->module_link('Issue Refund',site_url('admincp/reports/do_refund/' . $invoice['id']));
 		}
-		
+
 		// get invoice lines
 		$invoice_lines = $this->invoice_model->invoice_lines($invoice['id']);
-		
+
 		// get shipping address if there is one
 		if ($invoice['order_details_id']) {
 			$this->load->model('store/order_model');
@@ -200,24 +200,24 @@ class Admincp extends Admincp_Controller {
 		else {
 			$order = FALSE;
 		}
-		
+
 		$data = array(
 						'invoice' => $invoice,
 						'order' => $order,
 						'invoice_lines' => $invoice_lines
 					);
-		
+
 		$this->load->view('invoice', $data);
 	}
-	
+
 	function do_refund ($invoice_id) {
 		$this->load->model('billing/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		
+
 		if (empty($invoice)) {
 			die(show_error('No invoice by that ID.'));
 		}
-		
+
 		$this->load->model('billing/gateway_model');
 		if ($this->gateway_model->Refund($invoice['id'])) {
 			redirect('admincp/reports/invoice/' . $invoice['id']);
@@ -227,27 +227,27 @@ class Admincp extends Admincp_Controller {
 			return $this->load->view('mark_refund', array('invoice' => $invoice));
 		}
 	}
-	
+
 	function mark_refunded ($invoice_id) {
 		$this->load->model('billing/invoice_model');
 		$invoice = $this->invoice_model->get_invoice($invoice_id);
-		
+
 		if (empty($invoice)) {
 			die(show_error('No invoice by that ID.'));
 		}
-		
+
 		$this->load->model('billing/charge_model');
 		$this->charge_model->MarkRefunded($invoice['id']);
-		
+
 		redirect('admincp/reports/invoice/' . $invoice['id']);
 		return TRUE;
 	}
-	
-	
+
+
 	function products () {
 		$this->load->library('dataset');
 		$this->load->helper('format_street_address');
-		
+
 		$columns = array(
 						array(
 							'name' => 'Invoice #',
@@ -288,34 +288,39 @@ class Admincp extends Admincp_Controller {
 							'width' => '31%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('store/order_model','get_order_products', array('refunded' => FALSE));
 		$this->dataset->base_url(site_url('admincp/reports/products'));
+
+		$this->load->model('store/order_model');
+		$total_rows = $this->order_model->count_orders($this->dataset->get_unlimited_parameters());
+		$this->dataset->total_rows($total_rows);
+
 		$this->dataset->Initialize();
-		
+
 		$this->load->view('products');
 	}
-	
+
 	function shipped_no ($order_products_id) {
 		$this->load->model('store/order_model');
-		
+
 		$this->order_model->mark_as_not_shipped($order_products_id);
 	}
-	
+
 	function shipped_yes ($order_products_id) {
 		$this->load->model('store/order_model');
-		
+
 		$this->order_model->mark_as_shipped($order_products_id);
 	}
-	
+
 	function subscriptions () {
 		$this->load->library('dataset');
-		
+
 		// get subscription plans
 		$this->load->model('billing/subscription_plan_model');
 		$plans = $this->subscription_plan_model->get_plans();
-		
+
 		if (empty($plans)) {
 			$plan_options = array();
 		}
@@ -324,7 +329,7 @@ class Admincp extends Admincp_Controller {
 				$plan_options[$plan['id']] = $plan['name'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'ID #',
@@ -386,25 +391,25 @@ class Admincp extends Admincp_Controller {
 							'width' => '25%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/subscription_model','get_subscriptions');
 		$this->dataset->base_url(site_url('admincp/reports/subscriptions'));
 		$this->dataset->initialize(FALSE);
-		
+
 		// count total rows
 		$this->load->model('billing/subscription_model');
 		$total_rows = $this->subscription_model->count_subscriptions($this->dataset->get_unlimited_parameters());
 		$this->dataset->total_rows($total_rows);
 		$this->dataset->initialize_pagination();
-		
+
 		$this->load->view('subscriptions');
 	}
-	
+
 	function subscription_actions ($action, $id) {
 		$this->load->model('billing/subscription_model');
 		$subscription = $this->subscription_model->get_subscription($id);
-		
+
 		if ($action == 'cancel') {
 			if ($this->subscription_model->cancel_subscription($subscription['id'])) {
 				$this->notices->SetNotice('Subscription cancelled successfully.');
@@ -426,17 +431,17 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'related_charges') {
 			header('Location: ' . dataset_link('admincp/reports/invoices', array('subscription_id' => $subscription['id'])));
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	function cancellations () {
 		$this->load->library('dataset');
-		
+
 		// get subscription plans
 		$this->load->model('billing/subscription_plan_model');
 		$plans = $this->subscription_plan_model->get_plans();
-		
+
 		if (empty($plans)) {
 			$plan_options = array();
 		}
@@ -445,7 +450,7 @@ class Admincp extends Admincp_Controller {
 				$plan_options[$plan['id']] = $plan['name'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'ID #',
@@ -489,22 +494,22 @@ class Admincp extends Admincp_Controller {
 							'width' => '25%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/subscription_model','get_subscriptions', array('active' => '0', 'sort' => 'subscriptions.cancel_date', 'sort_dir' => 'DESC'));
 		$this->dataset->base_url(site_url('admincp/reports/cancellations'));
 		$this->dataset->Initialize();
-		
+
 		$this->load->view('cancellations');
 	}
-	
+
 	function expirations () {
 		$this->load->library('dataset');
-		
+
 		// get subscription plans
 		$this->load->model('billing/subscription_plan_model');
 		$plans = $this->subscription_plan_model->get_plans();
-		
+
 		if (empty($plans)) {
 			$plan_options = array();
 		}
@@ -513,7 +518,7 @@ class Admincp extends Admincp_Controller {
 				$plan_options[$plan['id']] = $plan['name'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'ID #',
@@ -557,30 +562,30 @@ class Admincp extends Admincp_Controller {
 							'width' => '25%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('billing/subscription_model','get_subscriptions', array('status' => 'expired', 'sort' => 'subscriptions.end_date', 'sort_dir' => 'DESC'));
 		$this->dataset->base_url(site_url('admincp/reports/expirations'));
 		$this->dataset->Initialize();
-		
+
 		$this->load->view('expirations');
 	}
-	
+
 	function taxes () {
 		$this->load->library('dataset');
-		
+
 		// get tax options
 		$this->load->model('store/taxes_model');
 		$taxes = $this->taxes_model->get_taxes();
-		
+
 		$tax_options = array();
-		
+
 		if (!empty($taxes)) {
 			foreach ($taxes as $tax) {
 				$tax_options[$tax['id']] = $tax['name'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'Invoice ID #',
@@ -624,49 +629,49 @@ class Admincp extends Admincp_Controller {
 							'width' => '25%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('store/taxes_model','get_paid_taxes');
 		$this->dataset->base_url(site_url('admincp/reports/taxes'));
 		$this->dataset->Initialize();
-		
+
 		// get total
 		$total_amount = $this->taxes_model->get_paid_taxes_total($this->dataset->params);
-		
+
 		$data = array(
 					'total_amount' => $total_amount
 				);
-		
+
 		$this->load->view('taxes', $data);
 	}
-	
+
 	function tax_actions ($action, $id) {
 		$this->load->model('store/taxes_model');
 		$tax = $this->taxes_model->get_paid_tax($id);
-		
+
 		if ($action == 'invoice') {
 			redirect('admincp/reports/invoice/' . $tax['invoice_id']);
 		}
 		elseif ($action == 'profile') {
 			redirect('admincp/users/profile/' . $tax['user_id']);
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	function registrations () {
 		$this->load->library('dataset');
-		
+
 		// get usergroups
-		$this->load->model('users/usergroup_model');			
+		$this->load->model('users/usergroup_model');
 	    $usergroups = $this->usergroup_model->get_usergroups();
-	    
+
 	    $options = array();
 	    foreach ($usergroups as $group) {
 	    	$options[$group['id']] = $group['name'];
 	    }
 	    $usergroups = $options;
-				
+
 		$columns = array(
 						array(
 							'name' => 'Member ID #',
@@ -709,23 +714,23 @@ class Admincp extends Admincp_Controller {
 							'width' => '20%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('users/user_model','get_users', array('sort' => 'users.user_signup_date', 'sort_dir' => 'DESC'));
 		$this->dataset->base_url(site_url('admincp/reports/registrations'));
 		$this->dataset->Initialize();
-		
+
 		$data = array(
 					'usergroups' => $usergroups
 				);
-		
+
 		$this->load->view('registrations', $data);
 	}
-	
+
 	function user_actions ($action, $id) {
 		$this->load->model('users/user_model');
 		$user = $this->user_model->get_user($id);
-		
+
 		if ($action == 'invoices') {
 			header('Location: ' . dataset_link('admincp/reports/invoices', array('member_name' => $user['id'])));
 		}
@@ -735,23 +740,23 @@ class Admincp extends Admincp_Controller {
 		elseif ($action == 'profile') {
 			redirect('admincp/users/profile/' . $user['id']);
 		}
-		
+
 		return TRUE;
 	}
-	
+
 	function popular () {
 		$this->load->library('dataset');
-		
+
 		$this->load->model('publish/content_type_model');
 		$content_types = $this->content_type_model->get_content_types();
-		
+
 		$content_type_options = array();
 		if (!empty($content_types)) {
 			foreach ($content_types as $type) {
 				$content_type_options[$type['id']] = $type['name'];
 			}
 		}
-		
+
 		$columns = array(
 						array(
 							'name' => 'Content ID #',
@@ -791,26 +796,26 @@ class Admincp extends Admincp_Controller {
 							'width' => '18%'
 							)
 					);
-		
+
 		$this->dataset->columns($columns);
 		$this->dataset->datasource('publish/content_model','get_contents', array('sort' => 'content.content_hits', 'sort_dir' => 'DESC'));
 		$this->dataset->base_url(site_url('admincp/reports/popular'));
 		$this->dataset->Initialize();
-		
+
 		$this->load->view('popular');
 	}
-	
+
 	function content_actions ($action, $id) {
 		$this->load->model('publish/content_model');
 		$content = $this->content_model->get_content($id, TRUE);
-		
+
 		if ($action == 'edit') {
 			redirect('admincp/publish/edit/' . $content['id']);
 		}
 		if ($action == 'view') {
 			header('Location: ' . $content['url']);
 		}
-		
+
 		return TRUE;
 	}
 }
