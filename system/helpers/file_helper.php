@@ -360,13 +360,13 @@ if ( ! function_exists('get_mime_by_extension'))
 			{
 				include(APPPATH.'config/mimes.php');
 			}
-			
+
 			if ( ! is_array($mimes))
 			{
 				return FALSE;
 			}
 		}
-		
+
 		if (array_key_exists($extension, $mimes))
 		{
 			if (is_array($mimes[$extension]))

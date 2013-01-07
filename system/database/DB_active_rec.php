@@ -255,7 +255,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	 */
 	public function from($from)
 	{
-		foreach ((array)$from as $val)
+		foreach ((array) $from as $val)
 		{
 			if (strpos($val, ',') !== FALSE)
 			{
@@ -660,8 +660,12 @@ class CI_DB_active_record extends CI_DB_driver {
 			$prefix = (count($this->ar_like) == 0) ? '' : $type;
 
 			$v = $this->escape_like_str($v);
-
-			if ($side == 'before')
+			
+			if ($side == 'none')
+			{
+				$like_statement = $prefix." $k $not LIKE '{$v}'";
+			}
+			elseif ($side == 'before')
 			{
 				$like_statement = $prefix." $k $not LIKE '%{$v}'";
 			}
@@ -870,11 +874,11 @@ class CI_DB_active_record extends CI_DB_driver {
 	 */
 	public function limit($value, $offset = '')
 	{
-		$this->ar_limit = $value;
+		$this->ar_limit = (int) $value;
 
 		if ($offset != '')
 		{
-			$this->ar_offset = $offset;
+			$this->ar_offset = (int) $offset;
 		}
 
 		return $this;
@@ -1322,7 +1326,7 @@ class CI_DB_active_record extends CI_DB_driver {
 		{
 			if ($this->db_debug)
 			{
-				return $this->display_error('db_myst_use_index');
+				return $this->display_error('db_must_use_index');
 			}
 
 			return FALSE;
@@ -1643,7 +1647,7 @@ class CI_DB_active_record extends CI_DB_driver {
 		if (strpos($table, " ") !== FALSE)
 		{
 			// if the alias is written with the AS keyword, remove it
-			$table = preg_replace('/ AS /i', ' ', $table);
+			$table = preg_replace('/\s+AS\s+/i', ' ', $table);
 
 			// Grab the alias
 			$table = trim(strrchr($table, " "));
@@ -1666,7 +1670,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	 *
 	 * @return	string
 	 */
-	public function _compile_select($select_override = FALSE)
+	protected function _compile_select($select_override = FALSE)
 	{
 		// Combine any cached components with the current statements
 		$this->_merge_cache();
@@ -1988,7 +1992,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	 *
 	 * @return	void
 	 */
-	public function _reset_select()
+	protected function _reset_select()
 	{
 		$ar_reset_items = array(
 			'ar_select'			=> array(),

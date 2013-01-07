@@ -51,7 +51,7 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'tgz'	=>	array('application/x-tar', 'application/x-gzip-compressed'),
 				'xhtml'	=>	'application/xhtml+xml',
 				'xht'	=>	'application/xhtml+xml',
-				'zip'	=>  array('application/x-zip', 'application/zip', 'application/x-zip-compressed', 'application/octet-stream', 'application/x-compress', 'application/x-compressed', 'multipart/x-zip'),
+				'zip'	=>  array('application/x-zip', 'application/zip', 'application/x-zip-compressed'),
 				'mid'	=>	'audio/midi',
 				'midi'	=>	'audio/midi',
 				'mpga'	=>	'audio/mpeg',
@@ -65,8 +65,8 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'rpm'	=>	'audio/x-pn-realaudio-plugin',
 				'ra'	=>	'audio/x-realaudio',
 				'rv'	=>	'video/vnd.rn-realvideo',
-				'wav'	=>	'audio/x-wav',
-				'bmp'	=>	'image/bmp',
+				'wav'	=>	array('audio/x-wav', 'audio/wave', 'audio/wav'),
+				'bmp'	=>	array('image/bmp', 'image/x-windows-bmp'),
 				'gif'	=>	'image/gif',
 				'jpeg'	=>	array('image/jpeg', 'image/pjpeg'),
 				'jpg'	=>	array('image/jpeg', 'image/pjpeg'),
@@ -93,16 +93,14 @@ $mimes = array(	'hqx'	=>	'application/mac-binhex40',
 				'avi'	=>	'video/x-msvideo',
 				'movie'	=>	'video/x-sgi-movie',
 				'doc'	=>	'application/msword',
-				'docx'	=>	'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
-				'xlsx'	=>	'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+				'docx'	=>	array('application/vnd.openxmlformats-officedocument.wordprocessingml.document', 'application/zip'),
+				'xlsx'	=>	array('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet', 'application/zip'),
 				'word'	=>	array('application/msword', 'application/octet-stream'),
 				'xl'	=>	'application/excel',
 				'eml'	=>	'message/rfc822',
-				'json'  => array('application/json', 'text/json'),
-				'mp4'	=>     'video/mp4',
-				'flv'	=>    array('application/octet-stream','video/x-flv')  
+				'json' => array('application/json', 'text/json')
 			);
 
 
 /* End of file mimes.php */
-/* Location: ./app/config/mimes.php */
+/* Location: ./application/config/mimes.php */
