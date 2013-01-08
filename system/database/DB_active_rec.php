@@ -1670,7 +1670,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	 *
 	 * @return	string
 	 */
-	protected function _compile_select($select_override = FALSE)
+	public function _compile_select($select_override = FALSE)
 	{
 		// Combine any cached components with the current statements
 		$this->_merge_cache();
@@ -1992,7 +1992,7 @@ class CI_DB_active_record extends CI_DB_driver {
 	 *
 	 * @return	void
 	 */
-	protected function _reset_select()
+	public function _reset_select()
 	{
 		$ar_reset_items = array(
 			'ar_select'			=> array(),
