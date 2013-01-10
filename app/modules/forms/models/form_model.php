@@ -483,7 +483,7 @@ class Form_model extends CI_Model
 		if (empty($form)) {
 			return FALSE;
 		}
-		
+
 		if (isset($filters['response_id'])) {
 			$this->db->where($form['table_name'] . '_id', $filters['response_id']);
 		}
@@ -500,6 +500,7 @@ class Form_model extends CI_Model
 		
 		if (isset($filters['username'])) {
 			$this->db->like('users.user_username',$filters['username']);
+			$this->db->join('users','users.user_id = ' . $form['table_name'] . '.user_id','LEFT');
 		}
 	
 		$count = $this->db->count_all_results($form['table_name']);
