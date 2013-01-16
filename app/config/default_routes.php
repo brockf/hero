@@ -32,3 +32,4 @@ $route['admincp/([a-zA-Z_-]+)'] = "$1/admincp/index";
 $route['checkout'] = 'billing/checkout';
 $route['checkout/([a-zA-Z_-]+)'] = 'billing/checkout/$1';
 $route['subscriptions'] = 'billing/subscriptions';
+$route['subscriptions/(:any)'] = 'billing/subscriptions/$1';
