@@ -10,9 +10,9 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['user_last_name'];?>, <?=$row['user_first_name'];?></td>
 			<td><?=$row['plan']['name'];?></td>
 			<td><?=setting('currency_symbol');?><?=$row['amount'];?></td>
-			<? /* <td><?=$row['start_date'];?></td> */ ?>
+			<td><?= date('d-M-Y', strtotime($row['start_date']));?></td>
 			<td><? if ($row['next_charge_date']) { ?><?=date('d-M-Y',strtotime($row['next_charge_date']));?><? } ?></td>
-			<? /* <td><?=$row['end_date'];?></td> */ ?>
+			<td><?= date('d-M-Y', strtotime($row['end_date'])); ?></td>
 			<td>
 				<? if ($row['is_recurring'] == TRUE) { ?>
 					Recurring
@@ -49,7 +49,7 @@ else {
 ?>
 <tr><td colspan="8">Empty data set.</td></tr>
 <?
-}	
+}
 ?>
 <?=$this->dataset->table_close();?>
 <?=$this->load->view(branded_view('cp/footer'));?>

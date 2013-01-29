@@ -357,20 +357,20 @@ class Admincp extends Admincp_Controller {
 							'type' => 'text',
 							'filter' => 'amount'
 							),
-						/*array(
+						array(
 							'name' => 'Start Date',
 							'sort_column' => 'start_date',
 							'type' => 'date',
 							'width' => '10%',
 							'filter' => 'start_date',
 							'field_start_date' => 'created_after',
-							'field_end_date' => 'create_before'),*/
+							'field_end_date' => 'created_before'),
 						array(
 							'name' => 'Next Charge',
 							'sort_column' => 'next_charge',
 							'width' => '10%'
 							),
-						/*array(
+						array(
 							'name' => 'End Date',
 							'sort_column' => 'end_date',
 							'type' => 'date',
@@ -378,7 +378,7 @@ class Admincp extends Admincp_Controller {
 							'filter' => 'end_date',
 							'field_start_date' => 'end_date_after',
 							'field_end_date' => 'end_date_before'
-							),*/
+							),
 						array(
 							'name' => 'Status',
 							'width' => '12%',
