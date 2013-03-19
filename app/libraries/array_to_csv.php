@@ -2,7 +2,7 @@
 
 /* Array to CSV
 *
-* Converts an array (including multi-dimensional arrays) into 
+* Converts an array (including multi-dimensional arrays) into
 * a CSV formatted string.
 *
 * @author Electric Function, Inc.
@@ -15,7 +15,7 @@ class Array_to_csv {
 	var $data;
 	var $headers;
 	var $parsed_data;
-	
+
 	/**
 	* Input Data
 	*
@@ -28,56 +28,64 @@ class Array_to_csv {
 		$this->headers = array();
 		$this->parsed_data = array();
 	}
-	
+
 	/**
 	* Output CSV
 	*
-	* @return string 
+	* @return string
 	*/
-	public function output () {
+	public function output ($send_headers=true, $return_data=false) {
 		// get headers based on the item with the most data
 		foreach ($this->data as $datum) {
 			$headers = $this->get_keys($datum);
-			
+
 			if (count($headers) > count($this->headers)) {
 				$this->headers = $headers;
 			}
 		}
 		reset($this->data);
-		
+
 		// let's parse each row of data for those headers
 		foreach ($this->data as $datum) {
 			$this->parsed_data[] = $this->get_values($datum);
 		}
-		
+
 		// process output
 		// header line
 		$csv = '';
-		$csv .= implode(',',$this->headers) . "\n";
-		
+		if ($send_headers === true)
+		{
+			$csv .= implode(',',$this->headers) . "\n";
+		}
+
 		foreach ($this->parsed_data as $line) {
 			foreach ($this->headers as $header) {
 				$value = (isset($line[$header])) ? $line[$header] : '';
 				$value = str_replace("\n",' ',$value);
-				
+
 				// replace " with ""
 				$value = str_replace('"','""',$value);
-				
+
 				$csv .= '"' . $value . '",';
 			}
-			
+
 			$csv = rtrim($csv,',');
-			
+
 			$csv .= "\n";
 		}
-		
+
+		if ($return_data === true)
+		{
+			return $csv;
+		}
+
 		echo $csv;
 	}
-	
+
 	// gets all possible data from a multi-dimensional array, in one array
 	private function get_values ($array = array(), $prefix = '') {
 		$values = array();
-		
+
 		foreach ($array as $key => $value) {
 			if (!is_array($value) and !is_numeric($key) and is_bool($value)) {
 				// TRUE or FALSE
@@ -95,14 +103,14 @@ class Array_to_csv {
 				$values = array_merge($values,$this->get_values($value,$key . '_'));
 			}
 		}
-		
+
 		return $values;
 	}
-	
+
 	// gets the name of all keys, including child arrays
 	private function get_keys ($array = array(), $prefix = '') {
 		$keys = array();
-		
+
 		foreach ($array as $key => $value) {
 			if (!is_array($value) and !is_numeric($key)) {
 				$keys[] = $prefix . $key;
@@ -116,7 +124,7 @@ class Array_to_csv {
 				$keys = array_merge($keys,$this->get_keys($value,$key . '_'));
 			}
 		}
-		
+
 		return $keys;
 	}
 }
