@@ -17,7 +17,7 @@
 *
 */
 
-function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) { 
+function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 	if (!isset($params['id']) and (!isset($params['type']) or empty($params['type']))) {
 		show_error('You must specify a "type" parameter for template {content} calls if you are not specifying an "id" parameter.');
 	}
@@ -36,7 +36,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 				$smarty->CI->load->model('publish/content_type_model');
 				$type = $smarty->CI->content_type_model->get_content_type($params['type']);
 			}
-			
+
 			// we have a type, right?
 			if (empty($type) or !isset($type)) {
 				show_error('Could not load content type data for "' . $params['type'] . '"');
@@ -45,15 +45,15 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			// load the proper type ID, if not numeric
 			$params['type'] = $type['id'];
 		}
-		
+
 		// deal with filters
 		$filters = array();
-		
+
 		if (isset($type['custom_field_group_id'])) {
 			// deal with custom fields first
 			$smarty->CI->load->model('custom_fields_model');
 			$custom_fields = $smarty->CI->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
-	
+
 			if (isset($custom_fields) and is_array($custom_fields)) {
 				foreach ($custom_fields as $field) {
 					if (isset($params[$field['name']])) {
@@ -71,19 +71,19 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 				reset($custom_fields);
 			}
 		}
-		
+
 		// param: author_id (by id)
 		if (isset($params['author_id']) and !empty($params['author_id']))
 		{
-			$filters['author'] = $params['author_id'];			
+			$filters['author'] = $params['author_id'];
 		}
-		
+
 		// param: author_name
 		if (isset($params['author_name']) and !empty($params['author_name']))
 		{
-			$filters['author_like'] = $params['author_name'];			
+			$filters['author_like'] = $params['author_name'];
 		}
-		
+
 		// param: topic
 		if (isset($params['topic']) and !empty($params['topic'])) {
 			if (strpos($params['topic'],'|') !== FALSE) {
@@ -94,71 +94,83 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 				$filters['topic'] = $params['topic'];
 			}
 		}
-		
+
 		// param: keyword
 		if (isset($params['keyword']) and !empty($params['keyword'])) {
 			$filters['keyword'] = $params['keyword'];
 		}
-		
+
 		// param: type
 		if (isset($params['type'])) {
 			$filters['type'] = $params['type'];
 		}
-		
+
 		// param: id
 		if (isset($params['id'])) {
 			$filters['id'] = $params['id'];
 		}
-		
+
 		// param: sort
 		if (isset($params['sort']) and !empty($params['sort'])) {
 			$filters['sort'] = $params['sort'];
 		}
-		
+
 		// param: sort_dir
 		if (isset($params['sort_dir']) and !empty($params['sort_dir'])) {
 			$filters['sort_dir'] = $params['sort_dir'];
 		}
-		
+
 		// param: limit
-		if (isset($params['limit']) and !empty($params['limit'])) { 
+		if (isset($params['limit']) and !empty($params['limit'])) {
 			$filters['limit'] = $params['limit'];
 		}
-		
+
 		// param: offset
 		if (isset($params['offset'])) {
 			$filters['offset'] = $params['offset'];
 		}
-		
+
 		// param: on_date
 		if (isset($params['on_date'])) {
 			$filters['start_date'] = date('Y-m-d 00:00:00', strtotime($params['on_date']));
 			$filters['end_date'] = date('Y-m-d 23:59:59', strtotime($params['on_date']));
 		}
-		
+
+		// param: after_date
+		if (isset($params['after_date']))
+		{
+			$filters['start_date'] = date('Y-m-d 00:00:00', strtotime($params['after_date']));
+		}
+
+		// param: before_Date
+		if (isset($params['before_date']))
+		{
+			$filters['end_date'] = date('Y-m-d 00:00:00', strtotime($params['before_date']));
+		}
+
 		// initialize block loop
 		$data_name = $smarty->CI->smarty->loop_data_key($filters);
-		
+
 		if ($smarty->CI->smarty->loop_data($data_name) === FALSE) {
 			// make content request
 			$smarty->CI->load->model('publish/content_model');
 			$content = $smarty->CI->content_model->get_contents($filters);
-			
+
 			// assign count variables
 			$smarty->assign('content_count', count($content));
-			
+
 			if (isset($filters['limit'])) { unset($filters['limit']); }
-			if (isset($filters['offset'])) { unset($filters['offset']); }	
-			
+			if (isset($filters['offset'])) { unset($filters['offset']); }
+
 			$total_content = $smarty->CI->content_model->count_content($filters);
 			$smarty->assign('content_total_count', $total_content);
 		}
 		else {
 			$content = FALSE;
 		}
-		
+
 		$smarty->CI->smarty->block_loop($data_name, $content, (string)$params['var'], $repeat);
 	}
-			
+
 	echo $tagdata;
 }
