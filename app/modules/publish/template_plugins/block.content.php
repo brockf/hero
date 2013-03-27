@@ -140,6 +140,7 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 		if (isset($params['after_date']))
 		{
 			$filters['start_date'] = date('Y-m-d 00:00:00', strtotime($params['after_date']));
+			$filters['allow_future'] = true;
 		}
 
 		// param: before_Date
