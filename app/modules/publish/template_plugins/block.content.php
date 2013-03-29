@@ -149,6 +149,12 @@ function smarty_block_content ($params, $tagdata, &$smarty, &$repeat) {
 			$filters['end_date'] = date('Y-m-d 00:00:00', strtotime($params['before_date']));
 		}
 
+		// param: allow_future
+		if (isset($params['allow_future']))
+		{
+			$filters['allow_future'] = true;
+		}
+
 		// initialize block loop
 		$data_name = $smarty->CI->smarty->loop_data_key($filters);
 
