@@ -440,23 +440,21 @@ $config['proxy_ips'] = '';
 | site URL and also in ssl_helper.
 |
 */
-if (!function_exists('is_secure')) {
-	function is_secure () {
-		if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == '443') {
-			return TRUE;
-		}
-		elseif (isset($_SERVER['HTTP_X_FORWARDED_PORT']) and $_SERVER['HTTP_X_FORWARDED_PORT'] == '443') {
-			return TRUE;
-		}
-		elseif (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on') {
-			return TRUE;
-		}
-		elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) and $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
-			return TRUE;
-		}
-
-		return FALSE;
+function is_secure () {
+	if (isset($_SERVER['SERVER_PORT']) and $_SERVER['SERVER_PORT'] == '443') {
+		return TRUE;
 	}
+	elseif (isset($_SERVER['HTTP_X_FORWARDED_PORT']) and $_SERVER['HTTP_X_FORWARDED_PORT'] == '443') {
+		return TRUE;
+	}
+	elseif (isset($_SERVER['HTTPS']) and $_SERVER['HTTPS'] == 'on') {
+		return TRUE;
+	}
+	elseif (isset($_SERVER['HTTP_X_FORWARDED_PROTO']) and $_SERVER['HTTP_X_FORWARDED_PROTO'] == 'https') {
+		return TRUE;
+	}
+
+	return FALSE;
 }
 
 /* End of file config.php */
