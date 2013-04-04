@@ -21,7 +21,7 @@ class CKEditor
 	 * The version of %CKEditor.
 	 * \private
 	 */
-	var $version = '3.6.1';
+	var $version = '4.1';
 	/**
 	 * A constant string unique for each release of %CKEditor.
 	 * \private
