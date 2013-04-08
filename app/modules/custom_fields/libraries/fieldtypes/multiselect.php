@@ -110,7 +110,7 @@ class Multiselect_fieldtype extends Fieldtype {
 		
 		$options = array();
 		foreach ($this->options as $option) {
-			$options[$option['value']] = $option['value'];
+			$options[$option['value']] = $option['name'];
 		}
 		
 		$return = form_multiselect($this->name . '[]', $options, $this->value);
