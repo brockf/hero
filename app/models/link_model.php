@@ -19,13 +19,13 @@ class Link_model extends CI_Model {
 
 	function __construct() {
 		parent::__construct();
-		
+
 		$this->protected_routes = array(
 										'checkout',
 										'subscriptions'
 									);
 	}
-	
+
 	/**
 	* Create New Link
 	*
@@ -43,7 +43,7 @@ class Link_model extends CI_Model {
 	function new_link ($url_path, $topics, $title, $type_name, $module, $controller, $method, $parameter = '') {
 		$url_path = $this->prep_url_path($url_path);
 		$url_path = $this->get_unique_url_path($url_path);
-	
+
 		$insert_fields = array(
 								'link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '',
 								'link_url_path' => $url_path,
@@ -54,17 +54,17 @@ class Link_model extends CI_Model {
 								'link_method' => $method,
 								'link_parameter' => $parameter
 							);
-							
+
 		$this->db->insert('links',$insert_fields);
-		
+
 		$link_id = $this->db->insert_id();
-		
+
 		// update routes file
 		$this->gen_routes_file();
-		
+
 		return $link_id;
 	}
-	
+
 	/**
 	* Delete Inactive Link
 	*
@@ -74,13 +74,13 @@ class Link_model extends CI_Model {
 	*/
 	function delete_link ($link_id) {
 		$this->db->delete('links',array('link_id' => $link_id));
-		
+
 		// update routes file
 		$this->gen_routes_file();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Update Link Title
 	*
@@ -92,10 +92,10 @@ class Link_model extends CI_Model {
 	function update_title ($link_id, $title) {
 		$update_fields = array('link_title' => $title);
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Update Link URL
 	*
@@ -106,16 +106,16 @@ class Link_model extends CI_Model {
 	*/
 	function update_url ($link_id, $url_path) {
 		$url_path = $this->prep_url_path($url_path);
-		
+
 		$update_fields = array('link_url_path' => $url_path);
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
-		
+
 		// update routes file
 		$this->gen_routes_file();
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Update Link Topics
 	*
@@ -127,10 +127,10 @@ class Link_model extends CI_Model {
 	function update_topics ($link_id, $topics) {
 		$update_fields = array('link_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '');
 		$this->db->update('links',$update_fields,array('link_id' => $link_id));
-		
+
 		return TRUE;
 	}
-	
+
 	/**
 	* Prep URL Path
 	*
@@ -143,22 +143,22 @@ class Link_model extends CI_Model {
 		if (substr($url_path, 0, 1) == '/') {
 			$url_path = substr_replace($url_path, '', 0, 1);
 		}
-		
+
 		// strip trailing slash
 		if (substr($url_path, -1, 1) == '/') {
 			$url_path = substr_replace($url_path, '', -1, 1);
 		}
-		
+
 		// regex the bad stuff out
 		$url_path = preg_replace('/\s+/','_',$url_path);
 		$url_path = preg_replace('/<(.*?)>/','',$url_path);
 		$url_path = preg_replace('/\/{2,10}/','',$url_path);
 		$url_path = preg_replace('/[^a-z0-9\/\-\._]/i','',$url_path);
 		$url_path = preg_replace('/_+/i','_',$url_path);
-		
+
 		return $url_path;
 	}
-	
+
 	/**
 	* Check Unique
 	*
@@ -170,7 +170,7 @@ class Link_model extends CI_Model {
 		$this->db->where('link_url_path',$url_path);
 		$this->db->select('link_id');
 		$result = $this->db->get('links');
-		
+
 		if ($result->num_rows() > 0) {
 			return FALSE;
 		}
@@ -178,7 +178,7 @@ class Link_model extends CI_Model {
 			return TRUE;
 		}
 	}
-	
+
 	/**
 	* Get Unique URL Path
 	*
@@ -191,12 +191,12 @@ class Link_model extends CI_Model {
 	*/
 	function get_unique_url_path ($url_path) {
 		$url_path = $this->prep_url_path($url_path);
-		
+
 		// verify it doesn't conflict with protected routes
 		if (in_array($url_path, $this->protected_routes)) {
-			$url_path += '_1';
+			$url_path .= '_1';
 		}
-	
+
 		$this->db->where('link_url_path',$url_path);
 		$this->db->select('link_id');
 		$result = $this->db->get('links');
@@ -204,20 +204,20 @@ class Link_model extends CI_Model {
 		while ($result->num_rows() > 0) {
 			// strip final numbers
 			$url_path = preg_replace('/(.*?)\_\-([0-9]*)$/i','$1',$url_path);
-			
+
 			// try with a new appended number
 			$url_path = $url_path . '_' . $count;
-			
+
 			$count++;
-			
+
 			$this->db->where('link_url_path',$url_path);
 			$this->db->select('link_id');
 			$result = $this->db->get('links');
 		}
-		
+
 		return $url_path;
 	}
-	
+
 	/**
 	* Get Universal Content Links
 	*
@@ -234,26 +234,26 @@ class Link_model extends CI_Model {
 		$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'links.link_title';
 		$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
 		$this->db->order_by($order_by, $order_dir);
-		
+
 		if (isset($filters['limit'])) {
 			$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
 			$this->db->limit($filters['limit'], $offset);
 		}
-		
+
 		if (isset($filters['url_path'])) {
 			$this->db->where('link_url_path',$filters['url_path']);
 		}
-		
+
 		if (isset($filters['parameter'])) {
 			$this->db->where('link_parameter',$filters['parameter']);
 		}
-		
+
 		$result = $this->db->get('links');
-		
+
 		if ($result->num_rows() == 0) {
 			return FALSE;
 		}
-		
+
 		$links = array();
 		foreach ($result->result_array() as $link) {
 			$links[] = array(
@@ -267,10 +267,10 @@ class Link_model extends CI_Model {
 								'parameter' => $link['link_parameter']
 							);
 		}
-		
+
 		return $links;
 	}
-	
+
 	/**
 	* Create Routes File
 	*
@@ -281,26 +281,26 @@ class Link_model extends CI_Model {
 	*/
 	function gen_routes_file () {
 		$this->load->helper('file');
-		
+
 		$links = $this->get_links();
-		
+
 		$routes = array();
-		
+
 		if (!empty($links)) {
 			foreach ($links as $link) {
 				$routes[$link['url_path']] = $link['module'] . '/' . $link['controller'] . '/' . $link['method'] . '/' . $link['url_path'];
 			}
 		}
-		
+
 		// generate PHP file
 		$file = "<?php if (!defined('BASEPATH')) exit('No direct script access allowed');\n\n";
-		
+
 		if (!empty($routes)) {
 			foreach ($routes as $route => $path) {
 				$file .= '$route[\'' . $route . '\'] = \'' . $path . '\';' . "\n";
 			}
 		}
-		
+
 		write_file(FCPATH . 'writeable/routes.php',$file,'w');
 	}
 }
