@@ -25,6 +25,10 @@ If you experience issues, please review the full Server Requirements article in 
 
 * There is a full [user guide with designer, developer, and user documentation](http://www.heroframework.com/user_guide)
 
-## Contribution
+## eCommerce
+
+We offer a [full eCommerce addon with subscription billing, shopping carts, and payment gateway integrations for $195](http://www.heroframework.com/ecommerce).
+
+## Developer Contribution
 
 We welcome contributions to the project. Just fork right here on GitHub!
