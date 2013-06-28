@@ -13,3 +13,9 @@ writeable/editor_uploads/*
 writeable/image_thumbs/*
 writeable/templates_cache/*
 writeable/templates_compile/*
+
+# Ignore cache folder, but not the
+# htaccess or generic index file.
+app/cache/*
+!app/cache/.htaccess
+!app/cache/index.html
