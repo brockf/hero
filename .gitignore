@@ -1,16 +1,23 @@
 # -------------------
 # Ignore ecommerce-specific folders
-# for those of us who work on both
+# for those of us who work on both.
 #
 # If you have purchased an eCommerce
 # license and want to version your
 # software through GIT, please remove
-# these folders
+# these folders.
+#
+# NOTE: Files and folders for the module
+# have been ignored because of symbolic
+# linking in development environments.
 # --------------------
 app/helpers/ioncube_license_helper.php
 app/ioncube_callback.php
+app/modules/billing/*
 app/modules/billing
+app/modules/coupons/*
 app/modules/coupons
+app/modules/store/*
 app/modules/store
 system_info.php
 
