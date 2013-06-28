@@ -60,7 +60,7 @@ class Admincp extends Admincp_Controller {
 						'active_id'	=> $active_menu_id,
 						'possible_links' => $possible_links
 					);
-	
+
 		$this->load->view('menu_manager', $data);
 	}
 	

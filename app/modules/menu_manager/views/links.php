@@ -16,9 +16,19 @@
 					<input type="button" class="button manage_children" name="go" value="Create Submenu" />	
 					<? } ?>
 				<? } else { ?>
-				<input type="button" class="button manage_children" name="go" value="Manage <?=$link['children'];?> Sublinks" />	
-				<? } ?>
-			<? } ?>
+				<input type="button" class="button manage_children" name="go" value="Manage <?=$link['children'];?> Sublinks" />
+                <? } ?>
+			<? } else { ?>
+                <? // parent_id no zero ?>
+                <? // to support grandchildren ?>
+                <? if ($link['children'] == 0) { ?>
+                    <? if ($link['child_menu_link_id'] == 0 ) { ?>
+                        <input type="button" class="button manage_children" name="go" value="Create Submenu" />
+                    <? } ?>
+                <? } elseif ($link['child_menu_link_id'] == 0 ) { ?>
+                    <input type="button" class="button manage_children" name="go" value="Manage <?=$link['children'];?> Sublinks" />
+                <? } ?>
+            <? } ?>
 		</span>
 		<div class="editing">
 			<form class="validate" method="post" action="<?=site_url('menu_manager/post_edit_link');?>">

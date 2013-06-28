@@ -79,9 +79,26 @@ class Menu_model extends CI_Model
 			$order = 1;
 		}
 	
-		$insert_fields = array(
+		// check if this is a grandchild by checking the 'parent_menu_link_id' of the parent
+        if (( $menu_id == 1 ) && ( $parent_link != 0 ) ) {
+            // check parent's parent, must be zero
+            $this->db->where( 'menu_link_id', $parent_link );
+            $this->db->where( 'parent_menu_link_id !=', '0' );
+            $result2 = $this->db->get('menus_links');
+            $result2_rows = $result2->num_rows();
+
+            // the number of rows will be 1 if the parent of this link is a child
+            // and not a menu parent at the top level
+            $grandchild_status = $result2_rows;
+        }
+        else {
+            $grandchild_status = 0;
+        }
+
+        $insert_fields = array(
 								'menu_id' => $menu_id,
 								'parent_menu_link_id' => $parent_link,
+                                'child_menu_link_id' => $grandchild_status,
 								'menu_link_type' => $type,
 								'link_id' => (!empty($link_id)) ? $link_id : '0',
 								'menu_link_text' => $text,
@@ -142,7 +159,9 @@ class Menu_model extends CI_Model
 	* @return boolean
 	*/
 	function remove_link ($menu_link_id) {
-		$this->db->delete('menus_links', array('menu_link_id' => $menu_link_id));
+		//! change the child_menu_link_id to 0
+        $this->db->update('menus_links', array('child_menu_link_id' => '0'), array('menu_link_id' => $menu_link_id));
+        $this->db->delete('menus_links', array('menu_link_id' => $menu_link_id));
 		
 		if (isset($this->CI->cache)) {
 			$this->CI->cache->file->clean();
@@ -268,7 +287,6 @@ class Menu_model extends CI_Model
 		// caching
 		// we'll only cache for calls with a filter menu as all frontend calls
 		// have this parameter
-		
 		if (isset($this->CI->cache) and isset($filters['menu']) and $no_cache == FALSE) {
 			$caching = TRUE;
 			$cache_key = 'get_links' . md5(serialize($filters));
@@ -282,7 +300,7 @@ class Menu_model extends CI_Model
 		}
 		
 		// no cache, continue...
-	
+
 		if (isset($filters['menu'])) {
 			$this->db->where('menu_id',$filters['menu']);
 		}
@@ -292,13 +310,15 @@ class Menu_model extends CI_Model
 		if (isset($filters['id'])) {
 			$this->db->where('menu_link_id',$filters['id']);
 		}
-	
+        if (isset($filters['child'])) {
+            $this->db->where('child_menu_link_id >','0');
+        }
 		$this->db->order_by('menu_link_order');
 		
 		$this->db->join('links','links.link_id = menus_links.link_id','left');
 		
 		$result = $this->db->get('menus_links');
-		
+
 		if ($result->num_rows() == 0) {
 			// save cache?
 			if ($caching == TRUE) {
@@ -310,15 +330,21 @@ class Menu_model extends CI_Model
 		
 		$links = array();
 		foreach ($result->result_array() as $row) {
-			$this->db->where('parent_menu_link_id',$row['menu_link_id']);
+            if (isset($filters['child'])) {
+                $this->db->where('child_menu_link_id','0');
+            }
+            else {
+                $this->db->where('parent_menu_link_id',$row['menu_link_id']);
+            }
 			$result2 = $this->db->get('menus_links');
-			$children = $result2->num_rows();
+            $children = $result2->num_rows();
 		
 			$links[] = array(
 						'id' => $row['menu_link_id'],
 						'menu_id' => $row['menu_id'],
 						'children' => $children,
 						'parent_menu_link_id' => $row['parent_menu_link_id'],
+                        'child_menu_link_id' => $row['child_menu_link_id'],
 						'text' => $row['menu_link_text'],
 						'type' => $row['menu_link_type'],
 						'class' => $row['menu_link_class'],
@@ -330,7 +356,7 @@ class Menu_model extends CI_Model
 						'link_url_path' => $row['link_url_path']
 					);
 		}
-		
+
 		if ($caching == TRUE) {
 			$this->CI->cache->file->save($cache_key, $links, (24*60*60));
 		}

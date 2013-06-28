@@ -18,10 +18,10 @@ class Menu_manager extends Module {
 	function __construct () {
 		// set the active module
 		$this->active_module = $this->name;
-
+		
 		parent::__construct();
 	}
-
+	
 	/*
 	* Pre-admin function
 	*
@@ -31,7 +31,7 @@ class Menu_manager extends Module {
 	{
 		$this->CI->admin_navigation->child_link('design',20,'Menu Manager',site_url('admincp/menu_manager'));
 	}
-
+	
 	/*
 	* Pre-front Method
 	*
@@ -40,7 +40,7 @@ class Menu_manager extends Module {
 	function front_preload () {
 		$this->CI->smarty->addPluginsDir(APPPATH . 'modules/menu_manager/template_plugins/');
 	}
-
+	
 	function update ($db_version) {
 		if ($db_version < 1.01) {
 			$this->CI->db->query('CREATE TABLE `menus_links` (
@@ -57,14 +57,14 @@ class Menu_manager extends Module {
 								  `menu_link_order` int(5),
 								  PRIMARY KEY  (`menu_link_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
-
+		
 			$this->CI->db->query('CREATE TABLE `menus` (
 								  `menu_id` int(11) NOT NULL auto_increment,
 								  `menu_name` varchar(200) NOT NULL,
 								  PRIMARY KEY  (`menu_id`)
 								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
-
+		
 		if ($db_version < 1.02) {
 			// we no longer use our caching library, but the CI standard
 			// $this->CI->settings_model->make_writeable_folder(setting('path_writeable') . 'menu_cache', TRUE);
@@ -72,7 +72,7 @@ class Menu_manager extends Module {
 
         if ($db_version < 1.03) {
             // update the 'menus_links' table to include the new column to support grandchildren
-            $this->CI->db->query('ALTER TABLE `menus_links` ADD COLUMN `child_menu_link_id` INT NOT NULL DEFAULT 0 AFTER `parent_menu_link_id`' );
+            $this->CI->db->query('ALTER TABLE `menus_links` ADD COLUMN `child_menu_link_id` INT NOT NULL AFTER `parent_menu_link_id`' );
         }
 
 		return $this->version;

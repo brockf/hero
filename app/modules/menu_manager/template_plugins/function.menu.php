@@ -21,7 +21,7 @@ function smarty_function_menu ($params, $smarty) {
 
 	$smarty->CI->load->model('menu_manager/menu_model');
 	$menu = $smarty->CI->menu_model->get_menu_by_name($params['name']);
-	
+
 	if (empty($menu)) {
 		return 'The "name" parameter you passed to {menu} (' . $params['name'] . ') is not associated with a menu.  Menu load failed.';
 	}
@@ -34,7 +34,7 @@ function smarty_function_menu ($params, $smarty) {
 	// we have the menu
 	// get root level menu items
 	$links = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => '0'));
-	
+
 	if (empty($links)) {
 		return 'There are no links in this menu (' . $menu['name'] . ').  Go to your Menu Manager in the control panel and add more links.';
 	}
@@ -42,23 +42,38 @@ function smarty_function_menu ($params, $smarty) {
 	// we'll store menu_items here with main key "id" and keys "text", "url", "active", "class"
 	$menu_items = array();
 	$menu_children = array();
-	
-	// parse parent links, which will in turn call child links if necessary
-	parse_links($menu_items, $menu_children, $links, $menu, $smarty, $params);
-	
-	// sort through menu items and display the menu
-	$params['class'] = (isset($params['class'])) ? $params['class'] : '';
-	$params['id'] = (isset($params['id'])) ? $params['id'] : '';
+    $menu_grandchildren = array();
+
+    // parse parent links, which will in turn call child links if necessary
+	parse_links($menu_items, $menu_children, $menu_grandchildren, $links, $menu, $smarty, $params);
+
+	$params['class'] = (isset($params['class'])) ? $params['class'] : 'mm_c';
+	$params['id'] = (isset($params['id'])) ? $params['id'] : 'mm_id';
 	
 	$return = '<ul class="' . $params['class'] . '" id="' . $params['id'] . '">';
-	
-	foreach ($menu_items as $id => $item) {
+    $grandchild_flag = FALSE;
+    $childflag = FALSE;
+
+	// $menu_items contains the menu items including the grandchildren
+    foreach ($menu_items as $id => $item) {
 		// do we have children?
 		$children_items = array();
-		
+
 		if ($item['is_child'] == FALSE) {
-			if (isset($menu_children[$id])) {
-				foreach ($menu_children[$id] as $key) {
+            if ($childflag == TRUE) {
+                // terminate the last child list
+                $return .= '</ul></li>';
+                $childflag = FALSE;
+            }
+            if ($grandchild_flag == TRUE) {
+                // terminate grandchild list
+                $return .= '</ul></li>';
+                $grandchild_flag = FALSE;
+            }
+
+            if (isset($menu_children[$id])) {
+				$grandchild_flag = FALSE;
+                foreach ($menu_children[$id] as $key) {
 					$item_child = $menu_items[$key];
 					
 					if (!empty($menu_items[$key])) {
@@ -66,26 +81,120 @@ function smarty_function_menu ($params, $smarty) {
 						if ($item_child['active'] == TRUE) {
 							$item['active'] = TRUE;
 						}
-						
-						$children_items[] = li_html($item_child);
+
+                        $children_items[] = li_html_child($item_child, $grandchild_flag);
 					}
 				}
 			}
-		}
-		
-		if ($item['is_child'] == FALSE) {
+
 			$classes = (!empty($children_items)) ? array('parent') : array();
-			
-			$return .= li_html($item, $children_items, $classes);
+            $ret_li = li_html($item, $children_items, $classes, $childflag, $grandchild_flag);
+            $return .= $ret_li;
 		}
 	}
 	
 	$return .= '</ul>';
-	
+
+    $return = correct_li_tag($return);
+
 	return $return;
 }
 
-function li_html ($item, $children_items = FALSE, $classes = array()) {
+// this function corrects the html list code for child that have grandchildren
+function correct_li_tag($input_src) {
+
+    // check for presence of error
+    // the string has the ">" missing at the end on purpose
+    $key = strpos($input_src, '</li><ul');
+    if ($key === false) {
+        // not found
+        $exput_src = $input_src;
+        $output_src = $exput_src;
+    }
+    else {
+        // found !
+        $input_parts = explode('</li><ul', $input_src);
+        $cnt = count($input_parts);
+
+        // add the parts back together (without the </li> tag)
+        $exput_src = $input_parts[0];
+        for($i=1;$i<$cnt;$i++) {
+            $exput_src .= '<ul';
+            $exput_src .= $input_parts[$i];
+        }
+
+        $output_src = $exput_src;
+    }
+
+    $key = strpos($exput_src, '</li></li></ul>');
+    if ($key === false) {
+        // not found
+        $output_src = $exput_src;
+    }
+    else {
+        // found !
+        $input_parts = explode('</li></li></ul>', $exput_src);
+        $cnt = count($input_parts);
+
+        // add the parts back together (without the </li> tag)
+        $exput_src = $input_parts[0];
+        for($i=1;$i<$cnt;$i++) {
+            $exput_src .= '</li></ul>';
+            $exput_src .= $input_parts[$i];
+        }
+
+        $output_src = $exput_src;
+    }
+
+    return $output_src;
+}
+
+// This function specifically added for supporting the grandchildren
+function li_html_child ($item, &$grandchild_flag) {
+    $classes = array();
+    if (!empty($item['class'])) {
+        if (strpos($item['class'], ' ')) {
+            // they gave multiple classes separated by a space
+            $item['class'] = explode(' ', $item['class']);
+            $classes = array_merge($classes, $item['class']);
+        }
+        else {
+            $classes[] = $item['class'];
+        }
+    }
+
+    if ($item['active'] == TRUE) {
+        $classes[] = 'active';
+    }
+
+    $class = (!empty($classes)) ? ' class="' . implode(' ' ,$classes) . '"' : '';
+
+    $return = '';
+
+    if (!$item['is_grandchild']) {
+        if ($grandchild_flag == TRUE) {
+            // terminate the grandchild list and the previous child list
+            $return .= '</ul></li>';
+            $grandchild_flag = FALSE;
+        }
+    }
+    else {
+        // item is a grandchild
+        if ($grandchild_flag == FALSE) {
+            $return .= '<ul class="grandchildren">';
+            $grandchild_flag = TRUE;
+        }
+    }
+
+    $return .= '<li' . $class . '>';
+    $return .= '<a href="' . $item['url'] . '">' . $item['text'] . '</a>';
+
+    $return .= '</li>';
+
+    return $return;
+}
+
+function li_html ($item, $children_items = FALSE, $classes = array(), &$childflag, &$grandchild_flag) {
 	if (!empty($item['class'])) {
 		if (strpos($item['class'], ' ')) {
 			// they gave multiple classes separated by a space
@@ -105,24 +214,42 @@ function li_html ($item, $children_items = FALSE, $classes = array()) {
 
 	$return = '<li' . $class . '>';
 	$return .= '<a href="' . $item['url'] . '">' . $item['text'] . '</a>';
-	
-	// insert children?
+
 	if (!empty($children_items)) {
-		$return .= '<ul class="children">';
+        $childflag = TRUE;
+        //if ($grandchild_flag == TRUE) {
+            //terminate the grandchild list if not already
+        //    $return .= '<b></b></ul></li>';
+        //    $grandchild_flag = FALSE;
+        //}
+        $return .= '<ul class="children">';
 		
 		foreach ($children_items as $child) {
-			$return .= $child;
+
+            $return .= $child;
 		}
-		
-		$return .= '</ul>';
 	}
-	
+
 	$return .= '</li>';
 	
 	return $return;
 }
-	
-function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $params) {
+
+/**
+ * Menu utility function
+ *
+ * Local function used to sort links into menus
+ *
+ * @param reference array $menu_items
+ * @param reference array $menu_children
+ * @param reference array $menu_grandchildren
+ * @param array $links
+ * @param array $menu
+ * @param reference array $smarty
+ * @param array $params
+ *
+ */
+function parse_links (&$menu_items, &$menu_children, &$menu_grandchildren, $links, $menu, &$smarty, $params) {
 	if (empty($links)) {
 		return FALSE;
 	}
@@ -166,7 +293,8 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 												'url' => $url,
 												'active' => $active,
 												'class' => $link['class'],
-												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE
+												'is_child' => ($link['parent_menu_link_id'] != '0') ? TRUE : FALSE,
+                                                'is_grandchild' => ($link['child_menu_link_id'] != '0') ? TRUE : FALSE
 											);
 			}
 			else {
@@ -279,20 +407,35 @@ function parse_links (&$menu_items, &$menu_children, $links, $menu, &$smarty, $p
 											);
 				}
 			}
-										
+
 			// should we load children?
 			// only if show_sub_menus parameter says so, and this isn't already a child link
 			if ($link['parent_menu_link_id'] == '0' and ($params['show_sub_menus'] == 'yes' or ($params['show_sub_menus'] == 'active' and $menu_items[$link['id']] == TRUE))) {
 				// load children
 				$links_children = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => $link['id']));
-				
 				if (is_array($links_children)) {
 					// track children
 					foreach ($links_children as $link_child) {
-						$menu_children[$link['id']][] = $link_child['id'];
-					}
-				
-					parse_links($menu_items, $menu_children, $links_children, $menu, $smarty, $params);
+                        $menu_children[$link['id']][] = $link_child['id'];
+                        $links_grandchildren = $smarty->CI->menu_model->get_links(array('menu' => $menu['id'], 'parent' => $link_child['id']));
+                        if (is_array($links_grandchildren)) {
+                            $menu_items[$link_child['id']] = array(
+                                                        'text' => $link_child['text'],
+                                                        'url' => $link_child['link_url_path'],
+                                                        'active' => TRUE,
+                                                        'class' => $link_child['class'],
+                                                        'is_child' => TRUE,
+                                                        'is_grandchild' => FALSE
+                                                        );
+
+                            foreach ($links_grandchildren as $link_grandchild) {
+                                $menu_children[$link['id']][] = $link_grandchild['id'];
+                            }
+
+                            parse_links($menu_items, $menu_children, $menu_grandchildren, $links_grandchildren, $menu, $smarty, $params);
+                        }
+                    }
+					parse_links($menu_items, $menu_children, $menu_grandchildren, $links_children, $menu, $smarty, $params);
 				}
 			}
 		}
