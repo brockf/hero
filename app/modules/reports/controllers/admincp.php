@@ -258,7 +258,7 @@ class Admincp extends Admincp_Controller {
 							'name' => 'Product',
 							'sort_column' => 'products.product_name',
 							'type' => 'text',
-							'width' => '23%',
+							'width' => '20%',
 							'filter' => 'product_name'),
 						array(
 							'name' => 'QTY',
@@ -274,10 +274,17 @@ class Admincp extends Admincp_Controller {
 							'field_end_date' => 'end_date'),
 						array(
 							'name' => 'Shipped',
-							'width' => '12%',
+							'width' => '10%',
 							'type' => 'select',
 							'options' => array('1' => 'Shipped', '0' => 'Not Shipped'),
 							'filter' => 'shipped'
+							),
+						array(
+							'name' => 'SKU',
+							'sort_column' => 'product_sku',
+							'type' => 'text',
+							'width' => '5%',
+							'filter' => 'product_sku'
 							),
 						array(
 							'name' => 'Shipping Details',
