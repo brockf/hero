@@ -279,6 +279,7 @@ class Admincp extends Admincp_Controller {
 							'options' => array('1' => 'Shipped', '0' => 'Not Shipped'),
 							'filter' => 'shipped'
 							),
+						/*
 						array(
 							'name' => 'SKU',
 							'sort_column' => 'product_sku',
@@ -286,6 +287,7 @@ class Admincp extends Admincp_Controller {
 							'width' => '5%',
 							'filter' => 'product_sku'
 							),
+							*/
 						array(
 							'name' => 'Shipping Details',
 							'width' => '15%'
