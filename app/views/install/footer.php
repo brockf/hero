@@ -1,5 +1,5 @@
 		<div id="footer">
-			Copyright &copy; <?=date('Y');?>, <a href="http://www.electricfunction.com">Electric Function, Inc</a>.  All Rights Reserved.
+			Copyright &copy; <?php echo date('Y');?>, <a href="http://www.electricfunction.com">Electric Function, Inc</a>.  All Rights Reserved.
 		</div>
 	</div>
 </body>

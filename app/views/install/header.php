@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-	<title><?=$this->config->item('app_name');?> Installer</title>
+	<title><?php echo $this->config->item('app_name');?> Installer</title>
 	<link href="../branding/default/css/installer.css" rel="stylesheet" type="text/css" media="screen" />
 	<script type="text/javascript" src="../branding/default/js/jquery-1.4.2.js"></script>
 	<script type="text/javascript" src="../branding/default/js/universal.js"></script>
@@ -13,15 +13,15 @@
 	<div id="wrapper">
 		<div id="header">
 			<div id="logo">
-				<?=$this->config->item('app_name');?>
+				<?php echo $this->config->item('app_name');?>
 				<span>Installation Wizard</span>
 			</div>
 		
 			<div id="nav">
 				<ol>
-					<li<? if ($this->router->fetch_method() == 'index') { ?> class="active"<? } ?>>Configuration</li>
-					<li<? if ($this->router->fetch_method() == 'admin' and !isset($complete)) { ?> class="active"<? } ?>>Administrator</li>
-					<li<? if (isset($complete) and $complete == TRUE) { ?> class="active"<? } ?>>Install Complete</li>
+					<li<?php  if ($this->router->fetch_method() == 'index') { ?> class="active"<?php  } ?>>Configuration</li>
+					<li<?php  if ($this->router->fetch_method() == 'admin' and !isset($complete)) { ?> class="active"<?php  } ?>>Administrator</li>
+					<li<?php  if (isset($complete) and $complete == TRUE) { ?> class="active"<?php  } ?>>Install Complete</li>
 				</ol>
 			</div>
 		</div>
