@@ -8,7 +8,7 @@
 * @param string $string
 * @param int $length (in characters)
 *
-* @return string $image_src To be used like <img src="{thumbnail ...}" />
+* @return string Shortened text
 */
 function smarty_function_shorten ($params, $smarty) {
 	if (!isset($params['length'])) {
@@ -18,8 +18,13 @@ function smarty_function_shorten ($params, $smarty) {
 		return 'You must specify a "string" parameter for the {shorten} template function.';
 	}
 	else {
-		$smarty->CI->load->helper('shorten');
+		$smarty->CI->load->helper('text');
 		
-		return shorten($params['string'], $params['length'], TRUE);
+		$shortened = character_limiter($params['string'], $params['length']);
+		
+		// we may have HTML, so remove any unclosed tags
+		$shortened = preg_replace("/<([^<>]*)(?=<|$)/", "$1", $shortened);
+		
+		return $shortened;
 	}
 }
