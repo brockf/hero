@@ -434,6 +434,48 @@ class Admincp extends Admincp_Controller {
 
 		return TRUE;
 	}
+	
+	function subscription_log ($subscription_id) {
+		$this->load->library('dataset');
+
+		// get subscription plans
+		$this->load->model('billing/subscription_model');
+		$subscription = $this->subscription_model->get_subscription($subscription_id);
+		
+		if (empty($subscription)) {
+			die(show_error('Unable to locate subscription record.'));
+		}
+
+		$columns = array(
+						array(
+							'name' => 'Date',
+							'type' => 'text',
+							'width' => '15%'),
+						array(
+							'name' => 'Event/Data',
+							'type' => 'text',
+							'width' => '20%'),
+						array(
+							'name' => 'IP',
+							'width' => '15%',
+							'type' => 'text'),
+						array(
+							'name' => 'Browser',
+							'width' => '25%',
+							'type' => 'text'),
+						array(
+							'name' => 'Code',
+							'width' => '25%',
+							'type' => 'text')
+					);
+
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('billing/subscription_model','get_log', array('id' => $subscription['id']));
+		$this->dataset->base_url(site_url('admincp/reports/subscription_log'));
+		$this->dataset->initialize(TRUE);
+
+		$this->load->view('subscription_log');
+	}
 
 	function cancellations () {
 		$this->load->library('dataset');

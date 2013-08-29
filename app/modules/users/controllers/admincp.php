@@ -406,6 +406,9 @@ class Admincp extends Admincp_Controller {
 			$url = dataset_link('admincp/reports/invoices', array('subscription_id' => $subscription_id));
 			header('Location: ' . $url);
 		}
+		elseif ($action == 'log') {
+			header('Location: ' . site_url('admincp/reports/subscription_log/' . $subscription_id));
+		}
 		
 		return TRUE;
 	}

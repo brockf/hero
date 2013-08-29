@@ -84,6 +84,7 @@
 						<? } ?>
 						<option value="change_plan">change plan</option>
 						<? } ?>
+						<option value="log">report: view transaction log</option>
 						<option value="view_all">report: view all related charges</option>
 					</select>
 					&nbsp;
