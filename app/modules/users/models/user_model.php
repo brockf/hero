@@ -375,15 +375,9 @@ class User_model extends CI_Model
 	    		return FALSE;
 	    	}
 	    }
-
-    	if ($user_id) {
-    		$user_array = $this->get_user($user_id);
-    	}
-    	else {
-    		$user_array = $this->active_user;
-    	}
-
-    	if (is_array($group) and in_array('0', $group)) {
+	    
+	    // let's see if we even need to do anything...
+	    if (is_array($group) and in_array('0', $group)) {
     		// this is a "privileges" array and it's public so anyone can see it
     		return TRUE;
     	}
@@ -391,10 +385,17 @@ class User_model extends CI_Model
     		return TRUE;
     	}
 
-    	if (!$this->logged_in()) {
-    		// we aren't even logged in
-
-    		return FALSE;
+		// load user info
+    	if ($user_id) {
+    		$user_array = $this->get_user($user_id);
+    	}
+    	else {
+    		if ($this->logged_in()) {
+	    		$user_array = $this->active_user;
+	    	}
+	    	else {
+		    	return FALSE;
+	    	}
     	}
 
     	if (is_array($group)) {
