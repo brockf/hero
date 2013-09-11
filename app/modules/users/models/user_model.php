@@ -434,13 +434,12 @@ class User_model extends CI_Model
     		$user_array = $this->get_user($user_id);
     	}
     	else {
-    		$user_array = $this->active_user;
-    	}
-
-    	if (!$this->logged_in()) {
-    		// we aren't even logged in
-
-    		return TRUE;
+    		if ($this->logged_in()) {
+	    		$user_array = $this->active_user;
+	    	}
+	    	else {
+	    		return FALSE;
+	    	}
     	}
 
     	if (is_array($group)) {
