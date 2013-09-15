@@ -12,7 +12,7 @@
 */
 
 class Emails extends Module {
-	var $version = '1.09';
+	var $version = '1.10';
 	var $name = 'emails';
 
 	function __construct () {
@@ -127,6 +127,10 @@ class Emails extends Module {
 			
 			$this->CI->app_hooks->register('mass_email_pre','Just before a control panel mass email is sent.');
 			$this->CI->app_hooks->register('mass_email','All emails have been sent in a control panel mass email.');
+		}
+		
+		if ($db_version < 1.10) {
+			$this->CI->settings_model->new_setting(1, 'postmark_api', '', 'Optional: Enter a Postmark API key to send outgoing mail using Postmark. Note, you must have a "Sender Signature" that matches your "site_email" setting.', 'text', '', FALSE, FALSE);
 		}
 		
 		return $this->version;

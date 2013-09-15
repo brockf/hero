@@ -46,7 +46,68 @@ class MY_Email extends CI_Email {
 		$CI =& get_instance();
 		
 		if ($queue == FALSE) {
-			parent::send();
+			// are we using Postmark?
+			if (empty($this->_attach_name) and setting('postmark_api') != '' and function_exists('curl_init')) {
+				// create to, cc, and bcc strings
+				$to = (is_array($this->_recipients)) ? implode(', ', $this->_recipients) : $this->_recipients;
+				$cc = (is_array($this->_cc_array)) ? implode(', ', $this->_cc_array) : $this->_cc_array;
+				$bcc = (is_array($this->_bcc_array)) ? implode(', ', $this->_bcc_array) : $this->_bcc_array;
+				
+				// prepare data array
+		        $data = array();
+		        $data['Subject'] = $this->_plaintext_subject;
+		                
+		        $data['From'] = "{$this->_plaintext_from_name} <{$this->_plaintext_from_email}>";
+		        $data['To'] = $to;
+		        
+		        if (!empty($cc)) {
+		            $data['Cc'] = $cc;
+		        }
+		        
+		        if (!empty($bcc)) {
+		            $data['Bcc'] = $bcc;
+		        }
+		
+				if (strip_tags($this->_plaintext_body) != $this->_plaintext_body) {
+			        $data['HtmlBody'] = $this->_plaintext_body;
+			    }
+			    else {
+		            $data['TextBody'] = $this->_plaintext_body;
+		        }
+		        
+		        $encoded_data = json_encode($data);
+		        
+		        $headers = array(
+		            'Accept: application/json',
+		            'Content-Type: application/json',
+		            'X-Postmark-Server-Token: ' . setting('postmark_api')
+		        );
+		        
+		        $ch = curl_init();
+		        curl_setopt($ch, CURLOPT_URL, 'http://api.postmarkapp.com/email');
+		        curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+		        curl_setopt($ch, CURLOPT_CUSTOMREQUEST, 'POST');
+		        curl_setopt($ch, CURLOPT_POSTFIELDS, $encoded_data);
+		        curl_setopt($ch, CURLOPT_HTTPHEADER, $headers);
+		        
+		        $return = curl_exec($ch);
+		        
+		        if (curl_error($ch) != '') {
+		            show_error(curl_error($ch));
+		        }
+		        
+		        $httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
+		        
+		        if (intval($httpCode / 100) != 2) {
+		            $message = json_decode($return)->Message;
+		            show_error('Error while mailing. Postmark returned HTTP code ' . $httpCode . ' with message "'.$message.'"');
+		        }
+		    }
+		    else {
+		    	// send using traditional means
+		    	
+				parent::send();
+			}
 		}
 		else {
 			// let's put this in the queue
