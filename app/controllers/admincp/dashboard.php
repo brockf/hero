@@ -143,6 +143,7 @@ class Dashboard extends Admincp_Controller {
 							   ->select('orders.timestamp')
 							   ->select('orders.subscription_id')
 							   ->from('orders')
+							   ->where('orders.status','1')
 							   ->join('users','users.customer_id = orders.customer_id')
 							   ->order_by('orders.timestamp','DESC')
 							   ->limit(10)
@@ -181,7 +182,7 @@ class Dashboard extends Admincp_Controller {
 							   ->select('subscriptions.timestamp')
 							   ->from('subscriptions')
 							   ->join('users','users.customer_id = subscriptions.customer_id')
-							   ->join('plans','plans.plan_id = subscriptions.plan_id')
+							   ->join('plans','plans.plan_id','subscriptions.plan_id')
 							   ->order_by('subscriptions.timestamp','DESC')
 							   ->limit(10)
 							   ->get();
