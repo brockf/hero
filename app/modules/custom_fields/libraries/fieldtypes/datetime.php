@@ -250,7 +250,13 @@ class Datetime_fieldtype extends Fieldtype {
 		}
 		else {
     		// one date field + time fields
-			return date('Y-m-d H:i:00', strtotime($this->CI->input->post($this->name) . ' ' . $this->CI->input->post($this->name . '_hour') . ':' . $this->CI->input->post($this->name . '_minute') . ' ' . $this->CI->input->post($this->name . '_ampm')));
+    		if ($this->CI->input->post($this->name) == FALSE) {
+	    		// the date field is empty, let's return 0000-00-00 00:00:00
+	    		return '0000-00-00 00:00:00';
+    		}
+    		else {
+				return date('Y-m-d H:i:00', strtotime($this->CI->input->post($this->name) . ' ' . $this->CI->input->post($this->name . '_hour') . ':' . $this->CI->input->post($this->name . '_minute') . ' ' . $this->CI->input->post($this->name . '_ampm')));
+			}
 		}
 	}
 	
