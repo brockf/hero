@@ -43,7 +43,7 @@ class Feed extends Front_Controller {
 		$this->smarty->assign('content',$content);
 		$this->smarty->assign($feed);
 		
-		header("Content-Type: text/xml");
+		header("Content-Type: application/rss+xml");
 		return $this->smarty->display($feed['template']);
 	}
 }
