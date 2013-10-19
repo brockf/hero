@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.16';
+	var $version = '1.17';
 	var $name = 'publish';
 
 	function __construct () {
@@ -156,6 +156,11 @@ class Publish extends Module {
 		if ($db_version < 1.16) {
 			// fixing an earlier bug
 			$this->CI->db->update('hooks', array('hook_name' => 'update_content'), array('hook_description' => 'A content item is updated.'));
+		}
+		
+		if ($db_version < 1.17) {
+			$this->CI->load->library('app_hooks');
+			$this->CI->app_hooks->register('view_content','A content item is viewed in the standard publish controller.',array());
 		}
 	
 		return $this->version;

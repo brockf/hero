@@ -67,6 +67,16 @@ class Content extends Front_Controller {
 			}
 		}
 		
+		// trigger show_content hook
+		// prep the hook with data
+		$this->app_hooks->data_var('content_id', $content_id);
+		 
+		// trigger with 1 additional arguments
+		$this->app_hooks->trigger('view_content', $content_id);
+		 
+		// be kind, reset the hook's data so that the next hook trigger doesn't accidentally pass email data that doesn't exist
+		$this->app_hooks->reset();
+		
 		// show content
 		$this->smarty->assign($content);
 		
