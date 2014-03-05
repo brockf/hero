@@ -642,6 +642,14 @@ class User_model extends CI_Model
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required|xss_clean');
 		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
+		
+		// unique email doesn't seem to be working, so let's do a manual check
+		$email_error = FALSE;
+		if ($editing == FALSE) {
+			if ($this->unique_email($this->input->post('email')) === FALSE) {
+				$email_error = TRUE;
+			}
+		}
 
 		$username_rules = array('trim','strip_whitespace','min_length[3]', 'xss_clean');
 		if ($this->config->item('username_allow_special_characters') == FALSE) {
@@ -659,10 +667,16 @@ class User_model extends CI_Model
 
 		if ($CI->form_validation->run() === FALSE) {
 			if ($error_array == TRUE) {
-				return explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors()));
+				$errors = explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors()));
+				if ($email_error == TRUE) {
+					$errors[] = 'This email address is unavailable.';
+				}
 			}
 			else {
-				return validation_errors();
+				$errors = validation_errors();
+				if ($email_error == TRUE) {
+					$errors .= '<p>This email address is unavailable.';
+				}
 			}
 		}
 
