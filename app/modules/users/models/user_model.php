@@ -678,6 +678,8 @@ class User_model extends CI_Model
 					$errors .= '<p>This email address is unavailable.';
 				}
 			}
+			
+			return $errors;
 		}
 
 		// validate custom fields
