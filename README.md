@@ -3,6 +3,10 @@ Hero
 
 [Hero](http://www.heroframework.com) is a powerful Content Management System (CMS) and eCommerce framework built on CodeIgniter.
 
+## Documentation
+
+All documentation is now is [included in this release](/docs/) in Markdown format.
+
 ## Server Requirements
 
 Please ensure that your hosting environment meets the following specifications:
@@ -27,8 +31,11 @@ If you experience issues, please review the full Server Requirements article in 
 
 ## eCommerce
 
-We offer a [full eCommerce addon with subscription billing, shopping carts, and payment gateway integrations for $195](http://www.heroframework.com/ecommerce).
+[Hero eCommerce](http://www.github.com/electricfunction/hero-ecommerce) is a free, open-source collection of modules that drop right into your
+Hero installation and provide you with online store, subscription billing, paywall, and coupon functionality.
 
-## Developer Contribution
+## History
 
-We welcome contributions to the project. Just fork right here on GitHub!
+Hero was developed by [Brock Ferguson](http://www.brockferguson.com) as founder of Electric Function, Inc. Initially, the main Hero app
+was released open source but Hero eCommerce required a paid license. Since Electric Function was acquired in 2012, Hero and its
+eCommerce upgrade have been released as free, open source software.
