@@ -1,0 +1,1 @@
+Requires: PHP5, mod_rewrite, cURL, fopen_allow_url = On, GD2 for thumbnails (or ImageMagick if you update the image_manipulation library)

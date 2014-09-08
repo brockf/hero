@@ -1,0 +1,58 @@
+# Custom Fields
+
+Custom fields are one of the core factors in Hero's versatility.  They allow you to extend the data collected and published with Hero in many areas of the application without any programming knowledge or web development experience.  (And, developers, they allow you to [easily build forms](/docs/developers/forms) with the [Form Builder library](/docs/developers/reference/form_builder_library).)
+
+Essentially, custom fields are HTML form elements such as dropdowns, textboxes, or file uploads that are added to forms and datasets.  By default, the following custom fieldtypes exist:
+
+* *Text* - Basic text input field (e.g., <input type="text" name="demo" value="" />)
+* *Textarea* - Text input box that allows for multi-line, multi-paragraph input.
+* *WYSIWYG* - Identical to the Textarea field, except that the text box has a What-You-See-Is-What-You-Get HTML editor which makes it easy for non-technical folk to create and edit valid HTML.
+* *Select Dropdown* - List of options that can be selected from a dropdown menu (e.g., <select name="demo"><option value="1">One</option><option value="2">Two</option><option value="3">Three</option></select>).
+* *Multiselect Dropdown* - Select multiple options from a list of options.
+* *Checkbox* - On/off checkbox. (e.g., <input type="checkbox" name="demo" value="1" /> Checkbox)
+* *Multicheckbox* - Check none, one, or more options from a list of checkboxes (e.g., <input type="checkbox" name="demo[]" value="1" /> One  <input type="checkbox" name="demo[]" value="2" /> Two  <input type="checkbox" name="demo[]" value="3" /> Three).
+* *Radio* - Select from a variety of options with radio buttons beside them (e.g., <input type="radio" name="demo" value="1" /> One  <input type="radio" name="demo" value="2" /> Two).
+* *Date* - Select a date (will appear as a fancy date selector in the control panel, and three input boxes in the frontend) (e.g., <select name="date_day"><option value="01" selected="selected">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select> <select name="date_month"><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select> <select name="date_year"><option value="2010" selected="selected">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option></select>).
+* *Date &amp; Time* - Select a date (like above) and a time  (e.g., <select name="date_day"><option value="01" selected="selected">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option></select> <select name="date_month"><option value="02">Feb</option><option value="03">Mar</option><option value="04">Apr</option><option value="05">May</option><option value="06">Jun</option><option value="07">Jul</option><option value="08">Aug</option><option value="09">Sep</option><option value="10">Oct</option><option value="11">Nov</option><option value="12">Dec</option></select> <select name="date_year"><option value="2010" selected="selected">2010</option><option value="2011">2011</option><option value="2012">2012</option><option value="2013">2013</option><option value="2014">2014</option><option value="2016">2016</option><option value="2017">2017</option><option value="2018">2018</option><option value="2019">2019</option><option value="2020">2020</option></select>&nbsp;&nbsp;<select name="datetime_hour"><option value="01" selected="selected">1</option><option value="02">2</option><option value="03">3</option><option value="04">4</option><option value="05">5</option><option value="06">6</option><option value="07">7</option><option value="08">8</option><option value="09">9</option><option value="10">10</option><option value="11">11</option><option value="12">12</option></select> <select name="datetime_minute"><option value="00">00</option><option value="01">01</option><option value="02">02</option><option value="03">03</option><option value="04">04</option><option value="05">05</option><option value="06">06</option><option value="07">07</option><option value="08">08</option><option value="09">09</option><option value="10">10</option><option value="11">11</option><option value="12">12</option><option value="13">13</option><option value="14">14</option><option value="15">15</option><option value="16">16</option><option value="17">17</option><option value="18">18</option><option value="19">19</option><option value="20">20</option><option value="21">21</option><option value="22">22</option><option value="23">23</option><option value="24">24</option><option value="25">25</option><option value="26">26</option><option value="27">27</option><option value="28">28</option><option value="29">29</option><option value="30">30</option><option value="31">31</option><option value="32">32</option><option value="33">33</option><option value="34">34</option><option value="35" selected="selected">35</option><option value="36">36</option><option value="37">37</option><option value="38">38</option><option value="39">39</option><option value="40">40</option><option value="41">41</option><option value="42">42</option><option value="43">43</option><option value="44">44</option><option value="45">45</option><option value="46">46</option><option value="47">47</option><option value="48">48</option><option value="49">49</option><option value="50">50</option><option value="51">51</option><option value="52">52</option><option value="53">53</option><option value="54">54</option><option value="55">55</option><option value="56">56</option><option value="57">57</option><option value="58">58</option><option value="59">59</option></select> <select name="datetime_ampm"><option value="am">am</option><option value="pm" selected="selected">pm</option></select>).
+* *File Upload* - Upload a file (e.g., <input type="file" name="demo" />)
+* *Content Relationship* - Link the entry to a content item in your database.  For example, members could link their accounts to a list of "Schools" in your database, or you could link content of one type (e.g., "Sports Teams") to an item of another content type (e.g., "Leagues").
+
+> Developers, want to add more fieldtypes to the system?  You can easily add cross-application fieldtypes by [defining a new *fieldtype class that extends the Fieldtype library](/docs/developers/forms).
+
+Each field can be *validated* upon submission based on configurations you specify when adding/editing the custom field.  For example, you could verify that the text input is alphanumeric, or a valid email address, and you could verify that the file uploaded is in PDF format.  There are numerous validation options for each fieldtype.
+
+You can also define *default values*, *help text*, and more settings with each custom field.
+
+This guide will introduce you to custom fields and how they apply to the different modules of Hero.
+
+## Member Custom Fields
+
+These custom fields are modified at *Configuration > Custom Fields > Member Data*.
+
+Member custom fields are fields that are part of a member's profile at your website.  The following options are available for each field:
+
+* *Show in Registration Form* - Not all fields need to be required just to setup a member account.  Uncheck the box to hide the field during registration, but make it available for editing in the user's profile and in the control panel.
+* *Billing Address Equivalent* - If you are requiring data like "Address", "City", "State" for member profiles, you can save your members time by specifying that these fields correspond with fields in a standard billing address.  This way, during checkout, they won't have to re-enter their address details.
+* *Admin Only* - Don't ever display this field to the user, just associate it with their account in the control panel and database - useful for attaching private notes to account(s) or storing system information.
+
+## Product Custom Fields
+
+These custom fields are modified at *Configuration > Custom Fields > Product Data*.
+
+Product custom fields are attached to the products you create in the control panel.
+
+For example, if you like to organize your health food products by the astrological signs that would most benefit by them, you could create a select dropdown field with each astrological sign as an option.  Then, when adding/editing products, you can specify the astrological sign linked with each product.  This data can then be displayed to your visitors on the product page or in a store collection listing.  [See how to include this data in your store pages](/docs/designers/reference/store).
+
+## Store Collection Custom Fields
+
+These custom fields are modified at *Configuration > Custom Fields > Store Collection Data*.
+
+Just like product custom fields, you can specify custom fields linked with store collections (i.e., categories) that can then be displayed in the frontend.
+
+## Form Custom Fields
+
+Hero includes an easy-to-use form builder in the control panel at *Publish > Forms*.  Each form is comprised of a series of custom fields built with the fieldtypes listed in this guide (and any custom fieldtypes added by developers).  [Learn more about how forms are built in the control panel](/docs/publishing/forms).
+
+## Content Custom Fields
+
+Content types are also largely comprised of a series of custom fields defined with these fieldtypes.  This gives you complete power over the content you are managing and publishing with Hero.  [Learn more about defining content types and publishing content](/docs/publishing/content).
