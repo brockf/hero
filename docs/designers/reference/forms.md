@@ -1,6 +1,6 @@
 # Forms
 
-Forms, [created in the control panel](/docs/publishing/forms), are essentially a group of custom fields that, when submitted, are saved in the database (viewable in the control panel) and potentially emailed to a specified email address.  Each form is mapped to a custom URL.
+Forms, [created in the control panel](/docs/publishing/forms.md), are essentially a group of custom fields that, when submitted, are saved in the database (viewable in the control panel) and potentially emailed to a specified email address.  Each form is mapped to a custom URL.
 
 ## Templates
 
@@ -83,7 +83,7 @@ Each form can be mapped to any template in your theme folder but, by default, fo
 		</tr>
 		<tr>
 			<td>`{$custom_fields}`</td>
-			<td>An array of all of the custom fields building this form.  See [for details on displaying the custom fields](/docs/designers/reference/custom_fields).</td>
+			<td>An array of all of the custom fields building this form.  See [for details on displaying the custom fields](/docs/designers/reference/custom_fields.md).</td>
 		</tr>
 		<tr>
 			<td>`{$table_name}`</td>

@@ -10,7 +10,7 @@ This helper is autoloaded by default and does not require initialization.
 
 ## Reference
 
-[method]string current_url ()[/method]
+## `string current_url ()`
 
 Return the current URL, *including a query string, if applicable*.
 

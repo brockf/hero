@@ -1,8 +1,8 @@
 # RSS Feeds
 
-RSS feeds do not normally require any template customization because RSS feeds are [highly structured documents](http://en.wikipedia.org/wiki/RSS) and [Hero offers numerous configurations for RSS feeds that don't require template customization](/docs/publishing/rss_feeds).
+RSS feeds do not normally require any template customization because RSS feeds are [highly structured documents](http://en.wikipedia.org/wiki/RSS) and [Hero offers numerous configurations for RSS feeds that don't require template customization](/docs/publishing/rss_feeds.md).
 
-Each RSS feed is mapped to a URL when it's [created in the control panel](/docs/publishing/rss_feeds).
+Each RSS feed is mapped to a URL when it's [created in the control panel](/docs/publishing/rss_feeds.md).
 
 ## Templates
 
@@ -70,7 +70,7 @@ The following variables are available in the RSS feed template.
 	<tbody>
 		<tr>
 			<td>`{$content}`</td>
-			<td>An array of the content matching the RSS feed's [configured filters](/docs/publishing/rss_feeds).  Each item within this array has the same variables as any content item, [listed in the designer's content reference](/docs/designers/reference/publish).  If you have configured your RSS feed to auto-generate a "summary" field, this will be available at `{$summary}` within each item's array.</td>
+			<td>An array of the content matching the RSS feed's [configured filters](/docs/publishing/rss_feeds.md).  Each item within this array has the same variables as any content item, [listed in the designer's content reference](/docs/designers/reference/publish.md).  If you have configured your RSS feed to auto-generate a "summary" field, this will be available at `{$summary}` within each item's array.</td>
 		</tr>
 		<tr>
 			<td>`{$id}`</td>

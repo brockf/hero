@@ -12,7 +12,7 @@ It's methods are accessible as the `user_model` object of the CI superobject.
 
 ## Method Reference
 
-[method]boolean login (string $username , string $password [, boolean $remember = FALSE])[/method]
+## `boolean login (string $username , string $password [, boolean $remember = FALSE])`
 
 Attempt a login by username and password.  Passing the third `$remember` parameter will place a random has key cookie on the visitor's computer, linked to a database record, so that they will be auto-logged-in on their next visit (i.e., the "Remember Me" checkboxes).
 
@@ -28,15 +28,15 @@ else {
 }
 ```
 
-[method]boolean login_by_id (int $user_id)[/method]
+## `boolean login_by_id (int $user_id)`
 
 Login a user by user ID.  This method is used internally by `login()` after the user's details are validated.
 
-[method]boolean logout ()[/method]
+## `boolean logout ()`
 
 End the logged-in user's session.  It will also remove the user's "remember me" key set in `login()`, if one exists.
 
-[method]boolean is_admin ()[/method]
+## `boolean is_admin ()`
 
 Is the logged in user an administrator?  Returns `FALSE` if the user is not an administrator of it the user isn't logged in.
 
@@ -46,7 +46,7 @@ if ($this->user_model->is_admin()) {
 }
 ```
 
-[method]boolean logged_in ()[/method]
+## `boolean logged_in ()`
 
 Is the visitor logged in?
 
@@ -56,19 +56,19 @@ if (!$this->user_model->logged_in()) {
 }
 ```
 
-[method]boolean in_group (int|array $group [, int $user_id = FALSE])[/method]
+## `boolean in_group (int|array $group [, int $user_id = FALSE])`
 
 Verify whether the user belongs to any of the groups in `$group` array of usergroup ID numbers.  Alternatively, only one group ID can be passed as an integer.
 
 If the second parameter is not passed, the logged-in user will be assessed.
 
-[method]boolean not_in_group (int|array $group [, int $user_id = FALSE])[/method]
+## `boolean not_in_group (int|array $group [, int $user_id = FALSE])`
 
 Verify that the user does not belong on in any of the groups passed in the `$group` array.  You may also pass only one group ID as an integer.
 
 If the second parameter is not passed, the logged-in user will be assessed.
 
-[method]string get (string $parameter)[/method]
+## `string get (string $parameter)`
 
 Retrieve a piece of data about the logged in user.
 
@@ -83,63 +83,63 @@ $last_name = $this->user_model->get('last_name');
 $school = $this->user_model->get('school');
 ```
 
-[method]array get_active_subscriptions (int $user_id)[/method]
+## `array get_active_subscriptions (int $user_id)`
 
 Retrieve an array of all active subscriptions linked to a user's account.  If none exist, returns `FALSE`.
 
-[method]array get_subscriptions (int $user_id , array Array)[/method]
+## `array get_subscriptions (int $user_id , array Array)`
 
-A wrapper for the [subscription model](/docs/developers/reference/subscription_model)'s `get_subscriptions()` method that sets a user filter automatically.
+A wrapper for the [subscription model](/docs/developers/reference/subscription_model.md)'s `get_subscriptions()` method that sets a user filter automatically.
 
-[method]int get_customer_id (int $user_id)[/method]
+## `int get_customer_id (int $user_id)`
 
 Retrieve the ID of the customer record (in table `customers`) linked to the user's account.
 
-[method]boolean set_charge_id (int $user_id , int $charge_id)[/method]
+## `boolean set_charge_id (int $user_id , int $charge_id)`
 
 During a 3rd party checkout (e.g., PayPal), we wait until the order is confirmed before processing the order.  So, the pending charge ID is stored in the user's record while they head off and finish the transaction.  This method sets the pending charge ID.  If they never finish the charge, it will just sit here.
 
-[method]boolean remove_charge_id (int $user_id)[/method]
+## `boolean remove_charge_id (int $user_id)`
 
 Unset the charge ID set by `set_charge_id()`.  The charge either completed successfully or never completed.
 
-[method]array validation ([boolean $editing = FALSE [, boolean $error_array = TRUE]])[/method]
+## `array validation ([boolean $editing = FALSE [, boolean $error_array = TRUE]])`
 
 Validate POST data for the creation of a new user, includes validation of custom member data fields.  Results can be returned either as an error or an HTML-formatted string.  If editing, the first parameter should be set to `TRUE` so that we don't look for a unique username and email.
 
-[method]boolean validate_billing_address (int $user_id)[/method]
+## `boolean validate_billing_address (int $user_id)`
 
 Is the billing address on file in the linked customer record valid?  In essence, is it missing any data?
 
-[method]array get_billing_address (int $user_id)[/method]
+## `array get_billing_address (int $user_id)`
 
 Retrieve the billing address on file for this user.  It will be returned as an array of address elements ("address_1", "address_2", "city", "state", "country", "postal_code").
 
-[method]boolean unique_email (string $email)[/method]
+## `boolean unique_email (string $email)`
 
 Is the submitted email address unique?  Returns `TRUE` if it's unique.
 
-[method]boolean unique_username (string $username)[/method]
+## `boolean unique_username (string $username)`
 
 Is the submitted username unique?  Returns `TRUE` if it's unique.
 
-[method]array add_group (int $user_id , int $group_id)[/method]
+## `array add_group (int $user_id , int $group_id)`
 
 Add the user to the group specified in `$group_id`.  Users can be added to as many groups as you wish.
 
-[method]array remove_group (int $user_id , int $group_id)[/method]
+## `array remove_group (int $user_id , int $group_id)`
 
 Remove a user from a group.
 
-[method]boolean resend_validation_email (int $user_id)[/method]
+## `boolean resend_validation_email (int $user_id)`
 
 If the user's email account is not yet validated, you can resend their validation email which has a link to validate their account.
 
-[method]int new_user (string $email , string $password , string $username , string $first_name , string $last_name [, array $groups = FALSE [, int $affiliate = FALSE [, boolean $is_admin = FALSE [, array $custom_fields = array() [, boolean $require_validation = FALSE]]]]])[/method]
+## `int new_user (string $email , string $password , string $username , string $first_name , string $last_name [, array $groups = FALSE [, int $affiliate = FALSE [, boolean $is_admin = FALSE [, array $custom_fields = array() [, boolean $require_validation = FALSE]]]]])`
 
 Create a new user.  User records are quite simple, as you can see from the function parameters.  The user does not necessarily have to belong to any user groups.
 
-Custom member data can be passed as an array with name => value pairs.  This is likely generated by the [form builder](/docs/developers/reference/form_builder_library)'s `post_to_array()` method.
+Custom member data can be passed as an array with name => value pairs.  This is likely generated by the [form builder](/docs/developers/reference/form_builder_library.md)'s `post_to_array()` method.
 
 If `$require_validation` is set to `TRUE`, a validation key will be stored with the user's record.  By default, an email will be sent out explaining that the user must validate their email or their access will be revoked.  Indeed, this is what happens.  The user can login without validation for 24 hours but, after 24 hours, they will be denied access until the validate.  So, don't delete the email that hooks to the *member_validate* hook or users will have no way of confirming their email!
 
@@ -156,11 +156,11 @@ Arguments:
 * `$custom_fields` - An array of custom field data (default: array())
 * `$require_validation` - Should we require email validation? (default: FALSE)
 
-[method]int update_user (int $user_id , string $email , string $password , string $username , string $first_name , string $last_name [, array $groups = FALSE [, boolean $is_admin = FALSE [, array $custom_fields = array()]]])[/method]
+## `int update_user (int $user_id , string $email , string $password , string $username , string $first_name , string $last_name [, array $groups = FALSE [, boolean $is_admin = FALSE [, array $custom_fields = array()]]])`
 
 Update an existing user record.
 
-[method]boolean update_billing_address (int $user_id , array $new_address )[/method]
+## `boolean update_billing_address (int $user_id , array $new_address )`
 
 Update a customer record with a new billing address.  Must include the keys:
 
@@ -173,35 +173,35 @@ Update a customer record with a new billing address.  Must include the keys:
 * *country*
 * *postal_code*
 
-[method]void delete_user (int $user_id)[/method]
+## `void delete_user (int $user_id)`
 
 Mark a user as deleted in the database.
 
-[method]boolean update_password (int $user_id , string $new_password)[/method]
+## `boolean update_password (int $user_id , string $new_password)`
 
 Update a user's password.
 
-[method]boolean reset_password (int $user_id)[/method]
+## `boolean reset_password (int $user_id)`
 
 Reset a password randomly.  This will trigger the *member_change_password* hook which, unless deleted, will send an email with the new password.
 
-[method]void suspend_user (int $user_id)[/method]
+## `void suspend_user (int $user_id)`
 
 Suspend a user.  This removes their ability to login.
 
-[method]void unsuspend_user (int $user_id)[/method]
+## `void unsuspend_user (int $user_id)`
 
 Unsuspend a user.  Re-activate logins.
 
-[method]void get_user (int $user_id , boolean $any_status)[/method]
+## `void get_user (int $user_id , boolean $any_status)`
 
 Retrieve a user record, in the format of `get_users`.  If `$any_status` is set to TRUE, a user record will be retrieved even if it has been deleted.
 
-[method]int count_users ([array $filters])[/method]
+## `int count_users ([array $filters])`
 
 Retrieve a count of the number of users who match the optional filters specified.  These filters match the `get_users()` method.
 
-[method]array get_users ( [array $filters = array() [, boolean $any_status = FALSE ], [ boolean $counting = FALSE ]])[/method]
+## `array get_users ( [array $filters = array() [, boolean $any_status = FALSE ], [ boolean $counting = FALSE ]])`
 
 Retrieve an array of matching user records (as separate arrays) that match the optional filters.  If you specify `$any_status` as TRUE, even deleted records will be matched against your filters and returned.
 
@@ -242,34 +242,34 @@ Each user returns an array with the following data:
 * *admin_link*
 * *remember_key* - Their unique "remember me" key created by `login()`
 * *validate_key* - Their possible email validation key created by `new_user()`
-* *cart* - Their cart array, if available.  This is stored to the user record in the [cart model](/docs/developers/reference/cart_model).
+* *cart* - Their cart array, if available.  This is stored to the user record in the [cart model](/docs/developers/reference/cart_model.md).
 * *pending_charge_id* - Their possible pending charge ID stored by `set_charge_id()`
 * All *custom member data fields* will be returned with their field name as the key in the array
 
-[method]int new_custom_field (int $custom_field_id [, string $billing_equiv = '' [, boolean $admin_only = FALSE [, boolean $registration_form = TRUE]]])[/method]
+## `int new_custom_field (int $custom_field_id [, string $billing_equiv = '' [, boolean $admin_only = FALSE [, boolean $registration_form = TRUE]]])`
 
-After a custom field has been created in the [custom fields model](/docs/developers/reference/custom_fields_model), a specific user custom field record must be created by this method because user custom fields have unique attributes.
+After a custom field has been created in the [custom fields model](/docs/developers/reference/custom_fields_model.md), a specific user custom field record must be created by this method because user custom fields have unique attributes.
 
 Arguments:
 
-* `$custom_field_id` - The ID corresponding to the custom field ID returned by `new_custom_field()` in the [custom fields model](/docs/developers/reference/custom_fields_model).
+* `$custom_field_id` - The ID corresponding to the custom field ID returned by `new_custom_field()` in the [custom fields model](/docs/developers/reference/custom_fields_model.md).
 * `$billing_equiv` - If this field represents a billing address field (e.g, "address_1"), specify here:  options: address_1, address_2, state, country, postal_code, company (default: '')
 * `$admin_only` - Is this an admin-only field? (default: FALSE)
 * `$registration_form` - Should we show this in the registration form? (default: TRUE)
 
-[method]boolean update_custom_field (int $user_field_id [, string $billing_equiv = '' [, boolean $admin_only = FALSE [, boolean $registration_form = TRUE]]])[/method]
+## `boolean update_custom_field (int $user_field_id [, string $billing_equiv = '' [, boolean $admin_only = FALSE [, boolean $registration_form = TRUE]]])`
 
 Update an existing user ustom field record's user field-specific attributes.
 
-[method]boolean delete_custom_field (int $id)[/method]
+## `boolean delete_custom_field (int $id)`
 
 Delete the corresponding user custom field record for a custom field.
 
-[method]boolean get_custom_field (int $custom_field_id)[/method]
+## `boolean get_custom_field (int $custom_field_id)`
 
-Retrieve custom field data for a user custom field.  This is very similar to the [custom fields model](/docs/developers/reference/custom_fields_model) method of the same name, except that it returns the additional attributes stored by this model's `new_custom_field()` method.
+Retrieve custom field data for a user custom field.  This is very similar to the [custom fields model](/docs/developers/reference/custom_fields_model.md) method of the same name, except that it returns the additional attributes stored by this model's `new_custom_field()` method.
 
-[method]array get_custom_fields ( [array $filters = array()])[/method]
+## `array get_custom_fields ( [array $filters = array()])`
 
 Retrieve an array of user custom field data, based on optional filters.
 

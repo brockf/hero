@@ -44,7 +44,7 @@ You are in the store!
 
 [tag]{$member.data}[/tag]
 
-If a user is logged in, all member data is available in the `{$member}` array and available globally.  [All member variables are documented here](/docs/designers/reference/members).
+If a user is logged in, all member data is available in the `{$member}` array and available globally.  [All member variables are documented here](/docs/designers/reference/members.md).
 
 Example:
 

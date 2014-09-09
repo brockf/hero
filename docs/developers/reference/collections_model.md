@@ -11,7 +11,7 @@ $this->load->model('store/collections_model');
 
 ## Method Reference
 
-[method]int new_collection (string $name [, string $description = '' , int $parent [, array $custom_fields = array()]])[/method]
+## `int new_collection (string $name [, string $description = '' , int $parent [, array $custom_fields = array()]])`
 
 Create a new product collection.
 
@@ -22,15 +22,15 @@ Arguments:
 * `$parent` - Possible parent collection ID, else 0.
 * `$custom_fields` - Custom field data for this collection, if you have collection custom fields.
 
-[method]void update_collection (int $collection_id , string $name [, string $description = '' , int $parent [, array $custom_fields = array()]])[/method]
+## `void update_collection (int $collection_id , string $name [, string $description = '' , int $parent [, array $custom_fields = array()]])`
 
 Update an existing collection.
 
-[method]void delete_collection (int $collection_id)[/method]
+## `void delete_collection (int $collection_id)`
 
 Delete an existing collection.  Note:  Products in this collection will not be deleted.
 
-[method]array get_tiered_collections ( [array $filters = array()])[/method]
+## `array get_tiered_collections ( [array $filters = array()])`
 
 Retrieve a one-dimensional array of all collections with keys equal to their `collection_id` and values in the form of:
 
@@ -45,11 +45,11 @@ This is a resource-expensive function so call sparingly, but it's a good way to 
 
 The list of collections can be filtered with the same optional filters as `get_collections()`.
 
-[method]array get_collection (int $collection_id)[/method]
+## `array get_collection (int $collection_id)`
 
 Retrieve data for a single collection, in the same format as `get_collections()`.
 
-[method]array get_collections ( [array $filters = array() [, boolean $any_status = FALSE]])[/method]
+## `array get_collections ( [array $filters = array() [, boolean $any_status = FALSE]])`
 
 Retrieve an array of one or more product collections, based on optional filters.  Also, with `$any_status`, you can choose whether you want to return even deleted collections.
 
@@ -67,6 +67,6 @@ Each collection returns an array with the following data:
 * *description*
 * *parent*
 
-[method]array get_custom_fields ()[/method]
+## `array get_custom_fields ()`
 
-Retrieve all product collection custom fields.  This is essentially a wrapper for the [custom field model](/docs/developers/reference/custom_fields_model)'s method of the same name, except that it knows which custom field group is assigned to product collections (a stored setting).
+Retrieve all product collection custom fields.  This is essentially a wrapper for the [custom field model](/docs/developers/reference/custom_fields_model.md)'s method of the same name, except that it knows which custom field group is assigned to product collections (a stored setting).

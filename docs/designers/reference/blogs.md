@@ -1,6 +1,6 @@
 # Blogs and Archives
 
-Blogs and archives, [created in the control panel](/docs/publishing/blogs), are a way of creating "content listing" pages.  While the name "Blogs and Archives" is somewhat functionally-binding, you can actually use this for any type of content listing imaginable.  This is highly evident when you see how flexible and easy templating these pages is.
+Blogs and archives, [created in the control panel](/docs/publishing/blogs.md), are a way of creating "content listing" pages.  While the name "Blogs and Archives" is somewhat functionally-binding, you can actually use this for any type of content listing imaginable.  This is highly evident when you see how flexible and easy templating these pages is.
 
 ## Templates
 
@@ -23,7 +23,7 @@ When the blog template is triggered, the following variables are available for u
 	<tbody>
 		<tr>
 			<td>`{$content}`</td>
-			<td>An array of the content matching the blog's [configured filters](/docs/publishing/blogs) as well as limited to the current page, if pagination is in effect.  Each item within this array has the same variables as any content item, [listed in the designer's content reference](/docs/designers/reference/publish).  If you have configured your blog to auto-generate a "summary" field, this will be available at `{$summary}` within each item's array.</td>
+			<td>An array of the content matching the blog's [configured filters](/docs/publishing/blogs.md) as well as limited to the current page, if pagination is in effect.  Each item within this array has the same variables as any content item, [listed in the designer's content reference](/docs/designers/reference/publish.md).  If you have configured your blog to auto-generate a "summary" field, this will be available at `{$summary}` within each item's array.</td>
 		</tr>
 		<tr>
 			<td>`{$pagination}`</td>

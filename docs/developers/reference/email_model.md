@@ -1,6 +1,6 @@
 # Email Model
 
-Emails are linked to system actions ([hooks](/docs/developers/reference/app_hooks_library)) and are automatically sent to members, administrators, or other email address.  For more information on configuring emails, [click here](/docs/configuration/emails).
+Emails are linked to system actions ([hooks](/docs/developers/reference/app_hooks_library.md)) and are automatically sent to members, administrators, or other email address.  For more information on configuring emails, [click here](/docs/configuration/emails.md).
 
 This model gives you direct to the system emails and related methods.
 
@@ -17,31 +17,31 @@ $this->load->model('emails/email_model');
 
 ## Method Reference
 
-[method]void mail_queue ()[/method]
+## `void mail_queue ()`
 
 Processes the mail queue.  If the mail queue is not empty, it will send a number of emails (configurable at *Configuration > Settings*) every 5 minutes until the mail queue is clear.
 
-[method]void update_layout (string $html)[/method]
+## `void update_layout (string $html)`
 
 Update the global email layout.  This may not be relevant depending on how you have setup the specific email templates.
 
-[method]int new_email (string $hook [, array $parameters = array() [, array $to = array() [, array $bcc = array() ]]], string $subject , string $body , boolean $is_html)[/method]
+## `int new_email (string $hook [, array $parameters = array() [, array $to = array() [, array $bcc = array() ]]], string $subject , string $body , boolean $is_html)`
 
 Create a new email in the system attached to a hook.
 
-[method]void update_email (int $email_id , string $hook [, array $parameters = array() [, array $to = array() [, array $bcc = array() , string $subject , string $body , boolean $is_html]]])[/method]
+## `void update_email (int $email_id , string $hook [, array $parameters = array() [, array $to = array() [, array $bcc = array() , string $subject , string $body , boolean $is_html]]])`
 
 Update an existing email.
 
-[method]void delete_email (int $email_id)[/method]
+## `void delete_email (int $email_id)`
 
 Delete an existing email.
 
-[method]array get_email (int $email_id)[/method]
+## `array get_email (int $email_id)`
 
 Return the data for a particular email, in the same format as `get_emails()`.
 
-[method]void get_emails ([array $filters = array()])[/method]
+## `void get_emails ([array $filters = array()])`
 
 Return an email or emails based on optional filters.  Only active emails will be returned.
 

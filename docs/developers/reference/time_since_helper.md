@@ -4,7 +4,7 @@ When passed a date, this function will return a more friendly date string like "
 
 ## Reference
 
-[method]string|boolean time_since (date $date)[/method]
+## `string|boolean time_since (date $date)`
 
 Return a nicely-formatted date, or else FALSE if too old.
 

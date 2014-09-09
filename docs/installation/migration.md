@@ -4,7 +4,7 @@ To migrate your Hero installation from one server to another, simply do the foll
 
 > If you are changing your domain, submit a support ticket with your license # and new domain so that it can be updated.
 
-> Make sure your new server meets all the [Server Requirements](/docs/installation/server_requirements).
+> Make sure your new server meets all the [Server Requirements](/docs/installation/server_requirements.md).
 
 1) Copy all files and folders to the new server.  Note that certain files like those in `/writeable` and `/app/config` will only exist on your server unless
 you have downloaded them locally.  Be sure to copy `.htaccess` to the new server as well.

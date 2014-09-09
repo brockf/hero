@@ -14,15 +14,15 @@ Example (from the real billing module):
 $this->CI->app_hooks->bind('cron','Subscription_model','hook_cron',APPPATH . 'modules/billing/models/subscription_model.php');
 ```
 
-This `bind()` method of the [App Hooks library](/docs/developers/reference/app_hooks_library) simply specifies the hook you want you to bind your code to (in this case, "cron"), and the class and method that you want to execute.  In case that class is not available, you can specify the filename by which to load the class.
+This `bind()` method of the [App Hooks library](/docs/developers/reference/app_hooks_library.md) simply specifies the hook you want you to bind your code to (in this case, "cron"), and the class and method that you want to execute.  In case that class is not available, you can specify the filename by which to load the class.
 
-For more information on hooks and binds, [click here](/docs/developers/reference/app_hooks_library).
+For more information on hooks and binds, [click here](/docs/developers/reference/app_hooks_library.md).
 
 ## Running your cronjob at intervals other than 5 minutes
 
 While the cronjob hook is triggered every 5 minutes, you don't necessarily have to run your code every 5 minutes.  Simply create a setting value in the database which stores the last time your cronjob was run.  Then, wait until your chosen amount of time has passed between code executions before executing your code again.
 
-For example, this billing cronjob in the [Subscription_model](/docs/developers/reference/subscription_model) runs once per day:
+For example, this billing cronjob in the [Subscription_model](/docs/developers/reference/subscription_model.md) runs once per day:
 
 ```
 function hook_cron () {

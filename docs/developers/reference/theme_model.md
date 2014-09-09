@@ -11,7 +11,7 @@ $this->load->model('themes/theme_model');
 
 ## Method Reference
 
-[method]array get_themes()[/method]
+## `array get_themes()`
 
 Retrieve an array of all themes available in your install.
 

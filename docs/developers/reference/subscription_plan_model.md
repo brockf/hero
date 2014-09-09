@@ -11,27 +11,27 @@ $this->load->model('billing/subscription_plan_model');
 
 ## Method Reference
 
-[method]int new_plan (string $name , float $amount , float $initial_charge , boolean $is_taxable , int $interval , int $free_trial , boolean $require_billing_for_trial , int $occurrences , int $promotion , int $demotion , string $description)[/method]
+## `int new_plan (string $name , float $amount , float $initial_charge , boolean $is_taxable , int $interval , int $free_trial , boolean $require_billing_for_trial , int $occurrences , int $promotion , int $demotion , string $description)`
 
 Create a new subscription plan.
 
-[method]void update_plan (int $subscription_plan_id , string $name , float $amount , float $initial_charge , boolean $is_taxable , int $interval , int $free_trial , boolean $require_billing_for_trial , int $occurrences , int $promotion , int $demotion , string $description)[/method]
+## `void update_plan (int $subscription_plan_id , string $name , float $amount , float $initial_charge , boolean $is_taxable , int $interval , int $free_trial , boolean $require_billing_for_trial , int $occurrences , int $promotion , int $demotion , string $description)`
 
 Update an existing subscription plan.
 
-[method]boolean delete_plan (int $id)[/method]
+## `boolean delete_plan (int $id)`
 
 Delete a subscription plan.  Note:  This will not cancel existing subscriptions.
 
-[method]array get_plan (int $id)[/method]
+## `array get_plan (int $id)`
 
 Retrieve details about a specific plan with the plan ID (corresponding to table, `subscription_plans`).
 
-[method]array get_plan_from_api_plan_id (int $api_plan_id)[/method]
+## `array get_plan_from_api_plan_id (int $api_plan_id)`
 
 Retrieve details about a specific plan with the API plan ID (corresponding to table, `plans`).
 
-[method]array get_plans ( [array $filters = array(), [ boolean $allow_deleted = FALSE ]])[/method]
+## `array get_plans ( [array $filters = array(), [ boolean $allow_deleted = FALSE ]])`
 
 Retrieve a plan/plans based on optional filter criteria.
 

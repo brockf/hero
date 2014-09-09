@@ -11,31 +11,31 @@ $this->load->model('rss/rss_model');
 
 ## Method Reference
 
-[method]int new_feed (int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = '' [, string $sort_dir = '' [, string $template = 'rss_feed.txml']]]]]])[/method]
+## `int new_feed (int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = '' [, string $sort_dir = '' [, string $template = 'rss_feed.txml']]]]]])`
 
 Create a new feed/archive listing with these parameters.
 
-[method]void update_feed (int $feed_id , int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = '' [, string $sort_dir = '' [, string $template = 'rss_feed.txml']]]]]])[/method]
+## `void update_feed (int $feed_id , int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = '' [, string $sort_dir = '' [, string $template = 'rss_feed.txml']]]]]])`
 
 Update an existing feed/archive with these parameters.  Specify the feed with `$feed_id`.
 
-[method]boolean delete_feed (int $feed_id)[/method]
+## `boolean delete_feed (int $feed_id)`
 
 Delete an existing feed.
 
-[method]int get_feed_id (string $url_path)[/method]
+## `int get_feed_id (string $url_path)`
 
 Return the ID of a feed based on its URL path (used in the feeds controller).
 
-[method]array get_feed_content (int $feed_id [, int $page = 0])[/method]
+## `array get_feed_content (int $feed_id [, int $page = 0])`
 
 Retrieve all content (via `content_model->get_contents()`) for a feed.
 
-[method]array get_feed (int $feed_id)[/method]
+## `array get_feed (int $feed_id)`
 
 Retrieve details about a single feed by ID.
 
-[method]array get_feeds ( [array $filters = array()])[/method]
+## `array get_feeds ( [array $filters = array()])`
 
 Retrieve details about a feed or feed based on optional filters.
 
@@ -48,7 +48,7 @@ Possible Filters:
 Each feed will be returned as an array with the following data:
 
 * *id*
-* *link_id* - Corresponds to the [link model](/docs/developers/reference/link_model)
+* *link_id* - Corresponds to the [link model](/docs/developers/reference/link_model.md)
 * *title*
 * *description*
 * *filter_authors* - An array of authors to include in the feed.

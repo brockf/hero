@@ -25,7 +25,7 @@ The account management and user actions in Hero are, by default, bound to specif
 
 ## Member Template Variables
 
-The following variables are available in the `{$member}` [global variable](/docs/designers/reference/global_variables) and within a `{members}` template call (documented below).
+The following variables are available in the `{$member}` [global variable](/docs/designers/reference/global_variables.md) and within a `{members}` template call (documented below).
 
 <table>
 	<thead>

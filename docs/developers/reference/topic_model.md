@@ -13,19 +13,19 @@ $this->load->model('publish/topic_model');
 
 ## Method Reference
 
-[method]int new_topic (string $name [, string $description = '' , int $parent = 0]])[/method]
+## `int new_topic (string $name [, string $description = '' , int $parent = 0]])`
 
 Create a new topic.
 
-[method]boolean update_topic (int $topic_id , string $name [, string $description = '' , int $parent])[/method]
+## `boolean update_topic (int $topic_id , string $name [, string $description = '' , int $parent])`
 
 Update an existing topic.
 
-[method]void delete_topic (int $topic_id)[/method]
+## `void delete_topic (int $topic_id)`
 
 Delete a topic.  Note: This will not delete content in the topic.
 
-[method]array get_tiered_topics ( [array $filters = array()])[/method]
+## `array get_tiered_topics ( [array $filters = array()])`
 
 Retrieve a one-dimensional array of all topics with keys equal to their `topic_id` and values in the form of:
 
@@ -40,11 +40,11 @@ This is a resource-expensive function so call sparingly, but it's a good way to 
 
 The list of topics can be filtered with the same optional filters as `get_topics()`.
 
-[method]array get_topic (int $topic_id)[/method]
+## `array get_topic (int $topic_id)`
 
 Retrieve data for a single topic in the same format as `get_topics()`.
 
-[method]array get_topics ( [array $filters = array()])[/method]
+## `array get_topics ( [array $filters = array()])`
 
 Retrieve topic data as arrays, as filtered by an optional filters array.
 

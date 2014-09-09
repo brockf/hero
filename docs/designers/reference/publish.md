@@ -1,6 +1,6 @@
 # Content
 
-*Content* refers to all custom content types that [you have setup under the Publish tab](/docs/publishing/content) in the control panel.
+*Content* refers to all custom content types that [you have setup under the Publish tab](/docs/publishing/content.md) in the control panel.
 
 ## Templates
 

@@ -5,7 +5,7 @@ There are a couple of options in dealing with a user who attempts to access cont
 * In standard modules, by default, the `paywall.thtml` template is displayed.  However, this auto-paywall functionality can be disabled in the control panel at Configuration > Paywall.
 * Within your templates, you can use the `{restricted}` template plugin to detect the user's member group status and display/not display content accordingly.  This is all within your active template file.
 
-In addition to displaying/not displaying HTML content using the above techniques, you may also wanted to protect *file downloads* from being shared.  For this, you should use the `{protected_link}` template plugin documented in the [global plugins documentation](/docs/designers/reference/global_plugins).
+In addition to displaying/not displaying HTML content using the above techniques, you may also wanted to protect *file downloads* from being shared.  For this, you should use the `{protected_link}` template plugin documented in the [global plugins documentation](/docs/designers/reference/global_plugins.md).
 
 ## Using the Auto-Paywall
 

@@ -2,13 +2,13 @@
 
 Create a thumbnail of a certain size for a local image file.  Files are cached.  The cache is only updated if the local source file is updated.
 
-This method will automatically determine the proper image processing library to use (ImageMagick, GD, GD2, etc.).  To specify this manually, you will need to [specify this in your configuration file](/docs/configuration/advanced).
+This method will automatically determine the proper image processing library to use (ImageMagick, GD, GD2, etc.).  To specify this manually, you will need to [specify this in your configuration file](/docs/configuration/advanced.md).
 
 Images will be resized so that their proportions are retained.  In this way, you are really specifying the **maximum** height/width when calling this function, as only one of those dimensions may reach that maximum size.  The other will be controlled for proportions.
 
 ## Reference
 
-[method]string image_thumb (string $image_path , int $height , int $width)[/method]
+## `string image_thumb (string $image_path , int $height , int $width)`
 
 Returns a URL to to the cached image thumbnail generated with this function.
 

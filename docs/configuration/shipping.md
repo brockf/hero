@@ -17,7 +17,7 @@ Here, you can specify which countries you ship to, as well as the default shippi
 
 Each shipping rate, including the general shipping configuration, must be one of three types:
 
-* *By Weight* - Each products weight is summed and multiplied by a figure to calculate a total shipping rate (e.g., $2.50 per pound, or $3.00 per kilogram).  The weight unit is the default weight unit for your site [configured in the settings](/docs/configuration/settings).
+* *By Weight* - Each products weight is summed and multiplied by a figure to calculate a total shipping rate (e.g., $2.50 per pound, or $3.00 per kilogram).  The weight unit is the default weight unit for your site [configured in the settings](/docs/configuration/settings.md).
 * *Per Product* - Charge a shipping fee per product, so that 3 shipped products costs 3 x [your rate] to ship.
 * *Flat Rate* - Charge a flat rate for shipping any number of products to a user.
 

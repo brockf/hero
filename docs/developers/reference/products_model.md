@@ -11,7 +11,7 @@ $this->load->model('store/products_model');
 
 ## Method Reference
 
-[method]float get_price (int $product_id [, array $selected_options = array()])[/method]
+## `float get_price (int $product_id [, array $selected_options = array()])`
 
 Calculate the price for a product based on the product's ID (i.e., it's price), the potentially logged-in user's member groups, and the selected options for the product passed as an array of product_option_names => selected_values.
 
@@ -27,11 +27,11 @@ $price = $this->products_model->get_price(1050, $options);
 echo 'Please pay us $' . money_format("%!i", $price) . '.';
 ```
 
-[method]array get_custom_fields ()[/method]
+## `array get_custom_fields ()`
 
-Retrieve all product custom fields.  This is essentially a wrapper for the [custom field model](/docs/developers/reference/custom_fields_model)'s method of the same name, except that it knows which custom field group is assigned to products (a stored setting).
+Retrieve all product custom fields.  This is essentially a wrapper for the [custom field model](/docs/developers/reference/custom_fields_model.md)'s method of the same name, except that it knows which custom field group is assigned to products (a stored setting).
 
-[method]int add_image (int $product_id , string $filename)[/method]
+## `int add_image (int $product_id , string $filename)`
 
 Add an image to a product.
 
@@ -40,27 +40,27 @@ Arguments:
 * `$product_id` - Product ID
 * `$filename` - The filename of the file in `/writeable/product_images/`
 
-[method]void remove_image (int $image_id)[/method]
+## `void remove_image (int $image_id)`
 
 Remove an image from a product.
 
-[method]boolean make_feature_image (int $image_id)[/method]
+## `boolean make_feature_image (int $image_id)`
 
 Make the selected image the feature image for a product (and remove any other image from feature image status).
 
-[method]void images_reset_order (int $product_id)[/method]
+## `void images_reset_order (int $product_id)`
 
 Reset the image order for a specific product.  This is a useful method to use before `image_update_order()` when sorting product images.
 
-[method]void image_update_order (int $field_id , int $new_order)[/method]
+## `void image_update_order (int $field_id , int $new_order)`
 
 Set the order of a particular image within a product's image gallery.  `$new_order` corresponds to the order of the image.  They will be displayed in ascending order.
 
-[method]string|boolean validation ()[/method]
+## `string|boolean validation ()`
 
 Validate the current POST data for a product submission.  If successful, it returns TRUE.  Otherwise, it returns an HTML-formatted string of errors.
 
-[method]int new_product (string $name , string $description [, array $collections = array() [, float $price = '1' , int $weight [, boolean $requires_shipping = FALSE [, boolean $track_inventory = FALSE , float $starting_inventory [, boolean $allow_oversell = FALSE [, string $sku = '' [, boolean $is_taxable = FALSE [, array $member_tiers = array() [, boolean $is_download = FALSE [, string $download_name = '' , int $download_size [, int $promotion = '' [, array $custom_fields = array() [, array $product_options = array()]]]]]]]]]]]]])[/method]
+## `int new_product (string $name , string $description [, array $collections = array() [, float $price = '1' , int $weight [, boolean $requires_shipping = FALSE [, boolean $track_inventory = FALSE , float $starting_inventory [, boolean $allow_oversell = FALSE [, string $sku = '' [, boolean $is_taxable = FALSE [, array $member_tiers = array() [, boolean $is_download = FALSE [, string $download_name = '' , int $download_size [, int $promotion = '' [, array $custom_fields = array() [, array $product_options = array()]]]]]]]]]]]]])`
 
 Create a new product in the database.
 
@@ -85,7 +85,7 @@ Parameter Notes:
 * `$custom_fields` - Any custom field data (default: array())
 * `$product_options` - Array of product_options ID's (default: array())
 
-[method]boolean update_product (int $product_id , string $name , string $description [, array $collections = array() [, float $price = '1' , int $weight [, boolean $requires_shipping = FALSE [, boolean $track_inventory = FALSE , float $starting_inventory [, boolean $allow_oversell = FALSE [, strig $sku = '' [, boolean $is_taxable = FALSE [, array $member_tiers = array() [, boolean $is_download = FALSE [, string $download_name = '' , int $download_size [, int $promotion = '' [, array $custom_fields = array() [, array $product_options = array()]]]]]]]]]]]]])[/method]
+## `boolean update_product (int $product_id , string $name , string $description [, array $collections = array() [, float $price = '1' , int $weight [, boolean $requires_shipping = FALSE [, boolean $track_inventory = FALSE , float $starting_inventory [, boolean $allow_oversell = FALSE [, strig $sku = '' [, boolean $is_taxable = FALSE [, array $member_tiers = array() [, boolean $is_download = FALSE [, string $download_name = '' , int $download_size [, int $promotion = '' [, array $custom_fields = array() [, array $product_options = array()]]]]]]]]]]]]])`
 
 Update an existing product in the database.
 
@@ -111,15 +111,15 @@ Parameter Notes:
 * `$custom_fields` - Any custom field data (default: array())
 * `$product_options` - Array of product_options ID's (default: array())
 
-[method]int get_product_id (string $url_path)[/method]
+## `int get_product_id (string $url_path)`
 
 Return a product ID from a URL path.  This is used in the store controller.
 
-[method]array get_product (int $product_id)[/method]
+## `array get_product (int $product_id)`
 
 Return data for a particular product from an ID, in the same format as `get_products()`.
 
-[method]array get_images (int $product_id)[/method]
+## `array get_images (int $product_id)`
 
 Retrieve all images for a particular product.
 
@@ -130,7 +130,7 @@ The image array returned has multiple arrays (images in ascending order) with th
 * *url* - The full URL to the image
 * *featured* - TRUE if it is the feature image, else FALSE
 
-[method]array get_products ( [array $filters = array()])[/method]
+## `array get_products ( [array $filters = array()])`
 
 Return an array of products based on optional filters.  This includes a fulltext search if you use the `keyword` filter.
 
@@ -176,10 +176,10 @@ Each returned product array has the following data:
 * *options* - An array of product option ID's, if this product has product options
 * *relevance* (if a *keyword* filter was specified)
 
-[method]void delete_product (int $product_id)[/method]
+## `void delete_product (int $product_id)`
 
 Delete an existing product.
 
-[method]int knock_inventory (int $product_id)[/method]
+## `int knock_inventory (int $product_id)`
 
 Reduce a product's inventory by 1 (after purchase).

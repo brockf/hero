@@ -1,6 +1,6 @@
 # Menus
 
-All content in Hero is registered in a global link database (developers: [see how to access this](/docs/developers/reference/link_model)).  In doing so, Hero allows you to *drag and drop* your site's content and modules into navigational menus through a simple web interface, directly in your site's control panel.
+All content in Hero is registered in a global link database (developers: [see how to access this](/docs/developers/reference/link_model.md)).  In doing so, Hero allows you to *drag and drop* your site's content and modules into navigational menus through a simple web interface, directly in your site's control panel.
 
 The *Menu Manager* is accessible at Design > Menu Manager.  Here, you can create menus or edit existing menus.
 
@@ -10,7 +10,7 @@ If you select "Edit" beside any link item in your menu, you can specify which us
 
 ## Link Customization
 
-You can customize the link text as well as any CSS classes for each individual link item in the "Edit" menu for any menu link item.  [CSS classes can be used to style specific menu items with your CSS stylesheets](/docs/designers/reference/menus).
+You can customize the link text as well as any CSS classes for each individual link item in the "Edit" menu for any menu link item.  [CSS classes can be used to style specific menu items with your CSS stylesheets](/docs/designers/reference/menus.md).
 
 ## Two-Tiered Menus
 
@@ -26,4 +26,4 @@ Not all of your menu links will be links to site content or modules.  You may wa
 
 ## Displaying Menus
 
-If your theme is not already setup to display menus, you can use the [{menu} tag to dynamically generate the HTML for an Hero-managed menu](/docs/designers/reference/menus).
+If your theme is not already setup to display menus, you can use the [{menu} tag to dynamically generate the HTML for an Hero-managed menu](/docs/designers/reference/menus.md).

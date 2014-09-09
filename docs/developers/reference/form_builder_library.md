@@ -1,6 +1,6 @@
 # Form Builder Library
 
-This library provides a way to assemble multiple [Fieldtype objects](/docs/developers/reference/fieldtype_library) into one form, and then run form-wide methods such as validation routines, assigning values to the form fields, or displaying the form.  It is most commonly used in conjunction with pre-defined custom field groups, but it can also be used to build a form manually by adding new Fieldtype objects sequentially and manipulating these objects to add values, help text, default options, etc.
+This library provides a way to assemble multiple [Fieldtype objects](/docs/developers/reference/fieldtype_library.md) into one form, and then run form-wide methods such as validation routines, assigning values to the form fields, or displaying the form.  It is most commonly used in conjunction with pre-defined custom field groups, but it can also be used to build a form manually by adding new Fieldtype objects sequentially and manipulating these objects to add values, help text, default options, etc.
 
 ## Initialization
 
@@ -11,9 +11,9 @@ $this->load->library('custom_fields/form_builder');
 
 ## Method Reference
 
-[method]boolean build_form_from_group (int $custom_field_group_id)[/method]
+## `boolean build_form_from_group (int $custom_field_group_id)`
 
-Pass this method an ID of a custom field group in the system, and it will automatically load and build your form based on the returned data from `$this->custom_fields_model->get_custom_fields()` ([documentation here](/docs/developers/reference/custom_fields_model)).
+Pass this method an ID of a custom field group in the system, and it will automatically load and build your form based on the returned data from `$this->custom_fields_model->get_custom_fields()` ([documentation here](/docs/developers/reference/custom_fields_model.md)).
 
 Form objects are not directly manipulable in this case, because it does not return any field objects.  However, you can use form-wide functions like `set_values()` and `clear_defaults()` to work with your form.
 
@@ -24,11 +24,11 @@ $form = $this->form_builder->output_admin();
 // easy as that
 ```
 
-[method]boolean build_form_from_array (array get_custom_fields)[/method]
+## `boolean build_form_from_array (array get_custom_fields)`
 
-Like `build_form_from_group()`, this method builds a form using pre-defined custom field group data.  However, this method takes an array from `custom_fields_model->get_custom_fields()` ([documentation here](/docs/developers/reference/custom_fields_model)) as its only parameter, thereby eliminating another call to that method.  Usage is identical after its loaded.
+Like `build_form_from_group()`, this method builds a form using pre-defined custom field group data.  However, this method takes an array from `custom_fields_model->get_custom_fields()` ([documentation here](/docs/developers/reference/custom_fields_model.md)) as its only parameter, thereby eliminating another call to that method.  Usage is identical after its loaded.
 
-[method]object add_field (string $type)[/method]
+## `object add_field (string $type)`
 
 If you are not using predefined fields, you can build your form programmatically as you go by creating and manipulating field objects.  You have access to all of the custom fieldtypes in your system (defined at `/app/modules/custom_fields/libraries/fieldtypes/`).
 
@@ -56,7 +56,7 @@ $my_select_field->name('school')
 $output = $this->form_builder->output_admin();
 ```
 
-[method]string output_admin ()[/method]
+## `string output_admin ()`
 
 Return the formatted HTML for the form in memory.
 
@@ -79,7 +79,7 @@ In your view:
 </form>
 ```
 
-[method]boolean validate_post ()[/method]
+## `boolean validate_post ()`
 
 When a form has been loaded/built, you can run this method to validate a POST submission across all the form fields based on their individual validation routines.  It will return `FALSE` if some value that has been POST'd is invalid.
 
@@ -103,7 +103,7 @@ else {
 }
 ```
 
-[method]string|array validation_errors ([boolean $array = FALSE])[/method]
+## `string|array validation_errors ([boolean $array = FALSE])`
 
 When `validate_post()` has been called and returned `FALSE`, validation errors can be retrieved with this method.
 
@@ -119,7 +119,7 @@ foreach ($array as $error) {
 }
 ```
 
-[method]array post_to_array ()[/method]
+## `array post_to_array ()`
 
 This method invokes each field object's `post_to_value()` method to retrieve a value from the POST submission for this field.  For some fields (e.g., text fields), this is as simple as returning the element in POST of the same name.  However, for other complex fields (e.g., file uploads), this involves seeing if a file was uploaded, whether a file was previously uploaded and they are just leaving this file, or whether they entered a file uploaded by FTP that should override the specific file upload field.  Either way, the fields do this processing themselves.
 
@@ -155,7 +155,7 @@ $post_data = $this->form_builder->post_to_array();
 // this obviously changes depending on the form submission, itself.
 ```
 
-[method]boolean set_values (array $values)[/method]
+## `boolean set_values (array $values)`
 
 Once a form is built, you may want to set values for all the form fields en masse.  To do so, pass this method an array of data (with each key representing a field's name), and they will be set.
 
@@ -169,7 +169,7 @@ $data = array(
 $this->form_builder->set_values($data);
 ```
 
-[method]void clear_defaults ()[/method]
+## `void clear_defaults ()`
 
 When you are editing a piece of published content or data, it is unlikely that you want to substitute in the field's default values for empty fields.  This method will wipe out all default values for the form in memory.
 
@@ -179,7 +179,7 @@ if ($editing == TRUE) {
 }
 ```
 
-[method]void reset ()[/method]
+## `void reset ()`
 
 Once you have built a form, it will remain in Form Builder until this method resets the library.  It's smart to call this before building any form.
 

@@ -8,7 +8,7 @@ This helper is autoloaded by default and does not require initialization.
 
 ## Reference
 
-[method]string|boolean setting (string $setting_name)[/method]
+## `string|boolean setting (string $setting_name)`
 
 Return the value of a setting.  The value may be boolean if that is how it is set.
 

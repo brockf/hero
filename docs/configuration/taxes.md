@@ -8,5 +8,5 @@ When a visitor is checking out with either products or a subscription, they will
 
 The tax rate and name will be displayed to your users upon checking out, and will be be tracked in each individual invoice.
 
-When it comes time for your business to remit your taxes, you can easily [generate paid tax reports](/docs/configuration/reports) for a specific date range.
+When it comes time for your business to remit your taxes, you can easily [generate paid tax reports](/docs/configuration/reports.md) for a specific date range.
 

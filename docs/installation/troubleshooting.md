@@ -39,7 +39,7 @@ The IonCube Loaders required to decode certain files in Hero is not installed pr
 ## Problem: A variety of PHP errors not pointing to any particular problem
 
 * Verify that you have PHP 5.0+ installed.  PHP4 will throw errors.
-* Verify that PHP is configured as per the [server requirements](/docs/installation/server_requirements).
+* Verify that PHP is configured as per the [server requirements](/docs/installation/server_requirements.md).
 
 ## Problem: License not valid for this server
 
@@ -66,4 +66,4 @@ ini_set('display_errors','On');
 
 ## Problem:  I don't know!
 
-Try [turning on logging](/docs/developers/errors_logging) so that you can see exactly where the system is failing.
+Try [turning on logging](/docs/developers/errors_logging.md) so that you can see exactly where the system is failing.

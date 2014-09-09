@@ -4,13 +4,13 @@ Hero offers a variety of template plugins out-of-the-box that can be used throug
 
 However, developers can also create their **own** template plugins.  Template plugins can be included:
 
-* In a module folder at `/app/modules/yourmodule/template_plugins/`, when the folder is referenced in the [module definition file](/docs/developers/modules) in the `front_preload()` section.
+* In a module folder at `/app/modules/yourmodule/template_plugins/`, when the folder is referenced in the [module definition file](/docs/developers/modules.md) in the `front_preload()` section.
 * In a theme folder, at `/themes/yourtheme/plugins/`.
 * In the common plugins folder, at `/themes/_plugins/`.
 
 ## Function Plugins vs. Block Plugins
 
-*Functions* are template plugins like `{setting name="site_name"}` [documented here](/docs/designers/reference/global_plugins).  They only include one tag and return a string of data (or empty string) upon their call.  Function plugins are defined in files named `function.yourfunction.php` and share a common function structure:
+*Functions* are template plugins like `{setting name="site_name"}` [documented here](/docs/designers/reference/global_plugins.md).  They only include one tag and return a string of data (or empty string) upon their call.  Function plugins are defined in files named `function.yourfunction.php` and share a common function structure:
 
 ```
 function smarty_function_yourfunction ($params, &$smarty) {
@@ -51,13 +51,13 @@ function smarty_function_myfunction ($params, &$smarty) {
 }
 ```
 
-[More information on the superobject is here](/docs/developers/codeigniter).
+[More information on the superobject is here](/docs/developers/codeigniter.md).
 
 ## Looping through data in a block plugin
 
-Many block plugins allow designers to retrieve X number of items from the database and loop through/display these items within the template.  The items are displayed through template variables contained between the block plugin's opening and closing tags.  [Smarty](/docs/designers/smarty) makes this looping/variable assignment possible, but it's not very easy.
+Many block plugins allow designers to retrieve X number of items from the database and loop through/display these items within the template.  The items are displayed through template variables contained between the block plugin's opening and closing tags.  [Smarty](/docs/designers/smarty.md) makes this looping/variable assignment possible, but it's not very easy.
 
-Hero includes a proprietary library extension (*loop_data*) for Smarty that makes looping through data within a block plugin much easier.  As an example, we have the [{topics}](/docs/designers/reference/publish) template plugin.  This plugin retrieves your site's defined topics within your templates:
+Hero includes a proprietary library extension (*loop_data*) for Smarty that makes looping through data within a block plugin much easier.  As an example, we have the [{topics}](/docs/designers/reference/publish.md) template plugin.  This plugin retrieves your site's defined topics within your templates:
 
 ```
 function smarty_block_topics ($params, $tagdata, &$smarty, &$repeat){

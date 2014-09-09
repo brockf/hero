@@ -112,7 +112,7 @@ Furthermore, if you want to protect this controller as part of the administrator
 
 ### We've extended the shopping cart library
 
-CodeIgniter's [Cart library](http://codeigniter.com/user_guide/libraries/cart.html) is OK, but lacks some of the truly integrated functionality we needed.  So, we've built two new additions: the MY_Cart library, and (the most important addition) the [Cart model](/docs/developers/reference/cart_model).
+CodeIgniter's [Cart library](http://codeigniter.com/user_guide/libraries/cart.html) is OK, but lacks some of the truly integrated functionality we needed.  So, we've built two new additions: the MY_Cart library, and (the most important addition) the [Cart model](/docs/developers/reference/cart_model.md).
 
 ### The Upload library now accepts upload arrays
 

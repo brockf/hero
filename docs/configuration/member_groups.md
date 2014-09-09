@@ -12,7 +12,7 @@ Subscriptions have the option to promote a user to a member group upon subscript
 
 Subscriptions can also be configured to demote a user to a specific member group upon expiration.
 
-For more information on subscriptions, [visit the subscriptions configuration guide](/docs/configuration/subscriptions).
+For more information on subscriptions, [visit the subscriptions configuration guide](/docs/configuration/subscriptions.md).
 
 ## Content Access
 
@@ -22,5 +22,5 @@ By requiring membership to a particular group, you can essentially force users t
 
 In the default setup of Hero, members who attempt to read content of which they cannot access will hit the *Paywall*.  Despite the name "Paywall", this can also just be a template that prompts a user to login, or says anything you wish (if you aren't using it as a paywall - the name doesn't matter).
 
-This paywall [is a configurable template](/docs/designers/reference/paywall_privileges) like any other part of the Hero.  It can also be *disabled* so that your templates are verifying the member's privileges themselves, and acting accordingly.  If you are a designer looking to customize the way access is restricted, [this guide to access privileges and the paywall will help you](/docs/designers/reference/paywall_privileges).
+This paywall [is a configurable template](/docs/designers/reference/paywall_privileges.md) like any other part of the Hero.  It can also be *disabled* so that your templates are verifying the member's privileges themselves, and acting accordingly.  If you are a designer looking to customize the way access is restricted, [this guide to access privileges and the paywall will help you](/docs/designers/reference/paywall_privileges.md).
 

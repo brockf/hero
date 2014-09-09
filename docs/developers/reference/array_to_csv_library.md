@@ -57,10 +57,10 @@ $this->load->library('array_to_csv');
 
 ## Method Reference
 
-[method]void input (array $array)[/method]
+## `void input (array $array)`
 
 Pass a (multi-dimensional) array of data to the library.
 
-[method]string output ()[/method]
+## `string output ()`
 
 Return the CSV-formatted string of the data passed in `input()`.

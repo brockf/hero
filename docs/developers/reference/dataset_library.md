@@ -83,13 +83,13 @@ $this->dataset->datasource('content_model','get_contents');
 
 ## Method Reference
 
-[method]boolean datasource (string $data_model , string $data_function [, array $data_filters = 'none'])[/method]
+## `boolean datasource (string $data_model , string $data_function [, array $data_filters = 'none'])`
 
 Sets the data source with a model, method, and any default parameters to pass to this method.  If the model is not loaded, it will be loaded automatically (thus, it should be in "module/model" format).
 
 The `$data_filters` array is a way to pass certain filters to the data method (via the first parameter, an array of filters).  These will be sent regardless of the filters set in the dataset.
 
-[method]void columns (array $columns)[/method]
+## `void columns (array $columns)`
 
 Specify, in a multi-dimensional array, a series of columns in the dataset.
 
@@ -107,15 +107,15 @@ Each column can optionally have the following keys:
 * *field_start_date* - If type is "date", you must supply a filter for the datasource method corresponding with the start date.
 * *field_end_date* - If type is "date", you must supply a filter for the datasource method corresponding with the end date.
 
-[method]boolean initialize (boolean $paginate_now = TRUE)[/method]
+## `boolean initialize (boolean $paginate_now = TRUE)`
 
 Initialize the dataset after setting the columns, datasource, and other configurations.  If you want to hold off on pagination (likely because you want to pass the total rows manually to reduce database load), you can set `$paginate_now` to FALSE.
 
-[method]void initialize_pagination ()[/method]
+## `void initialize_pagination ()`
 
 Create the pagination HTML if you postponed pagination at `initialize()`.
 
-[method]string table_head ()[/method]
+## `string table_head ()`
 
 Retrieve the generated HTML to be placed before the table rows are outputted.
 
@@ -123,7 +123,7 @@ Retrieve the generated HTML to be placed before the table rows are outputted.
 <?=$this->dataset->table_head();?>
 ```
 
-[method]string table_close ()[/method]
+## `string table_close ()`
 
 Retrieve the generated HTML to be placed after the table rows are outputted.
 
@@ -131,46 +131,46 @@ Retrieve the generated HTML to be placed after the table rows are outputted.
 <?=$this->dataset->table_close();?>
 ```
 
-[method]array get_filter_array ()[/method]
+## `array get_filter_array ()`
 
 Get an array of key => value filters from the current URL.
 
-[method]string get_encoded_filters ()[/method]
+## `string get_encoded_filters ()`
 
 Encode the filter array into ASCIIHex format so that it can be used in a URL.
 
-[method]int get_limit ()[/method]
+## `int get_limit ()`
 
 Get the current per-page limit either from the URL or `$this->rows_per_page`.
 
-[method]int get_offset ()[/method]
+## `int get_offset ()`
 
 Get the current page offset from the URL, or return "0" for the beginning.
 
-[method]void get_unlimited_parameters ()[/method]
+## `void get_unlimited_parameters ()`
 
 Get an array of all parameters for the datasource method without any limits or offsets (used to automatically retrieve the total rows in the dataset if this isn't hardset with `total_rows()`).
 
-[method]string get_pagination ()[/method]
+## `string get_pagination ()`
 
 Retrieve the pagination HTML.
 
-[method]boolean has_filters ()[/method]
+## `boolean has_filters ()`
 
 Does this dataset have active filtering?
 
-[method]boolean total_rows (int $total_rows)[/method]
+## `boolean total_rows (int $total_rows)`
 
 Set `$this->total_rows`.
 
-[method]bool action (string $name , string $link)[/method]
+## `bool action (string $name , string $link)`
 
 Add an action to `$this->actions`.
 
-[method]boolean rows_per_page (int $rows_per_page)[/method]
+## `boolean rows_per_page (int $rows_per_page)`
 
 Set the `$this->rows_per_page` configuration.
 
-[method]boolean base_url (string $base_url)[/method]
+## `boolean base_url (string $base_url)`
 
 Set the `$this->base_url` configuration.

@@ -2,7 +2,7 @@
 
 Generate control panel-standard HTML forms using this library.
 
-> This library has been deprecated in favour of the [combination of the Form Builder library and the new custom fieldtype engine](/docs/developers/forms).  Thus, documentation is intentionally sparse.
+> This library has been deprecated in favour of the [combination of the Form Builder library and the new custom fieldtype engine](/docs/developers/forms.md).  Thus, documentation is intentionally sparse.
 
 Example from the RSS module:
 
@@ -28,58 +28,58 @@ $my_form = new Admin_form;
 
 ## Method Reference
 
-[method]void fieldset (string $legend = '' [, array $ul_classes = FALSE])[/method]
+## `void fieldset (string $legend = '' [, array $ul_classes = FALSE])`
 
 Create a new fieldset.  This must be called prior to any fields being added and can be called again at anytime to register a new fieldset.
 
-[method]void hidden (string $name , string $value)[/method]
+## `void hidden (string $name , string $value)`
 
 Add a hidden field.
 
-[method]void text (string $label , string $name [, string $value = '' [, string $help = FALSE [, boolean $required = FALSE [, boolean $mark_empty = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '' [, array $classes = FALSE]]]]]]]])[/method]
+## `void text (string $label , string $name [, string $value = '' [, string $help = FALSE [, boolean $required = FALSE [, boolean $mark_empty = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '' [, array $classes = FALSE]]]]]]]])`
 
 Add a text field.
 
-[method]void password (string $label , string $name [, string $help = FALSE [, boolean $required = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '']]]]])[/method]
+## `void password (string $label , string $name [, string $help = FALSE [, boolean $required = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '']]]]])`
 
 Add a password field.
 
-[method]void names (string $label , string $first_value , string $last_value [, string $help = FALSE [, boolean $required = FALSE [, string $width = '250px' [, string $li_id = '']]]])[/method]
+## `void names (string $label , string $first_value , string $last_value [, string $help = FALSE [, boolean $required = FALSE [, string $width = '250px' [, string $li_id = '']]]])`
 
 Add a names field with side-by-side first and last names.
 
-[method]void textarea (string $label , string $name [, string $value = '' [, string $help = FALSE [, boolean $required = FALSE [, string $wysiwyg = FALSE [, boolean $full = FALSE [, string $width = '300px' [, string $height = '100px' [, string $li_id = '']]]]]]]])[/method]
+## `void textarea (string $label , string $name [, string $value = '' [, string $help = FALSE [, boolean $required = FALSE [, string $wysiwyg = FALSE [, boolean $full = FALSE [, string $width = '300px' [, string $height = '100px' [, string $li_id = '']]]]]]]])`
 
 Add a textarea field.
 
-[method]void dropdown (string $label , string $name , array $options [, array $selected = FALSE [, boolean $multiselect = FALSE [, boolean $required = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]]]])[/method]
+## `void dropdown (string $label , string $name , array $options [, array $selected = FALSE [, boolean $multiselect = FALSE [, boolean $required = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]]]])`
 
 Add a dropdown field.
 
-[method]void radio (string $label , string $name , array $options , string $selected [, boolean $required = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]])[/method]
+## `void radio (string $label , string $name , array $options , string $selected [, boolean $required = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]])`
 
 Add a radio field.
 
-[method]void checkbox (string $label , string $name , string $value [, boolean $checked = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]])[/method]
+## `void checkbox (string $label , string $name , string $value [, boolean $checked = FALSE [, string $help = FALSE [, boolean $full = FALSE [, string $li_id = '']]]])`
 
 Add a checkbox field.
 
-[method]void file (string $label , string $name [, string $width = '250px' [, string $full = FALSE [, string $li_id = '']]])[/method]
+## `void file (string $label , string $name [, string $width = '250px' [, string $full = FALSE [, string $li_id = '']]])`
 
 Add a file upload field.
 
-[method]void date (string $label , string $name , string $value [, string $help = FALSE [, boolean $required = FALSE [, boolean $mark_empty = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '' [, array $classes = FALSE]]]]]]])[/method]
+## `void date (string $label , string $name , string $value [, string $help = FALSE [, boolean $required = FALSE [, boolean $mark_empty = FALSE [, boolean $full = FALSE [, string $width = '250px' [, string $li_id = '' [, array $classes = FALSE]]]]]]])`
 
 Add a date field enabled with the datepicker.
 
-[method]void value_row (string $label , string $value , boolean $full)[/method]
+## `void value_row (string $label , string $value , boolean $full)`
 
 Add a simple row to the form with a left side "label" and right side "value".
 
-[method]void custom_fields (array $custom_fields [, array $values = FALSE [, boolean $no_defaults = FALSE]])[/method]
+## `void custom_fields (array $custom_fields [, array $values = FALSE [, boolean $no_defaults = FALSE]])`
 
-Load custom fields into the form from an array created by `custom_fields_model->get_custom_fields()`.  This method was updated to use the new [Fieldtype library](/docs/developers/reference/fieldtype_library) so that this entire library remains relevant and somewhat useful.
+Load custom fields into the form from an array created by `custom_fields_model->get_custom_fields()`.  This method was updated to use the new [Fieldtype library](/docs/developers/reference/fieldtype_library.md) so that this entire library remains relevant and somewhat useful.
 
-[method]string display ()[/method]
+## `string display ()`
 
 Return the formatted HTML for the form that has been built.

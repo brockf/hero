@@ -11,7 +11,7 @@ $this->load->model('store/product_option_model');
 
 ## Method Reference
 
-[method]int new_option (string $name [, array $values = array() [, boolean $save = FALSE]])[/method]
+## `int new_option (string $name [, array $values = array() [, boolean $save = FALSE]])`
 
 Create a new product option.
 
@@ -21,15 +21,15 @@ Arguments:
 * `$values` - An array of options, each an array with keys "label" and "price"
 * `$save` - Set to TRUE to make this product option available for use by other products in the control panel.
 
-[method]array get_option (int $option_id)[/method]
+## `array get_option (int $option_id)`
 
 Return an array of a particular product option, in the same format as `get_options()`.
 
-[method]void delete_option (int $option_id)[/method]
+## `void delete_option (int $option_id)`
 
 Delete a product option.
 
-[method]array get_options ( [array $filters = array()])[/method]
+## `array get_options ( [array $filters = array()])`
 
 Retrieve one or more product option arrays, based on optional filters.
 

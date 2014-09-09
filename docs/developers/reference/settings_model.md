@@ -20,7 +20,7 @@ The settings model is loaded automatically by default.
 
 ## Method Reference
 
-[method]void make_writeable_folder (string $path , boolean $no_access)[/method]
+## `void make_writeable_folder (string $path , boolean $no_access)`
 
 Create a writeable folder on the server.  The `$path` should be the full server path to the folder.  For example:
 
@@ -34,11 +34,11 @@ $this->settings_model->make_writeable_folder ($path);
 
 If you don't want users to be able to access the files in this folder directly, set `$no_access` to TRUE and a "deny all" `.htaccess` file will be placed in the folder.
 
-[method]boolean set_settings ()[/method]
+## `boolean set_settings ()`
 
 A helper method that loads all settings from the database into CodeIgniter's standard configuration array at runtime.
 
-[method]int new_setting (int $setting_group , string $setting_name , string $setting_value [, string $setting_help = '' [, string $setting_type = 'text' [, string $setting_options = '' [, date $setting_time = FALSE [, boolean $setting_hidden = FALSE]]]]])[/method]
+## `int new_setting (int $setting_group , string $setting_name , string $setting_value [, string $setting_help = '' [, string $setting_type = 'text' [, string $setting_options = '' [, date $setting_time = FALSE [, boolean $setting_hidden = FALSE]]]]])`
 
 Create a new setting.
 
@@ -52,19 +52,19 @@ If specifying toggle, you should pass a serialized array like `a:2:{i:0;s:3:"Off
 
 Setting `$setting_hidden` to TRUE will keep the setting from showing in the standard settings manager at *Configuration > Settings*.
 
-[method]void update_setting (string $name , string $value)[/method]
+## `void update_setting (string $name , string $value)`
 
 Update an existing system.  Note that setting details can't be updated, only its value.
 
-[method]void update_setting (string $name)[/method]
+## `void update_setting (string $name)`
 
 Delete a system setting.
 
-[method]string get_setting (string $name)[/method]
+## `string get_setting (string $name)`
 
 Retrieve the value of a setting from the database.
 
-[method]array get_settings ( [array $filters = array()])[/method]
+## `array get_settings ( [array $filters = array()])`
 
 Retrieve an array of settings based on optional filters.
 
@@ -89,7 +89,7 @@ Each setting returns the following data:
 * *options*
 * *toggle_value* - If it's a toggled setting, this will be the label of the current value, as specified in the serialized options array.
 
-[method]array get_setting_groups ( [array $filters = array()])[/method]
+## `array get_setting_groups ( [array $filters = array()])`
 
 Retrieve an array of settings groups based on optional filters.  These are hardcoded into the database and not customizable.
 

@@ -6,7 +6,7 @@ Hero allows you to report errors using standard, formatted error functions.  Add
 
 Both of the available functions are available globally throughout the application.
 
-[method]void show_error( string $error_message )[/method]
+## `void show_error( string $error_message )`
 
 Display an error to the browser with the standard error formatting.  Typically, you would want to kill application execution at this time.
 
@@ -16,7 +16,7 @@ Usage:
 die(show_error('Error: Failed to load item you requested.'));
 ```
 
-[method]void show_404( [string $path] )[/method]
+## `void show_404( [string $path] )`
 
 Throw a 404 File not Found error to the browser.  The 404 HTTP Header will automatically be passed, providing this function is called before any output has been sent to the browser.
 
@@ -30,9 +30,9 @@ die(show_404('my_controller/' . $this->input->get('content')));
 
 ## Logging
 
-Through the `log_message()` function below, you can log various levels of messages during your application's execution.  In order for these log messages to be stored, the instance must be [configured to have logging enabled](/docs/configuration/advanced).
+Through the `log_message()` function below, you can log various levels of messages during your application's execution.  In order for these log messages to be stored, the instance must be [configured to have logging enabled](/docs/configuration/advanced.md).
 
-[method]void log_message( string $type , string $message )[/method]
+## `void log_message( string $type , string $message )`
 
 Place an entry (`$message`) in the site logs.
 

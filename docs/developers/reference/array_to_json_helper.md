@@ -4,7 +4,7 @@ Convert an array to JSON format.
 
 ## Reference
 
-[method]string array_to_json (array $array)[/method]
+## `string array_to_json (array $array)`
 
 ```
 $array = array('status' => 'Success', 'message' => 'You have created the post successfully.');

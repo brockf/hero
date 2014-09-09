@@ -10,7 +10,7 @@ $this->load->model('billing/subscription_model');
 
 ## Method Reference
 
-[method]boolean cancel_subscription (int $subscription_id)[/method]
+## `boolean cancel_subscription (int $subscription_id)`
 
 Cancel a subscription.
 
@@ -18,7 +18,7 @@ Cancel a subscription.
 $this->subscription_model->cancel_subscription(434);
 ```
 
-[method]boolean has_subscriptions ( [int $member_id = 'active user'])[/method]
+## `boolean has_subscriptions ( [int $member_id = 'active user'])`
 
 Check to see if a user has any active (as in, expiring in the future) subscriptions in their account.
 
@@ -28,7 +28,7 @@ if ($this->subscription_model->has_subscriptions()) {
 }
 ```
 
-[method]array get_subscriptions_friendly ( [array $filters = array() [, int $member_id = 'active user']])[/method]
+## `array get_subscriptions_friendly ( [array $filters = array() [, int $member_id = 'active user']])`
 
 Return an array of subscriptions matching the filter criteria.  It's just a wrapper for `get_subscriptions()` but, due to that method's complexity, this provides a nice way to do a lot of simple lookups.
 
@@ -45,11 +45,11 @@ $subs = $this->subscription_model->get_subscriptions_friendly(array('active' => 
 $subs = $this->subscription_model->get_subscriptions_friendly(array('recurring' => TRUE, 'plan_id' => 1001), 1010);
 ```
 
-[method]array get_subscription (int $subscription_id)[/method]
+## `array get_subscription (int $subscription_id)`
 
 Another wrapper for `get_subscriptions()`: retrieve the subscription record that matches the ID given.
 
-[method]mixed get_subscriptions ( [array $filters = array()])[/method]
+## `mixed get_subscriptions ( [array $filters = array()])`
 
 Retrieve subscriptions based on a number of filters (or retrieve all subscriptions).
 

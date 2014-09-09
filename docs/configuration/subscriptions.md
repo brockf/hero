@@ -1,6 +1,6 @@
 # Subscription Plans
 
-Beneath Hero lies a powerful recurring billing engine, capable of handling auto-recurring payment subscriptions on a number of [payment gateways](/docs/configuration/payment_gateways).  These recurring transactions are guided by subscription products (called "subscription plans" in Hero) and are purchased by your users through the standard checkout process.
+Beneath Hero lies a powerful recurring billing engine, capable of handling auto-recurring payment subscriptions on a number of [payment gateways](/docs/configuration/payment_gateways.md).  These recurring transactions are guided by subscription products (called "subscription plans" in Hero) and are purchased by your users through the standard checkout process.
 
 Subscription plans are managed at *Storefront > Subscription Plans*.
 
@@ -14,7 +14,7 @@ Each subscription plan has the following configurable options (most are optional
 * *Description* - A brief description of the subscription plan.  This may be used in your frontend in a subscription listing, or elsewhere.
 * *Recurring Charge* - You can specify if the subscription is free or if there should be a recurring subscription payment every X days.
 * *Initial Charge* - Sometimes, the initial charge for a subscription (on the day of purchase) is different from the recurring charge.  For example, if you have a setup fee for your product, or a low one-time fee to entice customers.
-* *Taxes Apply?* - Should taxes apply to this subscription plan's prices?  Of course, if there are no [tax rules configured](/docs/configuration/taxes), or the user does not match the tax rules specified, no tax will be charged.
+* *Taxes Apply?* - Should taxes apply to this subscription plan's prices?  Of course, if there are no [tax rules configured](/docs/configuration/taxes.md), or the user does not match the tax rules specified, no tax will be charged.
 * *Charge Interval* - Specify how many days Hero should wait before autocharging the subscriber the recurring charge for this subscription.  Currently, this can only be specified in "days" (not months, weeks, etc.).
 * *Total Occurrences* - While many subscriptions run for as long as the member pays, other subscriptions should expire after X payments.  Here, you have the option to specify how many payments (including the first payment) should be charged for the duration of the subscription.
 * *Free Trial Period* - You can offer a free trial (number of days before the first recurring charge) for your subscription.  If you do use a free trial, you have the option of *requiring or not requiring billing information upon signup*.  If you do require billing information, the member's subscription will be autocharged after the trial period unless they cancel beforehand.
@@ -29,7 +29,7 @@ The key to making some of your content "subscribers-only" is in the promotion/de
 
 ### One Subscription Plan
 
-If you have a single subscription plan for full access to your site, you should create a member group for users who purchase this subscription plan to be promoted to.  Then, by specifying (during [publishing](/docs/publishing/content)) that users must be in this member group to view the content, you are essentially creating a paywall that will force users to subscribe in order to see the content.  Users who do not have subscriptions will, by default, see a "Login/Register/Subscribe" screen.  However, with [theme customization](/docs/designers/reference/paywall_privileges), you can show them anything you would like.  This could be a snippet from the hidden content, an advertisement, or a "get out now!" screen.
+If you have a single subscription plan for full access to your site, you should create a member group for users who purchase this subscription plan to be promoted to.  Then, by specifying (during [publishing](/docs/publishing/content.md)) that users must be in this member group to view the content, you are essentially creating a paywall that will force users to subscribe in order to see the content.  Users who do not have subscriptions will, by default, see a "Login/Register/Subscribe" screen.  However, with [theme customization](/docs/designers/reference/paywall_privileges.md), you can show them anything you would like.  This could be a snippet from the hidden content, an advertisement, or a "get out now!" screen.
 
 ### Multiple Subscription Plans
 
@@ -51,9 +51,9 @@ If you modify a subscription plan, your existing subscriptions will be unaffecte
 
 ### Can coupons be used with subscriptions?
 
-Coupons can be used with subscriptions.  They can be configured to reduce the price of the subscription (both initial charge and recurring charge) or create/extend a free trial on a subscription.  [Click here to learn more about creating and configuring coupon codes](/docs/configuration/coupon_codes).
+Coupons can be used with subscriptions.  They can be configured to reduce the price of the subscription (both initial charge and recurring charge) or create/extend a free trial on a subscription.  [Click here to learn more about creating and configuring coupon codes](/docs/configuration/coupon_codes.md).
 
 ### How do you handle the user's billing data for subscription payments?
 
-*No credit card information is stored locally*.  All [integrated payment gateways](/docs/configuration/payment_gateways) use the gateway's native recurring billing features to store the credit cards securely and without risk to you, the website administrator.
+*No credit card information is stored locally*.  All [integrated payment gateways](/docs/configuration/payment_gateways.md) use the gateway's native recurring billing features to store the credit cards securely and without risk to you, the website administrator.
 

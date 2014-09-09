@@ -15,4 +15,4 @@ Hero provides a simple tool for application profile.  When enabled, each display
 
 ## Enabling Debug/Profile Mode
 
-The Debug/Profile mode can be enabled by [setting $config['debug_profile'] to TRUE in your config.php file](/docs/configuration/advanced).
+The Debug/Profile mode can be enabled by [setting $config['debug_profile'] to TRUE in your config.php file](/docs/configuration/advanced.md).

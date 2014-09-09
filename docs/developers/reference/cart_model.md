@@ -4,7 +4,7 @@ The Cart model provides Hero logic on top of the [CodeIgniter Cart library](http
 
 ## Initializations
 
-The cart model is initialized automatically by the [User model](/docs/developers/reference/user_model).
+The cart model is initialized automatically by the [User model](/docs/developers/reference/user_model.md).
 
 To initialize:
 
@@ -15,17 +15,17 @@ $this->load->model('store/cart_model');
 
 ## Method Reference
 
-[method]boolean add_to_cart (int $product_id [, int $quantity_id = 1 [, array $options]])[/method]
+## `boolean add_to_cart (int $product_id [, int $quantity_id = 1 [, array $options]])`
 
 Add a store product to the cart.  If there are product options, `$options` should be a name => value array of the product option selections.
 
-[method]boolean add_subscription_to_cart (int $subscription_plan_id , int $renew_subscription_id)[/method]
+## `boolean add_subscription_to_cart (int $subscription_plan_id , int $renew_subscription_id)`
 
 Add a subscription plan to the cart.  There can only be one subscription in the cart at one time so, if one already exists, it will be replaced.
 
 If the subscription is a renewal, pass the old subscription as `$renew_subscription_id`.
 
-[method]array get_subscription_cart ()[/method]
+## `array get_subscription_cart ()`
 
 Retrieve the subscription from the cart.  Returns FALSE if no subscription exists.
 
@@ -51,51 +51,51 @@ Subscriptions in the cart have an array with the following data:
 * *weight* (0)
 * *requires_shipping* (0)
 
-[method]void reduce_subscription_prices (array $allowed_subscription_plan_ids , float $discount [, boolean $is_percentage = FALSE])[/method]
+## `void reduce_subscription_prices (array $allowed_subscription_plan_ids , float $discount [, boolean $is_percentage = FALSE])`
 
 Reduce the subscription price.  This method is called by an active coupon in the checkout controller.  The subscription will only be updated if the first parameter is FALSE or contains the subscription_id of the subscription in the cart.
 
-[method]void update_subscription_trial (array $allowed_subscription_plan_ids , int $trial_days)[/method]
+## `void update_subscription_trial (array $allowed_subscription_plan_ids , int $trial_days)`
 
 Extend/create a free trial for a subscription.  This method is also called by an active coupon in the checkout controller.  The subscription will only be updated if the first parameter is FALSE or contains the subscription_id of the subscription in the cart.
 
-[method]void reduce_product_prices (array $allowed_product_ids , float $discount [, boolean $is_percentage = FALSE])[/method]
+## `void reduce_product_prices (array $allowed_product_ids , float $discount [, boolean $is_percentage = FALSE])`
 
 Reduce the cost of the product(s) in the cart.  This method is also called by an active coupon in the checkout controller.  Product(s) will only be affected if the first parameter is FALSE or if the product in the cart is in that array.
 
-[method]void reset_to_precoupon ()[/method]
+## `void reset_to_precoupon ()`
 
 Reset all subscription/product prices and trials to their pre-coupon state.  When a second coupon is used (or if a coupon is removed), this method provides an easy way to "reset" the cart and stop from summative coupon using.
 
-[method]array get_cart ()[/method]
+## `array get_cart ()`
 
 Retrieve the full contents of the cart, else FALSE.
 
-[method]boolean has_subscription ()[/method]
+## `boolean has_subscription ()`
 
 Does the cart contain a subscription?
 
-[method]boolean has_products ()[/method]
+## `boolean has_products ()`
 
 Does the cart contain any products?
 
-[method]float get_total ()[/method]
+## `float get_total ()`
 
 Retrieve the total cost of the cart for checkout today.  This does not include the subscription's recurring rates, but rather the initial charge of the subscription (if one exists).
 
-[method]void save_cart_to_db (array $cart_array)[/method]
+## `void save_cart_to_db (array $cart_array)`
 
 Save the shopping cart to the logged-in user's account.  This will load the shopping cart automatically on the user's next visit.
 
-[method]boolean user_login (array $user)[/method]
+## `boolean user_login (array $user)`
 
-When a user logs in, this method is called automatically by the [User model](/docs/developers/reference/user_model).  It loads a user's cart into the session, if one exists.  It also updates pricing to reflect the user's member group status.
+When a user logs in, this method is called automatically by the [User model](/docs/developers/reference/user_model.md).  It loads a user's cart into the session, if one exists.  It also updates pricing to reflect the user's member group status.
 
-[method]boolean update_quantity (string $rowid , int $quantity)[/method]
+## `boolean update_quantity (string $rowid , int $quantity)`
 
 Updates the quantity of a product in the cart.
 
-[method]boolean remove_from_cart (string $rowid)[/method]
+## `boolean remove_from_cart (string $rowid)`
 
 Arguments:
 
@@ -108,7 +108,7 @@ Arguments:
 
 * `$rowid` - The unique "rowid" from the $this->cart->contents() array
 
-[method]array calculate_totals ()[/method]
+## `array calculate_totals ()`
 
 Returns an array of calculations based on the content of the cart, for checkout.
 
@@ -129,6 +129,6 @@ Has the elements:
 * date *recurring_first_charge* - The date of the subscription's initial charge
 * date *recurring_last_charge* - The date of the subscription's last charge
 
-[method]boolean free_cart ()[/method]
+## `boolean free_cart ()`
 
 Is the current cart free?  No initial charges or recurring charges?

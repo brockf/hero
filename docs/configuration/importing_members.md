@@ -14,7 +14,7 @@ Heather,Jones,heather@gmail.com,59e0grgj,USA,2006-04-29
 ...
 ```
 
-You can list your member's email, first name, last name, password, and other [custom member data fields](/docs/configuration/custom_fields) (in the example above, Residence Country and signup date) in any order in this file.  What is important is that you have each member's data on a newline and each field separated by a comma, as is the format of all CSV files.
+You can list your member's email, first name, last name, password, and other [custom member data fields](/docs/configuration/custom_fields.md) (in the example above, Residence Country and signup date) in any order in this file.  What is important is that you have each member's data on a newline and each field separated by a comma, as is the format of all CSV files.
 
 Each member record must have an email address, last name, and first name in the CSV file.
 
@@ -22,7 +22,7 @@ If a username is not specified, the email address will be used.  If a password i
 
 ## Importing
 
-After you upload your CSV file, you will be able to label each field column in the CSV file with the corresponding member data field (e.g., email, last name, or any [custom member data field](/docs/configuration/custom_fields) you are using).
+After you upload your CSV file, you will be able to label each field column in the CSV file with the corresponding member data field (e.g., email, last name, or any [custom member data field](/docs/configuration/custom_fields.md) you are using).
 
 Then, simply press "Import" to complete the import of these users with the field assignments selected.
 

@@ -1,6 +1,6 @@
 # Global Plugins
 
-Like [global variables](/docs/designers/reference/global_variables), these plugins are available for use in any template.  Of course, they aren't the only plugins you can use across your templates - the [Smarty Template Engine](/docs/designers/smarty) has lots of built-in plugin functionality, as well.
+Like [global variables](/docs/designers/reference/global_variables.md), these plugins are available for use in any template.  Of course, they aren't the only plugins you can use across your templates - the [Smarty Template Engine](/docs/designers/smarty.md) has lots of built-in plugin functionality, as well.
 
 [tag]{custom_field}[/tag]
 
@@ -452,7 +452,7 @@ Create a thumbnail of an image and return the URL to this cached thumbnail image
 	</tbody>
 </table>
 
-This function actually wraps the [image_thumb helper](/docs/developers/reference/image_thumb_helper) function.  It works with your Hero default image processing settings configured in [config.php](/docs/configuration/advanced).
+This function actually wraps the [image_thumb helper](/docs/developers/reference/image_thumb_helper.md) function.  It works with your Hero default image processing settings configured in [config.php](/docs/configuration/advanced.md).
 
 > This function keeps the proportion of the image, using the "height" and "width" parameters as the maximums for the returned thumbnail.  So, if you resize an image with 100x100 width/height, you may get an image that is 100x80 or 95x100, etc.
 

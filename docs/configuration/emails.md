@@ -4,7 +4,7 @@ Most websites need to communicate with their visitors via email at least infrequ
 
 Emails are managed at *Configuration > Emails* in the control panel.
 
-Hero allows you to define and configure system emails based on any system action (i.e., [any one of the system hooks](/docs/developers/reference/app_hooks_library)).  At each hook point (e.g., "store_order", or "member_register"), different data is available.  This data can be included in the email subject/body dynamically by using tags like `{$member.first_name}`.
+Hero allows you to define and configure system emails based on any system action (i.e., [any one of the system hooks](/docs/developers/reference/app_hooks_library.md)).  At each hook point (e.g., "store_order", or "member_register"), different data is available.  This data can be included in the email subject/body dynamically by using tags like `{$member.first_name}`.
 
 All standard emails are pre-configured with your installation of Hero.  However, you may want to add new emails or customize existing emails.  This guide will show you how.
 
@@ -47,13 +47,13 @@ You should notice a few things right away:
 
 * Default emails use simple HTML to ensure proper formatting for the end user.
 * Default emails extend a global email template file, `email_layout.html`.
-* Email templates follow the same syntax and have the same available features as the [Smarty template code](/docs/designers/smarty) used in the frontend of the website.
+* Email templates follow the same syntax and have the same available features as the [Smarty template code](/docs/designers/smarty.md) used in the frontend of the website.
 
 These observations are helpful in managing automated system emails.  We'll cover the email variables and global email template later in this guide, but first we'll look at important configuration parameters for emails.
 
 ## Specifying additional criteria for email sending
 
-Because Hero binds emails to [system hooks](/docs/developers/reference/app_hooks_library) like *member_register*, *member_delete*, *subscription_new*, *subscription_charge*, *subscription_expire*, you aren't limited to blindly sending an email simply based on this hook.  You can also specify parameters that must be met before the email is sent.
+Because Hero binds emails to [system hooks](/docs/developers/reference/app_hooks_library.md) like *member_register*, *member_delete*, *subscription_new*, *subscription_charge*, *subscription_expire*, you aren't limited to blindly sending an email simply based on this hook.  You can also specify parameters that must be met before the email is sent.
 
 For example, with hooks that involve a single product (such as *store_order_product*), you can send an email only if the Product matches the product you specify in the email manager.  This allows you to send a specific email such as "How to begin using your new product X" for product X but not product Y.
 
@@ -98,7 +98,7 @@ You purchased:
 ... Your order has invoice #{$invoice.id} and was made on {$invoice.date|date_format:"%b %e, %Y"}...
 ```
 
-For an introduction to Smarty and all the possibilities of dynamic emails, [check out this guide](/docs/designers/smarty).
+For an introduction to Smarty and all the possibilities of dynamic emails, [check out this guide](/docs/designers/smarty.md).
 
 ## Editing or removing the global email template
 

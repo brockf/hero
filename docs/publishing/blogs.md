@@ -22,4 +22,4 @@ Blogs are configured with the following options:
 
 Blogs are an easy way for non-technical users to create content listings.  They can also be used within certain themes for different content listing purposes.
 
-However, it is true that a designer and developer who is customizing the templates may do better to [use the {content} template tag to retrieve content](/docs/designers/reference/publish) as opposed to a blog, in some cases.  A blog effect can be achieved by combining a `{content}` tag and [mapping a URL to your template](/docs/designers/mapping_urls).
+However, it is true that a designer and developer who is customizing the templates may do better to [use the {content} template tag to retrieve content](/docs/designers/reference/publish.md) as opposed to a blog, in some cases.  A blog effect can be achieved by combining a `{content}` tag and [mapping a URL to your template](/docs/designers/mapping_urls.md).

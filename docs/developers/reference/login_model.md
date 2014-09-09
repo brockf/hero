@@ -10,11 +10,11 @@ $this->load->model('users/login_model');
 
 ## Method Reference
 
-[method]int new_login (int $user_id)[/method]
+## `int new_login (int $user_id)`
 
 Record a login for a user.  Their IP address and browser information will automatically be retrieved, so it is assumed that the login record belongs to the person accessing the website at this time.
 
-[method]array get_logins ( [array $filters = array()])[/method]
+## `array get_logins ( [array $filters = array()])`
 
 Retrieve login records based on optional filters.
 

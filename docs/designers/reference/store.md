@@ -260,7 +260,7 @@ When viewing the cart via the `store_cart.thtml` template, or when using the `{c
 
 ## Example Product Page Template
 
-> This page uses Shadowbox to display the images, and includes the Shadowbox code [using the "head_includes" block method of inclusion](/docs/designers/includes).
+> This page uses Shadowbox to display the images, and includes the Shadowbox code [using the "head_includes" block method of inclusion](/docs/designers/includes.md).
 
 ```
 {extends file="layout.thtml"}

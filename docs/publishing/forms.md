@@ -2,7 +2,7 @@
 
 Forms provide the basic functionality of allowing your websites visitors to submit content to a database of responses, and possibly to an email address.  Forms are easily built by adding custom fields to an empty form, and specifying basic configuration details like the form *name* and the *email to send form results to*.
 
-> Developers: This is the same custom field engine that powers all other custom fields in Hero.  If you require a fieldtype for your form that is not already in the system, [create a new custom fieldtype](/docs/developers/forms).
+> Developers: This is the same custom field engine that powers all other custom fields in Hero.  If you require a fieldtype for your form that is not already in the system, [create a new custom fieldtype](/docs/developers/forms.md).
 
 ## Sending Form Results in an Email
 

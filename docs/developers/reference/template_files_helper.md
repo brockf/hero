@@ -4,7 +4,7 @@ Retrieve an alphabetical array of all template files within the current frontend
 
 ## Reference
 
-[method]array template_files ()[/method]
+## `array template_files ()`
 
 Return array of template files in frontend theme's folder (e.g., at `/themes/orchard/` if your theme is "orchard").
 

@@ -25,7 +25,7 @@ Optionally, you can add the following:
 * Helper files in: `/app/modules/modulename/helpers/`
 * Library files in: `/app/modules/modulename/libraries/`
 
-Developers have access to all standard [CodeIgniter](http://www.codeigniter.com/user_guide) libraries/helpers, as well as a number of additional libraries and helpers specific to Hero (documented in the Reference section of this guide).  For more information on how Hero works with CodeIgniter, [click here](/docs/developers/codeigniter).
+Developers have access to all standard [CodeIgniter](http://www.codeigniter.com/user_guide) libraries/helpers, as well as a number of additional libraries and helpers specific to Hero (documented in the Reference section of this guide).  For more information on how Hero works with CodeIgniter, [click here](/docs/developers/codeigniter.md).
 
 ## Module Definition & Installation File
 
@@ -56,7 +56,7 @@ Here, we've specified the current module name as well as version.  We've also ex
 
 > If there is a class conflict (e.g., your frontend controller class is `Modulename` and you can't use `Modulename` for the module definition class), you can use `Modulename_module` (e.g., "`Search_module`") as the class name for the module definition file.
 
-The [CodeIgniter superobject](/docs/developers/codeigniter) is now accessible within our module definition class at `$this->CI`.
+The [CodeIgniter superobject](/docs/developers/codeigniter.md) is now accessible within our module definition class at `$this->CI`.
 
 *No other code is required* in the module definition, but few modules will be that simple.
 
@@ -156,7 +156,7 @@ class Modulename extends Module {
 }
 ```
 
-Now, Smarty will look in this directory for function/block plugin files like `function.your_plugin.php`.  For more information on creating template plugins, via our [documentation on creating a template plugin](/docs/developers/template_plugins).
+Now, Smarty will look in this directory for function/block plugin files like `function.your_plugin.php`.  For more information on creating template plugins, via our [documentation on creating a template plugin](/docs/developers/template_plugins.md).
 
 ## Models
 
@@ -169,7 +169,7 @@ These model definition files are standard CodeIgniter model files.  They usually
 * Location (Libraries): `/app/modules/modulename/libraries/your_library.php`
 * Location (Helpers): `/app/modules/modulename/helpers/your_function_helper.php`
 
-These are also CodeIgniter-standard files, following typical [Hero + CodeIgniter structure](/docs/developers/codeigniter).  They can provide additional functionality to your module and Hero.
+These are also CodeIgniter-standard files, following typical [Hero + CodeIgniter structure](/docs/developers/codeigniter.md).  They can provide additional functionality to your module and Hero.
 
 ## Control panel controller
 
@@ -211,7 +211,7 @@ Frontend controller files give your module a presence in the frontend.  For exam
 
 Frontend controllers automatically map to URL's.  For example, if a controller called "test.php" existed at `/app/modules/test/test.php`, it would be accessible at `/modulename/test`, and any methods inside of it are accessible at `/modulename/test/method_name`.
 
-Besides these automatically-mapping URL's, you can map your controllers to arbitrary URL's by tapping into the [universal links model](/docs/developers/reference/link_model).  By registering a link with this model, you can map any URL path (such as `/my/fake/url/path`) to the module > controller > method of your choice.  The URL path will be passed to your method as its first argument.  For example, in the Publish module, URL's like `/my_article` are mapped to publish (module) > content (controller) > view (method).  The `content->view()` method takes one argument, `$url_path`, and looks up the content in the database using this `$url_path`.
+Besides these automatically-mapping URL's, you can map your controllers to arbitrary URL's by tapping into the [universal links model](/docs/developers/reference/link_model.md).  By registering a link with this model, you can map any URL path (such as `/my/fake/url/path`) to the module > controller > method of your choice.  The URL path will be passed to your method as its first argument.  For example, in the Publish module, URL's like `/my_article` are mapped to publish (module) > content (controller) > view (method).  The `content->view()` method takes one argument, `$url_path`, and looks up the content in the database using this `$url_path`.
 
 As a start, your frontend controller must extend the `Front_Controller` class and call its parent's constructor:
 
@@ -249,7 +249,7 @@ Frontend controllers will almost always assign variables and display templates w
 
 ### Frontend controllers and Smarty
 
-Hero uses the [Smarty Template Engine](/docs/designers/smarty) to display the web pages in the frontend.  Most of the advanced functionality of Smarty and Hero is covered in the [template plugins guide](/docs/developers/template_plugins).  Within controllers, using Smarty is simple.
+Hero uses the [Smarty Template Engine](/docs/designers/smarty.md) to display the web pages in the frontend.  Most of the advanced functionality of Smarty and Hero is covered in the [template plugins guide](/docs/developers/template_plugins.md).  Within controllers, using Smarty is simple.
 
 The Smarty library is accessed at `$this->smarty` and includes all the functionality covered in the [Smarty](http://www.smarty.net) documentation.
 
@@ -296,16 +296,16 @@ class Modulename extends Module {
 }
 ```
 
-Third, use the [template plugin development](/docs/developers/template_plugins) documentation to create template plugin files in this folder.  These functions will immediately be available as template plugins site-wide in all your templates.
+Third, use the [template plugin development](/docs/developers/template_plugins.md) documentation to create template plugin files in this folder.  These functions will immediately be available as template plugins site-wide in all your templates.
 
 ## Automatic Processes and Cronjobs
 
-If your module requires an automatic process or a cronjob be run on a scheduled basis, check out the documentation for using Hero's built-in [cronjob architecture](/docs/developers/cronjobs).
+If your module requires an automatic process or a cronjob be run on a scheduled basis, check out the documentation for using Hero's built-in [cronjob architecture](/docs/developers/cronjobs.md).
 
 ## Resources
 
-This guide has described the basic structure for modules, but what about the code that integrates and builds on the platform?  To find out more about tapping into Hero models and libraries, view the Reference section of this guide.  Also, check out [the section on CodeIgniter](/docs/developers/codeigniter) to see all of the versatile libraries that you have at your disposal.
+This guide has described the basic structure for modules, but what about the code that integrates and builds on the platform?  To find out more about tapping into Hero models and libraries, view the Reference section of this guide.  Also, check out [the section on CodeIgniter](/docs/developers/codeigniter.md) to see all of the versatile libraries that you have at your disposal.
 
-Of course, you should also read the Hero developer [standards and practices](/docs/developers/standards) so that your module can be easily shared with others.
+Of course, you should also read the Hero developer [standards and practices](/docs/developers/standards.md) so that your module can be easily shared with others.
 
 Best of luck with developing on the best web platform available!

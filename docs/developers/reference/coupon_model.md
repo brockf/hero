@@ -13,23 +13,23 @@ $this->load->model('coupons/coupon_model');
 
 ## Method Reference
 
-[method]void has_coupons ()[/method]
+## `void has_coupons ()`
 
 Are there any coupons in this installation of Hero?  This is useful when determining whether to show the promotional code box, for example.
 
-[method]int count_uses ($coupon_id)[/method]
+## `int count_uses ($coupon_id)`
 
 Count how many uses there have been of this coupon.
 
-[method]int customer_usage (int $coupon_id , int $customer_id)[/method]
+## `int customer_usage (int $coupon_id , int $customer_id)`
 
 How many times has this particular customer used this coupon?
 
-[method]array get_coupon (int $id)[/method]
+## `array get_coupon (int $id)`
 
 Return details about a particular coupon, in the same format of `get_coupons()`
 
-[method]array get_coupons ( [array $filters = array()])[/method]
+## `array get_coupons ( [array $filters = array()])`
 
 Retrieve details about one or more particular coupons based on optional filtering.
 
@@ -42,30 +42,30 @@ Possible Filters:
 * date *end_date* - Start date of coupon must be before or equal to this date
 * int *type* - Type of coupon (1 = Price Reduction, 2 = Free Trial, 3 = Free Shipping)
 
-[method]int new_coupon (string $name , string $code , string $start_date , string $end_date , int $max_uses , bool $customer_limit , int $type_id , int $reduction_type , string $reduction_amt , int $trial_length , string $min_amt , array $products , array $plans , array $ship_rates)[/method]
+## `int new_coupon (string $name , string $code , string $start_date , string $end_date , int $max_uses , bool $customer_limit , int $type_id , int $reduction_type , string $reduction_amt , int $trial_length , string $min_amt , array $products , array $plans , array $ship_rates)`
 
 Create a new coupon in the system.
 
-[method]boolean update_coupon (int $coupon_id , string $name , string $code , string $start_date , string $end_date , int $max_uses , bool $customer_limit , int $type_id , int $reduction_type , string $reduction_amt , int $trial_length , string $min_amt , array $products , array $plans , array $ship_rates)[/method]
+## `boolean update_coupon (int $coupon_id , string $name , string $code , string $start_date , string $end_date , int $max_uses , bool $customer_limit , int $type_id , int $reduction_type , string $reduction_amt , int $trial_length , string $min_amt , array $products , array $plans , array $ship_rates)`
 
 Update an existing coupon.
 
-[method]bool delete_coupon (int $id)[/method]
+## `bool delete_coupon (int $id)`
 
 Delete an existing coupon.
 
-[method]object get_coupon_types ()[/method]
+## `object get_coupon_types ()`
 
 Returns a database object of a database query for coupon types.
 
-[method]boolean validation (boolean $editing)[/method]
+## `boolean validation (boolean $editing)`
 
 Validates a POST submission for control panel management of coupons.
 
-[method]void save_related (int $coupon_id , string $table , field $field , array $items)[/method]
+## `void save_related (int $coupon_id , string $table , field $field , array $items)`
 
 Save related products/subscriptions (by ID) to a coupon.
 
-[method]array get_related (id $coupon_id , string $table , string $field)[/method]
+## `array get_related (id $coupon_id , string $table , string $field)`
 
 Retrieve related products/subscriptions (by ID) to a coupon.

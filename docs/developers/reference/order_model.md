@@ -19,7 +19,7 @@ $this->load->model('store/order_model');
 
 ## Method Reference
 
-[method]boolean process_order (int $charge_id , int $user_id , array $totals [, array $shipping_address = FALSE])[/method]
+## `boolean process_order (int $charge_id , int $user_id , array $totals [, array $shipping_address = FALSE])`
 
 Process an order passed from the checkout controller.
 
@@ -27,10 +27,10 @@ Arguments:
 
 * `$charge_id` - The `invoice_id`, referenced to the `orders` table.
 * `$user_id` - The user's ID
-* `$totals` - An array of charge totals from [the cart model](/docs/developers/reference/cart_model)'s `calculate_totals()`
+* `$totals` - An array of charge totals from [the cart model](/docs/developers/reference/cart_model.md)'s `calculate_totals()`
 * `$shipping_address` - A standard address array for shipping, if available (default: FALSE)
 
-[method]array get_order (int $order_details_id [, string $field_to_match = 'order_details_id'])[/method]
+## `array get_order (int $order_details_id [, string $field_to_match = 'order_details_id'])`
 
 Retrieve basic details about a specific order.  This does not include the particular products within an order.
 
@@ -41,7 +41,7 @@ Each order returns an array with the following data:
 * *affiliate*
 * *shipping* (if available, an array with a shipping address in it)
 
-[method]array get_order_products ( [array $filters = array()])[/method]
+## `array get_order_products ( [array $filters = array()])`
 
 Retrieve all orders based on optional filters.
 
@@ -97,10 +97,10 @@ Each returned record has the following data:
 * *shipping_address* (an array, if applicable)
 * *billing_address* (an array, if applicable)
 
-[method]boolean mark_as_shipped (int $order_products_id)[/method]
+## `boolean mark_as_shipped (int $order_products_id)`
 
 Mark a particular product within an order as shipped.
 
-[method]void mark_as_not_shipped (int $order_products_id)[/method]
+## `void mark_as_not_shipped (int $order_products_id)`
 
 Mark a particular product within an order as NOT shipped.

@@ -2,7 +2,7 @@
 
 Hooks are system actions such as *store_order*, *member_registration*, and *subscription_new* that serve as possible triggers for emails or method/function calls.
 
-All users, even novice users, will configure for emails to be sent by adding/editing emails attached to hooks at *Configuration > Emails* in the control panel.  [Learn more about configuring emails](/docs/configuration/emails).
+All users, even novice users, will configure for emails to be sent by adding/editing emails attached to hooks at *Configuration > Emails* in the control panel.  [Learn more about configuring emails](/docs/configuration/emails.md).
 
 Developers and advanced users can use the App Hooks library to extend Hero's functionality beyond what it is today by tying it into third-party software, weaving new routines into the software, etc.  You can bind any `class->method()` call to a hook, but you can also bind any simple `function()` call as long as you specify the `$filename` during your `bind()` creation.
 
@@ -69,7 +69,7 @@ $this->load->library('app_hooks');
 
 ## Method Reference
 
-[method]int bind (string $hook , string $class , string $method , string $filename)[/method]
+## `int bind (string $hook , string $class , string $method , string $filename)`
 
 Bind a class/method or function to a hook.  These classes can be CodeIgniter standard models or libraries, but can also be outside classes located in other PHP files.  If you are only using a simple `function()` call that is not part of a class, set `$class` to FALSE.
 
@@ -88,11 +88,11 @@ $this->my_library->create_user_in_my_app($user_id, $password);
 
 Note that two arguments were sent to your method.  These arguments are specified when triggering the hook and differ from hook to hook.  In this case, for a member registration, it makes sense to pass the user's system ID and their password (something you cannot retrieve from a `user_model->get_user()` call).
 
-[method]array get_hooks ()[/method]
+## `array get_hooks ()`
 
 Return an alphabetically sorted array of all hooks.
 
-[method]array get_hook (string $name)[/method]
+## `array get_hook (string $name)`
 
 Return the configuration of one particular hook.  Configuration data:
 
@@ -102,18 +102,18 @@ Return the configuration of one particular hook.  Configuration data:
 * **email_data** - An array of all potential data types available in emails (none, one, or more of "member", "product", "order", "invoice", "subscription", and "subscription_plan").
 * **other_email_data** - One off additional variables available in the emails (e.g., 'new_password' during a password change).  These are not standard variables included in one of the data types above, but unique to specific system actions.
 
-[method]int register (string $name , string $description , array $email_data , array $other_email_data)[/method]
+## `int register (string $name , string $description , array $email_data , array $other_email_data)`
 
-Create a new hook in the system.  Configuration details are equivalent to the `get_hook()` method.  This method is likely called in your [module definition file](/docs/developers/modules) as part of an installation/upgrade routine.
+Create a new hook in the system.  Configuration details are equivalent to the `get_hook()` method.  This method is likely called in your [module definition file](/docs/developers/modules.md) as part of an installation/upgrade routine.
 
 ```
 // we are accessing the CI superobject via $this->CI because this example comes from a module definition file
 $this->CI->app_hooks->register('subscription_renewal_failure','A subscription charge fails.',array('member','subscription','subscription_plan'));
 ```
 
-[method]boolean data (string $data , int $id)[/method]
+## `boolean data (string $data , int $id)`
 
-Set email data using a general datetype when calling a trigger.  This method is called potentially multiple times before a hook is triggered.  It is used to initiate the loading of standard data variables into the hook's email variable options.  For example, by simply specify `$this->app_hooks->data('member', $member_id);` (assuming that member ID is valid), we are making variables like *{$member.username}*, *{$member.email}*, *{$member.first_name}*, and *{$member.last_name}* available to emails that are sent with this hook.  For more information on emails, [check out the guide to configuring emails](/docs/configuration/emails).
+Set email data using a general datetype when calling a trigger.  This method is called potentially multiple times before a hook is triggered.  It is used to initiate the loading of standard data variables into the hook's email variable options.  For example, by simply specify `$this->app_hooks->data('member', $member_id);` (assuming that member ID is valid), we are making variables like *{$member.username}*, *{$member.email}*, *{$member.first_name}*, and *{$member.last_name}* available to emails that are sent with this hook.  For more information on emails, [check out the guide to configuring emails](/docs/configuration/emails.md).
 
 ```
 $this->app_hooks->data('member', $user_id);
@@ -121,7 +121,7 @@ $this->app_hooks->data('invoice', $invoice_id);
 $this->app_hooks->trigger('paid_invoice');
 ```
 
-[method]void data_var (string $name , string $value)[/method]
+## `void data_var (string $name , string $value)`
 
 Specify a single variable to add to the email data accumulating before a hook call with `trigger()`.  These are one-off variables unique to a hook, not standard data types like *member*, *invoice*, or *subscription*.
 
@@ -131,7 +131,7 @@ $this->app_hooks->data_var('new_password', $new_password);
 $this->app_hooks->trigger('change_password');
 ```
 
-[method]void trigger (string $name [, $arguments ])[/method]
+## `void trigger (string $name [, $arguments ])`
 
 Trigger a hook.  This will send out all emails that match the hooks current data parameters, and also trigger the calling of methods/functions bound to this hook.  If additional arguments are passed, they will be passed along to the methods/functions bound to this hook.
 
@@ -152,6 +152,6 @@ $CI->app_hooks->trigger('member_change_password', $user_id, $new_password);
 $CI->app_hooks->reset();
 ```
 
-[method]void reset ()[/method]
+## `void reset ()`
 
 Reset the current data being attached to a hook call.

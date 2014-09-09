@@ -10,15 +10,15 @@ $this->load->model('states_model');
 
 ## Method Reference
 
-[method]string GetStateByCode (string $state)[/method]
+## `string GetStateByCode (string $state)`
 
 Retrieve a single state's data by it's 2-letter code.
 
-[method]string GetStateByName (string $state)[/method]
+## `string GetStateByName (string $state)`
 
 Retrieve a single state's data by it's full name.
 
-[method]array GetStates ()[/method]
+## `array GetStates ()`
 
 Retrieve an array of all states/provinces, alphabetically sorted.
 
@@ -28,7 +28,7 @@ Each state in the array has the keys:
 * *code* - 2-letter abbreviation
 * *name*
 
-[method]array GetCountries ()[/method]
+## `array GetCountries ()`
 
 Retrieve an array of all countries, alphabetically sorted.
 

@@ -58,7 +58,7 @@ The only modifiers available to your in your Hero templates are the standard Sma
 
 ## The Four Places Template Plugins are Defined
 
-As mentioned previously in the [section on Smarty](/docs/designers/smarty) and the [introduction for designers](/docs/designers/index), *template plugins* are PHP functions in PHP files.  But where are these files?  If you are the average designer using Hero, it doesn't really matter.  But if you want to see the inner workings of a template function you are using or plan on [writing your own template plugins as a developer](/docs/developers/template_plugins), this is important.
+As mentioned previously in the [section on Smarty](/docs/designers/smarty.md) and the [introduction for designers](/docs/designers/index.md), *template plugins* are PHP functions in PHP files.  But where are these files?  If you are the average designer using Hero, it doesn't really matter.  But if you want to see the inner workings of a template function you are using or plan on [writing your own template plugins as a developer](/docs/developers/template_plugins.md), this is important.
 
 ### Smarty's Standard Plugins
 
@@ -70,7 +70,7 @@ Certain plugins are unique to Hero (i.e., not included with Smarty) but so gener
 
 ### Modules
 
-Modules have the option of defining their own template plugins within their module definition file.  They are typically located in the `/template_plugins/` folder of the module's folder at `/app/modules/`.  For more information on defining your own template plugins in your module, check out the documentation on [module development](/docs/developers/modules) and [writing template plugins](/docs/developers/template_plugins).
+Modules have the option of defining their own template plugins within their module definition file.  They are typically located in the `/template_plugins/` folder of the module's folder at `/app/modules/`.  For more information on defining your own template plugins in your module, check out the documentation on [module development](/docs/developers/modules.md) and [writing template plugins](/docs/developers/template_plugins.md).
 
 ### Themes
 

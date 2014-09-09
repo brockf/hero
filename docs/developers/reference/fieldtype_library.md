@@ -8,7 +8,7 @@ The Fieldtype library exists for three purposes:
 
 Because this library has both "global" and "local" functions, it can be a bit confusing.  The examples in this guide should clear this up.
 
-The vast majority of interaction with this library will be done secondarily through the [Form Builder library](/docs/developers/reference/form_builder_library).  Direct calls to these methods are unlikely by third-party developers.
+The vast majority of interaction with this library will be done secondarily through the [Form Builder library](/docs/developers/reference/form_builder_library.md).  Direct calls to these methods are unlikely by third-party developers.
 
 ## Initialization
 
@@ -18,7 +18,7 @@ $this->load->library('custom_fields/fieldtype');
 
 ## Method Reference
 
-[method]object create ($type)[/method]
+## `object create ($type)`
 
 Create and return an object of a specific fieldtype.  Once created, the fieldtype object can be be manipulated.
 
@@ -29,7 +29,7 @@ $field->name('Story')
 	  ->validators(array('max_length[1000]'));
 ```
 
-[method]object load (int|array $field_data)[/method]
+## `object load (int|array $field_data)`
 
 Pass this method either an ID of an existing custom field (i.e., a `$custom_field_id`) or an array of a single custom field's configuration as returned by `custom_fields_model->get_custom_fields()`, and it will return the fieldtype object just like `create()`.
 
@@ -46,7 +46,7 @@ else {
 }
 ```
 
-[method]boolean load_type (string $type)[/method]
+## `boolean load_type (string $type)`
 
 Load a particular fieldtype into memory.  This method is called automatically if a fieldtype object is being created but the type has not been defined.  However, you may want to call it independently if you are trying to access properties of a custom fieldtype, such as it's `$description`.
 
@@ -68,11 +68,11 @@ foreach ($types as $type) {
 }
 ```
 
-[method]boolean load_all_types ()[/method]
+## `boolean load_all_types ()`
 
 Load all possible fieldtypes from `/app/modules/custom_fields/libraries/fieldtypes/` as objects of the Fieldtype library with one call.
 
-[method]array get_fieldtype_options ()[/method]
+## `array get_fieldtype_options ()`
 
 Retrieve an array of all possible fieldtypes:
 
@@ -84,7 +84,7 @@ array(
 );
 ```
 
-[method]string db_column ()[/method]
+## `string db_column ()`
 
 Return the MySQL column type for a specific fieldtype.  Useful when adjusting a database table schema based on the addition of a new custom field.
 
@@ -96,19 +96,19 @@ $db_type = $this->fieldtype->file_upload->db_column();
 $this->db->query('ALTER TABLE `my_table` ADD COLUMN `my_new_field` ' . $db_type);
 ```
 
-[method]object id (string $id)[/method]
+## `object id (string $id)`
 
 Set the id of a field.  Returns the field object for method chaining.
 
-[method]object type (string $type)[/method]
+## `object type (string $type)`
 
 Set the type of a field.  Returns the field object for method chaining.
 
-[method]object default_value (string|array $default)[/method]
+## `object default_value (string|array $default)`
 
 Set the default value of a field.  Returns the field object for method chaining.
 
-[method]object options (array $options)[/method]
+## `object options (array $options)`
 
 Set the options array of a field.  Returns the field object for method chaining.  Array format:
 
@@ -120,51 +120,51 @@ array(
 );
 ```
 
-[method]object data (array $data)[/method]
+## `object data (array $data)`
 
 Set additional data of a field.  Data is used for atypical field attributes (e.g., "allowed_filetypes" for file_upload fields).  Returns the field object for method chaining.
 
-[method]object value (string|array|boolean $value)[/method]
+## `object value (string|array|boolean $value)`
 
 Set the value of a field.  Returns the field object for method chaining.
 
-[method]object label (string $label)[/method]
+## `object label (string $label)`
 
 Set the label of a field.  Returns the field object for method chaining.
 
-[method]object name (string $name)[/method]
+## `object name (string $name)`
 
 Set the name of a field.  Returns the field object for method chaining.
 
-[method]object width (string $width)[/method]
+## `object width (string $width)`
 
 Set the width of a field.  Returns the field object for method chaining.
 
-[method]object help (string $help)[/method]
+## `object help (string $help)`
 
 Set the help text of a field.  Returns the field object for method chaining.
 
-[method]object placeholder (string $placeholder)[/method]
+## `object placeholder (string $placeholder)`
 
 Set the placeholder text of a field.  Returns the field object for method chaining.
 
-[method]object required (boolean $required)[/method]
+## `object required (boolean $required)`
 
 Set to TRUE to make the field required upon submission/validation.  Returns the field object for method chaining.
 
-[method]object validators (array $validators)[/method]
+## `object validators (array $validators)`
 
 Specify an array of validators.  These are in the format of [CodeIgniter's Form Validation library](http://codeigniter.com/user_guide/libraries/form_validation.html).  Returns the field object for method chaining.
 
-[method]object li_attribute (string $name , string $value)[/method]
+## `object li_attribute (string $name , string $value)`
 
 Specify a name/value attribute to be used with the returned `<li>` element when displaying a field.  Returns the field object for method chaining.
 
-[method]object field_class (string $name)[/method]
+## `object field_class (string $name)`
 
 Specify an additional class to be assigned to the field's HTML element when displaying a field.  Returns the field object for method chaining.
 
-[method]string compile_attributes (array $attributes)[/method]
+## `string compile_attributes (array $attributes)`
 
 A helper method for fieldtype libraries, this method will take a bunch of attributes and turn them into a nice string like so:
 

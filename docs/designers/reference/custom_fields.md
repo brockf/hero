@@ -1,6 +1,6 @@
 # Custom Fields
 
-Custom form fields are display in various areas of Hero.  Most of the time, they are used in the control panel to display content publishing forms or store product editing forms.  However, they are also used in the frontend of websites.  Primarily, they are used to display the [forms](/docs/publishing/forms) created in the control panel and in [registration forms](/docs/designers/reference/members) if the user has created custom member data fields.
+Custom form fields are display in various areas of Hero.  Most of the time, they are used in the control panel to display content publishing forms or store product editing forms.  However, they are also used in the frontend of websites.  Primarily, they are used to display the [forms](/docs/publishing/forms.md) created in the control panel and in [registration forms](/docs/designers/reference/members.md) if the user has created custom member data fields.
 
 When custom fields are available in a template, they are typically available in a template variable called `{$custom_fields}`.  It is expected that the template will iterate through this array and display each custom field in the template.  But how is this done?  Well, it's actually quite easy.  Simply send each array item, containing configuration data for the field like "name", "type", "options", etc., to the `{custom_field}` template plugin (documented below).
 
@@ -43,7 +43,7 @@ As you can see, the code above does a few simple things:
 
 ## Custom Field Variables
 
-Each custom field item contains all of the data associated with the custom field's fieldtype (e.g., "checkbox", "text", "textarea", "radio", and any other custom fieldtypes [created by a developer](/docs/developers/forms)).  This data is unique to the fieldtype and not important for a designer when displaying custom fields.
+Each custom field item contains all of the data associated with the custom field's fieldtype (e.g., "checkbox", "text", "textarea", "radio", and any other custom fieldtypes [created by a developer](/docs/developers/forms.md)).  This data is unique to the fieldtype and not important for a designer when displaying custom fields.
 
 However, some variables are important for the designer because you must display these manually.  In essence, they aren't part of the form field itself displayed by `{custom_field}` (documented below).
 
@@ -112,7 +112,7 @@ Display the form field for a custom field.
 		<tr>
 			<td>default</td>
 			<td>No</td>
-			<td>You can override the field's default value [configured in the control panel](/docs/configuration/custom_fields) by passing this parameter.  Particularly useful for eliminating all default values when you don't want to re-populate a form element that has been left blank (just pass "FALSE" for this parameter).</td>
+			<td>You can override the field's default value [configured in the control panel](/docs/configuration/custom_fields.md) by passing this parameter.  Particularly useful for eliminating all default values when you don't want to re-populate a form element that has been left blank (just pass "FALSE" for this parameter).</td>
 		</tr>
 	</tbody>
 </table>

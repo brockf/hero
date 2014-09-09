@@ -1,6 +1,6 @@
 # Menus
 
-Hero gives any user the ability to drag and drop their site's pages and content into a dynamic, and two-tiered menu ([learn how to use the Menu Manager](/docs/publishing/menus)).  Then, in your templates, you simply call the `{menu}` template plugin (specifying which menu to load) and you get a complete `<ul>` formatted menu, like the one below.
+Hero gives any user the ability to drag and drop their site's pages and content into a dynamic, and two-tiered menu ([learn how to use the Menu Manager](/docs/publishing/menus.md)).  Then, in your templates, you simply call the `{menu}` template plugin (specifying which menu to load) and you get a complete `<ul>` formatted menu, like the one below.
 
 ## Example Generated Menu
 
@@ -53,17 +53,17 @@ In order to give you the best opportunities for styling this menu with *CSS styl
 * The active link's parent `<li>` element has an "active" class.
 * If a link has child links, the embedded `<ul>` list has a "children" class.
 * You can pass `id` and `class` parameters to the `{menu}` function (documented below) to assign these attributes to the main `<ul>` menu element.
-* When [building your menu in the control panel](/docs/publishing/menus), you can specify an unlimited number of classes in the "Edit" pane for each menu item.  These are seen in the above example for each link item (e.g., "current", "app", and "archives").  In this example, they are being used to add unique background images for each link item.
+* When [building your menu in the control panel](/docs/publishing/menus.md), you can specify an unlimited number of classes in the "Edit" pane for each menu item.  These are seen in the above example for each link item (e.g., "current", "app", and "archives").  In this example, they are being used to add unique background images for each link item.
 
 ## Child Sub-menus
 
-If you have created a sub-menu for a link item [when creating your menu in the control panel](/docs/publishing/menus), these will be exported as embedded `<ul>` lists with a class of "children".
+If you have created a sub-menu for a link item [when creating your menu in the control panel](/docs/publishing/menus.md), these will be exported as embedded `<ul>` lists with a class of "children".
 
 If you want to show these as a dropdown menu, you will need to hide all `ul.children` elements and then use JavaScript to show the sub-menus when hovering over the main link.
 
 ## Showing/hiding certain links based on member group status
 
-You can configure which member groups can see a link, or whether the link is only available for logged in/logged out users, when [creating your menu in the control panel](/docs/publishing/menus).
+You can configure which member groups can see a link, or whether the link is only available for logged in/logged out users, when [creating your menu in the control panel](/docs/publishing/menus.md).
 
 ## Template Plugin
 

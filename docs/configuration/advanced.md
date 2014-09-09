@@ -2,7 +2,7 @@
 
 Although not "advanced" per se, the following configurations can only be made by manually editing `/app/config/config.php`.
 
-> The Hero configuration file is an extended version of the [CodeIgniter](/docs/developers/codeigniter) configuration file.  Many options remain unchanged and so, if you are familiar with CodeIgniter, this documentation will largely be a review for you.
+> The Hero configuration file is an extended version of the [CodeIgniter](/docs/developers/codeigniter.md) configuration file.  Many options remain unchanged and so, if you are familiar with CodeIgniter, this documentation will largely be a review for you.
 
 ### Base URL
 
@@ -103,7 +103,7 @@ $config['secure_modules'] = array('users','checkout');
 
 ### Enable the Profiler
 
-When set to TRUE, the profiler will display a list of all database queries, memory usage, execution time, etc.  Very useful for debugging and performance checking for developers.  [Click here for more information on the debug/profile mode](/docs/developers/profiling).
+When set to TRUE, the profiler will display a list of all database queries, memory usage, execution time, etc.  Very useful for debugging and performance checking for developers.  [Click here for more information on the debug/profile mode](/docs/developers/profiling.md).
 
 ```
 // if enabled, the debugger will display a profile of all queries, memory usage, and other

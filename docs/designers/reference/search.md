@@ -1,6 +1,6 @@
 # Search Forms and Results
 
-Hero includes a [powerful search feature](/docs/configuration/search) that can perform a fulltext keyword search of all your site's content and store products.  Creating the search forms and customizing the results page is just as easy.
+Hero includes a [powerful search feature](/docs/configuration/search.md) that can perform a fulltext keyword search of all your site's content and store products.  Creating the search forms and customizing the results page is just as easy.
 
 ## Important URL's
 
@@ -132,8 +132,8 @@ The following data is available for each search result item:
 			<td>Either "content" or "product", depending on what type of result this matching item is.</td>
 		</tr>
 		<tr>
-			<td colspan="2">If the `{$result_type}` is a content item, all [content item variables](/docs/designers/reference/publish) are available.<br />
-						    If the `{$result_type}` is a product, all [store product variables](/docs/designers/reference/store) are available.<br />
+			<td colspan="2">If the `{$result_type}` is a content item, all [content item variables](/docs/designers/reference/publish.md) are available.<br />
+						    If the `{$result_type}` is a product, all [store product variables](/docs/designers/reference/store.md) are available.<br />
 						    You can see this switching in the example search results template on this page.</td>
 		</tr>
 		<tr>

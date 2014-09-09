@@ -1,6 +1,6 @@
 # Custom Fields
 
-Custom fields are one of the core factors in Hero's versatility.  They allow you to extend the data collected and published with Hero in many areas of the application without any programming knowledge or web development experience.  (And, developers, they allow you to [easily build forms](/docs/developers/forms) with the [Form Builder library](/docs/developers/reference/form_builder_library).)
+Custom fields are one of the core factors in Hero's versatility.  They allow you to extend the data collected and published with Hero in many areas of the application without any programming knowledge or web development experience.  (And, developers, they allow you to [easily build forms](/docs/developers/forms.md) with the [Form Builder library](/docs/developers/reference/form_builder_library.md).)
 
 Essentially, custom fields are HTML form elements such as dropdowns, textboxes, or file uploads that are added to forms and datasets.  By default, the following custom fieldtypes exist:
 
@@ -17,7 +17,7 @@ Essentially, custom fields are HTML form elements such as dropdowns, textboxes, 
 * *File Upload* - Upload a file (e.g., <input type="file" name="demo" />)
 * *Content Relationship* - Link the entry to a content item in your database.  For example, members could link their accounts to a list of "Schools" in your database, or you could link content of one type (e.g., "Sports Teams") to an item of another content type (e.g., "Leagues").
 
-> Developers, want to add more fieldtypes to the system?  You can easily add cross-application fieldtypes by [defining a new *fieldtype class that extends the Fieldtype library](/docs/developers/forms).
+> Developers, want to add more fieldtypes to the system?  You can easily add cross-application fieldtypes by [defining a new *fieldtype class that extends the Fieldtype library](/docs/developers/forms.md).
 
 Each field can be *validated* upon submission based on configurations you specify when adding/editing the custom field.  For example, you could verify that the text input is alphanumeric, or a valid email address, and you could verify that the file uploaded is in PDF format.  There are numerous validation options for each fieldtype.
 
@@ -41,7 +41,7 @@ These custom fields are modified at *Configuration > Custom Fields > Product Dat
 
 Product custom fields are attached to the products you create in the control panel.
 
-For example, if you like to organize your health food products by the astrological signs that would most benefit by them, you could create a select dropdown field with each astrological sign as an option.  Then, when adding/editing products, you can specify the astrological sign linked with each product.  This data can then be displayed to your visitors on the product page or in a store collection listing.  [See how to include this data in your store pages](/docs/designers/reference/store).
+For example, if you like to organize your health food products by the astrological signs that would most benefit by them, you could create a select dropdown field with each astrological sign as an option.  Then, when adding/editing products, you can specify the astrological sign linked with each product.  This data can then be displayed to your visitors on the product page or in a store collection listing.  [See how to include this data in your store pages](/docs/designers/reference/store.md).
 
 ## Store Collection Custom Fields
 
@@ -51,8 +51,8 @@ Just like product custom fields, you can specify custom fields linked with store
 
 ## Form Custom Fields
 
-Hero includes an easy-to-use form builder in the control panel at *Publish > Forms*.  Each form is comprised of a series of custom fields built with the fieldtypes listed in this guide (and any custom fieldtypes added by developers).  [Learn more about how forms are built in the control panel](/docs/publishing/forms).
+Hero includes an easy-to-use form builder in the control panel at *Publish > Forms*.  Each form is comprised of a series of custom fields built with the fieldtypes listed in this guide (and any custom fieldtypes added by developers).  [Learn more about how forms are built in the control panel](/docs/publishing/forms.md).
 
 ## Content Custom Fields
 
-Content types are also largely comprised of a series of custom fields defined with these fieldtypes.  This gives you complete power over the content you are managing and publishing with Hero.  [Learn more about defining content types and publishing content](/docs/publishing/content).
+Content types are also largely comprised of a series of custom fields defined with these fieldtypes.  This gives you complete power over the content you are managing and publishing with Hero.  [Learn more about defining content types and publishing content](/docs/publishing/content.md).

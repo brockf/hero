@@ -16,18 +16,18 @@ $this->load->library('notices');
 
 ## Method Reference
 
-[method]boolean SetError (string $message)[/method]
+## `boolean SetError (string $message)`
 
 Set an error to be displayed upon the next page load.
 
-[method]array GetErrors (boolean $clear)[/method]
+## `array GetErrors (boolean $clear)`
 
 Return an HTML formatted string of all errors (in your view, most likely).
 
-[method]boolean SetNotice (string $message)[/method]
+## `boolean SetNotice (string $message)`
 
 Set a notice to be displayed upon the next page load.
 
-[method]array GetNotices (boolean $clear)[/method]
+## `array GetNotices (boolean $clear)`
 
 Return an HTML formatted string of all notices (in your view, most likely).

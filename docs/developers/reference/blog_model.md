@@ -13,35 +13,35 @@ $this->load->model('blogs/blog_model');
 
 ## Method Reference
 
-[method]int new_blog (int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = FALSE [, string $sort_dir = FALSE [, boolean $auto_trim = FALSE [, string $template = 'blog.html' [, int $per_page = '25' [, array $privileges = array()]]]]]]]]])[/method]
+## `int new_blog (int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = FALSE [, string $sort_dir = FALSE [, boolean $auto_trim = FALSE [, string $template = 'blog.html' [, int $per_page = '25' [, array $privileges = array()]]]]]]]]])`
 
 Create a new blog/archive listing with these parameters.
 
-[method]void update_blog (int $blog_id , int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = FALSE [, string $sort_dir = FALSE [, boolean $auto_trim = FALSE [, string $template = 'blog.html' [, int $per_page = '25' [, array $privileges = array()]]]]]]]]])[/method]
+## `void update_blog (int $blog_id , int $content_type_id , string $title , string $url_path , string $description [, array $filter_author = array() [, array $filter_topic = array() [, string $summary_field = FALSE [, string $sort_field = FALSE [, string $sort_dir = FALSE [, boolean $auto_trim = FALSE [, string $template = 'blog.html' [, int $per_page = '25' [, array $privileges = array()]]]]]]]]])`
 
 Update an existing blog/archive with these parameters.  Specify the blog with `$blog_id`.
 
-[method]boolean delete_blog (int $blog_id)[/method]
+## `boolean delete_blog (int $blog_id)`
 
 Delete an existing blog.
 
-[method]int get_blog_id (string $url_path)[/method]
+## `int get_blog_id (string $url_path)`
 
 Return the ID of a blog based on its URL path (used in the blogs controller).
 
-[method]array get_blog_content (int $blog_id [, int $page = 0])[/method]
+## `array get_blog_content (int $blog_id [, int $page = 0])`
 
 Retrieve all content (via `content_model->get_contents()`) for a blog.
 
-[method]string get_blog_pagination (int $blog_id , string $base_url [, int $page = 0])[/method]
+## `string get_blog_pagination (int $blog_id , string $base_url [, int $page = 0])`
 
 Retrieve an HTML-formatted string of blog pagination links.  The `$base_url` is the full URL to the blog on which pagination query strings will be built.
 
-[method]array get_blog (int $blog_id)[/method]
+## `array get_blog (int $blog_id)`
 
 Retrieve details about a single blog by ID.
 
-[method]array get_blogs ( [array $filters = array()])[/method]
+## `array get_blogs ( [array $filters = array()])`
 
 Retrieve details about a blog or blog based on optional filters.
 
@@ -54,7 +54,7 @@ Possible Filters:
 Each blog will be returned as an array with the following data:
 
 * *id*
-* *link_id* - Corresponds to the [link model](/docs/developers/reference/link_model)
+* *link_id* - Corresponds to the [link model](/docs/developers/reference/link_model.md)
 * *title*
 * *description*
 * *filter_authors* - An array of authors to include in the blog.

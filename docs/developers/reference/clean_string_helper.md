@@ -4,7 +4,7 @@ Remove all characters in a string that are neither alphanumeric nor underscores.
 
 ## Reference
 
-[method]string clean_string (string $string)[/method]
+## `string clean_string (string $string)`
 
 ```
 $string = 'My test %string%';

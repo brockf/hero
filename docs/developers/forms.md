@@ -2,13 +2,13 @@
 
 A critical component of the control panel is *forms*.  Forms are built using an expandable library of fieldtypes (defined as PHP classes at `/app/modules/custom_fields/libraries/fieldtypes/`).
 
-In the control panel, forms are displayed with the [Form_builder library](/docs/developers/reference/form_builder_library).  In the frontend, forms are built by parsing each individual field with the [{custom_field}](/docs/designers/reference/custom_fields) template plugin.
+In the control panel, forms are displayed with the [Form_builder library](/docs/developers/reference/form_builder_library.md).  In the frontend, forms are built by parsing each individual field with the [{custom_field}](/docs/designers/reference/custom_fields.md) template plugin.
 
 ## The Fieldtype library
 
-At the heart of the Hero form/field architecture is the [Fieldtype](/docs/developers/reference/fieldtype_library) library.  This class is inherited by specific fieldtype definition files (e.g., "text", "select", and "file_upload") and these complete fieldtype objects are manipulated to output proper fields.
+At the heart of the Hero form/field architecture is the [Fieldtype](/docs/developers/reference/fieldtype_library.md) library.  This class is inherited by specific fieldtype definition files (e.g., "text", "select", and "file_upload") and these complete fieldtype objects are manipulated to output proper fields.
 
-This library has a set of "super" methods which load fieldtype definition files, create fieldtype objects from field arrays (retrieved from [custom_fields_model->get_custom_fields(](/docs/developers/reference/custom_fields_model))), and other functions associated with fieldtypes.
+This library has a set of "super" methods which load fieldtype definition files, create fieldtype objects from field arrays (retrieved from [custom_fields_model->get_custom_fields(](/docs/developers/reference/custom_fields_model.md))), and other functions associated with fieldtypes.
 
 The library also has methods meant for inheritance by the specific fieldtype objects (e.g., property assignment methods `$this->name()`, `$this->label()`, and `$this->value()`).
 
@@ -34,17 +34,17 @@ It's important to note that the methods like `name()` and `label()` can be chain
 $my_text_field->name('fake_field')->label('Fake Field')->required(TRUE);
 ```
 
-For complete documentation of all of the Fieldtype libraries methods, visit the [Fieldtype_library reference](/docs/developers/reference/fieldtype_library).
+For complete documentation of all of the Fieldtype libraries methods, visit the [Fieldtype_library reference](/docs/developers/reference/fieldtype_library.md).
 
 Fieldtypes can do anything they would like with the `data()` method and associated "data" array property.  For example, the "Content Relationship" fieldtype stores the content_type of it's linked content as `$this->data['content_type']`. 
 
-So, as you can see, you can build and manipulate an isolated Fieldtype object.  However, this is not very practical for a typical application routine.  Most likely, you'll want to build a complete form with the [Form_builder library](/docs/developers/reference/form_builder_library) described below.
+So, as you can see, you can build and manipulate an isolated Fieldtype object.  However, this is not very practical for a typical application routine.  Most likely, you'll want to build a complete form with the [Form_builder library](/docs/developers/reference/form_builder_library.md) described below.
 
 ## Using Form_builder (control panel forms)
 
-The [Form_builder library](/docs/developers/reference/form_builder_library) (part of the custom fields module) is a way to combine Field objects into a form.  When the objects are compiled, you can do things like validate the POST submission across all form elements, or retrieve a database-ready array of information based on a POST submission and processed by each Fieldtype object.
+The [Form_builder library](/docs/developers/reference/form_builder_library.md) (part of the custom fields module) is a way to combine Field objects into a form.  When the objects are compiled, you can do things like validate the POST submission across all form elements, or retrieve a database-ready array of information based on a POST submission and processed by each Fieldtype object.
 
-`Form_builder` has various methods that are meant specifically to interact with the arrays returned by [custom_fields_model->get_custom_fields(](/docs/developers/reference/custom_fields_model)).  For example, to build an entire form from a custom field group:
+`Form_builder` has various methods that are meant specifically to interact with the arrays returned by [custom_fields_model->get_custom_fields(](/docs/developers/reference/custom_fields_model.md)).  For example, to build an entire form from a custom field group:
 
 ```
 $this->load->library('custom_fields/form_builder');
@@ -71,7 +71,7 @@ $output = $this->form_builder->output_admin();
 $this->form_builder->reset();
 ```
 
-> The legacy form library, [Admin_form](/docs/developers/reference/admin_form_library), replicates this functionality within its framework.
+> The legacy form library, [Admin_form](/docs/developers/reference/admin_form_library.md), replicates this functionality within its framework.
 
 ```
 $this->load->library('admin_form');
@@ -409,6 +409,6 @@ class Text_fieldtype extends Fieldtype {
 
 ## Legacy Forms: Admin_form
 
-If you don't need the object-oriented nature of the Fieldtype library, and just want to quickly build a form that is formatted for the control panel, you can use the [Admin_form library](/docs/developers/reference/admin_form_library).
+If you don't need the object-oriented nature of the Fieldtype library, and just want to quickly build a form that is formatted for the control panel, you can use the [Admin_form library](/docs/developers/reference/admin_form_library.md).
 
 This library has various methods like `text()`, `textarea()`, `dropdown()`, etc.  All of the basic HTML fieldtypes are there.  However, you lose the expandibility of `fieldtype` + `form_builder`.

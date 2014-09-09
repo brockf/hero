@@ -1,6 +1,6 @@
 # Branding (White Label)
 
-As laid out in the [License agreement](/docs/license), you are able to brand Hero to your own company or band.  This allows you to resell the platform, or use it as if it was a proprietary technology with your clients - a great way to save thousands of hours of work!
+As laid out in the [License agreement](/docs/license.md), you are able to brand Hero to your own company or band.  This allows you to resell the platform, or use it as if it was a proprietary technology with your clients - a great way to save thousands of hours of work!
 
 > This guide refers to branding in the sense of modification of the control panel.  Customizing the frontend (public) part of your website has no restrictions and is obviously highly encouraged.  No copyright notices need to stay in the frontend of your website.
 

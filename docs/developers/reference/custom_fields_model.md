@@ -1,6 +1,6 @@
 # Custom Fields Model
 
-The custom fields model is used to create/update/delete custom field groups, as well as create/update/delete the custom fields that comprise those groups.  Custom fields are invoked throughout Hero, including in publishing content, customizing member profile date, customizing product data, etc.  For more information on their management, [click here for a guide on configuring custom fields](/docs/configuration/custom_fields).
+The custom fields model is used to create/update/delete custom field groups, as well as create/update/delete the custom fields that comprise those groups.  Custom fields are invoked throughout Hero, including in publishing content, customizing member profile date, customizing product data, etc.  For more information on their management, [click here for a guide on configuring custom fields](/docs/configuration/custom_fields.md).
 
 ## Initialization
 
@@ -12,13 +12,13 @@ $this->load->model('custom_fields_model');
 
 ## Method Reference
 
-[method]array get_custom_field (int $custom_field_id)[/method]
+## `array get_custom_field (int $custom_field_id)`
 
 Retrieve a configuration array for a specific custom field, referenced by ID.  This array is in the format of the arrays that make up the array returned by `get_custom_fields()`.
 
-[method]array get_custom_fields (array $filters)[/method]
+## `array get_custom_fields (array $filters)`
 
-Retrieve an array of custom fields matching the filters, if filtered.  This array can be passed to the [Form Builder library](/docs/developers/reference/form_builder_library) to easily build control panel forms with a custom field group.
+Retrieve an array of custom fields matching the filters, if filtered.  This array can be passed to the [Form Builder library](/docs/developers/reference/form_builder_library.md) to easily build control panel forms with a custom field group.
 
 Possible filters:
 
@@ -40,40 +40,40 @@ Each returned field array has the following keys:
 * *validators* - An array of [CodeIgniter-standard form validators](http://codeigniter.com/user_guide/libraries/form_validation.html), if available.
 * *data* - An array of additional fieldtype data attributes, if available.
 
-[method]int new_custom_field (int $group , string $name , string $type [, string $options = array() [, string $default = '' [, string $width = '' [, string $help = '' [, boolean $required = FALSE [, array $validators = array() [, boolean $db_table = FALSE [, array $data = array()]]]]]]]])[/method]
+## `int new_custom_field (int $group , string $name , string $type [, string $options = array() [, string $default = '' [, string $width = '' [, string $help = '' [, boolean $required = FALSE [, array $validators = array() [, boolean $db_table = FALSE [, array $data = array()]]]]]]]])`
 
-Create a new custom field in a specific custom field group.  The `$name` passed will be used as the human-friendly "label" for the field.  However, a "system_name" will automatically be generated based on this field (processed with [the clean string helper](/docs/developers/reference/clean_string_helper)).
+Create a new custom field in a specific custom field group.  The `$name` passed will be used as the human-friendly "label" for the field.  However, a "system_name" will automatically be generated based on this field (processed with [the clean string helper](/docs/developers/reference/clean_string_helper.md)).
 
-If a `$db_table` is passed, a column will be created in this table with this "system_name".  The column's MySQL type (e.g., VARCHAR, TEXT) will be retrieved from the [fieldtype's definition](/docs/developers/reference/fieldtype_library).
+If a `$db_table` is passed, a column will be created in this table with this "system_name".  The column's MySQL type (e.g., VARCHAR, TEXT) will be retrieved from the [fieldtype's definition](/docs/developers/reference/fieldtype_library.md).
 
 Returns the `$custom_field_id`.
 
-[method]boolean update_custom_field (int $custom_field_id, int $group , string $name , string $type [, string $options = array() [, string $default = '' [, string $width = '' [, string $help = '' [, boolean $required = FALSE [, array $validators = array() [, boolean $db_table = FALSE [, array $data = array()]]]]]]]])[/method]
+## `boolean update_custom_field (int $custom_field_id, int $group , string $name , string $type [, string $options = array() [, string $default = '' [, string $width = '' [, string $help = '' [, boolean $required = FALSE [, array $validators = array() [, boolean $db_table = FALSE [, array $data = array()]]]]]]]])`
 
 Update an existing custom field record.
 
 If a `$db_table` is passed, the column in the database table will be renamed.
 
-[method]boolean delete_custom_field (int $id [, string $db_table = FALSE])[/method]
+## `boolean delete_custom_field (int $id [, string $db_table = FALSE])`
 
 Delete an existing custom field.  If a `$db_table` is passed, the column that shares this field's "name" will be removed from the MySQL table.
 
-[method]void reset_order (int $custom_field_group)[/method]
+## `void reset_order (int $custom_field_group)`
 
 When re-ordering custom fields in a group, it's standard procedure to call this method to reset the order across all fields prior to sorting.
 
-[method]void update_order (int $field_id , int $new_order)[/method]
+## `void update_order (int $field_id , int $new_order)`
 
 Set the order (`$new_order`) (e.g., "1", "2", "3", "4", ...) of a particular field.
 
-[method]string get_system_name (int $id)[/method]
+## `string get_system_name (int $id)`
 
 Return the system/column/POST name of a field referenced by its custom field ID.
 
-[method]int new_group (string $name)[/method]
+## `int new_group (string $name)`
 
 Create a new custom field group.  Returns the `$custom_field_group_id`.
 
-[method]void delete_group (int $group_id [, string $db_table] )[/method]
+## `void delete_group (int $group_id [, string $db_table] )`
 
 Delete a custom field group (and all of its fields!).

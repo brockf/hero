@@ -2,7 +2,7 @@
 
 At the heart of any website is its content - the blog posts, static pages of text/images, perhaps tables of statistics, lists, etc.  However, not every websites content is the same.  So, Hero allows you to define custom content types and build each content type's database with custom fields.  For example, a site about hiking in Canada may have content types like "regions", "trails" (linked to regions), "reviews" (linked to trails), "blog posts", and "static pages".
 
-> Developers: This is the same custom field engine that powers all other custom fields in Hero.  If you require a fieldtype for your content that is not already in the system, [create a new custom fieldtype](/docs/developers/forms).
+> Developers: This is the same custom field engine that powers all other custom fields in Hero.  If you require a fieldtype for your content that is not already in the system, [create a new custom fieldtype](/docs/developers/forms.md).
 
 ## Defining Content Types
 
@@ -12,11 +12,11 @@ Before you specify your content fields, you must configure the following:
 
 * *Content Type Name* - Plural, create the name for your content (e.g., "Blog Posts").
 * *Uses Standard Page Fields?* - By enabling this, your content of this type will immediately have a *Title* field, a publish date, be able to be linked to topics, and be able to be bound to a specific website URL.
-* *Restricted to Member Groups?* - By enabling this, you can specify that some content can only be seen by certain member groups.  If a user outside of this group or groups tries to load the content, you can [configure to show a paywall, or only show part of the content, etc.](/docs/configuration/member_groups).
+* *Restricted to Member Groups?* - By enabling this, you can specify that some content can only be seen by certain member groups.  If a user outside of this group or groups tries to load the content, you can [configure to show a paywall, or only show part of the content, etc.](/docs/configuration/member_groups.md).
 * *Output Template* - Specify the template file which will be used to display this content.
 * *Base URL Path* - If specified, all URLs for this content will (by default) be prefixed with this path.  For example, for a Blog Posts type, you may want each URL prefixed with "blog/".  The author can choose to change or get rid of this prefix at publish time.
 
-After the main details of the type are configured, you can add an unlimited number of custom fields to the content type.  These fields can be textareas, WYSIWYG HTML editors, text fields, select dropdowns, content relationships, file uploads, checkboxes, and any other fieldtype (there are tons!) [configured in the custom fieldtype engine](/docs/developers/forms).
+After the main details of the type are configured, you can add an unlimited number of custom fields to the content type.  These fields can be textareas, WYSIWYG HTML editors, text fields, select dropdowns, content relationships, file uploads, checkboxes, and any other fieldtype (there are tons!) [configured in the custom fieldtype engine](/docs/developers/forms.md).
 
 ## Publishing Content
 
@@ -40,4 +40,4 @@ As mentioned above, one of the fieldtypes you can use when specifying the custom
 
 ## Displaying Content
 
-There are a variety of ways for displaying your site's content.  First, it can be loaded into [blogs](/docs/publishing/blogs) and [RSS feeds](/docs/publishing/rss_feeds).  Second, it can be dynamically loaded into any template by [using a variety of standard template tags](/docs/designers/reference/publish).
+There are a variety of ways for displaying your site's content.  First, it can be loaded into [blogs](/docs/publishing/blogs.md) and [RSS feeds](/docs/publishing/rss_feeds.md).  Second, it can be dynamically loaded into any template by [using a variety of standard template tags](/docs/designers/reference/publish.md).

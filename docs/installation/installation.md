@@ -34,4 +34,4 @@ Now, *you're ready to begin using Hero!*
 
 ## Site not working?
 
-If your install did not seem to work and you are having troubles viewing your site, check out the [troubleshooting guide](/docs/installation/troubleshooting) for tips on the causes/solutions for 99% of installation issues.
+If your install did not seem to work and you are having troubles viewing your site, check out the [troubleshooting guide](/docs/installation/troubleshooting.md) for tips on the causes/solutions for 99% of installation issues.

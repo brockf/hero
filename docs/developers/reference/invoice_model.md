@@ -10,19 +10,19 @@ $this->load->model('billing/invoice_model');
 
 ## Method Reference
 
-[method]array invoice_lines (int $invoice_id)[/method]
+## `array invoice_lines (int $invoice_id)`
 
 Retrieve an array of itemized products/subscriptions for an invoice.
 
-[method]array get_invoice_data (int $invoice_id)[/method]
+## `array get_invoice_data (int $invoice_id)`
 
 Retrieve an array of all calculated totals and data for the invoice, saved from the cart_model during checkout.
 
-[method]array get_invoice (int $invoice_id)[/method]
+## `array get_invoice (int $invoice_id)`
 
 Retrieve an individual invoice.  Returns the same variables as `get_invoices()`, documented below.
 
-[method]float get_invoices_total ( [array $filters = array() , boolean $counting])[/method]
+## `float get_invoices_total ( [array $filters = array() , boolean $counting])`
 
 Retrieve the total currency amount for all invoices matching your filters.
 
@@ -56,7 +56,7 @@ Possible Filters:
 * string *sort* - Column used to sort the results
 * string *sort_dir* - Used when a sort param is supplied.  Possible values are asc and desc
 
-[method]array get_invoices ( [array $filters = array() , boolean $counting])[/method]
+## `array get_invoices ( [array $filters = array() , boolean $counting])`
 
 Retrieve an array of all invoices matching the optional filters.
 
