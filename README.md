@@ -1,4 +1,4 @@
-Hero
+Hero Framework
 ====
 
 [Hero](http://www.heroframework.com) is a powerful Content Management System (CMS) and eCommerce framework built on CodeIgniter.
