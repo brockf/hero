@@ -234,7 +234,7 @@ class Users extends Front_Controller {
 			$this->load->library('custom_fields/form_builder');
 			$this->form_builder->build_form_from_array($custom_fields);
 
-			$values = $this->form_builder->post_to_array();
+			$values = array_merge($values, $this->form_builder->post_to_array());
 		}
 
 		$values = query_value_encode(serialize($values));
