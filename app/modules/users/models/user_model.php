@@ -636,29 +636,15 @@ class User_model extends CI_Model
 
 		$CI->load->library('form_validation');
 		$CI->load->model('custom_fields_model');
-		$CI->load->helpers(array('unique_username','unique_email','strip_whitespace'));
+		$CI->load->helpers(array('strip_whitespace'));
 
 		$CI->form_validation->set_rules('first_name','First Name','trim|required|xss_clean');
 		$CI->form_validation->set_rules('last_name','Last Name','trim|required|xss_clean');
-		$unique_email = ($editing == FALSE) ? '|unique_email' : '';
+		$unique_email = ($editing == FALSE) ? '|is_unique[users.user_email]' : '';
+		$unique_username = ($editing == FALSE) ? '|is_unique[users.user_username]' : '';
+		$special_characters = ($this->config->item('username_allow_special_characters') == FALSE) ? '|alpha_numeric' : '';
 		$CI->form_validation->set_rules('email','Email','trim' . $unique_email . '|valid_email|required');
-		
-		// unique email doesn't seem to be working, so let's do a manual check
-		$email_error = FALSE;
-		if ($editing == FALSE) {
-			if ($this->unique_email($this->input->post('email')) === FALSE) {
-				$email_error = TRUE;
-			}
-		}
-
-		$username_rules = array('trim','strip_whitespace','min_length[3]', 'xss_clean');
-		if ($this->config->item('username_allow_special_characters') == FALSE) {
-			$username_rules[] = 'alpha_numeric';
-		}
-		if ($editing == FALSE) {
-			$username_rules[] = 'unique_username';
-		}
-		$CI->form_validation->set_rules('username','Username',implode('|', $username_rules));
+		$CI->form_validation->set_rules('username','Username','trim' . $unique_username . $special_characters . '|required|strip_whitespace|min_length[3]|xss_clean');
 
 		if ($editing == FALSE) {
 			$CI->form_validation->set_rules('password','Password','min_length[5]|matches[password2]');
@@ -668,15 +654,9 @@ class User_model extends CI_Model
 		if ($CI->form_validation->run() === FALSE) {
 			if ($error_array == TRUE) {
 				$errors = explode('||',str_replace(array('<p>','</p>'),array('','||'),validation_errors()));
-				if ($email_error == TRUE) {
-					$errors[] = 'This email address is unavailable.';
-				}
 			}
 			else {
 				$errors = validation_errors();
-				if ($email_error == TRUE) {
-					$errors .= '<p>This email address is unavailable.';
-				}
 			}
 			
 			return $errors;
