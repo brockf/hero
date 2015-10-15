@@ -1,0 +1,21 @@
+ul.gallery_images {
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+}
+
+ul.gallery_images li {
+	display: block;
+	float: left;
+	height: 100px;
+	padding: 15px;
+	width: 25%;
+}
+
+ul.gallery_images img {
+	border: 1px solid #666;
+}
+
+ul.gallery_images a:hover img {
+	border: 1px solid #222;
+}

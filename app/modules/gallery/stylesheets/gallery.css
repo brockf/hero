@@ -1,0 +1,65 @@
+div.gallery_images {
+	border: 1px solid #dedede;
+	background-color: #f0f0f0;
+	padding: 15px;
+	margin-top: 10px;
+	width: 750;
+}
+
+div.gallery_images {
+	margin: 0;
+	padding-bottom: 5px;
+}
+
+div.gallery_images ul {
+	margin: 0;
+	list-style-type: none;
+	clear: both;
+	padding: 0;
+	border: 0;
+}
+
+div.gallery_images ul li {
+	display: block;
+	float: left;
+	height: 125px;
+	width: 100px;
+	border: 1px solid #dedede;
+	background-color: #fff;
+	padding: 10px;
+	margin-right: 20px;
+	position: relative;
+	margin-bottom: 10px;
+}
+
+div.gallery_images a.delete {
+	position: absolute;
+	bottom: 10px;
+	right: 10px;
+}
+
+div.gallery_images a.move {
+	position: absolute;
+	bottom: 10px;
+	left: 10px;
+	cursor: move;
+}
+
+div.gallery_images a.feature {
+	position: absolute;
+	bottom: 10px;
+	right: 32px;
+}
+
+div.gallery_images span.featured {
+	display: block;
+	background-color: #57ac36;
+	padding: 1px 3px;
+	color: #fff;
+	position: absolute;
+	top: 10px;
+	width: 94px;
+	text-align: center;
+	font-size: 8pt;
+	text-transform: uppercase;
+}

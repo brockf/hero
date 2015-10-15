@@ -1,0 +1,92 @@
+THIS LICENSE APPLIES TO THE OPTIONAL HERO ECOMMERCE ADD-ON WITH COMPONENTS AT:
+
+* /app/modules/billing
+* /app/modules/store
+* /app/modules/coupons
+
+YOUR USE OF THIS SOFTWARE IS GOVERNED BY THE TERMS AND CONDITIONS SET FORTH IN
+THIS LICENSE.
+
+Last Revised: 14 December, 2010
+
+This license is a legal agreement between you and Electric Function, Inc. for the use of Hero Software (the
+"Software"). By downloading Hero or using it in any capacity, you agree to be bound by the terms and conditions of this
+license. Electric Function, Inc. reserves the right to alter this agreement at any time, for any reason, without notice.
+
+RESTRICTIONS
+
+Unless you have been granted prior, written consent from Electric Function, Inc., you may not:
+
+* Use your software/license on more than a single domain and staging/development environment.
+* Reproduce, distribute, or transfer the Software, or portions thereof, to any third party.
+* Sell, rent, lease, assign, or sublet the Software or portions thereof.
+* Grant rights to any other person.
+* Use the Software in violation of any Canadian or international law or regulation.
+
+LICENSING MECHANISM
+
+This software uses IonCube (http://www.ioncube.com) technology to limit the use of the software to a single IP address
+or domain name.  In the unforeseen circumstance that Electric Function, Inc. ceases to exist and its servers are
+dysfunctional, your software will continue to function without issue for as long as these are conditions are met.  If
+you move the software to a server that does not share this domain or IP address, the software will cease to function
+and you will experience a license error until the issue is resolved.
+
+In order to protect the copyright of this software, certain files deemed necessary for the proper function of the
+application are encoded with IonCube technology.  This prevents bypassing the licensing mechanism and protects Electric
+Function, Inc.'s copyright and intellectual property.  However, unencoded "open source" files in the application are
+still copyrighted by Electric Function, Inc. (unless otherwise specified) and are subject to all of the terms and
+conditions of this agreement.
+
+DISPLAY OF COPYRIGHT NOTICES
+
+All copyright and proprietary notices within the Software files must remain intact.  You are free to re-brand the
+frontend and control panel layouts without any mention of Hero or Electric Function, Inc., however attribution of the
+copyright to Electric Function, Inc. must remain visible in the footer of the control panel.
+
+MAKING BACKUP/DEVELOPMENT COPIES
+
+You may make copies of the Software for back-up purposes or for a development/staging environment, provided that you
+reproduce the Software in its original form and with all proprietary notices on the back-up copy.  Licenses will be
+issued for development/staging environments at Electric Function, Inc.'s discretion.
+
+SOFTWARE MODIFICATION
+
+You may alter, modify, or extend the Software for your own use, or commission a third-party to perform modifications
+for you, but you may not resell, redistribute or transfer the modified or derivative version without prior written
+consent from Electric Function, Inc. Components from the Software may not be extracted and used in other programs
+without prior written consent from Electric Function, Inc.
+
+You may distribute, resell, extract, and re-use original modules developed by you that exist in the "modules" folder
+and reference Hero API's as long as they do not include the original source of the API's in their distributed form.
+
+TECHNICAL SUPPORT
+
+Technical support is available through online forums and support tickets.  Phone support may be available upon request,
+but this is not guaranteed unless specified in an additional support contract. No representations or guarantees are
+made regarding the response time in which support questions are answered.
+
+REFUNDS
+
+Electric Function, Inc. offer a 30-Day, money back guarantee on purchases of Hero, barring a breach of the terms and
+conditions put forth in this agreement.  If you are unsatisfied with Hero or it is no longer a fit for your project
+within 30 days of purchase, just submit a support ticket to Electric Function, Inc. for a full refund.
+
+INDEMNITY
+
+You agree to indemnify and hold harmless Electric Function, Inc. for any claims, actions or suits, as well as any
+related expenses, liabilities, damages, settlements or fees arising from your use or misuse of the Software, or a
+violation of any terms of this license.
+
+DISCLAIMER OF WARRANTY
+
+This software is provided "as is", without warranty of any kind, expressed or implied, including, but not limited to,
+warranties of quality, performance, non-infringement, merchantability, or fitness for a particular purpose.  Further,
+Electric Function, Inc. does not warrant that the software or any related service will always be available.
+
+LIMITATIONS OF LIABILITY
+
+You assume all risk associated with the installation and use of the software.  In no event shall the authors or
+copyright holders of the software be liable for claims, damages, or other liability arising from, out of, or in
+connection with the software.  License holders are solely responsible for determining the appropriateness of use and
+assume all risks associated with its use, including but not limited to the risks of program errors, damage to
+equipment, loss of data or software programs, or unavailability or interruption of operations.
