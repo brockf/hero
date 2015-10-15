@@ -280,7 +280,8 @@ class Form_model extends CI_Model
 			die(show_error('Invalid form ID.'));
 		}
 		
-		$date = date('Y-m-d H:i:s');
+		$time = time();
+		$date = date('Y-m-d H:i:s', $time);
 		
 		$insert_fields = array(
 							'submission_date' => $date,
@@ -302,16 +303,13 @@ class Form_model extends CI_Model
 			
 			// build body
 			$lines = array();
-			$lines[] = 'Date: ' . date('F j, Y, g:i a', strtotime($date));
+			$lines[] = 'Date: ' . date('F j, Y, g:i a T', $time);
 			
 			if (!empty($user_id)) {
 				$user = $this->user_model->get_user($user_id);
 				$lines[] = 'Member Username: ' . $user['username'];
 				$lines[] = 'Member Name: ' . $user['first_name'] . ' ' . $user['last_name'];
 				$lines[] = 'Member Email: ' . $user['email'];
-			}
-			else {
-				$lines[] = 'Member: None';
 			}
 
 			foreach ($form['custom_fields'] as $field) {
