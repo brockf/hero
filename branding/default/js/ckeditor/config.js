@@ -10,7 +10,8 @@ CKEDITOR.editorConfig = function( config ) {
 
 	config.extraPlugins = 'font,panelbutton,colorbutton,justify,menubutton,scayt';
 	config.scayt_autoStartup = true;
-
+    config.disableNativeSpellChecker = false;
+    
 	// The toolbar groups arrangement, optimized for two toolbar rows.
 	config.toolbarGroups = [
 		{ name: 'clipboard',   groups: [ 'clipboard', 'undo' ] },
