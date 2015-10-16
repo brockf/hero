@@ -49,20 +49,39 @@ class Twitter_model extends CI_Model
 		$topics = (setting('twitter_topics') == '') ? NULL : unserialize(setting('twitter_topics'));
 		
 		// if they have all topics...
-		if (in_array(0, $topics)) {
+		if ((is_int($topics) && $topics = 0) || (is_array($topics) && in_array(0, $topics))) {
 			$topics = NULL;
 		}
 		
 		foreach ($types as $type) {
-			$contents = $CI->content_model->get_contents(array('type' => $type, 'topic' => $topics, 'start_date' => $start_date, 'limit' => '50'));
+			$filter = array(
+				'type' => $type
+				,'start_date' => $start_date
+				,'limit' => '50'
+			);
+			
+			if ((is_int($topics) && $topics != 0) || (is_array($topics) && !in_array(0, $topics))) {
+				$filter['topics'] = $topics;
+			}
+			
+			$contents = $CI->content_model->get_contents($filter);
+			
 			
 			if (!empty($contents)) {
 				// flip so that the latest posts are tweeted last
 				$contents = array_reverse($contents);
-			
+				
 				foreach ($contents as $content) {
 					// have we already tweeted this?
-					if ($this->db->select('link_id')->from('links')->where('link_module','twitter')->where('link_parameter',$content['link_id'])->get()->num_rows() > 0) {
+					if (
+						$this->db->select('link_id')
+								->from('links')
+								->where('link_module','twitter')
+								->where('link_parameter',$content['link_id'])
+								->get()
+								->num_rows() > 0
+						) {
+						
 						continue;
 					}
 					
@@ -82,10 +101,16 @@ class Twitter_model extends CI_Model
 					// make sure it's unique
 					$url_path = $CI->link_model->get_unique_url_path($string);
 					
-					$CI->link_model->new_link($url_path, FALSE, $content['title'], 'Twitter Link', 'twitter', 'twitter', 'redirect', $content['link_id']);
+					$url = site_url($url_path);
+					
+					$this->load->model('twitter/bitly_model','bitly');
+					$bitlyUrl = $this->bitly->shorten_url($url);
+					if($bitlyUrl){
+						$url = $bitlyUrl;
+					}
 					
 					// start with URL
-					$status = site_url($url_path);
+					$status = $url;
 					
 					// how many characters remain?
 					$chars_remain = 140 - strlen($status);
@@ -96,6 +121,12 @@ class Twitter_model extends CI_Model
 					$shortened_title = str_replace('&hellip','...',$shortened_title);
 					
 					$status = $shortened_title . ' ' . $status;
+					
+					// insert into links table
+					$CI->link_model->new_link($url_path, FALSE, $content['title'], 'Twitter Link', 'twitter', 'twitter', 'redirect', $content['link_id']);
+					
+					//insert tweet content into tweets_sent
+					$this->twitter_log($status, $content['id'], $type);
 					
 					cron_log('Posting status: ' . $status);
 					
@@ -113,5 +144,18 @@ class Twitter_model extends CI_Model
 		$this->settings_model->update_setting('twitter_last_tweet', date('Y-m-d H:i:s'));
 		
 		return TRUE;
-	}	
+	}
+
+	/**
+	 * Post the twitter status update into the db to keep a log of it
+	 */
+	public function twitter_log($tweet, $content_id, $content_type){
+		$data = array(
+			'tweet' => $tweet
+			,'content_id' => $content_id
+			,'content_type' => $content_type
+			,'sent_time' => date('Y-m-d H:i:s', time())
+		);
+		$this->db->insert('tweets_sent', $data);
+	}
 }
