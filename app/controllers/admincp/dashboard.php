@@ -192,6 +192,20 @@ class Dashboard extends Admincp_Controller {
 			}
 		}
 
+		if (module_installed('twitter')) {
+			// ... published to twitter
+			$result = $this->db->select('tweet')
+							   ->select('sent_time')
+							   ->from('tweets_sent')
+							   ->order_by('sent_time','DESC')
+							   ->limit(10)
+							   ->get();
+	
+			foreach ($result->result_array() as $tweets) {
+				$activity[strtotime($tweets['sent_time'])] = $tweets['tweet'] . ' was tweeted on <strong>Twitter</strong>';
+			}
+		}
+
 		// ... published content
 		$result = $this->db->select('content.content_id')
 						   ->select('user_first_name')
