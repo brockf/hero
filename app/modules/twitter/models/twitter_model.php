@@ -158,4 +158,76 @@ class Twitter_model extends CI_Model
 		);
 		$this->db->insert('tweets_sent', $data);
 	}
+	
+	/**
+	* Get Tweets
+	*
+	* @param int $filters['id'] The tweet ID to select
+	* @param string $filters['tweet'] Search by tweet
+	* @param date $filters['start_date'] Select after this tweet date
+	* @param date $filters['end_date'] Select before this tweet date
+	* @param string $filters['sort'] Field to sort by
+	* @param string $filters['sort_dir'] ASC or DESC
+	* @param int $filters['limit'] How many records to retrieve
+	* @param int $filters['offset'] Start records retrieval at this record
+	* @param boolean $counting Should we just count the number of tweets that match the filters? (default: FALSE)
+	*
+	* @return array Each tweet in an array of tweets
+	*/
+	function get_tweets ($filters = array(), $counting = FALSE) {
+		// filters
+		if (isset($filters['id'])) {
+			$this->db->where('tweet_id',$filters['id']);
+		}
+
+		if (isset($filters['tweet'])) {
+			$this->db->like('tweet',$filters['tweet']);
+		}
+
+		if (isset($filters['start_date'])) {
+			$date = date('Y-m-d H:i:s', strtotime($filters['start_date']));
+			$this->db->where('sent_time >=', $date);
+		}
+
+		if (isset($filters['end_date'])) {
+			$date = date('Y-m-d H:i:s', strtotime($filters['end_date']));
+			$this->db->where('sent_time <=', $date);
+		}
+
+		// standard ordering and limiting
+		if ($counting == FALSE) {
+			$order_by = (isset($filters['sort'])) ? $filters['sort'] : 'tweet_id';
+			$order_dir = (isset($filters['sort_dir'])) ? $filters['sort_dir'] : 'ASC';
+			$this->db->order_by($order_by, $order_dir);
+
+			if (isset($filters['limit'])) {
+				$offset = (isset($filters['offset'])) ? $filters['offset'] : 0;
+				$this->db->limit($filters['limit'], $offset);
+			}
+		}
+
+		if ($counting === TRUE) {
+			$this->db->select('tweet_id');
+			$result = $this->db->get('tweets_sent');
+			$rows = $result->num_rows();
+			$result->free_result();
+			return $rows;
+		}
+		else {
+			$this->db->from('tweets_sent');
+
+			$result = $this->db->get();
+		}
+
+		if ($result->num_rows() == 0) {
+			return FALSE;
+		}
+
+		// get custom fields
+		$CI =& get_instance();
+		$CI->load->model('custom_fields_model');
+		$custom_fields = $CI->custom_fields_model->get_custom_fields(array('group' => '1'));
+
+		return $result->result_array();
+	}
 }

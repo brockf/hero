@@ -98,7 +98,11 @@ class Admincp extends Admincp_Controller {
 	
 	function post_config () {
 		$this->settings_model->update_setting('twitter_content_types',serialize($_POST['content_types']));
-		$this->settings_model->update_setting('twitter_topics',serialize($_POST['topics']));
+		$topics = $this->input->post('topics');
+		if(empty($topics)){
+			$topics = 0;
+		}
+		$this->settings_model->update_setting('twitter_topics',serialize($topics));
 		$this->settings_model->update_setting('twitter_enabled', $this->input->post('enabled'));
 		//$this->settings_model->update_setting('twitter_template', $this->input->post('template'));
 		
@@ -227,5 +231,55 @@ class Admincp extends Admincp_Controller {
 				);
 	
 		$this->load->view('generic', $data);
+	}
+
+	/*
+	 * TODO
+	 * Tweet Logs displays all of the tweets sent out
+	 */
+	function tweet_logs () {
+		$this->load->library('dataset');
+		
+		$this->load->model('twitter_model');		
+	    $tweets = $this->twitter_model->get_tweets();
+	    				
+		$columns = array(
+					array(
+						'name' => 'ID #',
+						'type' => 'id',
+						'width' => '5%'
+						)
+					,array(
+						'name' => 'Date',
+						'type' => 'date',
+						'sort_column' => 'sent_time',
+						'width' => '20%',
+						'filter' => 'timestamp',
+						'field_start_date' => 'start_date',
+						'field_end_date' => 'end_date'
+						),
+					array(
+						'name' => 'tweet',
+						'type' => 'text',
+						'filter' => 'tweet',
+						'sort_column' => 'tweet',
+						'width' => '35%'
+						)
+					);
+						
+		$this->dataset->columns($columns);
+		$this->dataset->datasource('twitter_model','get_tweets');
+		$this->dataset->base_url(site_url('admincp/twitter/tweet_logs'));
+		
+		// total rows
+		$total_rows = $this->db->get('tweets_sent')->num_rows(); 
+		$this->dataset->total_rows($total_rows);
+		
+		// initialize the dataset
+		$this->dataset->initialize();
+
+		$data = array('tweets' => $tweets);
+		
+		$this->load->view('tweets.php', $data);
 	}
 }
