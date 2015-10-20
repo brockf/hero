@@ -202,7 +202,7 @@ class Dashboard extends Admincp_Controller {
 							   ->get();
 	
 			foreach ($result->result_array() as $tweets) {
-				$activity[strtotime($tweets['sent_time'])] = $tweets['tweet'] . ' was tweeted on <strong>Twitter</strong>';
+				$activity[strtotime($tweets['sent_time'])] = $tweets['tweet'] . ' was tweeted on <a href="' . site_url('admincp/twitter/tweet_logs') . '">Twitter</a>';
 			}
 		}
 
