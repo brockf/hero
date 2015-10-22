@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.19';
+	var $version = '1.20';
 	var $name = 'publish';
 
 	function __construct () {
@@ -181,6 +181,10 @@ class Publish extends Module {
 			$this->CI->db->or_where('content_unpublish_date','1970-01-01 00:00:00');
 			$this->CI->db->update('content');
 			//print_r($this->CI->db->last_query());
+		}
+
+		if($db_version < 1.20) {
+			$this->CI->app_hooks->bind('cron','Content_model','hook_cron',APPPATH . 'modules/publish/models/content_model.php');
 		}
 	
 		return $this->version;

@@ -713,11 +713,13 @@ class Content_model extends CI_Model
 		if ($content_table_join !== FALSE) {
 			$this->db->join($content_table_join, 'content.content_id = ' . $content_table_join . '.content_id','left');
 		}
-
+		
+		$this->db->where('content.content_status','Enabled');
 		$this->db->select('* FROM (' . $embedded_from_query . ') AS `content`',FALSE);
-
+		
+		
 		$result = $this->db->get();
-
+		
 		if ($result->num_rows() == 0) {
 			if ($caching == TRUE) {
 				$this->CI->cache->file->save($cache_key, 'empty_cache');
@@ -774,4 +776,43 @@ class Content_model extends CI_Model
 
 		return $contents;
 	}
+
+
+
+	function hook_cron () {
+		cron_log('Beginning Content Publish/Unpublish cronjob.');
+		
+		// load libraries
+		//$CI =& get_instance();
+		
+		//$CI->load->model('content_model');
+		
+		cron_log('Unpublished Posts: ' . $this->update_unpublish_content());
+		
+		cron_log('Published Posts: ' . $this->update_publish_content());
+		
+		return TRUE;
+	}
+
+	function update_unpublish_content() {
+		$query = 'Update `content` SET `content_status`="Disabled"';
+		$query .= ' WHERE (`content_status` = "Enabled"';
+		$query .= ' AND `content_date` > "'. date('Y-m-d H:i:s', time()) .'")';
+		$query .= ' OR (`content_status` = "Enabled"';
+		$query .= ' AND `content_unpublish_date` < "'. date('Y-m-d H:i:s', time()) . '")';
+		$this->db->query($query);
+		
+		return $this->db->affected_rows();
+	}
+
+	function update_publish_content() {
+		$this->db->set('content_status','Enabled');
+		$this->db->where('content_status','Disabled');
+		$this->db->where('content_date <', '"' . date('Y-m-d H:i:s', time())  . '"');
+		$this->db->where('content_unpublish_date >', '"' . date('Y-m-d H:i:s', time())  . '"');
+		$this->db->update('content');
+		
+		return $this->db->affected_rows();
+	}
+	
 }
