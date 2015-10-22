@@ -48,6 +48,7 @@ function smarty_function_menu ($params, $smarty) {
 	
 	// sort through menu items and display the menu
 	$params['class'] = (isset($params['class'])) ? $params['class'] : '';
+	$childClass = (isset($params['child_class'])) ? $params['child_class'] : '';
 	$params['id'] = (isset($params['id'])) ? $params['id'] : '';
 	
 	$return = '<ul class="' . $params['class'] . '" id="' . $params['id'] . '">';
@@ -67,7 +68,7 @@ function smarty_function_menu ($params, $smarty) {
 							$item['active'] = TRUE;
 						}
 						
-						$children_items[] = li_html($item_child);
+						$children_items[] = li_html($item_child,'','',$childClass);
 					}
 				}
 			}
@@ -76,7 +77,7 @@ function smarty_function_menu ($params, $smarty) {
 		if ($item['is_child'] == FALSE) {
 			$classes = (!empty($children_items)) ? array('parent') : array();
 			
-			$return .= li_html($item, $children_items, $classes);
+			$return .= li_html($item, $children_items, $classes, $childClass);
 		}
 	}
 	
@@ -85,7 +86,7 @@ function smarty_function_menu ($params, $smarty) {
 	return $return;
 }
 
-function li_html ($item, $children_items = FALSE, $classes = array()) {
+function li_html ($item, $children_items = FALSE, $classes = array(), $childClass = '') {
 	if (!empty($item['class'])) {
 		if (strpos($item['class'], ' ')) {
 			// they gave multiple classes separated by a space
@@ -108,7 +109,11 @@ function li_html ($item, $children_items = FALSE, $classes = array()) {
 	
 	// insert children?
 	if (!empty($children_items)) {
-		$return .= '<ul class="children">';
+		$return .= '<ul class="children';
+		if(!empty($childClass)){
+			$return .= ' ' . $childClass;
+		}
+		$return .= '">';
 		
 		foreach ($children_items as $child) {
 			$return .= $child;
