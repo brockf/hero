@@ -714,9 +714,11 @@ class Content_model extends CI_Model
 			$this->db->join($content_table_join, 'content.content_id = ' . $content_table_join . '.content_id','left');
 		}
 		
-		$this->db->where('content.content_status','Enabled');
-		$this->db->select('* FROM (' . $embedded_from_query . ') AS `content`',FALSE);
+		if(IN_ADMIN === false) {
+			$this->db->where('content.content_status','Enabled');
+		}
 		
+		$this->db->select('* FROM (' . $embedded_from_query . ') AS `content`',FALSE);
 		
 		$result = $this->db->get();
 		
