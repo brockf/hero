@@ -408,6 +408,21 @@ class Admincp extends Admincp_Controller {
 				 ->label('Publish Date')
 				 ->value(date('Y-m-d H:i:s'));
 			
+			$stopDate = $this->form_builder
+				->add_field('datetime')
+				->data('future_only',TRUE)
+			     ->name('end_date')
+				->label('Unpublish Date')
+				->value(
+					date(
+						'Y-m-d H:i:s'
+						,strtotime(
+							'+10 years'
+							,time()
+						)
+					)
+				);
+			
 			$title = $title->display();
 			$standard = $this->form_builder->output_admin();
 		}
@@ -515,6 +530,18 @@ class Admincp extends Admincp_Controller {
 				 ->name('date')
 				 ->label('Publish Date');
 			
+			$end_date = $this->form_builder->add_field('datetime')
+				->data('future_only',TRUE)
+				->name('end_date')
+				->label('Unpublish Date')
+				->value($content['end_date']);
+				
+			$status = $this->form_builder->add_field('text')
+				->readonly('readonly')
+				->name('status')
+				->label('Status')
+				->value($content['status']);
+			
 			// editing, assign values
 			$topics->value($content['topics']);
 			$date->value($content['date']);
@@ -596,15 +623,30 @@ class Admincp extends Admincp_Controller {
 			$this->form_builder->reset();
 			$this->form_builder->add_field('multicheckbox')->name('topics')->label('Topics');
 			$this->form_builder->add_field('datetime')->name('date')->label('Publish Date')->default_value(date('Y-m-d H:i:s'));
+			$this->form_builder
+				->add_field('datetime')
+				->name('end_date')
+				->label('Unpublish Date')
+				->default_value(
+					date(
+						'Y-m-d H:i:s'
+						,strtotime(
+							'+10 years'
+							,time()
+						)
+					)
+				);
 			
 			$form_builder_data = $this->form_builder->post_to_array();
 			
 			$topics = unserialize($form_builder_data['topics']);
 			$date = $form_builder_data['date'];
+			$end_date = $form_builder_data['end_date'];
 		}
 		else {
 			$topics = array();
 			$date = FALSE;
+			$end_date = FALSE;
 		}
 		
 		if ($type['is_privileged'] == TRUE) {
@@ -640,14 +682,15 @@ class Admincp extends Admincp_Controller {
 		
 		if ($action == 'new') {
 			$content_id = $this->content_model->new_content(
-													$this->input->post('type'),
-													$this->user_model->get('id'),
-													$this->input->post('title'),
-													$this->input->post('url_path'),
-													$topics,
-													$privileges,
-													$date,
-													$custom_fields
+													$this->input->post('type')
+													,$this->user_model->get('id')
+													,$this->input->post('title')
+													,$this->input->post('url_path')
+													,$topics
+													,$privileges
+													,$date
+													,$end_date
+													,$custom_fields
 												);
 				
 			if ($error == FALSE) {										
@@ -656,13 +699,14 @@ class Admincp extends Admincp_Controller {
 		}
 		elseif ($action == 'edit') {
 			$this->content_model->update_content(
-											$id,
-											$this->input->post('title'),
-											$this->input->post('url_path'),
-											$topics,
-											$privileges,
-											$date,
-											$custom_fields
+											$id
+											,$this->input->post('title')
+											,$this->input->post('url_path')
+											,$topics
+											,$privileges
+											,$date
+											,$end_date
+											,$custom_fields
 										);
 			
 			if ($error == FALSE) {								
