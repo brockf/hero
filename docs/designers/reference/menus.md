@@ -32,7 +32,7 @@ The following menu is generated with `{menu}` tag documented below:
    </li>
    <li class="contact">
    		<a href="http://www.example.com/contact">Contact Us</a>
-   		<ul class="children">
+   		<ul class="children bootstrap_child">
    			<li>
 		        <a href="http://www.example.com/form">via Email</a>
 		    </li>
@@ -57,7 +57,7 @@ In order to give you the best opportunities for styling this menu with *CSS styl
 
 ## Child Sub-menus
 
-If you have created a sub-menu for a link item [when creating your menu in the control panel](/docs/publishing/menus.md), these will be exported as embedded `<ul>` lists with a class of "children".
+If you have created a sub-menu for a link item [when creating your menu in the control panel](/docs/publishing/menus.md), these will be exported as embedded `<ul>` lists with a class of "children". To add another class to the ul use {menu child_class="the_name_of_class_to_use"}.  You can insert multiple classes here separated by spaces.
 
 If you want to show these as a dropdown menu, you will need to hide all `ul.children` elements and then use JavaScript to show the sub-menus when hovering over the main link.
 
@@ -110,6 +110,6 @@ Example usage (to return the menu HTML code used in the example at the top of th
 
 ```
 	<div class="menu">
-		{menu name="main_menu" class="menu" id="side_menu" show_sub_menus="yes"}
+		{menu name="main_menu" class="menu" id="side_menu" show_sub_menus="yes" child_class="bootstrap_child"}
 	</div>
 ```
