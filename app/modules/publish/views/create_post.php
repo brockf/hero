@@ -12,7 +12,7 @@
 		<div class="post_standard">
 			<fieldset>
 				<ul class="form">
-					<?=$standard;?>	
+					<?=$standard;?>
 				</ul>
 			</fieldset>
 		</div>
