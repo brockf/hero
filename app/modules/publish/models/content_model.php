@@ -35,7 +35,7 @@ class Content_model extends CI_Model
 	*
 	* @return int $content_id
 	*/
-	function new_content ($type, $user, $title = '', $url_path = '', $topics = array(), $privileges = array(), $publish_date = FALSE, $custom_fields = array()) {
+	function new_content ($type, $user, $title = '', $url_path = '', $topics = array(), $privileges = array(), $publish_date = FALSE, $unpublish_date = FALSE, $custom_fields = array()) {
 		$this->load->model('publish/content_type_model');
 		$type = $this->content_type_model->get_content_type($type);
 
@@ -66,6 +66,26 @@ class Content_model extends CI_Model
 		else {
 			$publish_date = date('Y-m-d H:i:s',strtotime($publish_date));
 		}
+		
+		// prep the stop date
+		if (empty($unpublish_date)) {
+			$unpublish_date = date(
+				'Y-m-d H:i:s'
+				,strtotime(
+					'+10 years'
+					,time()
+				)
+			); //add 10 years
+		}
+		else {
+			$unpublish_date = date('Y-m-d H:i:s',strtotime($unpublish_date));
+		}
+		
+		//set to enabled or disabled
+		$status = "Disabled";
+		if(strtotime($publish_date) < time() && strtotime($unpublish_date) > time()){
+			$status = "Enabled";
+		}
 
 		// insert it into standard content table first
 		$insert_fields = array(
@@ -75,10 +95,12 @@ class Content_model extends CI_Model
 							'content_title' => $title,
 							'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
 							'content_date' => $publish_date,
+							'content_unpublish_date' => $unpublish_date,
 							'content_modified' => date('Y-m-d H:i:s'),
 							'user_id' => $user,
 							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : '',
 							'content_hits' => '0'
+							,'content_status' => $status
 						);
 
 		$this->db->insert('content',$insert_fields);
@@ -130,7 +152,7 @@ class Content_model extends CI_Model
 	*
 	* @return void
 	*/
-	function update_content ($content_id, $title = '', $url_path = '', $topics = array(), $privileges = array(), $publish_date = FALSE, $custom_fields = array()) {
+	function update_content ($content_id, $title = '', $url_path = '', $topics = array(), $privileges = array(), $publish_date = FALSE, $unpublish_date = FALSE, $custom_fields = array()) {
 		$content = $this->get_content($content_id, TRUE);
 
 		$this->load->model('publish/content_type_model');
@@ -160,17 +182,41 @@ class Content_model extends CI_Model
 		else {
 			$publish_date = date('Y-m-d H:i:s',strtotime($publish_date));
 		}
+		
+		// prep the stop date
+		if (empty($unpublish_date)) {
+			$unpublish_date = date(
+				'Y-m-d H:i:s'
+				,strtotime(
+					'+10 years'
+					,time()
+				)
+			); //add 10 years
+		}
+		else {
+			$unpublish_date = date('Y-m-d H:i:s',strtotime($unpublish_date));
+		}
+		
+		//set to enabled or disabled
+		$status = "Disabled";
+		if(strtotime($publish_date) < time() && strtotime($unpublish_date) > time()){
+			$status = "Enabled";
+		}
 
 		// update standard content table first
 		$update_fields = array(
-							'content_title' => $title,
-							'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
-							'content_modified' => date('Y-m-d H:i:s'),
-							'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : ''
-						);
+			'content_title' => $title,
+			'content_privileges' => (is_array($privileges) and !in_array(0, $privileges)) ? serialize($privileges) : '',
+			'content_modified' => date('Y-m-d H:i:s'),
+			'content_topics' => (is_array($topics) and !empty($topics)) ? serialize($topics) : ''
+			,'content_status' => $status
+		);
 
 		if ($publish_date !== FALSE) {
 			$update_fields['content_date'] = $publish_date;
+		}
+		if ($unpublish_date !== FALSE) {
+			$update_fields['content_unpublish_date'] = $unpublish_date;
 		}
 
 		$this->db->update('content',$update_fields,array('content_id' => $content['id']));
@@ -688,6 +734,8 @@ class Content_model extends CI_Model
 								'id' => $content['content_id'],
 								'link_id' => $content['link_id'],
 								'date' => local_time($content['content_date'], $date_format),
+								'end_date' => local_time($content['content_unpublish_date'], $date_format),
+								'status' => $content['content_status'],
 								'modified_date' => local_time($content['content_modified'], $date_format),
 								'author_id' => $content['user_id'],
 								'author_username' => $content['user_username'],
@@ -719,7 +767,7 @@ class Content_model extends CI_Model
 		}
 
 		$result->free_result();
-
+		
 		if ($caching == TRUE) {
 			$this->CI->cache->file->save($cache_key, $contents, (5*60));
 		}
