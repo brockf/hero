@@ -279,7 +279,6 @@ class Form_model extends CI_Model
 		if (empty($form)) {
 			die(show_error('Invalid form ID.'));
 		}
-		
 		$time = time();
 		$date = date('Y-m-d H:i:s', $time);
 		
