@@ -47,7 +47,7 @@ class MY_Email extends CI_Email {
 		
 		if ($queue == FALSE) {
 			// are we using Postmark?
-			if (empty($this->_attach_name) and setting('postmark_api') != '' and function_exists('curl_init')) {
+			if (empty($this->_attach_name) and setting('postmark_api') != '' and function_exists('curl_init') and $this->_plaintext_from_email == $CI->config->item('site_email')) {
 				// create to, cc, and bcc strings
 				$to = (is_array($this->_recipients)) ? implode(', ', $this->_recipients) : $this->_recipients;
 				$cc = (is_array($this->_cc_array)) ? implode(', ', $this->_cc_array) : $this->_cc_array;
