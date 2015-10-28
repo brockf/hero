@@ -45,6 +45,7 @@ if (!empty($this->dataset->data)) {
 			<td><?=$row['hits'];?></td>
 			<td class="options">
 				<a href="<?=site_url('admincp/publish/edit/' . $row['id']);?>">edit</a>
+				<a href="<?=site_url('admincp/publish/copy/' . $row['id']);?>">copy</a>
 				<? if ($row['is_standard'] == TRUE) { ?>
 					<? if (strtotime($row['date']) > time()) { ?>
 						<a href="<?=$row['url'];?>?preview=<?=base64_encode($this->encrypt->encode($row['url_path']));?>">preview</a>
