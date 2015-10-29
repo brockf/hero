@@ -525,13 +525,11 @@ class Admincp extends Admincp_Controller {
 				   ->name('topics')
 				   ->label('Topics');
 			
-			$date = $this->form_builder->add_field('datetime');
-			$date->data('future_only',TRUE)
+			$date = $this->form_builder->add_field('datetime')
 				 ->name('date')
 				 ->label('Publish Date');
 			
 			$end_date = $this->form_builder->add_field('datetime')
-				->data('future_only',TRUE)
 				->name('end_date')
 				->label('Unpublish Date')
 				->value($content['end_date']);
@@ -544,6 +542,7 @@ class Admincp extends Admincp_Controller {
 			
 			// editing, assign values
 			$topics->value($content['topics']);
+			//print_r($content['date']);
 			$date->value($content['date']);
 			
 			$title = $title->display();
@@ -604,6 +603,130 @@ class Admincp extends Admincp_Controller {
 					'type' => $type,
 					'form_title' => 'Edit Content',
 					'form_action' => site_url('admincp/publish/post/edit/' . $content['id']),
+					'invalid' => ($this->input->get('invalid')) ? TRUE : FALSE,
+					'errors' => $this->session->flashdata('errors')
+				);
+				
+		$this->load->view('create_post', $data);
+	}
+
+	function copy ($id) {
+		$this->load->model('content_model');
+		$content = $this->content_model->get_content($id, TRUE);
+	
+		$this->load->model('content_type_model');
+		$type = $this->content_type_model->get_content_type($content['type_id']);
+		
+		$this->load->library('admin_form');
+		
+		if ($type['is_standard'] == TRUE) {
+			// we require Title, URL Path, and Topic fields
+			
+			$title = new Admin_form;
+			$title->fieldset('Standard Page Elements');
+			$title->text('Title','title',$content['title'],FALSE,TRUE,FALSE,TRUE);
+			
+			// if we are using the base_url in the current URL, chances are we want to keep it for future URL's
+			if (isset($type['base_url']) and !empty($type['base_url']) and strpos($content['url_path'], $type['base_url']) === 0) {
+				$title->hidden('base_url',$type['base_url']);
+			}
+			
+			$title->text('URL Path','url_path',$content['url_path'],'If you leave this blank, it will be auto-generated from the Title above.',FALSE,'e.g., /about/contact_us',FALSE,'500px');
+			
+			// we will build the rest of the sidebar form with form_builder because we want to use it's cool
+			// fieldtypes and better API
+			$this->load->model('topic_model');
+			$topics = $this->topic_model->get_tiered_topics();
+			
+			$options = array();
+			foreach ($topics as $data) {
+				$options[] = array('name' => $data['name'], 'value' => $data['id']);
+			}
+			
+			$this->load->library('custom_fields/form_builder');
+			$topics = $this->form_builder->add_field('multicheckbox');
+			$topics->options($options)
+				   ->name('topics')
+				   ->label('Topics');
+			
+			$date = $this->form_builder->add_field('datetime')
+				 ->name('date')
+				 ->label('Publish Date');
+			
+			$end_date = $this->form_builder->add_field('datetime')
+				->name('end_date')
+				->label('Unpublish Date')
+				->value($content['end_date']);
+				
+			$status = $this->form_builder->add_field('text')
+				->readonly('readonly')
+				->name('status')
+				->label('Status')
+				->value($content['status']);
+			
+			// editing, assign values
+			$topics->value($content['topics']);
+			//print_r($content['date']);
+			$date->value($content['date']);
+			
+			$title = $title->display();
+			$standard = $this->form_builder->output_admin();
+		}
+		else {
+			$standard = FALSE;
+			$title = FALSE;
+		}
+		
+		if ($type['is_privileged'] == TRUE) {
+			// we require a member group access privileges dropdown
+			$this->load->model('users/usergroup_model');
+			$groups = $this->usergroup_model->get_usergroups();
+			
+			$options = array();
+			$options[] = array('name' => 'Public / Any Member Group', 'value' => '0');
+			foreach ($groups as $group) {
+				$options[] = array('name' => $group['name'], 'value' => $group['id']);
+			}
+			
+			$this->load->library('custom_fields/form_builder');
+			$this->form_builder->reset();
+			$privileges = $this->form_builder->add_field('multicheckbox');
+			$privileges->name('privileges')
+					   ->options($options)
+					   ->default_value(0)
+					   ->label('Allowed Membership Groups')
+					   ->help('If a group or groups is selected, this content will require the user be in this group to view it.  This enables you to 
+					   charge for subscriptions and products that move the user to this group.')
+					   ->value($content['privileges']);
+			
+			$privileges = $this->form_builder->output_admin();
+		}
+		else {
+			$privileges = FALSE;
+		}
+		
+		// handle custom fields
+		$this->load->model('custom_fields_model');
+		$custom_fieldset = new Admin_form;
+		$custom_fields = $this->custom_fields_model->get_custom_fields(array('group' => $type['custom_field_group_id']));
+		if (empty($custom_fields)) {
+			$custom_fields = FALSE;
+		}
+		else {
+			$custom_fieldset->fieldset('Custom Product Data');
+			$custom_fieldset->custom_fields($custom_fields, $content);
+			$custom_fields = $custom_fieldset->display();
+		}
+
+		
+		$data = array(
+					'title' => $title,
+					'standard' => $standard,
+					'privileges' => $privileges,
+					'custom_fields' => $custom_fields,
+					'type' => $type,
+					'form_title' => 'Copy Content',
+					'form_action' => site_url('admincp/publish/post/new/'),
 					'invalid' => ($this->input->get('invalid')) ? TRUE : FALSE,
 					'errors' => $this->session->flashdata('errors')
 				);
