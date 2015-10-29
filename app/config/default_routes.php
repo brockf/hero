@@ -33,3 +33,6 @@ $route['checkout'] = 'billing/checkout';
 $route['checkout/([a-zA-Z_-]+)'] = 'billing/checkout/$1';
 $route['subscriptions'] = 'billing/subscriptions';
 $route['subscriptions/(:any)'] = 'billing/subscriptions/$1';
+
+// 404 route
+$route['404_override'] = 'error/view';
