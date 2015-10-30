@@ -381,6 +381,11 @@ class App_hooks {
 	public function data_var ($name, $value) {
 		$this->data[$name] = $value;
 		
+		if (is_array($value)) {
+			// prevent errors in log_message() below
+			$value = serialize($value);
+		}
+		
 		@log_message('debug', 'Hook: "' . $name . '" => "' . $value . '" data registered to active hook.');
 		
 		return;
