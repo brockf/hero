@@ -1,7 +1,7 @@
 Hero Framework
 ====
 
-[Hero](http://www.heroframework.com) is a powerful Content Management System (CMS) and eCommerce framework built on CodeIgniter.
+Hero is a powerful Content Management System (CMS) and eCommerce framework built on CodeIgniter.
 
 ## Documentation
 
@@ -27,11 +27,11 @@ If you experience issues, please review the full Server Requirements article in 
 
 ## Documentation
 
-* There is a full [user guide with designer, developer, and user documentation](http://www.heroframework.com/user_guide)
+* There is a full [user guide with designer, developer, and user documentation](https://web.archive.org/web/20140920204221/http://www.heroframework.com/user_guide/index.html)
 
 ## eCommerce
 
-[Hero eCommerce](http://www.github.com/electricfunction/hero-ecommerce) is a free, open-source collection of modules that drop right into your
+Hero eCommerce is a free, open-source collection of modules that drop right into your
 Hero installation and provide you with online store, subscription billing, paywall, and coupon functionality.
 
 ## History

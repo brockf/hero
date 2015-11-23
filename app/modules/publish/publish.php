@@ -12,7 +12,7 @@
 */
 
 class Publish extends Module {
-	var $version = '1.17';
+	var $version = '1.20';
 	var $name = 'publish';
 
 	function __construct () {
@@ -161,6 +161,30 @@ class Publish extends Module {
 		if ($db_version < 1.17) {
 			$this->CI->load->library('app_hooks');
 			$this->CI->app_hooks->register('view_content','A content item is viewed in the standard publish controller.',array());
+		}
+
+		if ($db_version < 1.18) {
+			$this->CI->db->query('ALTER TABLE `content` ADD COLUMN `content_unpublish_date` DATETIME NOT NULL AFTER `content_date`');
+			$this->CI->db->query('ALTER TABLE `content` ADD COLUMN `content_status` ENUM("Enabled","Disabled") NOT NULL DEFAULT "Enabled"');
+		}
+		
+		if($db_version < 1.19) {
+			$unpublish_date = date(
+						'Y-m-d H:i:s'
+						,strtotime(
+							'+20 years'
+							,time()
+						)
+					);
+			$this->CI->db->set('content_unpublish_date', $unpublish_date);
+			$this->CI->db->where('content_unpublish_date','0000-00-00 00:00:00');
+			$this->CI->db->or_where('content_unpublish_date','1970-01-01 00:00:00');
+			$this->CI->db->update('content');
+			//print_r($this->CI->db->last_query());
+		}
+
+		if($db_version < 1.20) {
+			$this->CI->app_hooks->bind('cron','Content_model','hook_cron',APPPATH . 'modules/publish/models/content_model.php');
 		}
 	
 		return $this->version;

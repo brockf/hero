@@ -1,0 +1,28 @@
+{extends file="layout.thtml"}
+{block name="title"}
+{$title} - {$smarty.block.parent}
+{/block}
+{block name="head_includes"}
+	<link href="{theme_url path="css/gallery.css"}" rel="stylesheet" type="text/css" media="screen" />
+	<script type="text/javascript" src="{theme_url path="shadowbox/shadowbox.js"}"></script>	
+	<link href="{theme_url path="shadowbox/shadowbox.css"}" rel="stylesheet" type="text/css" media="screen" />
+	
+	<script type="text/javascript">
+		Shadowbox.init();
+	</script>
+{/block}
+{block name="content"}
+	<h1>{$title}</h1>
+	
+	<p><a href="{url path=$url_path}?download=zip">Download this gallery as a zip archive</a></p>
+	
+	<ul class="gallery_images">
+	
+	{foreach $images as $image}
+		<li>
+			<a rel="shadowbox[gallery]" href="{$image.url}" /><img src="{thumbnail path=$image.path height="100"}" alt="" /></a>
+		</li>
+	{/foreach}
+	
+	</ul>
+{/block}

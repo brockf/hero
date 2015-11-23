@@ -62,7 +62,11 @@ class Text_fieldtype extends Fieldtype {
 						'placeholder' => $this->placeholder,
 						'style' => 'width: ' . $this->width,
 						'class' => implode(' ', $this->field_classes)
-						);
+					);
+		
+		if(!empty($this->readonly)){
+			$attributes['readonly'] = $this->readonly;
+		}
 		
 		// compile attributes
 		$attributes = $this->compile_attributes($attributes);
@@ -85,6 +89,10 @@ class Text_fieldtype extends Fieldtype {
 		$attributes = $this->output_shared();
 		
 		$help = ($this->help == FALSE) ? '' : '<div class="help">' . $this->help . '</div>';
+		
+		if($this->readonly !== FALSE){
+			$attributes .= $this->readonly;
+		}
 		
 		// build HTML
 		$return = '<li>

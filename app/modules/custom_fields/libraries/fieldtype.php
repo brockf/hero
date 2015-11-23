@@ -39,6 +39,7 @@ class Fieldtype {
 	public $type;
 	public $value = FALSE;
 	public $label = FALSE;
+	public $readonly = FALSE;
 	public $name;
 	public $help = FALSE;
 	public $placeholder = FALSE;
@@ -368,6 +369,19 @@ class Fieldtype {
 	*/
 	public function name ($name) {
 		$this->name = $name;
+		
+		return $this;
+	}
+	
+	/**
+	* Set Readonly
+	*
+	* @param string $readonly
+	*
+	* @return object $fieldtype_object
+	*/
+	public function readonly ($readonly) {
+		$this->readonly = $readonly;
 		
 		return $this;
 	}
