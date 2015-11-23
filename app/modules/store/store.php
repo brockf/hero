@@ -260,7 +260,7 @@ class Store_module extends Module {
 		if ($db_version < 1.26) {
 			// clear the tables from testing
 			$this->CI->db->query('TRUNCATE TABLE `subscriptions`');
-			$this->CI->db->query('TRUNCATE TABLE `orders');
+			$this->CI->db->query('TRUNCATE TABLE `orders`');
 			$this->CI->db->query('TRUNCATE TABLE `taxes_received`');
 			$this->CI->db->query('TRUNCATE TABLE `future_sub_tax`');
 			$this->CI->db->query('TRUNCATE TABLE `order_details`');
