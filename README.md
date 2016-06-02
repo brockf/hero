@@ -27,7 +27,7 @@ If you experience issues, please review the full Server Requirements article in 
 
 ## Documentation
 
-* There is a full [user guide with designer, developer, and user documentation](http://www.heroframework.com/user_guide)
+* There is a full user guide with designer, developer, and user documentation include in the repo in `/docs`.
 
 ## eCommerce
 
