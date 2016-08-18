@@ -153,9 +153,9 @@ class User_model extends CI_Model
 			$user_db = $query->row_array();
 			$user = $this->get_user($user_db['user_id']);
 
-			$hashed_password = ($user['salt'] == '') ? md5($password) : md5($password . ':' . $user['salt']);
+			$hashPassSalt = ($user['salt'] == '') ? $this->generatePassSalt($password,'') : $this->generatePassSalt($password,$user['salt']));
 
-			if ($hashed_password == $user_db['user_password']) {
+			if ($hashPassSalt->pass == $user_db['user_password']) {
 				$authenticated = TRUE;
 			}
 		}
@@ -940,10 +940,7 @@ class User_model extends CI_Model
 		}
 
 		// generate hashed password
-		$CI =& get_instance();
-		$CI->load->helper('string');
-		$salt = random_string('unique');
-		$hashed_password = md5($password . ':' . $salt);
+		$hashPassSalt = $this->generatePassSalt($password);
 
 		$insert_fields = array(
 								'user_is_admin' => ($is_admin == TRUE) ? '1' : '0',
@@ -952,8 +949,8 @@ class User_model extends CI_Model
 								'user_last_name' => $last_name,
 								'user_username' => $username,
 								'user_email' => $email,
-								'user_password' => $hashed_password,
-								'user_salt' => $salt,
+								'user_password' => $hashPassSalt->pass,
+								'user_salt' => $hashPassSalt->salt,
 								'user_referrer' => ($affiliate != FALSE) ? $affiliate : '0',
 								'user_signup_date' => date('Y-m-d H:i:s'),
 								'user_last_login' => '0000-00-00 00:00:00',
@@ -974,6 +971,7 @@ class User_model extends CI_Model
 
 		// create customer record
 		if (module_installed('billing')) {
+			$CI =& get_instance();
 			$CI->load->model('billing/customer_model');
 
 			$customer = array();
@@ -1196,12 +1194,9 @@ class User_model extends CI_Model
 	* @return boolean
 	*/
 	function update_password ($user_id, $new_password) {
-		$CI =& get_instance();
-		$CI->load->helper('string');
-		$salt = random_string('unique');
-		$hashed_password = md5($new_password . ':' . $salt);
+		$hashPassSalt = $this->generatePassSalt($new_password);
 
-		$this->db->update('users',array('user_password' => $hashed_password, 'user_salt' => $salt),array('user_id' => $user_id));
+		$this->db->update('users',array('user_password' => $hashPassSalt->pass, 'user_salt' => $hashPassSalt->salt),array('user_id' => $user_id));
 
 		// prep hook
 		$CI =& get_instance();
@@ -1231,7 +1226,8 @@ class User_model extends CI_Model
 		$this->load->helper('string');
 
 		$password = random_string('alnum',9);
-		$this->db->update('users',array('user_password' => md5($password), 'user_salt' => ''),array('user_id' => $user['id']));
+		$hashPassSalt = $this->generatePassSalt($password,'');
+		$this->db->update('users',array('user_password' => $hashPassSalt->pass, 'user_salt' => ''),array('user_id' => $user['id']));
 
 		// hook call
 		$CI =& get_instance();
@@ -1242,6 +1238,25 @@ class User_model extends CI_Model
 		$CI->app_hooks->reset();
 
 		return TRUE;
+	}
+
+	/**
+	 * Generate a hashed password and unique salt
+	 *
+	 * @param string $password the password enetered by the user
+	 * @return array an array containing the password and salt for a user
+	 */
+	function generatePassSalt($password,$salt=null){
+		// generate hashed password
+		if($salt == '' ) {
+			$hashed_password = md5($password);
+		} else {
+			if($salt == null){
+				$salt = uniqid();
+			}
+			$hashed_password = md5($password . ':' . $salt);
+		}
+		return array('pass'=>$hashed_password,'salt'=>$salt);
 	}
 
 	/**
