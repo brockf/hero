@@ -13,5 +13,6 @@
 * @author Electric Function, Inc.
 */
 function file_extension ($file) {
-	return strtolower(end(explode(".", $file)));
+	$exFile = explode('.', $file);
+	return strtolower(end($exFile));
 }

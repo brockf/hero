@@ -56,7 +56,7 @@ class Blogs extends Module {
  								 `blog_template` varchar(255) NOT NULL,
  								 `blog_per_page` int(11) NOT NULL,
    								 PRIMARY KEY  (`blog_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								 ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		return $this->version;

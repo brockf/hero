@@ -4,7 +4,7 @@
 <p>Installation takes just a few moments.</p>
 <? if (!empty($file_permission_errors)) { ?>
 	<? foreach ($file_permission_errors as $error) { ?>
-		<p class="error"><strong><?=$error['file'];?> must be writable by the web server</strong> - You must set the
+		<p class="error"><strong><?= $error['file']; ?> must be writable by the web server</strong> - You must set the
 		<? if ($error['folder'] == TRUE) { ?>folder<? } else { ?>file<? } ?> permissions
 		with CHMOD (0666, 0755, or 0777) and, possibly, file ownership with a CHOWN command.</strong></p>
 	<? } ?>
@@ -57,7 +57,7 @@ and that this database exists.</p>
 			</li>
 			<li>
 				<label for="db_pass">Database Password</label>
-				<input type="text" name="db_pass" id="db_pass" class="text required mark_empty" rel="Your MySQL Database Password" value="<?=$db_pass;?>" />
+				<input type="password" name="db_pass" id="db_pass" class="text required mark_empty" rel="Your MySQL Database Password" value="<?=$db_pass;?>" />
 			</li>
 			<li>
 				<label for="db_name">Database Name</label>

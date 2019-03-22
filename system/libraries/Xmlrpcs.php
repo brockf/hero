@@ -585,8 +585,10 @@ class CI_Xmlrpcs extends CI_Xmlrpc
 			return $this->multicall_error('notarray');
 		}
 
-		list($a,$b)=each($params->me);
-		$numParams = count($b);
+		//list($a,$b)=each($params->me);
+		$b = array_values($params->me);
+		
+		$numParams = count($b[0]);
 
 		$msg = new XML_RPC_Message($scalar_value);
 		for ($i = 0; $i < $numParams; $i++)

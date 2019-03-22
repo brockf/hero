@@ -40,7 +40,8 @@ class Front_Controller extends MY_Controller {
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module . '/');
+			$myloader = new MY_Loader();
+			$myloader->define_module($module . '/');
 		}
 		
 		// load caching for the frontend

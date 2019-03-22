@@ -153,7 +153,7 @@ class User_model extends CI_Model
 			$user_db = $query->row_array();
 			$user = $this->get_user($user_db['user_id']);
 
-			$hashPassSalt = ($user['salt'] == '') ? $this->generatePassSalt($password,'') : $this->generatePassSalt($password,$user['salt']));
+			$hashPassSalt = (($user['salt'] == '') ? $this->generatePassSalt($password,'') : $this->generatePassSalt($password,$user['salt']));
 
 			if ($hashPassSalt->pass == $user_db['user_password']) {
 				$authenticated = TRUE;
@@ -936,7 +936,7 @@ class User_model extends CI_Model
 								'user_salt' => $hashPassSalt->salt,
 								'user_referrer' => ($affiliate != FALSE) ? $affiliate : '0',
 								'user_signup_date' => date('Y-m-d H:i:s'),
-								'user_last_login' => '0000-00-00 00:00:00',
+								'user_last_login' => date('Y-m-d H:i:s'),
 								'user_suspended' => '0',
 								'user_deleted' => '0',
 								'user_remember_key' => '',
@@ -1026,7 +1026,10 @@ class User_model extends CI_Model
 			}
 			$hashed_password = md5($password . ':' . $salt);
 		}
-		return array('pass'=>$hashed_password,'salt'=>$salt);
+		$hashed_obj = new STDClass;
+		$hashed_obj->pass = $hashed_password;
+		$hashed_obj->salt = $salt;
+		return $hashed_obj;
 	}
 
 	/**

@@ -64,7 +64,7 @@ class Forms_module extends Module {
 							     `form_privileges` varchar(250) NOT NULL,
 							     `form_template` varchar(100) NOT NULL,
  								 PRIMARY KEY  (`form_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 								
 		// return current version

@@ -20,8 +20,7 @@ function get_available_image_library () {
 
 	if (class_exists('Imagick')) {
 		return 'ImageMagick';
-	}
-	elseif (function_exists('imagecreatetruecolor')) {
+	} elseif (function_exists('imagecreatetruecolor')) {
 		$gd = gd_info();
 		
 		// get the pure version number

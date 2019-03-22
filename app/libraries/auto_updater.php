@@ -12,7 +12,8 @@
 */
 
 class Auto_updater {
-	function Auto_updater () {
+
+	function __construct(){
 		$CI =& get_instance();
 		
 		$software_version = $CI->config->item('app_version');

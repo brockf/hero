@@ -1,7 +1,8 @@
 <IfModule mod_rewrite.c>
     RewriteEngine On
+    RewriteBase /
     Options +FollowSymlinks
-    
+
     <FilesMatch "\.(txml|thtml|htaccess|htpasswd|protected|txt)$">
 	 Order Allow,Deny
 	 Deny from all

@@ -21,6 +21,8 @@ class Module_model extends CI_Model {
 		
 		// pre-cache modules table
 		$result = $this->db->get('modules');
+
+		//var_dump($result);
 		
 		$this->modules_cache = array();
 		

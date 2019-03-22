@@ -26,8 +26,11 @@
 
 function parse_template_files_array ($files, $return = array(), $prefix = '') {
 	foreach ($files as $key => $file) {
-		$extension = (!is_array($file) and strpos($file, '.') !== FALSE) ? end(explode('.', $file)) : '';
-		
+		$extension = '';
+		if (!is_array($file) and strpos($file, '.') !== FALSE){
+			$exFile = explode('.', $file);
+			$extension = end($exFile);
+		}
 		if (is_array($file)) {
 			$return = array_merge($return,parse_template_files_array($file, $return, $prefix . $key . '/'));
 		}

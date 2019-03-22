@@ -414,7 +414,7 @@ class Admin_form {
 
 		foreach ($custom_fields as $field) {
 			$CI->load->library('custom_fields/fieldtype');
-			$field_object =& $CI->fieldtype->load($field);
+			$field_object = $CI->fieldtype->load($field);
 
 			// set value
 			if (!empty($values) and isset($values[$field_object->name])) {

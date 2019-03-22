@@ -78,7 +78,8 @@ class Admincp_Controller extends MY_Controller {
 		$this->module_definitions = new stdClass();
 		
 		foreach ($modules as $module) {
-			MY_Loader::define_module($module . '/');
+			$myloader = new MY_Loader();
+			$myloader->define_module($module . '/');
 		}
 		
 		// define WYSIWYG session variables for file uploading

@@ -4,17 +4,21 @@ function get_notices () {
 	$CI =& get_instance();
 	
 	$errors = $CI->notices->GetErrors();
-	$notices = $CI->notices->GetNotices();
 	
 	$return = '';
-	while (list(,$error) = each($errors)) {
-		$return .= '<div class="error">' . $error . '</div>';
+	$eCount = count($errors);
+	for($i = 0; $i < $eCount; $i++){
+		$return .= '<div class="error">' . $errors[$i] . '</div>';
 	}
+	unset($eCount);
 	reset($errors);
-	
-	while (list(,$notice) = each($notices)) {
-		$return .= '<div class="notice">' . $notice . '</div>';
+
+	$notices = $CI->notices->GetNotices();
+	$nCount = count($notices);
+	for($i = 0; $i < $nCount; $i++){
+		$return .= '<div class="notice">' . $notices[$i] . '</div>';
 	}
+	unset($nCount);
 	reset($notices);
 	
 	return $return;

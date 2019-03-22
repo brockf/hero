@@ -88,7 +88,7 @@ class Smarty_Internal_Compile_Block extends Smarty_Internal_CompileBase {
         }
     }
 
-	static function compileChildBlock ($compiler, $_name = null)
+	public function compileChildBlock ($compiler, $_name = null)
 	{
 		$_output = '';
         // if called by {$smarty.block.child} we must search the name of enclosing {block}
@@ -169,7 +169,8 @@ class Smarty_Internal_Compile_Blockclose extends Smarty_Internal_CompileBase {
         $saved_data = $this->_close_tag(array('block'));
         $_name = trim($saved_data[0]['name'], "\"'");
         if (isset($compiler->template->block_data[$_name]) && !isset($compiler->template->block_data[$_name]['compiled'])) {
-        	$_output = Smarty_Internal_Compile_Block::compileChildBlock($compiler, $_name);
+            $sicb = new Smarty_Internal_Compile_Block();
+            $_output = $sicb->compileChildBlock($compiler, $_name);
         } else {
             $_output = $compiler->parser->current_buffer->to_smarty_php();
             unset ($compiler->template->block_data[$_name]['compiled']);

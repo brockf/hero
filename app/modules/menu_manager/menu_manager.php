@@ -56,13 +56,13 @@ class Menu_manager extends Module {
 								  `menu_link_privileges` varchar(255),
 								  `menu_link_order` int(5),
 								  PRIMARY KEY  (`menu_link_id`)
-								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		
 			$this->CI->db->query('CREATE TABLE `menus` (
 								  `menu_id` int(11) NOT NULL auto_increment,
 								  `menu_name` varchar(200) NOT NULL,
 								  PRIMARY KEY  (`menu_id`)
-								) ENGINE=MyISAM AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb AUTO_INCREMENT=1000 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.02) {

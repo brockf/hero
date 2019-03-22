@@ -51,7 +51,7 @@ class Rss extends Module {
  								 `rss_sort_dir` varchar(5) NOT NULL,
  								 `rss_template` varchar(150) NOT NULL,
    								 PRIMARY KEY  (`rss_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								 ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		return $this->version;

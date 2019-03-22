@@ -43,3 +43,4 @@ writeable/templates_compile/*
 app/cache/*
 !app/cache/.htaccess
 !app/cache/index.html
+writeable/routes.php

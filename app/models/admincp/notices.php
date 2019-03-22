@@ -11,7 +11,7 @@
 
 */
 class Notices extends CI_Model {
-    function Notices() {
+    function __construct() {
         parent::__construct();
     }
     
