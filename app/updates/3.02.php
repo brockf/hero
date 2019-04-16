@@ -13,7 +13,7 @@ $sql[] = 'CREATE TABLE `binds` (
 			  `bind_created` DATETIME NOT NULL,
 			  PRIMARY KEY  (`bind_id`),
 			  INDEX (`hook_name`)
-			) ENGINE=MyISAM DEFAULT CHARSET=utf8;';
+			) ENGINE=Innodb DEFAULT CHARSET=utf8;';
 
 foreach ($sql as $query) {
 	$CI->db->query($query);

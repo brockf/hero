@@ -11,6 +11,7 @@
 */
 
 class Dashboard extends Admincp_Controller {
+
 	function __construct() {
 		parent::__construct();
 
@@ -91,8 +92,9 @@ class Dashboard extends Admincp_Controller {
 		// system stats
 		$system = array();
 
-		$system['PHP'] = phpversion();
-		$system['MySQL'] = mysql_get_server_info();
+		$system['PHP'] = explode('~',phpversion())[0];
+		$this->load->database();
+		$system['MySQL'] = $this->db->conn_id->server_info;
 		$system[$this->config->item('app_name')] = $this->config->item('app_version');
 		$system['CodeIgniter'] = CI_VERSION;
 		$system['Theme'] = setting('theme');

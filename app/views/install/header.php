@@ -19,9 +19,9 @@
 		
 			<div id="nav">
 				<ol>
-					<li<? if ($this->router->fetch_method() == 'index') { ?> class="active"<? } ?>>Configuration</li>
-					<li<? if ($this->router->fetch_method() == 'admin' and !isset($complete)) { ?> class="active"<? } ?>>Administrator</li>
-					<li<? if (isset($complete) and $complete == TRUE) { ?> class="active"<? } ?>>Install Complete</li>
+					<li<?= (($this->router->fetch_method() == 'index') ? 'class="active"' : '' ) ?>>Configuration</li>
+					<li<?= (($this->router->fetch_method() == 'admin' and !isset($complete)) ? 'class="active"' : '') ?>>Administrator</li>
+					<li<?= ((isset($complete) and $complete == TRUE) ? 'class="active"' : '' ) ?>>Install Complete</li>
 				</ol>
 			</div>
 		</div>

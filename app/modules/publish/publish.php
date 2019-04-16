@@ -80,7 +80,7 @@ class Publish extends Module {
  								 `content_type_system_name` varchar(50) NOT NULL,
  								 `content_type_template` varchar(255) NOT NULL,
  								 PRIMARY KEY  (`content_type_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.03) {
@@ -89,7 +89,7 @@ class Publish extends Module {
  								 `topic_id` int(11) NOT NULL,
  								 `content_id` int(11) NOT NULL,
    								 PRIMARY KEY  (`topic_map_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								 ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		
 			$this->CI->db->query('CREATE TABLE IF NOT EXISTS `topics` (
  								 `topic_id` int(11) NOT NULL auto_increment,
@@ -98,7 +98,7 @@ class Publish extends Module {
   								 `topic_description` text NOT NULL,
   								 `topic_deleted` tinyint(1) NOT NULL,
    								 PRIMARY KEY  (`topic_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
+								 ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
 		
 		if ($db_version < 1.09) {
@@ -117,7 +117,7 @@ class Publish extends Module {
  								 `content_privileges` varchar(255),
  								 `content_hits` int(11),
    								 PRIMARY KEY  (`content_id`)
-								 ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								 ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.10) {

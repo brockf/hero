@@ -480,6 +480,7 @@ class Admincp extends Admincp_Controller {
 		
 		$this->load->library('admin_form');
 		
+		
 		if ($type['is_standard'] == TRUE) {
 			// we require Title, URL Path, and Topic fields
 			

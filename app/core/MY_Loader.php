@@ -14,7 +14,7 @@ class MY_Loader extends MX_Loader {
 	* Customized loader methods, which will use define_module
 	* to load the module definition file if necessary.
 	*/
-	function helper ($helper) {
+	function helper ($helper = array()) {
 		if (!is_array($helper)) {
 			self::define_module($helper);
 		}	
@@ -22,7 +22,7 @@ class MY_Loader extends MX_Loader {
 		return parent::helper($helper);
 	}
 	
-	function library ($library, $params = NULL, $object_name = NULL) {
+	function library ($library = '', $params = NULL, $object_name = NULL) {
 		if (!is_array($library)) {
 			self::define_module($library);
 		}	
@@ -54,7 +54,7 @@ class MY_Loader extends MX_Loader {
 	* @param string $path The path to the file being loaded, e.g., "settings/settings_model.php"
 	*
 	*/
-	function define_module ($path) {
+	public function define_module ($path) {
 	    if (strpos($path, '/') !== FALSE) {
 	    	// normally, we'd do this in the constructor, but that way left us with
 	    	// some issues in that module_model was NULL in certain instances

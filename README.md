@@ -7,8 +7,8 @@ Hero
 
 Please ensure that your hosting environment meets the following specifications:
 
-* PHP 5.1+
-* One available MySQL 3.23+ database.
+* PHP 5.6+ and PHP 7.0+
+* One available MySQL database with mysqli or mysqlnd driver.
 * Apache or Apache-like server that can parse .htaccess files with mod_rewrite rules.
 * Ability to create one cronjob or scheduled process.
 

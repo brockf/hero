@@ -517,8 +517,8 @@ class Dataset {
 
     	// build action buttons
     	if (!empty($this->actions)) {
-    		$actions .= 'With selected: ';
-    		while (list(,$action) = each($this->actions)) {
+			$actions .= 'With selected: ';
+			foreach($this->actions as $action){
     			$actions .= '<input type="button" class="button action_button" rel="' . site_url($action['link']) . '" name="action_' . $i . '" value="' . $action['name'] . '" />&nbsp;';
     			$i++;
     		}
@@ -540,7 +540,7 @@ class Dataset {
     	}
 
     	// add column headers
-    	while (list($key,$column) = each($this->columns)) {
+		foreach ($this->columns as $key => $column) {
     		if (isset($column['sort_column']) and !empty($column['sort_column'])) {
     			if ($this->sort_column == $column['sort_column'] and $this->sort_dir == 'asc') {
     				$direction = 'desc';
@@ -578,7 +578,7 @@ class Dataset {
 	    		$output .= '<td style="width:5%"><input type="checkbox" name="check_all" id="check_all" value="check_all" /></td>';
 	    	}
 
-    		while (list(,$column) = each($this->columns)) {
+    		foreach($this->columns as $idx => $column) {
 				if ($column['filters'] == TRUE) {
 					$output .= '<td class="filter">';
 

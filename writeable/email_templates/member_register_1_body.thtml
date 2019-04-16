@@ -1,0 +1,13 @@
+{extends file="email_layout.thtml"}
+
+{block name="body"}
+<p>Hi {$member.first_name},</p>
+
+<p>Thank you for registering an account at {$site_name}.  Your account details are below:</p>
+
+<p><b>Username</b>: {$member.username}</p>
+<p><b>Password</b>: {$password}</p>
+
+<a href="{url}">Click here to login now</a>.
+
+{/block}

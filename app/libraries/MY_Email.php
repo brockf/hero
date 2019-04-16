@@ -35,7 +35,7 @@ class MY_Email extends CI_Email {
 		parent::message($message);
 	}
 	
-	function from ($from_email, $from_name) {
+	function from ($from_email, $from_name='') {
 		$this->_plaintext_from_name = $from_name;
 		$this->_plaintext_from_email = $from_email;
 		

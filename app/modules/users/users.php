@@ -65,7 +65,7 @@ class Users_module extends Module {
 								  `usergroup_name` varchar(150) NOT NULL,
 								  `usergroup_default` tinyint(4) NULL,
 								  PRIMARY KEY  (`usergroup_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 								
 			$insert_fields = array(
 									'usergroup_name' => 'Default',
@@ -94,7 +94,7 @@ class Users_module extends Module {
 								  `user_cart` text,
 								  `user_pending_charge_id` int(11),
 								  PRIMARY KEY  (`user_id`)
-								) ENGINE=MyISAM AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;');
+								) ENGINE=Innodb AUTO_INCREMENT=1001 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1001 ;');
 		}
 		
 		if ($db_version < 1.01) {
@@ -107,7 +107,7 @@ class Users_module extends Module {
 								  `user_field_admin_only` tinyint(1) NOT NULL,
 								  `user_field_registration_form` tinyint(1) NOT NULL,
 								  PRIMARY KEY  (`user_field_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.02) {
@@ -127,7 +127,7 @@ class Users_module extends Module {
 								  `user_login_ip` varchar(50) NOT NULL,
 								  `user_login_browser` varchar(255) NOT NULL,
 								  PRIMARY KEY  (`user_login_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
 		
 		if ($db_version < 1.05) {
@@ -175,7 +175,7 @@ class Users_module extends Module {
 								  `user_id` int(11) NOT NULL,
 								  `user_activity_date` DATETIME NOT NULL,
 								  PRIMARY KEY  (`user_activity_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1000 ;');
 		}
 		
 		if ($db_version < 1.13) {

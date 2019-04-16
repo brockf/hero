@@ -203,7 +203,7 @@ class Topic_model extends CI_Model
 	{
 		if (is_array($terms[$index]))
 		{
-			while(list($id, $name) = each($terms[$index]))
+			foreach($terms[$index] as $id => $name)
 			{	
 				if ($index == 0)
 				{

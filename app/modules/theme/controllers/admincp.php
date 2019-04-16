@@ -255,12 +255,13 @@ class Admincp extends Admincp_Controller {
 		}
 		
 		// you can only write certain filetypes
-		$extension = end(explode('.',$path));
+		$exPath = explode('.', $path);
+		$extension = end($exPath);
 		if (!in_array($extension, array('html','thtml','txml','trss','xml','rss','js','css'))) {
 			return FALSE;
 		}
-				
-		if (file_exists($path) and !is_really_writable($path)) {
+
+		if (file_exists($path) and !is_writable($path)) {
 			return FALSE;
 		}
 		

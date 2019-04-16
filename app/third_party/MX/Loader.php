@@ -83,7 +83,8 @@ class MX_Loader extends CI_Loader
 	}
 
 	/** Load the database drivers **/
-	public function database($params = '', $return = FALSE, $active_record = NULL) {
+	public function database($params = '', $return = FALSE, $active_record = NULL) 
+	{
 		
 		if (class_exists('CI_DB', FALSE) AND $return == FALSE AND $active_record == NULL AND isset(CI::$APP->db) AND is_object(CI::$APP->db)) 
 			return;
@@ -98,7 +99,7 @@ class MX_Loader extends CI_Loader
 	}
 
 	/** Load a module helper **/
-	public function helper($helper) {
+	public function helper($helper = array()) {
 		
 		if (is_array($helper)) return $this->helpers($helper);
 		
@@ -113,24 +114,29 @@ class MX_Loader extends CI_Loader
 	}
 
 	/** Load an array of helpers **/
-	public function helpers($helpers) {
+	public function helpers($helpers = array()) {
 		foreach ($helpers as $_helper) $this->helper($_helper);	
 	}
 
 	/** Load a module language file **/
-	public function language($langfile, $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '') {
+	/*public function language($langfile, $idiom = '', $return = FALSE, $add_suffix = TRUE, $alt_path = '') {
 		return CI::$APP->lang->load($langfile, $idiom, $return, $add_suffix, $alt_path, $this->_module);
+	}*/
+
+	public function language($file = array(), $lang = '')
+	{
+		return CI::$APP->lang->load($langfile, $lang);
 	}
-	
+
 	public function languages($languages) {
 		foreach($languages as $_language) $this->language($language);
 	}
 	
 	/** Load a module library **/
-	public function library($library, $params = NULL, $object_name = NULL) {	
+	public function library($library='', $params = NULL, $object_name = NULL) {	
 		if (is_array($library)) return $this->libraries($library);		
-		
-		$class = strtolower(end(explode('/', $library)));
+		$endLibrary = explode('/', $library);
+		$class = strtolower(end($endLibrary));
 		
 		if (isset($this->_ci_classes[$class]) AND $_alias = $this->_ci_classes[$class])
 			return CI::$APP->$_alias;
@@ -172,8 +178,8 @@ class MX_Loader extends CI_Loader
 	public function model($model, $object_name = NULL, $connect = FALSE) {
 		
 		if (is_array($model)) return $this->models($model);
-
-		($_alias = $object_name) OR $_alias = end(explode('/', $model));
+		$modelEnd = explode('/', $model);
+		($_alias = $object_name) OR $_alias = end($modelEnd);
 
 		if (in_array($_alias, $this->_ci_models, TRUE)) 
 			return CI::$APP->$_alias;
@@ -215,8 +221,8 @@ class MX_Loader extends CI_Loader
 	public function module($module, $params = NULL)	{
 		
 		if (is_array($module)) return $this->modules($module);
-
-		$_alias = strtolower(end(explode('/', $module)));
+		$moduleEnd = explode('/', $module);
+		$_alias = strtolower(end($moduleEnd));
 		CI::$APP->$_alias = Modules::load(array($module => $params));
 		return CI::$APP->$_alias;
 	}
@@ -256,7 +262,7 @@ class MX_Loader extends CI_Loader
 
 	public function _ci_is_instance() {}
 
-	public function _ci_get_component($component) {
+	public function & _ci_get_component($component) {
 		return CI::$APP->$component;
 	} 
 
@@ -274,7 +280,8 @@ class MX_Loader extends CI_Loader
 			$_ci_file = strpos($_ci_view, '.') ? $_ci_view : $_ci_view.EXT;
 			$_ci_path = $this->_ci_view_path.$_ci_file;
 		} else {
-			$_ci_file = end(explode('/', $_ci_path));
+			$pathEnd = explode('/', $_ci_path);
+			$_ci_file = end($pathEnd);
 		}
 
 		if ( ! file_exists($_ci_path)) 
@@ -288,7 +295,23 @@ class MX_Loader extends CI_Loader
 		ob_start();
 
 		if ((bool) @ini_get('short_open_tag') === FALSE AND CI::$APP->config->item('rewrite_short_tags') == TRUE) {
-			echo eval('?>'.preg_replace("/;*\s*\?>/", "; ?>", str_replace('<?=', '<?php echo ', file_get_contents($_ci_path))));
+			$preg_pattern = ';[\s\t]+\?>';
+			$preg_replace = '; ?>';
+			$pattern = array('<? ',"<?\t","<?\n","<?\r\n",'<?=');
+			$replace = array('<?php ',"<?php\t","<?php\n", "<?php\r\n",'<?php echo ');
+
+			echo eval(
+				'?>' .
+				preg_replace(
+					'/' . $preg_pattern . '/',
+					$preg_replace, 
+					str_replace(
+						$pattern,
+						$replace,
+						file_get_contents($_ci_path)
+					)
+				)
+			);
 		} else {
 			include($_ci_path); 
 		}

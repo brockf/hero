@@ -101,7 +101,7 @@ class Content_type_model extends CI_Model
 				`{$system_name}_id` INT(11) AUTO_INCREMENT PRIMARY KEY,
 				`content_id` INT(11) NOT NULL,
 				INDEX ( `content_id` )
-			) ENGINE = MYISAM";
+			) ENGINE = Innodb";
 			
 			$this->db->query($sql);
 		}

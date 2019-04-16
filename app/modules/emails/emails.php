@@ -54,7 +54,7 @@ class Emails extends Module {
 								  `email_is_html` tinyint(1) NOT NULL,
 								  `email_deleted` tinyint(0) NOT NULL,
 								  PRIMARY KEY  (`email_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.04) {
@@ -95,7 +95,7 @@ class Emails extends Module {
 								  `wordwrap` TINYINT(1) NOT NULL,
 								  `is_html` TINYINT(1) NOT NULL,
 								  PRIMARY KEY  (`mail_queue_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 								
 			$this->CI->load->library('app_hooks');
 			
@@ -119,7 +119,7 @@ class Emails extends Module {
 								  `email_template_body` text NOT NULL,
 								  `email_template_is_html` tinyint(1) NOT NULL,
 								  PRIMARY KEY  (`email_template_id`)
-								) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
+								) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;');
 		}
 		
 		if ($db_version < 1.09) {
@@ -139,12 +139,11 @@ class Emails extends Module {
 	*/
 	function _email_import($import) {
 		$this->CI->load->helper('file');
-		
+		//var_dump($import);
 		foreach ($import as $hook => $details) {
 			$subject = $details['subject'];
 			$to = $details['to'];
 			$bcc = isset($details['bcc']) ? $details['bcc'] : array();
-			
 			if (file_exists(APPPATH . 'modules/emails/template_import/' . $hook . '.thtml')) {
 				$insert_fields = array(
 									'hook_name' => $hook,
@@ -152,7 +151,9 @@ class Emails extends Module {
 									'email_subject' => $subject,
 									'email_recipients' => serialize($to),
 									'email_bccs' => serialize($bcc),
-									'email_is_html' => '1'
+									'email_is_html' => '1',
+									'email_body_template' => APPPATH . 'modules/emails/template_import/' . $hook . '.thtml',
+									'email_deleted' => 0
 								);
 								
 				$this->CI->db->insert('emails', $insert_fields);

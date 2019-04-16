@@ -10,7 +10,7 @@ CREATE TABLE `countries` (
   `iso3` varchar(3) NOT NULL,
   `name` varchar(255) NOT NULL,
   PRIMARY KEY  (`country_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `countries`
@@ -195,11 +195,11 @@ INSERT INTO `countries` (`country_id`, `iso2`, `iso3`, `name`) VALUES (4, 'AF', 
 (620, 'PT', 'PRT', 'Portugal'),
 (630, 'PR', 'PRI', 'Puerto Rico'),
 (634, 'QA', 'QAT', 'Qatar'),
-(638, 'RE', 'REU', 'RŽunion'),
+(638, 'RE', 'REU', 'Rï¿½union'),
 (642, 'RO', 'ROU', 'Romania'),
 (643, 'RU', 'RUS', 'Russian Federation'),
 (646, 'RW', 'RWA', 'Rwanda'),
-(652, 'BL', 'BLM', 'Saint BarthŽlemy'),
+(652, 'BL', 'BLM', 'Saint Barthï¿½lemy'),
 (654, 'SH', 'SHN', 'Saint Helena'),
 (659, 'KN', 'KNA', 'Saint Kitts and Nevis'),
 (662, 'LC', 'LCA', 'Saint Lucia'),
@@ -283,7 +283,7 @@ CREATE TABLE `custom_fields` (
   `custom_field_validators` text,
   `custom_field_help_text` text,
   PRIMARY KEY  (`custom_field_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
+) ENGINE=Innodb AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
 
 -- --------------------------------------------------------
 
@@ -295,7 +295,7 @@ CREATE TABLE `custom_field_groups` (
   `custom_field_group_id` int(11) NOT NULL auto_increment,
   `custom_field_group_name` varchar(150) NOT NULL,
    PRIMARY KEY  (`custom_field_group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
+) ENGINE=Innodb AUTO_INCREMENT=1 DEFAULT CHARSET=utf8 ;
 
 INSERT INTO `custom_field_groups` (`custom_field_group_id`, `custom_field_group_name`) VALUES ('1', 'Members');
 
@@ -311,7 +311,7 @@ CREATE TABLE IF NOT EXISTS `links` (
 	 `link_controller` varchar(250),
 	 `link_method` varchar(250),
 	 PRIMARY KEY  (`link_id`)
- ) ENGINE=MyISAM DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+ ) ENGINE=Innodb DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 -- 
 -- Table structure for table `modules`
@@ -322,7 +322,7 @@ CREATE TABLE `modules` (
   `module_name` varchar(50) NOT NULL ,
   `module_version` varchar(25) NOT NULL ,
   PRIMARY KEY  (`module_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
+) ENGINE=Innodb AUTO_INCREMENT=5 DEFAULT CHARSET=utf8 AUTO_INCREMENT=1 ;
 
 CREATE TABLE IF NOT EXISTS  `ci_sessions` (
 					session_id varchar(40) DEFAULT '0' NOT NULL,
@@ -351,7 +351,7 @@ CREATE TABLE `settings` (
   `setting_options` text,
   `setting_hidden` tinyint(1),
   PRIMARY KEY  (`setting_id`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8 ;
+) ENGINE=Innodb DEFAULT CHARSET=utf8 ;
 
 -- 
 -- Dumping data for table `settings`
@@ -380,7 +380,7 @@ CREATE TABLE `settings_groups` (
   `setting_group_name` varchar(250) default NULL,
   `setting_group_help` varchar(250) default NULL,
   PRIMARY KEY  (`setting_group_id`)
-) ENGINE=MyISAM AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
+) ENGINE=Innodb AUTO_INCREMENT=3 DEFAULT CHARSET=utf8 AUTO_INCREMENT=3 ;
 
 -- 
 -- Dumping data for table `settings_groups`
@@ -405,7 +405,7 @@ CREATE TABLE `states` (
   `name_short` char(2) NOT NULL default '' COMMENT 'USPS Abbreviation',
   PRIMARY KEY  (`state_id`),
   UNIQUE KEY `name_long` (`name_long`)
-) ENGINE=MyISAM AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COMMENT='US States' AUTO_INCREMENT=64 ;
+) ENGINE=Innodb AUTO_INCREMENT=64 DEFAULT CHARSET=utf8 COMMENT='US States' AUTO_INCREMENT=64 ;
 
 -- 
 -- Dumping data for table `states`
@@ -484,7 +484,7 @@ INSERT INTO `states` (`state_id`, `name_long`, `name_short`) VALUES (1, 'Alabama
 CREATE TABLE `system` (
   `db_version` varchar(15) NOT NULL,
   PRIMARY KEY  (`db_version`)
-) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+) ENGINE=Innodb DEFAULT CHARSET=utf8;
 
 -- 
 -- Dumping data for table `system`

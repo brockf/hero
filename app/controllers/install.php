@@ -1,4 +1,7 @@
-<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+<?php 
+ini_set('display_errors', 1);
+error_reporting(E_ALL);
+if ( ! defined('BASEPATH')) exit('No direct script access allowed');
 
 /**
 * Install Controller 
@@ -11,7 +14,7 @@
 */
 class Install extends CI_Controller {
 
-	function Install()
+	function __construct()
 	{
 		parent::__construct();
 		
@@ -38,16 +41,10 @@ class Install extends CI_Controller {
 		// check for submission
 		if ($this->input->post('base_url') != '') {
 			// we have a submission
-			
+			$this->load->model('install_model');
+
 			// validate MySQL info
-			$valid_mysql = FALSE;
-			if ($dbh = @mysql_connect($this->input->post('db_host'),$this->input->post('db_user'),$this->input->post('db_pass')))
-		    {
-		        if (@mysql_select_db($this->input->post('db_name'), $dbh))
-		        {
-		        	$valid_mysql = TRUE;
-		        }
-		    }
+			$valid_mysql = $this->install_model->validate_creds();
 		    
 		    if ($valid_mysql == FALSE) {
 		    	$error_mysql = TRUE;
@@ -93,39 +90,7 @@ class Install extends CI_Controller {
 				
 				// import initial database structure
 				// note - all update files will be run before the next step loads (because auto_updater will be invoked)
-				$structure = read_file(APPPATH . 'updates/install.php');
-				$structure = str_replace('<?php if (!defined(\'BASEPATH\')) exit(\'No direct script access allowed\'); ?>','',$structure);
-				
-				// break into newlines
-				$structure = explode("\n",$structure);
-				
-				// run mysql queries
-				$query = "";
-				$querycount = 0;
-				foreach ($structure as $sql_line)
-				{
-					if (trim($sql_line) != "" and substr($sql_line,0,2) != "--")
-					{
-						$query .= $sql_line;
-						if (substr(trim($query), -1, 1) == ";")
-						{
-							// this query is finished, execute it
-						    if (@mysql_query($query, $dbh))
-						    {
-						    	$query = "";
-						    	$querycount++;
-						    }
-						    else {
-						    	show_error('There was a critical error importing the initial database structure.  Please contact support.<br /><br />Query:<br /><br />' . $query);
-						    	die();
-						    }
-						}
-					}
-				}
-				
-				// update settings
-				mysql_query('UPDATE `settings` SET `setting_value`=\'' . $this->input->post('site_name') . '\' WHERE `setting_name`=\'site_name\' or `setting_name`=\'email_name\'');
-				mysql_query('UPDATE `settings` SET `setting_value`=\'' . $this->input->post('site_email') . '\' WHERE `setting_name`=\'site_email\'');
+				$this->install_model->run_setup_queries();
 				
 				// send to administrator account setup
 				if (strstr($this->current_url(),'/index')) {
@@ -143,18 +108,18 @@ class Install extends CI_Controller {
 		
 		// which folders/files should be writeable?
 		$file_permissions = array(
-							str_replace('system/','',BASEPATH) . 'writeable',
-							APPPATH . 'config',
-							APPPATH . 'config/config.php'
-							);
+			str_replace('system/','',BASEPATH) . 'writeable',
+			APPPATH . 'config',
+			APPPATH . 'config/config.php'
+		);
 					
 		$file_permission_errors = array();		
 		foreach ($file_permissions as $file) {
 			if (!is_writable($file)) {
 				$file_permission_errors[] = array(
-												'file' => $file,
-												'folder' => (is_dir($file)) ? TRUE : FALSE
-											);
+					'file' => $file,
+					'folder' => (is_dir($file)) ? TRUE : FALSE
+				);
 			}
 		}
 		
@@ -214,6 +179,8 @@ class Install extends CI_Controller {
 	function admin () {
 		$this->load->library('session');
 		$this->load->helper('url');
+		$this->load->library('auto_updater');
+		
 		
 		if ($this->input->post('username')) {
 			if ($this->input->post('password') != $this->input->post('password2')) {
@@ -275,12 +242,12 @@ class Install extends CI_Controller {
 		write_file(APPPATH . 'config/installed.php', '<?php /* App is installed */ ?>','w');
 		
 		$vars = array(
-				'username' => $this->session->userdata('username'),
-				'email' => $this->session->userdata('email'),
-				'password' => $this->session->userdata('password'),
-				'cron_key' => $this->config->item('cron_key'),
-				'cp_link' => site_url('admincp')
-				);
+			'username' => $this->session->userdata('username'),
+			'email' => $this->session->userdata('email'),
+			'password' => $this->session->userdata('password'),
+			'cron_key' => $this->config->item('cron_key'),
+			'cp_link' => site_url('admincp')
+		);
 		
 		$this->load->view(branded_view('install/complete.php'), $vars);
 	}
