@@ -19,6 +19,7 @@ Create an Account - {$smarty.block.parent}
 			{/if}
 		
 			<fieldset>
+			<!-- hi -->
 				<legend>Access Information</legend>
 				<ul class="form">
 					<li>
